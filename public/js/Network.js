@@ -44,6 +44,9 @@ export class Network {
         case 'task_deleted':
           this.cb.onTaskDeleted?.(msg.id);
           break;
+        case 'world_reset':
+          this.cb.onWorldReset?.();
+          break;
       }
     };
 

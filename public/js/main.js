@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Block } from './Textures.js';
+import { Block, TASK_SIZES } from './Textures.js';
 import { World, WORLD_HEIGHT } from './World.js';
 import { Network } from './Network.js';
 import { TaskManager } from './TaskManager.js';
@@ -11,13 +11,15 @@ let world, network, taskManager, ui;
 
 const pos = new THREE.Vector3(64, 30, 64);
 let yaw = 0, pitch = 0, velY = 0, onGround = false;
+let flying = false;
 let pointerLocked = false;
 const keys = {};
 const otherPlayers = new Map();
 
 // Block targeting
 let highlight;
-let target = null; // { hit: [x,y,z], place: [x,y,z] }
+let target = null;     // { hit: [x,y,z], place: [x,y,z] } for world blocks
+let targetTask = null; // task object if aiming at a task structure
 const raycaster = new THREE.Raycaster();
 raycaster.far = 7;
 
@@ -28,6 +30,7 @@ const GRAVITY = 25;
 const JUMP_VEL = 9;
 const MOVE_SPEED = 5.5;
 const SPRINT_SPEED = 8.5;
+const FLY_SPEED = 12;
 const EYE_HEIGHT = 1.62;
 const PW = 0.29; // player half-width
 
@@ -154,6 +157,7 @@ function startGame(name) {
     },
 
     onDisconnect() { ui.addChatMessage('', 'Disconnected from server', true); },
+    onWorldReset() { location.reload(); },
   });
 
   network.connect(name);
@@ -165,7 +169,7 @@ function startGame(name) {
 // =====================================================
 function setupControls(canvas) {
   canvas.addEventListener('click', () => {
-    if (!ui.isInputFocused() && !ui.isTaskPanelOpen) {
+    if (!ui.isInputFocused() && !ui.isTaskPanelOpen && !ui.isTaskDetailOpen) {
       canvas.requestPointerLock();
     }
   });
@@ -202,9 +206,28 @@ function setupControls(canvas) {
       ui.activateChat();
       document.exitPointerLock();
     }
+    if (e.code === 'KeyF' && !ui.isChatActive && !ui.isTaskPanelOpen) {
+      flying = !flying;
+      velY = 0;
+      ui.addChatMessage('', flying ? 'Fly mode ON' : 'Fly mode OFF', true);
+    }
+    if (e.code === 'KeyE') {
+      if (ui.isTaskDetailOpen) {
+        ui.hideTaskDetail();
+        canvas.requestPointerLock();
+      } else if (pointerLocked && targetTask) {
+        ui.showTaskDetail(targetTask);
+        document.exitPointerLock();
+      }
+    }
     if (e.code === 'Escape') {
-      if (ui.isTaskPanelOpen) ui.toggleTaskPanel();
-      ui.hideTaskDetail();
+      if (ui.isTaskDetailOpen) {
+        ui.hideTaskDetail();
+        canvas.requestPointerLock();
+      } else if (ui.isTaskPanelOpen) {
+        ui.toggleTaskPanel();
+        canvas.requestPointerLock();
+      }
     }
     const num = parseInt(e.key);
     if (num >= 1 && num <= 9) ui.handleNumberKey(num);
@@ -234,55 +257,73 @@ function canStandAt(x, y, z) {
 function updatePhysics(dt) {
   if (!network) return;
   dt = Math.min(dt, 0.05);
+  const inputOk = !ui.isInputFocused();
 
-  // Gravity
-  velY -= GRAVITY * dt;
-  velY = Math.max(velY, -35); // terminal velocity
-  const newY = pos.y + velY * dt;
-
-  if (canStandAt(pos.x, newY, pos.z)) {
-    pos.y = newY;
-    onGround = false;
-  } else {
-    if (velY <= 0) {
-      // Snap to ground: step down from current floor-position
-      let gy = Math.floor(pos.y);
-      while (gy > 0 && canStandAt(pos.x, gy - 1, pos.z)) gy--;
-      pos.y = gy;
-      onGround = true;
+  if (flying) {
+    // --- Fly mode: no gravity, no collision ---
+    const fwd = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
+    const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+    const move = new THREE.Vector3();
+    if (inputOk) {
+      if (keys['KeyW']) move.add(fwd);
+      if (keys['KeyS']) move.sub(fwd);
+      if (keys['KeyD']) move.add(right);
+      if (keys['KeyA']) move.sub(right);
+      if (keys['Space']) move.y += 1;
+      if (keys['ShiftLeft'] || keys['ShiftRight']) move.y -= 1;
+    }
+    if (move.lengthSq() > 0) {
+      move.normalize().multiplyScalar(FLY_SPEED * dt);
+      pos.add(move);
     }
     velY = 0;
-  }
+  } else {
+    // --- Normal mode: gravity + collision ---
+    velY -= GRAVITY * dt;
+    velY = Math.max(velY, -35);
+    const newY = pos.y + velY * dt;
 
-  // Jump
-  if (keys['Space'] && onGround && !ui.isInputFocused()) {
-    velY = JUMP_VEL;
-    onGround = false;
-  }
+    if (canStandAt(pos.x, newY, pos.z)) {
+      pos.y = newY;
+      onGround = false;
+    } else {
+      if (velY <= 0) {
+        let gy = Math.floor(pos.y);
+        while (gy > 0 && canStandAt(pos.x, gy - 1, pos.z)) gy--;
+        pos.y = gy;
+        onGround = true;
+      }
+      velY = 0;
+    }
 
-  // Movement
-  if (ui.isInputFocused()) return;
-  const sprint = keys['ShiftLeft'] || keys['ShiftRight'];
-  const speed = sprint ? SPRINT_SPEED : MOVE_SPEED;
-  const fwd = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
-  const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+    if (keys['Space'] && onGround && inputOk) {
+      velY = JUMP_VEL;
+      onGround = false;
+    }
 
-  const move = new THREE.Vector3();
-  if (keys['KeyW']) move.add(fwd);
-  if (keys['KeyS']) move.sub(fwd);
-  if (keys['KeyD']) move.add(right);
-  if (keys['KeyA']) move.sub(right);
-
-  if (move.lengthSq() > 0) {
-    move.normalize().multiplyScalar(speed * dt);
-    if (canStandAt(pos.x + move.x, pos.y, pos.z)) pos.x += move.x;
-    if (canStandAt(pos.x, pos.y, pos.z + move.z)) pos.z += move.z;
+    if (inputOk) {
+      const sprint = keys['ShiftLeft'] || keys['ShiftRight'];
+      const speed = sprint ? SPRINT_SPEED : MOVE_SPEED;
+      const fwd = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
+      const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
+      const move = new THREE.Vector3();
+      if (keys['KeyW']) move.add(fwd);
+      if (keys['KeyS']) move.sub(fwd);
+      if (keys['KeyD']) move.add(right);
+      if (keys['KeyA']) move.sub(right);
+      if (move.lengthSq() > 0) {
+        move.normalize().multiplyScalar(speed * dt);
+        if (canStandAt(pos.x + move.x, pos.y, pos.z)) pos.x += move.x;
+        if (canStandAt(pos.x, pos.y, pos.z + move.z)) pos.z += move.z;
+      }
+    }
   }
 
   // World bounds & void respawn
   pos.x = Math.max(0.5, Math.min(127.5, pos.x));
   pos.z = Math.max(0.5, Math.min(127.5, pos.z));
-  if (pos.y < -10) { pos.y = world.getHighestBlock(64, 64) + 2; velY = 0; }
+  pos.y = Math.max(-10, Math.min(WORLD_HEIGHT + 20, pos.y));
+  if (pos.y <= -10) { pos.y = world.getHighestBlock(64, 64) + 2; velY = 0; }
 }
 
 // =====================================================
@@ -294,47 +335,81 @@ function getTaskSpawnPosition() {
   return { x: fx, y: world.getHighestBlock(fx, fz) + 1, z: fz };
 }
 
+// Manual AABB ray test for task structures (InstancedMesh raycasting is unreliable)
+const _ray = new THREE.Ray();
+const _hitPt = new THREE.Vector3();
+const _box = new THREE.Box3();
+
+function findTargetedTask(origin, dir) {
+  _ray.set(origin, dir);
+  let best = null;
+  let bestDist = 20;
+  for (const task of taskManager.getTasks()) {
+    const d = TASK_SIZES[task.size] || TASK_SIZES.M;
+    _box.min.set(task.position.x, task.baseY, task.position.z);
+    _box.max.set(task.position.x + d.w, task.baseY + d.h, task.position.z + d.w);
+    if (_ray.intersectBox(_box, _hitPt)) {
+      const dist = _hitPt.distanceTo(origin);
+      if (dist < bestDist) { bestDist = dist; best = { task, dist }; }
+    }
+  }
+  return best;
+}
+
 function updateTarget() {
-  if (!pointerLocked) { highlight.visible = false; target = null; return; }
+  if (!pointerLocked) { highlight.visible = false; target = null; targetTask = null; return; }
 
-  raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
-  const hits = raycaster.intersectObjects(world.getChunkMeshes());
+  // Single ray from current player state (camera lags one frame behind)
+  const origin = new THREE.Vector3(pos.x, pos.y + EYE_HEIGHT, pos.z);
+  const dir = new THREE.Vector3(
+    -Math.sin(yaw) * Math.cos(pitch),
+    Math.sin(pitch),
+    -Math.cos(yaw) * Math.cos(pitch)
+  ).normalize();
+  raycaster.set(origin, dir);
 
-  if (hits.length > 0) {
-    const h = hits[0];
-    const n = h.face.normal;
-    const p = h.point;
+  const taskResult = findTargetedTask(origin, dir);
+  const chunkHits = raycaster.intersectObjects(world.getChunkMeshes());
+  const chunkDist = chunkHits[0]?.distance ?? Infinity;
+  const taskDist = taskResult?.dist ?? Infinity;
 
+  if (taskResult && taskDist <= chunkDist) {
+    // Aiming at a task structure - highlight the whole thing
+    const t = taskResult.task;
+    const d = TASK_SIZES[t.size] || TASK_SIZES.M;
+    highlight.position.set(t.position.x + d.w / 2, t.baseY + d.h / 2, t.position.z + d.w / 2);
+    highlight.scale.set(d.w + 0.05, d.h + 0.05, d.w + 0.05);
+    highlight.visible = true;
+    targetTask = t;
+    target = null;
+  } else if (chunkHits.length > 0) {
+    // Aiming at a world block
+    highlight.scale.set(1, 1, 1);
+    const n = chunkHits[0].face.normal;
+    const p = chunkHits[0].point;
     const hit = [
-      Math.floor(p.x - n.x * 0.5),
-      Math.floor(p.y - n.y * 0.5),
-      Math.floor(p.z - n.z * 0.5),
+      Math.floor(p.x - n.x * 0.5), Math.floor(p.y - n.y * 0.5), Math.floor(p.z - n.z * 0.5),
     ];
     const place = [
-      Math.floor(p.x + n.x * 0.5),
-      Math.floor(p.y + n.y * 0.5),
-      Math.floor(p.z + n.z * 0.5),
+      Math.floor(p.x + n.x * 0.5), Math.floor(p.y + n.y * 0.5), Math.floor(p.z + n.z * 0.5),
     ];
-
     highlight.position.set(hit[0] + 0.5, hit[1] + 0.5, hit[2] + 0.5);
     highlight.visible = true;
+    targetTask = null;
     target = { hit, place };
   } else {
     highlight.visible = false;
     target = null;
+    targetTask = null;
   }
 }
 
 function breakBlock() {
+  if (targetTask) { ui.showTaskDetail(targetTask); document.exitPointerLock(); return; }
   if (!target) return;
   const [x, y, z] = target.hit;
   const block = world.getBlock(x, y, z);
   if (block === Block.BEDROCK) return;
-
-  // Check for task structure click
-  const task = taskManager.getTaskAtPosition(x, y, z);
-  if (task) { ui.showTaskDetail(task); return; }
-
   world.setBlock(x, y, z, Block.AIR);
   network?.sendBlockBreak(x, y, z);
 }
@@ -451,7 +526,7 @@ function animate() {
     network.sendMove([pos.x, pos.y, pos.z], [yaw, pitch]);
   }
 
-  ui.updateCoords(pos.x, pos.y, pos.z);
+  ui.updateCoords(pos.x, pos.y, pos.z, flying);
   renderer.render(scene, camera);
 }
 

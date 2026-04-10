@@ -30,6 +30,8 @@
         <span>Space</span> Jump<br>
         <span>LMB</span> Break &nbsp;
         <span>RMB</span> Place &nbsp;
+        <span>E</span> Inspect &nbsp;
+        <span>F</span> Fly<br>
         <span>T</span> Tasks &nbsp;
         <span>Enter</span> Chat
       </div>
@@ -73,6 +75,13 @@
       <button id="create-task-btn">Create Task</button>
     </div>
     <div id="task-list"></div>
+    <div id="task-panel-footer">
+      <a id="export-btn" href="/api/export" download="craftplan-export.json">Export</a>
+      <label id="import-btn">
+        Import
+        <input type="file" id="import-file" accept=".json" hidden>
+      </label>
+    </div>
   </div>
 
   <!-- Chat -->

@@ -251,7 +251,28 @@ body {
 }
 #create-task-btn:hover { background: #3dca73; }
 
-#task-list { padding: 8px 12px; flex: 1; }
+#task-list { padding: 8px 12px; flex: 1; overflow-y: auto; }
+
+#task-panel-footer {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid #222;
+}
+#export-btn, #import-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #111;
+  color: #aaa;
+  font-size: 13px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+#export-btn:hover, #import-btn:hover { border-color: #555; color: #fff; }
 
 .task-item {
   padding: 12px 16px;

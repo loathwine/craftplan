@@ -62,9 +62,9 @@ export class UI {
   }
 
   // --- Coords / Player Count ---
-  updateCoords(x, y, z) {
+  updateCoords(x, y, z, flying = false) {
     document.getElementById('coords').textContent =
-      `${Math.floor(x)}, ${Math.floor(y)}, ${Math.floor(z)}`;
+      `${Math.floor(x)}, ${Math.floor(y)}, ${Math.floor(z)}${flying ? '  [FLY]' : ''}`;
   }
 
   updatePlayerCount(n) {
@@ -82,6 +82,27 @@ export class UI {
         btn.classList.add('selected');
         this.selectedSize = btn.dataset.size;
       });
+    });
+
+    document.getElementById('import-file')?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          fetch('/api/import', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          }).then(r => r.json()).then(res => {
+            if (res.ok) alert(`Imported ${res.tasks} tasks, ${res.blocks} block changes`);
+            else alert('Import failed: ' + (res.error || 'unknown'));
+          });
+        } catch { alert('Invalid JSON file'); }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
     });
   }
 
@@ -141,6 +162,10 @@ export class UI {
       btn.classList.toggle('active', btn.dataset.status === task.status);
     });
     document.getElementById('task-detail').classList.remove('hidden');
+  }
+
+  get isTaskDetailOpen() {
+    return !document.getElementById('task-detail').classList.contains('hidden');
   }
 
   hideTaskDetail() {

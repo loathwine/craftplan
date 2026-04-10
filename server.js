@@ -2,11 +2,15 @@ import express from 'express';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 import { randomUUID } from 'crypto';
+import { readFileSync, writeFileSync } from 'fs';
 
 const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
+const DATA_FILE = './data.json';
+
+app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
 
 // --- Game State ---
@@ -148,6 +152,50 @@ wss.on('connection', (ws) => {
       console.log(`[-] ${name} left (${players.size} online)`);
     }
   });
+});
+
+// --- Persistence ---
+function loadState() {
+  try {
+    const data = JSON.parse(readFileSync(DATA_FILE, 'utf8'));
+    for (const t of data.tasks || []) tasks.set(t.id, t);
+    for (const [k, v] of Object.entries(data.blockChanges || {})) blockChanges.set(k, v);
+    nextTaskSlot = data.nextTaskSlot || 0;
+    console.log(`  Loaded ${tasks.size} tasks, ${blockChanges.size} block changes`);
+  } catch { console.log('  No saved state, starting fresh'); }
+}
+
+function saveState() {
+  try {
+    writeFileSync(DATA_FILE, JSON.stringify({
+      tasks: [...tasks.values()],
+      blockChanges: Object.fromEntries(blockChanges),
+      nextTaskSlot,
+    }));
+  } catch (e) { console.error('Save failed:', e.message); }
+}
+
+loadState();
+setInterval(saveState, 30000);
+process.on('SIGINT', () => { saveState(); console.log('\n  Saved. Bye!'); process.exit(); });
+process.on('SIGTERM', () => { saveState(); process.exit(); });
+
+// --- Export / Import API ---
+app.get('/api/export', (_req, res) => {
+  res.setHeader('Content-Disposition', 'attachment; filename="craftplan-export.json"');
+  res.json({ tasks: [...tasks.values()], blockChanges: Object.fromEntries(blockChanges) });
+});
+
+app.post('/api/import', (req, res) => {
+  const data = req.body;
+  if (!data?.tasks) return res.status(400).json({ error: 'Invalid data' });
+  tasks.clear();
+  blockChanges.clear();
+  for (const t of data.tasks) tasks.set(t.id, t);
+  for (const [k, v] of Object.entries(data.blockChanges || {})) blockChanges.set(k, v);
+  saveState();
+  broadcast({ type: 'world_reset' });
+  res.json({ ok: true, tasks: tasks.size, blocks: blockChanges.size });
 });
 
 const PORT = process.env.PORT || 3000;

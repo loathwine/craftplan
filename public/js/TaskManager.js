@@ -115,6 +115,17 @@ export class TaskManager {
     return [...this.tasks.values()];
   }
 
+  getRaycastTargets() {
+    return [...this.tasks.values()].map(t => t.instMesh);
+  }
+
+  getTaskByMesh(mesh) {
+    for (const [, task] of this.tasks) {
+      if (task.instMesh === mesh) return task;
+    }
+    return null;
+  }
+
   _makeLabel(name, size, status) {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
