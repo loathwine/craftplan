@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CraftPlan - Project Planning in 3D</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <!-- Join Screen -->
+  <div id="join-screen" class="overlay">
+    <div class="join-card">
+      <h1>CraftPlan</h1>
+      <p class="subtitle">Project planning, but in Minecraft</p>
+      <input type="text" id="name-input" placeholder="Your name..." maxlength="20" autofocus>
+      <button id="join-btn">Enter World</button>
+      <div class="controls-hint">
+        <span>WASD</span> Move &nbsp;
+        <span>Mouse</span> Look &nbsp;
+        <span>Space</span> Jump<br>
+        <span>LMB</span> Break &nbsp;
+        <span>RMB</span> Place &nbsp;
+        <span>T</span> Tasks &nbsp;
+        <span>Enter</span> Chat
+      </div>
+    </div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div id="crosshair">+</div>
+    <div id="coords"></div>
+    <div id="player-count"></div>
+    <div id="hotbar">
+      <div class="hotbar-slot selected" data-block="1" title="Grass"><div class="block-preview grass"></div></div>
+      <div class="hotbar-slot" data-block="3" title="Stone"><div class="block-preview stone"></div></div>
+      <div class="hotbar-slot" data-block="7" title="Planks"><div class="block-preview planks"></div></div>
+      <div class="hotbar-slot" data-block="10" title="Brick"><div class="block-preview brick"></div></div>
+      <div class="hotbar-slot" data-block="6" title="Sand"><div class="block-preview sand"></div></div>
+      <div class="hotbar-slot" data-block="5" title="Leaves"><div class="block-preview leaves"></div></div>
+      <div class="hotbar-slot" data-block="8" title="Cobblestone"><div class="block-preview cobble"></div></div>
+      <div class="hotbar-slot" data-block="11" title="Glass"><div class="block-preview glass"></div></div>
+      <div class="hotbar-slot" data-block="4" title="Oak Log"><div class="block-preview log"></div></div>
+    </div>
+  </div>
+
+  <!-- Task Panel -->
+  <div id="task-panel" class="hidden">
+    <div class="panel-header">
+      <h2>Project Tasks</h2>
+      <button id="close-tasks">&times;</button>
+    </div>
+    <div id="task-create-form">
+      <input type="text" id="task-name" placeholder="Task name..." maxlength="50">
+      <textarea id="task-desc" placeholder="Description..." maxlength="200" rows="2"></textarea>
+      <div class="task-size-row">
+        <label>Size:</label>
+        <button class="size-btn" data-size="S">S</button>
+        <button class="size-btn selected" data-size="M">M</button>
+        <button class="size-btn" data-size="L">L</button>
+        <button class="size-btn" data-size="XL">XL</button>
+      </div>
+      <button id="create-task-btn">Create Task</button>
+    </div>
+    <div id="task-list"></div>
+  </div>
+
+  <!-- Chat -->
+  <div id="chat" class="hidden">
+    <div id="chat-messages"></div>
+    <input type="text" id="chat-input" placeholder="Press Enter to chat..." maxlength="200">
+  </div>
+
+  <!-- Task Detail Popup -->
+  <div id="task-detail" class="hidden">
+    <div class="panel-header">
+      <h3 id="detail-name"></h3>
+      <button id="close-detail">&times;</button>
+    </div>
+    <p id="detail-desc"></p>
+    <p id="detail-meta"></p>
+    <div class="status-buttons">
+      <button class="status-btn" data-status="todo">To Do</button>
+      <button class="status-btn" data-status="wip">In Progress</button>
+      <button class="status-btn" data-status="done">Done</button>
+      <button class="status-btn" data-status="blocked">Blocked</button>
+    </div>
+    <button id="delete-task-btn">Delete Task</button>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
