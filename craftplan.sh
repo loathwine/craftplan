@@ -6,8 +6,9 @@ PIDFILE=".craftplan.pid"
 
 case "${1:-help}" in
   start)
-    if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
-      echo "Already running (PID $(cat "$PIDFILE")). Use: ./craftplan.sh restart"
+    EXISTING=$(lsof -ti :"$PORT" 2>/dev/null || true)
+    if [ -n "$EXISTING" ]; then
+      echo "Port $PORT already in use (PID $EXISTING). Run: ./craftplan.sh stop"
       exit 1
     fi
     echo "Starting CraftPlan on port $PORT..."
@@ -29,12 +30,18 @@ case "${1:-help}" in
         kill "$PID"
         echo "Stopped (PID $PID)"
       else
-        echo "Process $PID not running"
+        echo "Stale pidfile (process $PID already gone)"
       fi
       rm -f "$PIDFILE"
     else
-      echo "Not running (no pidfile). Killing anything on port $PORT..."
-      lsof -ti :"$PORT" | xargs kill 2>/dev/null || true
+      PID=$(lsof -ti :"$PORT" 2>/dev/null || true)
+      if [ -n "$PID" ]; then
+        echo "Port $PORT in use by PID $PID (not started by craftplan.sh)"
+        echo "Inspect with: ps -p $PID -o command="
+        echo "Kill it yourself with: kill $PID"
+      else
+        echo "Not running"
+      fi
     fi
     ;;
   restart)
@@ -43,9 +50,10 @@ case "${1:-help}" in
     "$0" start
     ;;
   status)
-    if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
+    PID=$(lsof -ti :"$PORT" 2>/dev/null || true)
+    if [ -n "$PID" ]; then
       IP=$(hostname -I | awk '{print $1}')
-      echo "Running (PID $(cat "$PIDFILE"))"
+      echo "Running (PID $PID)"
       echo "  Local:   http://localhost:$PORT"
       echo "  Network: http://$IP:$PORT"
     else
