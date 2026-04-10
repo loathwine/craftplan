@@ -19,18 +19,6 @@ export class TaskManager {
 
     const container = new THREE.Group();
 
-    // --- Base platform (stone) ---
-    const baseW = dim.w + 2;
-    const baseGeo = new THREE.BoxGeometry(baseW, 0.3, baseW);
-    const baseMat = new THREE.MeshLambertMaterial({ color: 0x666666 });
-    const baseMesh = new THREE.Mesh(baseGeo, baseMat);
-    baseMesh.position.set(
-      task.position.x + dim.w / 2,
-      baseY - 0.15,
-      task.position.z + dim.w / 2
-    );
-    container.add(baseMesh);
-
     // --- Structure blocks ---
     const count = dim.w * dim.w * dim.h;
     const blockGeo = new THREE.BoxGeometry(0.92, 0.92, 0.92);
@@ -78,7 +66,7 @@ export class TaskManager {
     container.add(label);
 
     this.group.add(container);
-    this.tasks.set(task.id, { ...task, baseY, container, instMesh, baseMesh, label, blockGeo, blockMat, baseMat });
+    this.tasks.set(task.id, { ...task, baseY, container, instMesh, label, blockGeo, blockMat });
   }
 
   updateTask(task) {
@@ -92,8 +80,6 @@ export class TaskManager {
     this.group.remove(t.container);
     t.blockGeo.dispose();
     t.blockMat.dispose();
-    t.baseMesh.geometry.dispose();
-    t.baseMat.dispose();
     if (t.label.material.map) t.label.material.map.dispose();
     t.label.material.dispose();
     this.tasks.delete(id);
