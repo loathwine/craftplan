@@ -12,7 +12,7 @@ case "${1:-help}" in
       exit 1
     fi
     echo "Starting CraftPlan on port $PORT..."
-    nix develop --command node server.js &
+    nix develop --command node server.js > craftplan.log 2>&1 &
     echo $! > "$PIDFILE"
     sleep 2
     IP=$(hostname -I | awk '{print $1}')

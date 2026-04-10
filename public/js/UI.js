@@ -84,6 +84,49 @@ export class UI {
       });
     });
 
+    // JIRA import
+    document.getElementById('jira-toggle')?.addEventListener('click', () => {
+      document.getElementById('jira-form').classList.toggle('hidden');
+    });
+    document.getElementById('jira-import-btn')?.addEventListener('click', async () => {
+      const url = document.getElementById('jira-url').value.trim();
+      const email = document.getElementById('jira-email').value.trim();
+      const token = document.getElementById('jira-token').value.trim();
+      const jql = document.getElementById('jira-jql').value.trim();
+      const status = document.getElementById('jira-status');
+      const btn = document.getElementById('jira-import-btn');
+
+      if (!url || !email || !token || !jql) {
+        status.textContent = 'Fill in all fields';
+        status.style.color = '#ef4444';
+        return;
+      }
+
+      btn.disabled = true;
+      status.textContent = 'Importing...';
+      status.style.color = '#888';
+
+      try {
+        const resp = await fetch('/api/jira/import', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url, email, token, jql }),
+        });
+        const data = await resp.json();
+        if (data.ok) {
+          status.textContent = `Imported ${data.imported} issues!`;
+          status.style.color = '#4ade80';
+        } else {
+          status.textContent = `Error: ${data.error}`;
+          status.style.color = '#ef4444';
+        }
+      } catch (e) {
+        status.textContent = `Failed: ${e.message}`;
+        status.style.color = '#ef4444';
+      }
+      btn.disabled = false;
+    });
+
     document.getElementById('import-file')?.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;

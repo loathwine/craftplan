@@ -75,6 +75,17 @@
       <button id="create-task-btn">Create Task</button>
     </div>
     <div id="task-list"></div>
+    <div id="jira-section">
+      <button id="jira-toggle">Import from JIRA</button>
+      <div id="jira-form" class="hidden">
+        <input type="text" id="jira-url" placeholder="https://yourteam.atlassian.net">
+        <input type="text" id="jira-email" placeholder="you@company.com">
+        <input type="password" id="jira-token" placeholder="API token">
+        <input type="text" id="jira-jql" placeholder="project = MYPROJ ORDER BY rank">
+        <button id="jira-import-btn">Import Issues</button>
+        <p id="jira-status"></p>
+      </div>
+    </div>
     <div id="task-panel-footer">
       <a id="export-btn" href="/api/export" download="craftplan-export.json">Export</a>
       <label id="import-btn">

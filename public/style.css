@@ -253,6 +253,57 @@ body {
 
 #task-list { padding: 8px 12px; flex: 1; overflow-y: auto; }
 
+#jira-section {
+  padding: 0 20px 12px;
+  border-bottom: 1px solid #222;
+}
+#jira-toggle {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #111;
+  color: #aaa;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+#jira-toggle:hover { border-color: #555; color: #fff; }
+#jira-form {
+  margin-top: 10px;
+}
+#jira-form input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #0a0a1a;
+  color: #fff;
+  font-size: 13px;
+  margin-bottom: 8px;
+  outline: none;
+  font-family: inherit;
+}
+#jira-form input:focus { border-color: #4ade80; }
+#jira-import-btn {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+#jira-import-btn:hover { background: #1d4ed8; }
+#jira-import-btn:disabled { opacity: 0.5; cursor: default; }
+#jira-status {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+}
+
 #task-panel-footer {
   display: flex;
   gap: 8px;

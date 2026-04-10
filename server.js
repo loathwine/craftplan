@@ -198,6 +198,147 @@ app.post('/api/import', (req, res) => {
   res.json({ ok: true, tasks: tasks.size, blocks: blockChanges.size });
 });
 
+// --- JIRA Import ---
+app.post('/api/jira/import', async (req, res) => {
+  const { url, email, token, jql } = req.body;
+  if (!url || !email || !token || !jql) {
+    return res.status(400).json({ error: 'Missing fields: url, email, token, jql' });
+  }
+
+  try {
+    const baseUrl = url.replace(/\/+$/, '');
+    const auth = Buffer.from(`${email}:${token}`).toString('base64');
+    console.log(`  JIRA import: url=${baseUrl} jql="${jql}"`);
+    const searchUrl = `${baseUrl}/rest/api/3/search/jql`;
+
+    const resp = await fetch(searchUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jql,
+        maxResults: 100,
+        fields: ['summary', 'description', 'status', 'issuetype', 'customfield_10016', 'priority', 'key', 'parent', 'subtasks'],
+      }),
+    });
+
+    if (!resp.ok) {
+      const body = await resp.text();
+      console.error(`  JIRA API ${resp.status}: ${searchUrl}\n  ${body.slice(0, 500)}`);
+      return res.status(resp.status).json({ error: `JIRA ${resp.status}: ${body.slice(0, 200)}` });
+    }
+
+    const data = await resp.json();
+    const issues = data.issues || [];
+    console.log(`  JIRA: ${issues.length} issues fetched`);
+
+    // --- Build parent/child tree ---
+    const issueMap = new Map();       // jira id -> issue
+    const childrenOf = new Map();     // jira id -> [jira ids]
+
+    for (const issue of issues) {
+      const f = issue.fields || {};
+      issueMap.set(issue.id, issue);
+      const parentId = f.parent?.id;
+      if (parentId) {
+        if (!childrenOf.has(parentId)) childrenOf.set(parentId, []);
+        childrenOf.get(parentId).push(issue.id);
+      }
+    }
+
+    // Top-level = no parent in our result set
+    const topLevel = issues.filter(i => {
+      const pid = i.fields?.parent?.id;
+      return !pid || !issueMap.has(pid);
+    });
+
+    // --- Helper: extract description text ---
+    function extractDesc(f) {
+      if (typeof f.description === 'string') return f.description;
+      if (f.description?.content) {
+        const walk = (n) => n.text || (n.content || []).map(walk).join(' ');
+        return walk(f.description);
+      }
+      return '';
+    }
+
+    // --- Helper: map status ---
+    function mapStatus(f) {
+      const key = f.status?.statusCategory?.key || 'new';
+      if (key === 'done') return 'done';
+      if (key === 'indeterminate') return 'wip';
+      return 'todo';
+    }
+
+    // --- Helper: create task from issue ---
+    function makeTask(issue, size, x, z) {
+      const f = issue.fields || {};
+      return {
+        id: randomUUID(),
+        name: `${issue.key || ''}: ${(f.summary || 'Untitled').slice(0, 50)}`,
+        description: extractDesc(f).slice(0, 200),
+        size,
+        status: mapStatus(f),
+        position: { x, y: 0, z },
+        createdBy: 'JIRA Import',
+        jiraKey: issue.key,
+      };
+    }
+
+    // --- Size based on child count ---
+    function sizeByChildren(issueId) {
+      const n = (childrenOf.get(issueId) || []).length;
+      if (n >= 8) return 'XL';
+      if (n >= 4) return 'L';
+      if (n >= 1) return 'M';
+      return 'S';
+    }
+
+    // --- Place in clusters: parent + children around it ---
+    const created = [];
+    let gridIdx = 0;
+
+    for (const parent of topLevel) {
+      const col = gridIdx % 6;
+      const row = Math.floor(gridIdx / 6);
+      const px = 25 + col * 14;
+      const pz = 25 + row * 14;
+
+      const parentTask = makeTask(parent, sizeByChildren(parent.id), px, pz);
+      tasks.set(parentTask.id, parentTask);
+      created.push(parentTask);
+
+      // Place children around parent
+      const children = childrenOf.get(parent.id) || [];
+      for (let ci = 0; ci < children.length; ci++) {
+        const child = issueMap.get(children[ci]);
+        if (!child) continue;
+        const angle = (ci / Math.max(children.length, 1)) * Math.PI * 2;
+        const dist = 5;
+        const cx = px + Math.round(Math.cos(angle) * dist);
+        const cz = pz + Math.round(Math.sin(angle) * dist);
+
+        const childTask = makeTask(child, 'S', cx, cz);
+        tasks.set(childTask.id, childTask);
+        created.push(childTask);
+      }
+      gridIdx++;
+    }
+
+    saveState();
+    for (const task of created) broadcast({ type: 'task_created', task });
+
+    console.log(`  Imported ${created.length} tasks (${topLevel.length} parents, ${created.length - topLevel.length} children)`);
+    res.json({ ok: true, imported: created.length, parents: topLevel.length });
+  } catch (err) {
+    console.error('JIRA import error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`\n  CraftPlan running at http://localhost:${PORT}\n`);

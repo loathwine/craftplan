@@ -15,7 +15,11 @@ export class TaskManager {
 
     const dim = TASK_SIZES[task.size] || TASK_SIZES.M;
     const color = STATUS_COLORS[task.status] || STATUS_COLORS.todo;
-    const baseY = task.position.y;
+    const terrainY = this.world.getHighestBlock(
+      task.position.x + Math.floor(dim.w / 2),
+      task.position.z + Math.floor(dim.w / 2)
+    ) + 1;
+    const baseY = Math.max(task.position.y, terrainY);
 
     const container = new THREE.Group();
 
