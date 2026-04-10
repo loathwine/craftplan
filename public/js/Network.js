@@ -72,8 +72,8 @@ export class Network {
     this.send('block_place', { x, y, z, block });
   }
 
-  sendTaskCreate(name, description, size) {
-    this.send('task_create', { name, description, size });
+  sendTaskCreate(name, description, size, position) {
+    this.send('task_create', { name, description, size, position });
   }
 
   sendTaskUpdate(id, changes) {

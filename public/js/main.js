@@ -72,7 +72,9 @@ function init() {
   // UI
   ui = new UI({
     onJoin: startGame,
-    onTaskCreate: (n, d, s) => network?.sendTaskCreate(n, d, s),
+    onTaskCreate: (n, d, s) => {
+      network?.sendTaskCreate(n, d, s, getTaskSpawnPosition());
+    },
     onTaskUpdate: (id, ch) => network?.sendTaskUpdate(id, ch),
     onTaskDelete: (id) => network?.sendTaskDelete(id),
     onChat: (msg) => network?.sendChat(msg),
@@ -286,6 +288,12 @@ function updatePhysics(dt) {
 // =====================================================
 // BLOCK INTERACTION
 // =====================================================
+function getTaskSpawnPosition() {
+  const fx = Math.max(1, Math.min(126, Math.floor(pos.x - Math.sin(yaw) * 6)));
+  const fz = Math.max(1, Math.min(126, Math.floor(pos.z - Math.cos(yaw) * 6)));
+  return { x: fx, y: world.getHighestBlock(fx, fz) + 1, z: fz };
+}
+
 function updateTarget() {
   if (!pointerLocked) { highlight.visible = false; target = null; return; }
 

@@ -103,14 +103,14 @@ wss.on('connection', (ws) => {
 
       case 'task_create': {
         const id = randomUUID();
-        const pos = getTaskPosition();
+        const pos = msg.position || getTaskPosition();
         const task = {
           id,
           name: (msg.name || 'Untitled').slice(0, 50),
           description: (msg.description || '').slice(0, 200),
           size: ['S', 'M', 'L', 'XL'].includes(msg.size) ? msg.size : 'M',
           status: 'todo',
-          position: pos,
+          position: { x: Math.floor(pos.x), y: Math.floor(pos.y), z: Math.floor(pos.z) },
           createdBy: players.get(playerId)?.name || 'Unknown',
         };
         tasks.set(id, task);
