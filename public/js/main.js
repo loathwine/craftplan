@@ -174,8 +174,8 @@ function setupControls(canvas) {
 
   document.addEventListener('mousemove', (e) => {
     if (!pointerLocked) return;
-    yaw -= e.movementX * 0.002;
-    pitch -= e.movementY * 0.002;
+    yaw -= e.movementX * 0.006;
+    pitch -= e.movementY * 0.006;
     pitch = Math.max(-1.55, Math.min(1.55, pitch));
   });
 
