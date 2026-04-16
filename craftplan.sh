@@ -60,13 +60,24 @@ case "${1:-help}" in
       echo "Not running"
     fi
     ;;
+  tunnel)
+    if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
+      echo "Server not running. Run: ./craftplan.sh start"
+      exit 1
+    fi
+    echo "Starting tunnel to localhost:$PORT..."
+    echo "Share the https:// URL below with your colleagues."
+    echo ""
+    nix run nixpkgs#cloudflared -- tunnel --url "http://localhost:$PORT"
+    ;;
   *)
-    echo "Usage: ./craftplan.sh {start|stop|restart|status}"
+    echo "Usage: ./craftplan.sh {start|stop|restart|status|tunnel}"
     echo ""
     echo "  start    Start the server (background)"
     echo "  stop     Stop the server"
     echo "  restart  Restart the server"
     echo "  status   Show if running + URLs"
+    echo "  tunnel   Expose to internet via Cloudflare (for remote colleagues)"
     echo ""
     echo "  PORT=8080 ./craftplan.sh start   # custom port"
     ;;

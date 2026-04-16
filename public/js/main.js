@@ -98,10 +98,9 @@ function init() {
 // START GAME (after join)
 // =====================================================
 function startGame(name) {
-  ui.hideJoinScreen();
-
   network = new Network({
     onWelcome(msg) {
+      ui.hideJoinScreen();
       // Spawn above terrain
       const sy = world.getHighestBlock(64, 64) + 2;
       pos.set(64, sy, 64);
@@ -114,6 +113,7 @@ function startGame(name) {
 
       ui.addChatMessage('', 'Welcome to CraftPlan! Press T to manage tasks.', true);
       ui.updatePlayerCount(otherPlayers.size + 1);
+      document.getElementById('game').requestPointerLock();
     },
 
     onPlayerJoin(p) {
@@ -161,7 +161,6 @@ function startGame(name) {
   });
 
   network.connect(name);
-  document.getElementById('game').requestPointerLock();
 }
 
 // =====================================================
