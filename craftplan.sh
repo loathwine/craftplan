@@ -3,8 +3,8 @@ set -euo pipefail
 
 PORT="${PORT:-3000}"
 PIDFILE=".craftplan.pid"
-BOT_PIDFILE=".craftplan-bot.pid"
-BOT_LOG="bot.log"
+
+# Bot pidfile + log keyed by name: .craftplan-bot-<Name>.pid / bot-<Name>.log
 
 case "${1:-help}" in
   # ---------- Server ----------
@@ -56,29 +56,46 @@ case "${1:-help}" in
       echo "  Network: http://$IP:$PORT"
     else echo "Server: not running"
     fi
-    if [ -f "$BOT_PIDFILE" ] && kill -0 "$(cat "$BOT_PIDFILE")" 2>/dev/null; then
-      echo "Bot:    running (PID $(cat "$BOT_PIDFILE"))"
-    else echo "Bot:    not running"
-    fi
+    # List all running bots
+    shopt -s nullglob
+    any_bot=0
+    for f in .craftplan-bot-*.pid; do
+      any_bot=1
+      NAME=${f#.craftplan-bot-}; NAME=${NAME%.pid}
+      PID=$(cat "$f")
+      if kill -0 "$PID" 2>/dev/null; then
+        echo "Bot ${NAME}: running (PID $PID)"
+      else
+        echo "Bot ${NAME}: stale pidfile (removing)"
+        rm -f "$f"
+      fi
+    done
+    [ "$any_bot" = 0 ] && echo "Bots:   none running"
     ;;
 
   # ---------- Bot ----------
   bot|bot-start)
+    NAME="${2:-Claude}"
+    BOT_PIDFILE=".craftplan-bot-${NAME}.pid"
+    BOT_LOG="bot-${NAME}.log"
     if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
       echo "Server not running. Run: ./craftplan.sh start"
       exit 1
     fi
     if [ -f "$BOT_PIDFILE" ] && kill -0 "$(cat "$BOT_PIDFILE")" 2>/dev/null; then
-      echo "Bot already running (PID $(cat "$BOT_PIDFILE")). Run: ./craftplan.sh bot-stop"
+      echo "Bot '$NAME' already running (PID $(cat "$BOT_PIDFILE"))."
+      echo "Stop with: ./craftplan.sh bot-stop $NAME"
       exit 1
     fi
-    echo "Starting Claude bot..."
-    HOST="localhost:$PORT" nix develop --command node scripts/bot.mjs > "$BOT_LOG" 2>&1 &
+    echo "Starting bot '$NAME'..."
+    HOST="localhost:$PORT" BOT_NAME="$NAME" \
+      nix develop --command node scripts/bot.mjs > "$BOT_LOG" 2>&1 &
     echo $! > "$BOT_PIDFILE"
     sleep 2
     if kill -0 "$(cat "$BOT_PIDFILE")" 2>/dev/null; then
-      echo "Bot started (PID $(cat "$BOT_PIDFILE")). In-game, say: @Claude help"
-      echo "Tail log: ./craftplan.sh bot-log"
+      echo "Bot '$NAME' started (PID $(cat "$BOT_PIDFILE"))."
+      echo "In-game: @${NAME} help"
+      echo "Tail log: ./craftplan.sh bot-log $NAME"
     else
       echo "Bot failed to start. Check $BOT_LOG"
       rm -f "$BOT_PIDFILE"
@@ -86,25 +103,41 @@ case "${1:-help}" in
     fi
     ;;
   bot-stop)
+    NAME="${2:-}"
+    if [ -z "$NAME" ]; then
+      # Stop all if no name given
+      shopt -s nullglob
+      any=0
+      for f in .craftplan-bot-*.pid; do
+        any=1
+        N=${f#.craftplan-bot-}; N=${N%.pid}
+        "$0" bot-stop "$N"
+      done
+      [ "$any" = 0 ] && echo "No bots running"
+      exit 0
+    fi
+    BOT_PIDFILE=".craftplan-bot-${NAME}.pid"
     if [ -f "$BOT_PIDFILE" ]; then
       PID=$(cat "$BOT_PIDFILE")
-      if kill -0 "$PID" 2>/dev/null; then kill "$PID"; echo "Bot stopped (PID $PID)"
-      else echo "Stale bot pidfile"
+      if kill -0 "$PID" 2>/dev/null; then kill "$PID"; echo "Bot '$NAME' stopped (PID $PID)"
+      else echo "Stale pidfile for '$NAME'"
       fi
       rm -f "$BOT_PIDFILE"
-    else echo "Bot not running"
+    else
+      echo "Bot '$NAME' not running"
     fi
-    # Also kill any orphan claude -p children
-    pkill -f "claude -p --model" 2>/dev/null || true
     ;;
   bot-restart)
-    "$0" bot-stop
+    NAME="${2:-Claude}"
+    "$0" bot-stop "$NAME"
     sleep 1
-    "$0" bot
+    "$0" bot "$NAME"
     ;;
   bot-log)
+    NAME="${2:-Claude}"
+    BOT_LOG="bot-${NAME}.log"
     if [ -f "$BOT_LOG" ]; then tail -f "$BOT_LOG"
-    else echo "No log yet ($BOT_LOG)"
+    else echo "No log for '$NAME' ($BOT_LOG)"
     fi
     ;;
 
@@ -125,23 +158,30 @@ case "${1:-help}" in
 Usage: ./craftplan.sh <command>
 
 Server:
-  start        Start the server (background)
-  stop         Stop the server
-  restart      Stop + start
-  status       Show status (server + bot)
+  start                       Start the server (background)
+  stop                        Stop the server
+  restart                     Stop + start
+  status                      Show server + all bots
 
-Bot (AI builder, responds to @Claude in chat):
-  bot          Start the bot (background)
-  bot-stop     Stop the bot
-  bot-restart  Stop + start
-  bot-log      Tail the bot log
+Bots (AI builders, trigger: @Name in chat):
+  bot [Name]                  Start a bot (default name: Claude)
+  bot-stop [Name|blank]       Stop one bot (or all if no name given)
+  bot-restart [Name]          Restart a bot
+  bot-log [Name]              Tail a bot's log
 
-Other:
-  tunnel       Expose server via Cloudflare tunnel
+Examples:
+  ./craftplan.sh bot                    # -> @Claude
+  ./craftplan.sh bot Picasso            # -> @Picasso
+  ./craftplan.sh bot Bob                # -> @Bob (now 3 bots running)
+  ./craftplan.sh bot-stop Picasso       # stop just Picasso
+  ./craftplan.sh bot-stop               # stop all bots
+
+Tunnel:
+  tunnel                      Expose server via Cloudflare
 
 Env:
-  PORT=8080                         custom server port
-  AI_MODEL=claude-sonnet-4-6        override bot model (default: opus 4.7)
+  PORT=8080                             custom server port
+  AI_MODEL=claude-sonnet-4-6            override bot model (default: opus 4.7)
 EOF
     ;;
 esac
