@@ -60,6 +60,15 @@ case "${1:-help}" in
       echo "Not running"
     fi
     ;;
+  bot)
+    if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
+      echo "Server not running. Run: ./craftplan.sh start"
+      exit 1
+    fi
+    echo "Starting Claude bot (Ctrl+C to stop)..."
+    echo "In-game: type chat with Enter, send '@Claude help'"
+    HOST="localhost:$PORT" nix develop --command node scripts/bot.mjs
+    ;;
   tunnel)
     if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
       echo "Server not running. Run: ./craftplan.sh start"
@@ -77,6 +86,7 @@ case "${1:-help}" in
     echo "  stop     Stop the server"
     echo "  restart  Restart the server"
     echo "  status   Show if running + URLs"
+    echo "  bot      Run the Claude builder bot (responds to @Claude commands)"
     echo "  tunnel   Expose to internet via Cloudflare (for remote colleagues)"
     echo ""
     echo "  PORT=8080 ./craftplan.sh start   # custom port"
