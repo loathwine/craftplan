@@ -4,5 +4,6 @@ result
 package-lock.json
 data.json
 .craftplan.pid
+.craftplan-bot.pid
 craftplan.log
 bot.log
