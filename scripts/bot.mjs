@@ -15,6 +15,7 @@
 import WebSocket from 'ws';
 import { PLANNERS, planSphere, AIR } from './builders.mjs';
 import { planWithAI, SANDBOX_API_DOC } from './ai.mjs';
+import { describeLocalTerrain } from '../public/js/terrain.js';
 
 const AI_MODEL = process.env.AI_MODEL || 'claude-opus-4-7';
 
@@ -89,31 +90,32 @@ async function executePlan(plan, description) {
 }
 
 // --- AI builder: LLM writes JavaScript that calls builder primitives ---
-const AI_PROMPT = (description) => `You are a voxel architect. Design: "${description}".
+const AI_PROMPT = (description, terrainCtx) => `You are a voxel architect. Design: "${description}".
 
 You write JavaScript that calls builder functions. Your code runs in a sandbox that collects block placements.
 
 ${SANDBOX_API_DOC}
 
-COORDS: Relative - origin (0,0,0) is center-bottom. +X east, +Y up, +Z south.
-Limits: X,Z ∈ [-18,18], Y ∈ [0,30]. Total placed blocks <= 4000.
+COORDS: Relative - origin (0,0,0) is center-bottom (sits on the ground at the build location). +X east, +Y up, +Z south.
+Limits: X,Z ∈ [-22,22], Y ∈ [-8,40]. Negative Y allowed for foundations/digging into the ground. Total placed blocks <= 4000.
 
-Example (a cozy stone tower):
-  hollowCylinder(0, 0, 0, 4, 10, STONE);
-  cube(-4, 0, -4, 4, 0, 4, COBBLE);
-  cube(0, 1, 4, 0, 2, 4, AIR);
-  for (let y = 3; y < 10; y += 2) {
-    const a = y * 0.8;
-    block(Math.round(4*Math.cos(a)), y, Math.round(4*Math.sin(a)), GLASS);
-  }
-  for (let h = 0; h < 5; h++) hollowCylinder(0, 10+h, 0, 5-h, 1, BRICK);
-  block(0, 15, 0, OAK_LOG);
+LOCAL GEOGRAPHY:
+${terrainCtx}
+
+GUIDANCE:
+- If terrain rises (positive deltas) into your footprint, EITHER carve into it (place AIR at those coords) OR raise the structure up onto it.
+- If terrain drops (negative deltas), EITHER place foundation blocks at negative Y to build up, OR raise the build to keep it level.
+- If trees are in the way, clear them with AIR blocks at their trunk and leaves coordinates.
+- For "build a town", place several smaller buildings spread across the area with paths between, not one big building.
 
 Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
 
-async function botPlanWithAI(description) {
-  const { code, plan } = await planWithAI(AI_PROMPT(description), { model: AI_MODEL });
-  console.log(`[AI code] ${code.length} chars:\n${code.slice(0, 300)}${code.length > 300 ? '...' : ''}`);
+async function botPlanWithAI(description, originX, originZ, originY) {
+  const terrainCtx = describeLocalTerrain(originX, originZ, originY, 10);
+  const { code, plan } = await planWithAI(AI_PROMPT(description, terrainCtx), {
+    model: AI_MODEL, maxX: 22, maxZ: 22, maxY: 45, minY: -8,
+  });
+  console.log(`[AI code] ${code.length} chars at (${originX},${originY},${originZ}):\n${code.slice(0, 300)}${code.length > 300 ? '...' : ''}`);
   return plan;
 }
 
@@ -212,7 +214,7 @@ async function handleCommand(speakerId, speakerName, words) {
           sendChat(`...still thinking (${sec}s)`);
         }, 12000);
         try {
-          const relPlan = await botPlanWithAI(description);
+          const relPlan = await botPlanWithAI(description, x, z, y);
           clearInterval(progressTimer);
           const took = Math.round((Date.now() - startT) / 1000);
           if (relPlan.length === 0) { sendChat('AI returned empty plan.'); return; }

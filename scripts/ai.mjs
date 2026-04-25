@@ -18,7 +18,8 @@ export const SANDBOX_API_DOC = `AVAILABLE FUNCTIONS:
   disk(cx, cy, cz, radius, id)                 filled flat disk at Y=cy
 
 BLOCK CONSTANTS:
-  AIR (0, carves), GRASS (1), DIRT (2), STONE (3 gray), OAK_LOG (4 brown)
+  AIR (0) — placing AIR DELETES the block at that position. Use to clear trees, dig caves, carve windows.
+  GRASS (1), DIRT (2), STONE (3 gray), OAK_LOG (4 brown)
   LEAVES (5 green), SAND (6 yellow), PLANKS (7 tan)
   COBBLE (8), BRICK (10 red), GLASS (11 blue), SNOW (12 white), ICE (13 cyan)
 
@@ -138,13 +139,13 @@ export function extractCode(stdout) {
 }
 
 export function runSandbox(code, opts = {}) {
-  const { maxX = 22, maxZ = 22, maxY = 40 } = opts;
+  const { maxX = 22, maxZ = 22, maxY = 40, minY = 0 } = opts;
   const { api, ops } = makeSandbox();
   const ctx = vm.createContext(api);
   vm.runInContext(code, ctx, { timeout: 5000, displayErrors: true });
   return ops()
     .filter(op => VALID_BLOCKS.has(op.block))
-    .filter(op => Math.abs(op.x) <= maxX && Math.abs(op.z) <= maxZ && op.y >= 0 && op.y <= maxY);
+    .filter(op => Math.abs(op.x) <= maxX && Math.abs(op.z) <= maxZ && op.y >= minY && op.y <= maxY);
 }
 
 export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 180000) {
