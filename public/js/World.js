@@ -1,78 +1,11 @@
 import * as THREE from 'three';
 import { Block, BLOCK_COLORS, colorVariation } from './Textures.js';
+import { hash2, biomeAt, terrainHeight, surfaceBlock, shouldHaveTree } from './terrain.js';
 
 export const CHUNK_SIZE = 16;
 export const WORLD_HEIGHT = 128;
 const CHUNKS = 16; // 16x16 chunks = 256x256 world
 export const WORLD_SIZE = CHUNKS * CHUNK_SIZE;
-
-// --- Deterministic noise ---
-function hash2(x, z) {
-  let n = Math.imul(x + 131, 374761393) + Math.imul(z + 97, 668265263);
-  n = Math.imul(n ^ (n >>> 13), 1274126177);
-  return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
-}
-
-function smoothNoise(x, z) {
-  const ix = Math.floor(x), iz = Math.floor(z);
-  const fx = x - ix, fz = z - iz;
-  const sx = fx * fx * (3 - 2 * fx);
-  const sz = fz * fz * (3 - 2 * fz);
-  const n00 = hash2(ix, iz), n10 = hash2(ix + 1, iz);
-  const n01 = hash2(ix, iz + 1), n11 = hash2(ix + 1, iz + 1);
-  return (n00 * (1 - sx) + n10 * sx) * (1 - sz) +
-         (n01 * (1 - sx) + n11 * sx) * sz;
-}
-
-// Biome noise - slow variation so biomes are large regions
-function biomeAt(x, z) {
-  const b = smoothNoise(x * 0.008 + 50, z * 0.008 + 50);
-  const m = smoothNoise(x * 0.015 + 99, z * 0.015 + 99); // moisture
-  if (b < 0.32) return 'desert';
-  if (b > 0.72) return m > 0.5 ? 'taiga' : 'forest';
-  return m > 0.55 ? 'forest' : 'plains';
-}
-
-function terrainHeight(x, z) {
-  const biome = biomeAt(x, z);
-  const base =
-    10 +
-    6 * smoothNoise(x * 0.025, z * 0.025) +
-    3 * smoothNoise(x * 0.06, z * 0.06) +
-    1.5 * smoothNoise(x * 0.13, z * 0.13);
-  // Biome-specific terrain modifiers
-  if (biome === 'desert') return Math.floor(base - 1 + 2 * smoothNoise(x * 0.05, z * 0.05));
-  if (biome === 'taiga')  return Math.floor(base + 2 + 5 * smoothNoise(x * 0.04, z * 0.04));
-  if (biome === 'forest') return Math.floor(base + 1 + 2 * smoothNoise(x * 0.04, z * 0.04));
-  return Math.floor(base);
-}
-
-// Surface block based on biome + height (snowy mountain caps)
-function surfaceBlock(x, z, h) {
-  if (h >= 22) return Block.SNOW;             // snow cap
-  if (h >= 19) return Block.STONE;            // rocky mountain
-  const biome = biomeAt(x, z);
-  if (biome === 'desert') return Block.SAND;
-  if (biome === 'taiga')  return Block.SNOW;
-  return Block.GRASS;
-}
-
-function shouldHaveTree(x, z) {
-  const biome = biomeAt(x, z);
-  // Desert = almost no trees, plains = sparse, forest = dense, taiga = medium
-  const density =
-    biome === 'desert' ? 0.0005 :
-    biome === 'forest' ? 0.04 :
-    biome === 'taiga'  ? 0.015 :
-                         0.006;
-  if (hash2(x * 13 + 37, z * 17 + 59) > density) return false;
-  const h = terrainHeight(x, z);
-  if (h >= 20) return false; // no trees on mountain tops
-  return Math.abs(h - terrainHeight(x + 1, z)) <= 1 &&
-         Math.abs(h - terrainHeight(x - 1, z)) <= 1 &&
-         Math.abs(h - terrainHeight(x, z + 1)) <= 1 &&
-         Math.abs(h - terrainHeight(x, z - 1)) <= 1;
-}
 
 // --- Face definitions (CCW winding, normal points outward) ---
 const FACES = [
