@@ -4,10 +4,11 @@ import { World, WORLD_HEIGHT, WORLD_SIZE } from './World.js';
 import { Network } from './Network.js';
 import { TaskManager, applyRotation } from './TaskManager.js';
 import { UI } from './UI.js';
+import { Demo } from './demo.js';
 
 // --- State ---
 let scene, camera, renderer, clock;
-let world, network, taskManager, ui;
+let world, network, taskManager, ui, demo;
 
 const pos = new THREE.Vector3(64, 30, 64);
 let yaw = 0, pitch = 0, velY = 0, onGround = false;
@@ -82,6 +83,9 @@ function init() {
   // Task manager
   taskManager = new TaskManager(scene, world);
 
+  // Demo mode (cinematic flythrough)
+  demo = new Demo(camera, taskManager);
+
   // UI
   ui = new UI({
     onJoin: startGame,
@@ -123,7 +127,12 @@ function startGame(name) {
 
       ui.addChatMessage('', 'Welcome to CraftPlan! Press T to manage tasks.', true);
       ui.updatePlayerCount(otherPlayers.size + 1);
-      document.getElementById('game').requestPointerLock();
+      // If ?demo=1 in URL, arm the demo (waits for Space)
+      if (new URLSearchParams(location.search).has('demo')) {
+        demo.arm();
+      } else {
+        document.getElementById('game').requestPointerLock();
+      }
     },
 
     onPlayerJoin(p) {
@@ -205,6 +214,12 @@ function setupControls(canvas) {
   document.addEventListener('keydown', (e) => {
     keys[e.code] = true;
     if (ui.isInputFocused()) return;
+
+    // Demo controls
+    if (demo && document.body.classList.contains('demo-mode')) {
+      if (e.code === 'Space' && !demo.active) { e.preventDefault(); demo.start(); return; }
+      if (e.code === 'Escape') { demo.stop(); document.getElementById('game').requestPointerLock(); return; }
+    }
 
     if (e.code === 'KeyT' && !ui.isChatActive) {
       e.preventDefault();
@@ -621,13 +636,19 @@ function animate() {
   requestAnimationFrame(animate);
   const dt = clock.getDelta();
 
-  updatePhysics(dt);
-  updateTarget();
+  if (!demo?.active) {
+    updatePhysics(dt);
+    updateTarget();
+  }
   updateRemotePlayers(dt);
 
-  camera.position.set(pos.x, pos.y + EYE_HEIGHT, pos.z);
-  camera.rotation.order = 'YXZ';
-  camera.rotation.set(pitch, yaw, 0);
+  // Demo drives the camera if active; otherwise normal player camera
+  const demoDriving = demo?.update(dt);
+  if (!demoDriving) {
+    camera.position.set(pos.x, pos.y + EYE_HEIGHT, pos.z);
+    camera.rotation.order = 'YXZ';
+    camera.rotation.set(pitch, yaw, 0);
+  }
 
   // Network sync @ 10 Hz
   const now = performance.now();
