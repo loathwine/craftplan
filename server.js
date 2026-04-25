@@ -3,12 +3,15 @@ import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 import { randomUUID } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
+import { planWithAI, SANDBOX_API_DOC } from './scripts/ai.mjs';
 
 const app = express();
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
 const DATA_FILE = './data.json';
+const AI_TASK_STRUCTURES = process.env.AI_TASK_STRUCTURES !== '0';
+const TASK_AI_MODEL = process.env.TASK_AI_MODEL || 'claude-opus-4-7';
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
@@ -119,6 +122,7 @@ wss.on('connection', (ws) => {
         };
         tasks.set(id, task);
         broadcast({ type: 'task_created', task });
+        enqueueTaskGen(id);
         break;
       }
 
@@ -153,6 +157,78 @@ wss.on('connection', (ws) => {
     }
   });
 });
+
+// --- AI task structure generation ---
+const TASK_DIMS = {
+  S:  { foot: 3, height: 5,  budget: 60 },
+  M:  { foot: 5, height: 8,  budget: 120 },
+  L:  { foot: 7, height: 12, budget: 250 },
+  XL: { foot: 9, height: 18, budget: 500 },
+};
+
+const taskGenQueue = [];
+let taskGenInFlight = 0;
+const TASK_GEN_CONCURRENT = 2;
+
+function taskPrompt(task) {
+  const d = TASK_DIMS[task.size] || TASK_DIMS.M;
+  const half = Math.floor(d.foot / 2);
+  return `Design a small voxel building that visually represents this project task in a Minecraft-style world.
+
+TASK:
+  Name: "${task.name}"
+  Description: ${task.description || '(none)'}
+  Size: ${task.size}
+
+The building must:
+- Visually evoke the task's theme (e.g., security/auth → fortress/gate; database/data → silo/cylinder; UI → colorful house with windows; testing/CI → conveyor/tower; documentation → library/scroll; bug fix → broken thing being repaired). Use your judgment.
+- Sit flat on the ground. Origin (0,0,0) is the center-bottom block.
+- Stay within budget: footprint X,Z ∈ [-${half}, ${half}], height Y ∈ [0, ${d.height}], total ~${d.budget} blocks.
+- Be recognizable, not abstract. People will walk up and inspect it.
+
+You write JavaScript using these primitives, run in a sandbox:
+
+${SANDBOX_API_DOC}
+
+Output ONLY JavaScript code. No markdown fences, no prose, no comments before/after the code. Just code:`;
+}
+
+async function generateTaskStructure(task) {
+  const d = TASK_DIMS[task.size] || TASK_DIMS.M;
+  const half = Math.floor(d.foot / 2);
+  const { code, plan } = await planWithAI(taskPrompt(task), {
+    model: TASK_AI_MODEL,
+    maxX: half + 1,
+    maxZ: half + 1,
+    maxY: d.height + 1,
+  });
+  console.log(`[task ${task.id.slice(0, 8)}] "${task.name}" → ${plan.length} blocks (${code.length} chars code)`);
+  return plan;
+}
+
+function enqueueTaskGen(taskId) {
+  if (!AI_TASK_STRUCTURES) return;
+  taskGenQueue.push(taskId);
+  pumpTaskGenQueue();
+}
+
+async function pumpTaskGenQueue() {
+  while (taskGenInFlight < TASK_GEN_CONCURRENT && taskGenQueue.length > 0) {
+    const taskId = taskGenQueue.shift();
+    const task = tasks.get(taskId);
+    if (!task || task.structure) continue;
+    taskGenInFlight++;
+    generateTaskStructure(task)
+      .then(structure => {
+        const t = tasks.get(taskId);
+        if (!t) return;
+        t.structure = structure;
+        broadcast({ type: 'task_updated', task: t });
+      })
+      .catch(e => console.error(`[task ${taskId.slice(0, 8)}] gen failed: ${e.message}`))
+      .finally(() => { taskGenInFlight--; pumpTaskGenQueue(); });
+  }
+}
 
 // --- Persistence ---
 function loadState() {
@@ -329,7 +405,10 @@ app.post('/api/jira/import', async (req, res) => {
     }
 
     saveState();
-    for (const task of created) broadcast({ type: 'task_created', task });
+    for (const task of created) {
+      broadcast({ type: 'task_created', task });
+      enqueueTaskGen(task.id);
+    }
 
     console.log(`  Imported ${created.length} tasks (${topLevel.length} parents, ${created.length - topLevel.length} children)`);
     res.json({ ok: true, imported: created.length, parents: topLevel.length });

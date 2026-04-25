@@ -13,9 +13,8 @@
 //   @claude help
 
 import WebSocket from 'ws';
-import { spawn } from 'child_process';
-import vm from 'vm';
 import { PLANNERS, planSphere, AIR } from './builders.mjs';
+import { planWithAI, SANDBOX_API_DOC } from './ai.mjs';
 
 const AI_MODEL = process.env.AI_MODEL || 'claude-opus-4-7';
 
@@ -94,194 +93,28 @@ const AI_PROMPT = (description) => `You are a voxel architect. Design: "${descri
 
 You write JavaScript that calls builder functions. Your code runs in a sandbox that collects block placements.
 
-AVAILABLE FUNCTIONS:
-  block(x, y, z, id)                           single block
-  cube(x1, y1, z1, x2, y2, z2, id)             filled box (inclusive both ends)
-  hollowCube(x1, y1, z1, x2, y2, z2, id)       box shell (edges) only
-  sphere(cx, cy, cz, radius, id)               filled sphere
-  hollowSphere(cx, cy, cz, radius, id)         sphere shell
-  cylinder(cx, cy, cz, radius, height, id)     vertical cylinder (grows +Y)
-  hollowCylinder(cx, cy, cz, radius, height, id)
-  line(x1, y1, z1, x2, y2, z2, id)             line of blocks
-  disk(cx, cy, cz, radius, id)                 filled flat disk at Y=cy
-
-BLOCK CONSTANTS (just use these names):
-  AIR       (0, carves/clears)
-  GRASS (1), DIRT (2), STONE (3 gray), OAK_LOG (4 brown)
-  LEAVES (5 green), SAND (6 yellow), PLANKS (7 tan)
-  COBBLE (8), BRICK (10 red), GLASS (11 blue)
-  SNOW (12 white), ICE (13 cyan)
-
-Color guide: metal/blade→STONE or COBBLE, wood→OAK_LOG or PLANKS, foliage→LEAVES, red/fire→BRICK, water/sky→GLASS, bone/white→GRASS.
+${SANDBOX_API_DOC}
 
 COORDS: Relative - origin (0,0,0) is center-bottom. +X east, +Y up, +Z south.
 Limits: X,Z ∈ [-18,18], Y ∈ [0,30]. Total placed blocks <= 4000.
 
-Math is available. You can define local helper functions.
-
 Example (a cozy stone tower):
-  // Hollow stone base
   hollowCylinder(0, 0, 0, 4, 10, STONE);
-  cube(-4, 0, -4, 4, 0, 4, COBBLE);  // floor cap
-  cube(0, 1, 4, 0, 2, 4, AIR);       // doorway
-  // Windows spiraling up
+  cube(-4, 0, -4, 4, 0, 4, COBBLE);
+  cube(0, 1, 4, 0, 2, 4, AIR);
   for (let y = 3; y < 10; y += 2) {
     const a = y * 0.8;
     block(Math.round(4*Math.cos(a)), y, Math.round(4*Math.sin(a)), GLASS);
   }
-  // Conical brick roof
   for (let h = 0; h < 5; h++) hollowCylinder(0, 10+h, 0, 5-h, 1, BRICK);
-  block(0, 15, 0, OAK_LOG);          // spire
+  block(0, 15, 0, OAK_LOG);
 
 Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
 
-// Sandbox: provides building primitives, collects block operations
-function makeSandbox() {
-  const ops = [];
-  const MAX_BLOCKS = 5000;
-  let hitLimit = false;
-
-  const addBlock = (x, y, z, id) => {
-    if (hitLimit) return;
-    if (ops.length >= MAX_BLOCKS) { hitLimit = true; return; }
-    x = Math.round(x); y = Math.round(y); z = Math.round(z);
-    if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) return;
-    if (typeof id !== 'number') return;
-    ops.push({ x, y, z, block: id });
-  };
-
-  const api = {
-    // Block constants
-    AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, OAK_LOG: 4, LEAVES: 5,
-    SAND: 6, PLANKS: 7, COBBLE: 8, BRICK: 10, GLASS: 11, SNOW: 12, ICE: 13,
-
-    block: addBlock,
-
-    cube(x1, y1, z1, x2, y2, z2, id) {
-      const xa = Math.min(x1, x2), xb = Math.max(x1, x2);
-      const ya = Math.min(y1, y2), yb = Math.max(y1, y2);
-      const za = Math.min(z1, z2), zb = Math.max(z1, z2);
-      for (let x = xa; x <= xb; x++)
-        for (let y = ya; y <= yb; y++)
-          for (let z = za; z <= zb; z++) {
-            if (hitLimit) return;
-            addBlock(x, y, z, id);
-          }
-    },
-
-    hollowCube(x1, y1, z1, x2, y2, z2, id) {
-      const xa = Math.min(x1, x2), xb = Math.max(x1, x2);
-      const ya = Math.min(y1, y2), yb = Math.max(y1, y2);
-      const za = Math.min(z1, z2), zb = Math.max(z1, z2);
-      for (let x = xa; x <= xb; x++)
-        for (let y = ya; y <= yb; y++)
-          for (let z = za; z <= zb; z++)
-            if (x === xa || x === xb || y === ya || y === yb || z === za || z === zb)
-              addBlock(x, y, z, id);
-    },
-
-    sphere(cx, cy, cz, r, id) {
-      const ri = Math.ceil(r);
-      for (let dx = -ri; dx <= ri; dx++)
-        for (let dy = -ri; dy <= ri; dy++)
-          for (let dz = -ri; dz <= ri; dz++)
-            if (Math.sqrt(dx*dx + dy*dy + dz*dz) <= r + 0.25)
-              addBlock(cx + dx, cy + dy, cz + dz, id);
-    },
-
-    hollowSphere(cx, cy, cz, r, id) {
-      const ri = Math.ceil(r);
-      for (let dx = -ri; dx <= ri; dx++)
-        for (let dy = -ri; dy <= ri; dy++)
-          for (let dz = -ri; dz <= ri; dz++) {
-            const d = Math.sqrt(dx*dx + dy*dy + dz*dz);
-            if (d >= r - 0.75 && d <= r + 0.25)
-              addBlock(cx + dx, cy + dy, cz + dz, id);
-          }
-    },
-
-    cylinder(cx, cy, cz, r, h, id) {
-      const ri = Math.ceil(r);
-      for (let dy = 0; dy < h; dy++)
-        for (let dx = -ri; dx <= ri; dx++)
-          for (let dz = -ri; dz <= ri; dz++)
-            if (Math.sqrt(dx*dx + dz*dz) <= r + 0.25)
-              addBlock(cx + dx, cy + dy, cz + dz, id);
-    },
-
-    hollowCylinder(cx, cy, cz, r, h, id) {
-      const ri = Math.ceil(r);
-      for (let dy = 0; dy < h; dy++)
-        for (let dx = -ri; dx <= ri; dx++)
-          for (let dz = -ri; dz <= ri; dz++) {
-            const d = Math.sqrt(dx*dx + dz*dz);
-            if (d >= r - 0.75 && d <= r + 0.25)
-              addBlock(cx + dx, cy + dy, cz + dz, id);
-          }
-    },
-
-    disk(cx, cy, cz, r, id) {
-      const ri = Math.ceil(r);
-      for (let dx = -ri; dx <= ri; dx++)
-        for (let dz = -ri; dz <= ri; dz++)
-          if (Math.sqrt(dx*dx + dz*dz) <= r + 0.25)
-            addBlock(cx + dx, cy, cz + dz, id);
-    },
-
-    line(x1, y1, z1, x2, y2, z2, id) {
-      const steps = Math.max(Math.abs(x2-x1), Math.abs(y2-y1), Math.abs(z2-z1), 1);
-      for (let i = 0; i <= steps; i++) {
-        const t = i / steps;
-        addBlock(x1 + (x2-x1)*t, y1 + (y2-y1)*t, z1 + (z2-z1)*t, id);
-      }
-    },
-
-    Math,
-  };
-
-  return { api, ops: () => ops };
-}
-
-function extractCode(stdout) {
-  // Strip markdown fences if present
-  const fence = stdout.match(/```(?:javascript|js)?\s*([\s\S]*?)```/);
-  if (fence) return fence[1].trim();
-  return stdout.trim();
-}
-
-function runSandbox(code) {
-  const { api, ops } = makeSandbox();
-  const ctx = vm.createContext(api);
-  vm.runInContext(code, ctx, { timeout: 5000, displayErrors: true });
-  const valid = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13]);
-  return ops()
-    .filter(op => valid.has(op.block))
-    .filter(op => Math.abs(op.x) <= 22 && Math.abs(op.z) <= 22 && op.y >= 0 && op.y <= 40);
-}
-
-function planWithAI(description) {
-  return new Promise((resolve, reject) => {
-    const prompt = AI_PROMPT(description);
-    const proc = spawn('claude', ['-p', '--model', AI_MODEL], { stdio: ['pipe', 'pipe', 'pipe'] });
-    let stdout = '', stderr = '';
-    proc.stdout.on('data', d => stdout += d);
-    proc.stderr.on('data', d => stderr += d);
-    proc.on('error', reject);
-    proc.on('close', (code) => {
-      if (code !== 0) return reject(new Error(`claude exit ${code}: ${stderr.slice(0, 150)}`));
-      const src = extractCode(stdout);
-      if (!src) return reject(new Error('Empty AI response'));
-      console.log(`[AI code] ${src.length} chars:\n${src.slice(0, 300)}${src.length > 300 ? '...' : ''}`);
-      try {
-        const plan = runSandbox(src);
-        resolve(plan);
-      } catch (e) {
-        reject(new Error(`Sandbox error: ${e.message.slice(0, 150)}`));
-      }
-    });
-    proc.stdin.write(prompt);
-    proc.stdin.end();
-  });
+async function botPlanWithAI(description) {
+  const { code, plan } = await planWithAI(AI_PROMPT(description), { model: AI_MODEL });
+  console.log(`[AI code] ${code.length} chars:\n${code.slice(0, 300)}${code.length > 300 ? '...' : ''}`);
+  return plan;
 }
 
 // Split args into description + trailing coord markers
@@ -379,7 +212,7 @@ async function handleCommand(speakerId, speakerName, words) {
           sendChat(`...still thinking (${sec}s)`);
         }, 12000);
         try {
-          const relPlan = await planWithAI(description);
+          const relPlan = await botPlanWithAI(description);
           clearInterval(progressTimer);
           const took = Math.round((Date.now() - startT) / 1000);
           if (relPlan.length === 0) { sendChat('AI returned empty plan.'); return; }

@@ -344,9 +344,17 @@ function findTargetedTask(origin, dir) {
   let best = null;
   let bestDist = 20;
   for (const task of taskManager.getTasks()) {
-    const d = TASK_SIZES[task.size] || TASK_SIZES.M;
-    _box.min.set(task.position.x, task.baseY, task.position.z);
-    _box.max.set(task.position.x + d.w, task.baseY + d.h, task.position.z + d.w);
+    let minX, maxX, minZ, maxZ, height;
+    if (task.extents) {
+      minX = task.extents.minX; maxX = task.extents.maxX;
+      minZ = task.extents.minZ; maxZ = task.extents.maxZ;
+      height = task.extents.height;
+    } else {
+      const d = TASK_SIZES[task.size] || TASK_SIZES.M;
+      minX = 0; maxX = d.w; minZ = 0; maxZ = d.w; height = d.h;
+    }
+    _box.min.set(task.position.x + minX, task.baseY, task.position.z + minZ);
+    _box.max.set(task.position.x + maxX, task.baseY + height, task.position.z + maxZ);
     if (_ray.intersectBox(_box, _hitPt)) {
       const dist = _hitPt.distanceTo(origin);
       if (dist < bestDist) { bestDist = dist; best = { task, dist }; }
@@ -375,9 +383,18 @@ function updateTarget() {
   if (taskResult && taskDist <= chunkDist) {
     // Aiming at a task structure - highlight the whole thing
     const t = taskResult.task;
-    const d = TASK_SIZES[t.size] || TASK_SIZES.M;
-    highlight.position.set(t.position.x + d.w / 2, t.baseY + d.h / 2, t.position.z + d.w / 2);
-    highlight.scale.set(d.w + 0.05, d.h + 0.05, d.w + 0.05);
+    let cx, cz, w, depth, height;
+    if (t.extents) {
+      cx = t.extents.cx; cz = t.extents.cz;
+      w = t.extents.maxX - t.extents.minX;
+      depth = t.extents.maxZ - t.extents.minZ;
+      height = t.extents.height;
+    } else {
+      const d = TASK_SIZES[t.size] || TASK_SIZES.M;
+      cx = d.w / 2; cz = d.w / 2; w = d.w; depth = d.w; height = d.h;
+    }
+    highlight.position.set(t.position.x + cx, t.baseY + height / 2, t.position.z + cz);
+    highlight.scale.set(w + 0.1, height + 0.1, depth + 0.1);
     highlight.visible = true;
     targetTask = t;
     target = null;
