@@ -4,6 +4,8 @@ import { WebSocketServer } from 'ws';
 import { randomUUID } from 'crypto';
 import { readFileSync, writeFileSync } from 'fs';
 import { planWithAI, SANDBOX_API_DOC } from './scripts/ai.mjs';
+import { terrainHeight, naturalBlockAt } from './public/js/terrain.js';
+import { describeLocalGeometry } from './scripts/geometry.mjs';
 
 const app = express();
 const server = createServer(app);
@@ -190,21 +192,35 @@ const taskGenQueue = [];
 let taskGenInFlight = 0;
 const TASK_GEN_CONCURRENT = 2;
 
-function taskPrompt(task) {
+function taskPrompt(task, terrainCtx) {
   const d = TASK_DIMS[task.size] || TASK_DIMS.M;
   const half = Math.floor(d.foot / 2);
-  return `Design a small voxel building that visually represents this project task in a Minecraft-style world.
+  return `Design a voxel sculpture that represents this project task. It will sit in a Minecraft-style world for people to walk up to.
 
 TASK:
   Name: "${task.name}"
   Description: ${task.description || '(none)'}
   Size: ${task.size}
 
-The building must:
-- Visually evoke the task's theme (e.g., security/auth → fortress/gate; database/data → silo/cylinder; UI → colorful house with windows; testing/CI → conveyor/tower; documentation → library/scroll; bug fix → broken thing being repaired). Use your judgment.
-- Sit flat on the ground. Origin (0,0,0) is the center-bottom block.
-- Stay within budget: footprint X,Z ∈ [-${half}, ${half}], height Y ∈ [0, ${d.height}], total ~${d.budget} blocks.
-- Be recognizable, not abstract. People will walk up and inspect it.
+Be CREATIVE. Don't default to a building. Pick whichever form is most evocative:
+- a vehicle (rocket, ship, car, tank, train)
+- a creature (dragon, ogre, robot, spider, fish)
+- a machine or tool (gear, hammer, telescope, beacon, anvil)
+- an object (treasure chest, scroll, potion, sword)
+- a building (only if genuinely fitting)
+- a monument or abstract sculpture
+
+Lean into the task's vibe: marketing → rocket/megaphone/giant logo; auth → vault/keys/shield; database → silo/server-rack/library; bug fix → crashed plane/broken gear; deploy → rocket/container ship; retrospective → campfire/round-table; performance → race-car/gear-train; UI redesign → painter's easel/giant brush. Make it surprising.
+
+GEOMETRY CONSTRAINTS:
+- Origin (0,0,0) is the center-bottom block, sitting on the ground.
+- Footprint within X,Z ∈ [-${half}, ${half}]. Height Y ∈ [0, ${d.height}]. Aim for ~${d.budget} blocks.
+- Negative Y allowed (down to -6) for foundations or burying parts.
+- Must be ONE coherent, contiguous shape. No floating disconnected bits.
+- Use AIR to clear trees if they're in the way (see local geography below).
+
+LOCAL GEOGRAPHY:
+${terrainCtx}
 
 You write JavaScript using these primitives, run in a sandbox:
 
@@ -216,11 +232,25 @@ Output ONLY JavaScript code. No markdown fences, no prose, no comments before/af
 async function generateTaskStructure(task) {
   const d = TASK_DIMS[task.size] || TASK_DIMS.M;
   const half = Math.floor(d.foot / 2);
-  const { code, plan } = await planWithAI(taskPrompt(task), {
+  // Origin Y for the task = ground level + 1 at the task's xz center
+  const cx = task.position.x + half;
+  const cz = task.position.z + half;
+  const baseY = terrainHeight(cx, cz) + 1;
+  // Use blockChanges as overrides so generation sees other tasks/builds nearby
+  const getBlock = (x, y, z) => {
+    const k = `${x},${y},${z}`;
+    if (blockChanges.has(k)) return blockChanges.get(k);
+    return naturalBlockAt(x, y, z);
+  };
+  const terrainCtx = describeLocalGeometry({
+    origin: [cx, baseY, cz], radius: half + 4, vradius: d.height + 4, getBlock,
+  });
+  const { code, plan } = await planWithAI(taskPrompt(task, terrainCtx), {
     model: TASK_AI_MODEL,
     maxX: half + 1,
     maxZ: half + 1,
     maxY: d.height + 1,
+    minY: -6,
   });
   console.log(`[task ${task.id.slice(0, 8)}] "${task.name}" → ${plan.length} blocks (${code.length} chars code)`);
   return plan;
@@ -258,6 +288,13 @@ function loadState() {
     for (const [k, v] of Object.entries(data.blockChanges || {})) blockChanges.set(k, v);
     nextTaskSlot = data.nextTaskSlot || 0;
     console.log(`  Loaded ${tasks.size} tasks, ${blockChanges.size} block changes`);
+
+    // Re-queue any tasks missing a structure (e.g. after a wipe or new prompt rollout)
+    if (AI_TASK_STRUCTURES) {
+      let q = 0;
+      for (const t of tasks.values()) if (!t.structure?.length) { taskGenQueue.push(t.id); q++; }
+      if (q) { console.log(`  Queued ${q} tasks for AI structure generation`); pumpTaskGenQueue(); }
+    }
   } catch { console.log('  No saved state, starting fresh'); }
 }
 

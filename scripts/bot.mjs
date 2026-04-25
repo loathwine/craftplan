@@ -15,7 +15,8 @@
 import WebSocket from 'ws';
 import { PLANNERS, planSphere, AIR } from './builders.mjs';
 import { planWithAI, SANDBOX_API_DOC } from './ai.mjs';
-import { describeLocalTerrain } from '../public/js/terrain.js';
+import { terrainHeight } from '../public/js/terrain.js';
+import { describeLocalGeometry } from './geometry.mjs';
 
 const AI_MODEL = process.env.AI_MODEL || 'claude-opus-4-7';
 
@@ -90,30 +91,38 @@ async function executePlan(plan, description) {
 }
 
 // --- AI builder: LLM writes JavaScript that calls builder primitives ---
-const AI_PROMPT = (description, terrainCtx) => `You are a voxel architect. Design: "${description}".
+const AI_PROMPT = (description, geomCtx, radius, vradius) => `You are a voxel architect. Design: "${description}".
 
-You write JavaScript that calls builder functions. Your code runs in a sandbox that collects block placements.
+You write JavaScript that calls builder functions. Your code runs in a sandbox that collects block placements. Your output OVERRIDES whatever was at those coordinates.
 
 ${SANDBOX_API_DOC}
 
-COORDS: Relative - origin (0,0,0) is center-bottom (sits on the ground at the build location). +X east, +Y up, +Z south.
-Limits: X,Z ∈ [-22,22], Y ∈ [-8,40]. Negative Y allowed for foundations/digging into the ground. Total placed blocks <= 4000.
+COORDS: Relative - origin (0,0,0) is the player's feet at the build location, on top of the ground. +X east, +Y up, +Z south.
+Limits: X,Z ∈ [-${radius},${radius}], Y ∈ [-8,${vradius * 2 + 5}]. Negative Y allowed for foundations / digging in. Total <= 4000 blocks.
+The geometry below is the SAME area: it covers exactly the cells you're allowed to build into, so anything you see there is guaranteed to be in your way / available to use.
 
-LOCAL GEOGRAPHY:
-${terrainCtx}
+${geomCtx}
 
-GUIDANCE:
-- If terrain rises (positive deltas) into your footprint, EITHER carve into it (place AIR at those coords) OR raise the structure up onto it.
-- If terrain drops (negative deltas), EITHER place foundation blocks at negative Y to build up, OR raise the build to keep it level.
-- If trees are in the way, clear them with AIR blocks at their trunk and leaves coordinates.
-- For "build a town", place several smaller buildings spread across the area with paths between, not one big building.
+How to read it: each entry [x1,y1,z1,x2,y2,z2,b] is a filled box of block id b spanning those inclusive coords. Y=-1 is the surface ground. Y=0 is the air cell at the player's feet (what you build on top of).
+
+CRITICAL — INTEGRATE WITH EXISTING GEOMETRY:
+- READ the boxes above before writing any code. They are real and already in the world.
+- Identify landmarks: tree trunks (4=OAK_LOG vertical columns), leaf canopies (5=LEAVES), surface (1=GRASS / 6=SAND / 12=SNOW), other structures.
+- USE them when fitting. "Treehouse" → build a platform AROUND an existing trunk and add planks; do NOT plant a new trunk through it. "Tunnel" / "cave" → carve into the existing hill. "Bridge" → start and end on existing terrain.
+- AVOID them when in the way. Either route around (preferable for trees that aren't relevant) or place AIR at their coords to clear them.
+- DON'T overlap your structure with existing OAK_LOG / LEAVES / STONE unless you intentionally place AIR there first to clear them.
+
+If terrain rises into your footprint: carve in (AIR) or step the build up. If it drops: foundation blocks at negative Y, or raise the build. For "town"-style requests: several small buildings with paths.
 
 Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
 
 async function botPlanWithAI(description, originX, originZ, originY) {
-  const terrainCtx = describeLocalTerrain(originX, originZ, originY, 10);
-  const { code, plan } = await planWithAI(AI_PROMPT(description, terrainCtx), {
-    model: AI_MODEL, maxX: 22, maxZ: 22, maxY: 45, minY: -8,
+  // BFS sample must cover at least as much as the build limits so the model
+  // can't extend into terrain it never saw.
+  const RADIUS = 22, VRADIUS = 14;
+  const geomCtx = describeLocalGeometry({ origin: [originX, originY, originZ], radius: RADIUS, vradius: VRADIUS });
+  const { code, plan } = await planWithAI(AI_PROMPT(description, geomCtx, RADIUS, VRADIUS), {
+    model: AI_MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8,
   });
   console.log(`[AI code] ${code.length} chars at (${originX},${originY},${originZ}):\n${code.slice(0, 300)}${code.length > 300 ? '...' : ''}`);
   return plan;
@@ -189,7 +198,10 @@ async function handleCommand(speakerId, speakerName, words) {
       const defaults = speakerPos
         ? [Math.round(speakerPos[0]) + 5, Math.round(speakerPos[1]) - 1, Math.round(speakerPos[2]) + 5]
         : [Math.round(pos[0]), Math.max(15, Math.round(pos[1]) - 1), Math.round(pos[2]) + 8];
-      const [x, y, z] = parseCoords(expandedCoords, defaults);
+      let [x, yIn, z] = parseCoords(expandedCoords, defaults);
+      // If y looks underground or unspecified-ish, snap to terrain surface
+      const ground = terrainHeight(x, z) + 1;
+      const y = (yIn < 5 || yIn < ground - 5) ? ground : yIn;
 
       let plan;
       let label;
@@ -223,6 +235,7 @@ async function handleCommand(speakerId, speakerName, words) {
           label = `"${description}" at ${x},${y},${z}`;
         } catch (e) {
           clearInterval(progressTimer);
+          console.error(`[AI error] ${description}:`, e.message);
           sendChat(`AI failed: ${e.message.slice(0, 100)}`);
           return;
         }

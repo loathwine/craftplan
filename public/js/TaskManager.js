@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { STATUS_COLORS, TASK_SIZES, BLOCK_COLORS, Block } from './Textures.js';
+import { STATUS_COLORS, TASK_SIZES, BLOCK_COLORS, Block, isTransparent } from './Textures.js';
 
 export class TaskManager {
   constructor(scene, world) {
@@ -113,8 +113,11 @@ export class TaskManager {
       const colors = BLOCK_COLORS[blockType] || BLOCK_COLORS[Block.STONE];
       const base = colors.top;
       const geo = new THREE.BoxGeometry(0.95, 0.95, 0.95);
-      const mat = new THREE.MeshLambertMaterial();
+      const mat = isTransparent(blockType)
+        ? new THREE.MeshLambertMaterial({ transparent: true, opacity: 0.55, depthWrite: false })
+        : new THREE.MeshLambertMaterial();
       const mesh = new THREE.InstancedMesh(geo, mat, blocks.length);
+      if (isTransparent(blockType)) mesh.renderOrder = 1;
 
       for (let i = 0; i < blocks.length; i++) {
         const b = blocks[i];
