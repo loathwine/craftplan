@@ -79,6 +79,47 @@ export function treeAt(x, z) {
   return { trunkH, leavesTop: trunkH + 2, leavesRadius: 2 };
 }
 
+// What would be at (x, y, z) if no player edits had ever happened?
+// Pure deterministic; mirrors the chunk-gen + tree-placement in World.js.
+export function naturalBlockAt(x, y, z) {
+  if (y < 0) return Block.AIR;
+  if (y === 0) return Block.BEDROCK;
+
+  const h = terrainHeight(x, z);
+
+  // At or below terrain surface
+  if (y <= h) {
+    if (y === h) return surfaceBlock(x, z, h);
+    if (y >= h - 3) return biomeAt(x, z) === 'desert' ? Block.SAND : Block.DIRT;
+    return Block.STONE;
+  }
+
+  // Above terrain: trunk in own column?
+  const own = treeAt(x, z);
+  if (own && y > h && y <= h + own.trunkH) return Block.OAK_LOG;
+
+  // Above terrain: leaves from this or any neighbor tree?
+  for (let dx = -2; dx <= 2; dx++) {
+    for (let dz = -2; dz <= 2; dz++) {
+      const t = treeAt(x + dx, z + dz);
+      if (!t) continue;
+      const nh = terrainHeight(x + dx, z + dz);
+      const topY = nh + t.trunkH;
+      const dy = y - topY;
+      if (dy < -1 || dy > 2) continue;
+      const r = dy <= 0 ? 2 : 1;
+      // (-dx, -dz) is offset within the *neighbor's* leaf cluster
+      const ldx = -dx, ldz = -dz;
+      if (Math.abs(ldx) > r || Math.abs(ldz) > r) continue;
+      if (ldx === 0 && ldz === 0 && dy <= 0) continue; // skip trunk cell
+      if (Math.abs(ldx) === r && Math.abs(ldz) === r && dy < 1 && hash2(x, z) > 0.6) continue;
+      return Block.LEAVES;
+    }
+  }
+
+  return Block.AIR;
+}
+
 // --- Build context: terrain description in a radius around an origin ---
 // originX, originZ: world coords. originY: the absolute Y of the bot's relative-Y=0
 // (i.e., one above ground at originX/originZ). radius: cells in each direction.

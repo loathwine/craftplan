@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Block, BLOCK_COLORS, colorVariation } from './Textures.js';
+import { Block, BLOCK_COLORS, colorVariation, isTransparent, isOpaque } from './Textures.js';
 import { hash2, biomeAt, terrainHeight, surfaceBlock, shouldHaveTree } from './terrain.js';
 
 export const CHUNK_SIZE = 16;
@@ -24,6 +24,9 @@ export class World {
     this.meshes = new Map();
     this.blockChanges = new Map();
     this.material = new THREE.MeshLambertMaterial({ vertexColors: true });
+    this.transparentMaterial = new THREE.MeshLambertMaterial({
+      vertexColors: true, transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide,
+    });
     this.chunkGroup = new THREE.Group();
     scene.add(this.chunkGroup);
     this._generate();
@@ -157,20 +160,25 @@ export class World {
   }
 
   getChunkMeshes() {
-    return [...this.meshes.values()];
+    const out = [];
+    for (const arr of this.meshes.values()) for (const m of arr) out.push(m);
+    return out;
   }
 
   // --- Mesh builder ---
   _buildMesh(cx, cz) {
     const key = `${cx},${cz}`;
+    // Clean up any previous meshes for this chunk
     const old = this.meshes.get(key);
-    if (old) { this.chunkGroup.remove(old); old.geometry.dispose(); }
+    if (old) {
+      for (const m of old) { this.chunkGroup.remove(m); m.geometry.dispose(); }
+    }
 
-    const positions = [];
-    const normals = [];
-    const colors = [];
-    const indices = [];
-    let vtx = 0;
+    // Two passes: opaque + transparent
+    const buf = {
+      opaque:      { positions: [], normals: [], colors: [], indices: [], vtx: 0 },
+      transparent: { positions: [], normals: [], colors: [], indices: [], vtx: 0 },
+    };
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
 
     for (let y = 0; y < WORLD_HEIGHT; y++) {
@@ -182,45 +190,55 @@ export class World {
           const bc = BLOCK_COLORS[block];
           if (!bc) continue;
           const cv = colorVariation(wx, y, wz);
+          const isTrans = isTransparent(block);
+          const target = isTrans ? buf.transparent : buf.opaque;
 
           for (const face of FACES) {
             const nx = wx + face.dir[0], ny = y + face.dir[1], nz = wz + face.dir[2];
-            if (this.getBlock(nx, ny, nz) !== Block.AIR) continue;
+            const neighbor = this.getBlock(nx, ny, nz);
+            // Cull: skip face if neighbor would occlude it
+            if (neighbor === block) continue;                        // same-block merge
+            if (isOpaque(block) && isOpaque(neighbor)) continue;     // opaque hides opaque
+            // For a transparent block, hide the face if neighbor is opaque (we look at the back of glass through the other 5 sides)
+            if (isTrans && isOpaque(neighbor)) continue;
 
             const fc = bc[face.type];
             for (let i = 0; i < 4; i++) {
               const c = face.corners[i];
-              positions.push(wx + c[0], y + c[1], wz + c[2]);
-              normals.push(face.dir[0], face.dir[1], face.dir[2]);
+              target.positions.push(wx + c[0], y + c[1], wz + c[2]);
+              target.normals.push(face.dir[0], face.dir[1], face.dir[2]);
 
               let r = fc[0] * cv, g = fc[1] * cv, b = fc[2] * cv;
-              // Grass side gradient: blend top vertices toward green
               if (block === Block.GRASS && face.type === 'side' && (i === 1 || i === 2)) {
                 const gt = bc.top;
                 r = r * 0.45 + gt[0] * cv * 0.55;
                 g = g * 0.45 + gt[1] * cv * 0.55;
                 b = b * 0.45 + gt[2] * cv * 0.55;
               }
-              colors.push(Math.min(1, r), Math.min(1, g), Math.min(1, b));
+              target.colors.push(Math.min(1, r), Math.min(1, g), Math.min(1, b));
             }
-
-            indices.push(vtx, vtx + 1, vtx + 2, vtx, vtx + 2, vtx + 3);
-            vtx += 4;
+            target.indices.push(target.vtx, target.vtx + 1, target.vtx + 2, target.vtx, target.vtx + 2, target.vtx + 3);
+            target.vtx += 4;
           }
         }
       }
     }
 
-    if (positions.length === 0) return;
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
-    geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    geo.setIndex(indices);
-    geo.computeBoundingSphere();
-
-    const mesh = new THREE.Mesh(geo, this.material);
-    this.meshes.set(key, mesh);
-    this.chunkGroup.add(mesh);
+    const built = [];
+    for (const [pass, data] of [['opaque', buf.opaque], ['transparent', buf.transparent]]) {
+      if (data.positions.length === 0) continue;
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(data.positions, 3));
+      geo.setAttribute('normal', new THREE.Float32BufferAttribute(data.normals, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(data.colors, 3));
+      geo.setIndex(data.indices);
+      geo.computeBoundingSphere();
+      const mat = pass === 'transparent' ? this.transparentMaterial : this.material;
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.renderOrder = pass === 'transparent' ? 1 : 0;
+      built.push(mesh);
+      this.chunkGroup.add(mesh);
+    }
+    this.meshes.set(key, built);
   }
 }

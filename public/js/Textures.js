@@ -49,6 +49,11 @@ export const TASK_SIZES = {
   XL: { w: 5, h: 10 },
 };
 
+// Block types that should render with transparency.
+export const TRANSPARENT_BLOCKS = new Set([Block.GLASS, Block.ICE]);
+export const isTransparent = (b) => TRANSPARENT_BLOCKS.has(b);
+export const isOpaque = (b) => b !== Block.AIR && !TRANSPARENT_BLOCKS.has(b);
+
 // Deterministic per-block color variation (±7%)
 export function colorVariation(x, y, z) {
   let n = x * 374761393 + y * 668265263 + z * 1274126177;

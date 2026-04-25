@@ -148,7 +148,7 @@ export function runSandbox(code, opts = {}) {
     .filter(op => Math.abs(op.x) <= maxX && Math.abs(op.z) <= maxZ && op.y >= minY && op.y <= maxY);
 }
 
-export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 180000) {
+export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 360000) {
   return new Promise((resolve, reject) => {
     const proc = spawn('claude', ['-p', '--model', model], { stdio: ['pipe', 'pipe', 'pipe'] });
     let stdout = '', stderr = '';
