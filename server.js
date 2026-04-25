@@ -138,6 +138,23 @@ wss.on('connection', (ws) => {
         break;
       }
 
+      case 'task_move': {
+        const task = tasks.get(msg.id);
+        if (!task) return;
+        if (msg.position) {
+          task.position = {
+            x: Math.floor(msg.position.x),
+            y: Math.floor(msg.position.y || 0),
+            z: Math.floor(msg.position.z),
+          };
+        }
+        if ([0, 90, 180, 270].includes(msg.rotation)) {
+          task.rotation = msg.rotation;
+        }
+        broadcast({ type: 'task_updated', task });
+        break;
+      }
+
       case 'task_delete': {
         if (tasks.has(msg.id)) {
           tasks.delete(msg.id);

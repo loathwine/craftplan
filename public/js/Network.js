@@ -83,6 +83,10 @@ export class Network {
     this.send('task_update', { id, ...changes });
   }
 
+  sendTaskMove(id, position, rotation) {
+    this.send('task_move', { id, position, rotation });
+  }
+
   sendTaskDelete(id) {
     this.send('task_delete', { id });
   }

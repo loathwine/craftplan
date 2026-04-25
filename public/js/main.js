@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Block, TASK_SIZES } from './Textures.js';
 import { World, WORLD_HEIGHT, WORLD_SIZE } from './World.js';
 import { Network } from './Network.js';
-import { TaskManager } from './TaskManager.js';
+import { TaskManager, applyRotation } from './TaskManager.js';
 import { UI } from './UI.js';
 
 // --- State ---
@@ -18,8 +18,12 @@ const otherPlayers = new Map();
 
 // Block targeting
 let highlight;
+let carryHighlight; // separate wireframe shown while carrying a task
 let target = null;     // { hit: [x,y,z], place: [x,y,z] } for world blocks
 let targetTask = null; // task object if aiming at a task structure
+let carriedTask = null;     // task being moved; null when not carrying
+let carryRotation = 0;      // 0/90/180/270 in degrees
+let carryPos = { x: 0, y: 0, z: 0 };
 const raycaster = new THREE.Raycaster();
 raycaster.far = 7;
 
@@ -60,7 +64,7 @@ function init() {
   // World
   world = new World(scene);
 
-  // Block highlight
+  // Block highlight (black) + carry preview highlight (green)
   const hlGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(1.005, 1.005, 1.005));
   highlight = new THREE.LineSegments(hlGeo, new THREE.LineBasicMaterial({
     color: 0x000000, transparent: true, opacity: 0.45,
@@ -68,6 +72,12 @@ function init() {
   highlight.visible = false;
   highlight.renderOrder = 2;
   scene.add(highlight);
+  carryHighlight = new THREE.LineSegments(hlGeo.clone(), new THREE.LineBasicMaterial({
+    color: 0x4ade80, transparent: true, opacity: 0.85, linewidth: 2, depthTest: false,
+  }));
+  carryHighlight.visible = false;
+  carryHighlight.renderOrder = 3;
+  scene.add(carryHighlight);
 
   // Task manager
   taskManager = new TaskManager(scene, world);
@@ -186,6 +196,7 @@ function setupControls(canvas) {
 
   canvas.addEventListener('mousedown', (e) => {
     if (!pointerLocked) return;
+    if (carriedTask) { if (e.button === 0) commitCarry(); return; }
     if (e.button === 0) breakBlock();
     if (e.button === 2) placeBlock();
   });
@@ -219,8 +230,22 @@ function setupControls(canvas) {
         document.exitPointerLock();
       }
     }
+    // Pick up / drop a task with G
+    if (e.code === 'KeyG' && pointerLocked) {
+      if (carriedTask) {
+        cancelCarry();
+      } else if (targetTask) {
+        beginCarry(targetTask);
+      }
+    }
+    // Rotate while carrying
+    if (e.code === 'KeyR' && carriedTask) {
+      carryRotation = (carryRotation + 90) % 360;
+    }
     if (e.code === 'Escape') {
-      if (ui.isTaskDetailOpen) {
+      if (carriedTask) {
+        cancelCarry();
+      } else if (ui.isTaskDetailOpen) {
         ui.hideTaskDetail();
         canvas.requestPointerLock();
       } else if (ui.isTaskPanelOpen) {
@@ -329,9 +354,56 @@ function updatePhysics(dt) {
 // BLOCK INTERACTION
 // =====================================================
 function getTaskSpawnPosition() {
-  const fx = Math.max(1, Math.min(126, Math.floor(pos.x - Math.sin(yaw) * 6)));
-  const fz = Math.max(1, Math.min(126, Math.floor(pos.z - Math.cos(yaw) * 6)));
+  const fx = Math.max(1, Math.min(WORLD_SIZE - 2, Math.floor(pos.x - Math.sin(yaw) * 6)));
+  const fz = Math.max(1, Math.min(WORLD_SIZE - 2, Math.floor(pos.z - Math.cos(yaw) * 6)));
   return { x: fx, y: world.getHighestBlock(fx, fz) + 1, z: fz };
+}
+
+// --- Carry (move + rotate) tasks ---
+function beginCarry(task) {
+  carriedTask = task;
+  carryRotation = task.rotation || 0;
+  // Hide the original rendering
+  if (task.container) task.container.visible = false;
+  ui.addChatMessage('', 'Carrying task. LMB drop · R rotate · G/Esc cancel', true);
+}
+
+function cancelCarry() {
+  if (carriedTask?.container) carriedTask.container.visible = true;
+  carriedTask = null;
+  carryHighlight.visible = false;
+}
+
+function commitCarry() {
+  if (!carriedTask) return;
+  network?.sendTaskMove(carriedTask.id, carryPos, carryRotation);
+  // The task_updated broadcast will replace the task; meanwhile keep the ghost up.
+  carriedTask = null;
+  carryHighlight.visible = false;
+}
+
+// Compute extents for a structure with rotation applied (for ghost preview)
+function computeRotatedExtents(task, rot) {
+  if (task.structure?.length) {
+    let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity, maxY = 0;
+    for (const raw of task.structure) {
+      const b = applyRotation(raw, rot);
+      if (b.x < minX) minX = b.x;
+      if (b.x > maxX) maxX = b.x;
+      if (b.z < minZ) minZ = b.z;
+      if (b.z > maxZ) maxZ = b.z;
+      if (b.y > maxY) maxY = b.y;
+    }
+    return {
+      minX, maxX: maxX + 1, minZ, maxZ: maxZ + 1,
+      cx: (minX + maxX + 1) / 2, cz: (minZ + maxZ + 1) / 2,
+      height: maxY + 1,
+    };
+  }
+  // Fallback: default tower (rotation-symmetric)
+  const TASK_SIZES_LOCAL = { S: { w: 1, h: 3 }, M: { w: 2, h: 5 }, L: { w: 3, h: 7 }, XL: { w: 5, h: 10 } };
+  const d = TASK_SIZES_LOCAL[task.size] || TASK_SIZES_LOCAL.M;
+  return { minX: 0, maxX: d.w, minZ: 0, maxZ: d.w, cx: d.w / 2, cz: d.w / 2, height: d.h };
 }
 
 // Manual AABB ray test for task structures (InstancedMesh raycasting is unreliable)
@@ -364,7 +436,7 @@ function findTargetedTask(origin, dir) {
 }
 
 function updateTarget() {
-  if (!pointerLocked) { highlight.visible = false; target = null; targetTask = null; return; }
+  if (!pointerLocked) { highlight.visible = false; carryHighlight.visible = false; target = null; targetTask = null; return; }
 
   // Single ray from current player state (camera lags one frame behind)
   const origin = new THREE.Vector3(pos.x, pos.y + EYE_HEIGHT, pos.z);
@@ -374,6 +446,28 @@ function updateTarget() {
     -Math.cos(yaw) * Math.cos(pitch)
   ).normalize();
   raycaster.set(origin, dir);
+
+  // Carrying mode: project drop position 6 blocks ahead, show ghost outline
+  if (carriedTask) {
+    highlight.visible = false;
+    targetTask = null;
+    target = null;
+    const fx = Math.max(1, Math.min(WORLD_SIZE - 2, Math.floor(pos.x - Math.sin(yaw) * 6)));
+    const fz = Math.max(1, Math.min(WORLD_SIZE - 2, Math.floor(pos.z - Math.cos(yaw) * 6)));
+    carryPos = { x: fx, y: world.getHighestBlock(fx, fz) + 1, z: fz };
+    const ext = computeRotatedExtents(carriedTask, carryRotation);
+    const w = ext.maxX - ext.minX, depth = ext.maxZ - ext.minZ;
+    carryHighlight.position.set(
+      carryPos.x + ext.cx,
+      carryPos.y + ext.height / 2,
+      carryPos.z + ext.cz,
+    );
+    carryHighlight.scale.set(w + 0.1, ext.height + 0.1, depth + 0.1);
+    carryHighlight.visible = true;
+    return;
+  }
+
+  carryHighlight.visible = false;
 
   const taskResult = findTargetedTask(origin, dir);
   const chunkHits = raycaster.intersectObjects(world.getChunkMeshes());

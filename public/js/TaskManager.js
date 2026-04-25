@@ -90,9 +90,11 @@ export class TaskManager {
 
   _buildAIStructure(container, task, baseY, meshes) {
     // Group blocks by type for one InstancedMesh per block type
+    const rot = task.rotation || 0;
     const byType = new Map();
     let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity, maxYRel = 0;
-    for (const b of task.structure) {
+    for (const raw of task.structure) {
+      const b = applyRotation(raw, rot);
       if (!byType.has(b.block)) byType.set(b.block, []);
       byType.get(b.block).push(b);
       if (b.x < minX) minX = b.x;
@@ -234,6 +236,17 @@ export class TaskManager {
     sprite.renderOrder = 1;
     return sprite;
   }
+}
+
+// Rotate a block's relative XZ coords around Y axis by 0/90/180/270 degrees (clockwise from top)
+export function applyRotation(b, rot) {
+  if (!rot) return b;
+  let x, z;
+  if (rot === 90)       { x = b.z;  z = -b.x; }
+  else if (rot === 180) { x = -b.x; z = -b.z; }
+  else if (rot === 270) { x = -b.z; z = b.x; }
+  else return b;
+  return { x, y: b.y, z, block: b.block };
 }
 
 function hash(n) {
