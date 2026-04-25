@@ -141,16 +141,34 @@ case "${1:-help}" in
     fi
     ;;
 
-  # ---------- Tunnel ----------
+  # ---------- Tunnels ----------
   tunnel)
     if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
       echo "Server not running. Run: ./craftplan.sh start"
       exit 1
     fi
-    echo "Starting tunnel to localhost:$PORT..."
+    echo "Starting Cloudflare tunnel to localhost:$PORT..."
     echo "Share the https:// URL below with your colleagues."
     echo ""
     nix run nixpkgs#cloudflared -- tunnel --url "http://localhost:$PORT"
+    ;;
+  ngrok)
+    if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
+      echo "Server not running. Run: ./craftplan.sh start"
+      exit 1
+    fi
+    if [ -z "${NGROK_AUTHTOKEN:-}" ] && [ ! -f "$HOME/.config/ngrok/ngrok.yml" ]; then
+      echo "No ngrok token configured. Either:"
+      echo "  NGROK_AUTHTOKEN=<token> ./craftplan.sh ngrok"
+      echo "  or run once: nix run nixpkgs#ngrok -- config add-authtoken <token>"
+      echo ""
+      echo "Get your token at https://dashboard.ngrok.com/get-started/your-authtoken"
+      exit 1
+    fi
+    echo "Starting ngrok tunnel to localhost:$PORT..."
+    echo "Share the https:// URL below with your colleagues."
+    echo ""
+    NIXPKGS_ALLOW_UNFREE=1 nix run --impure nixpkgs#ngrok -- http "$PORT"
     ;;
 
   *)
@@ -176,8 +194,9 @@ Examples:
   ./craftplan.sh bot-stop Picasso       # stop just Picasso
   ./craftplan.sh bot-stop               # stop all bots
 
-Tunnel:
-  tunnel                      Expose server via Cloudflare
+Tunnels (expose server publicly):
+  tunnel                      Cloudflare quick tunnel (no account)
+  ngrok                       ngrok tunnel (needs NGROK_AUTHTOKEN)
 
 Env:
   PORT=8080                             custom server port

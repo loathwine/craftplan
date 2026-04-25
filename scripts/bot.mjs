@@ -110,6 +110,7 @@ BLOCK CONSTANTS (just use these names):
   GRASS (1), DIRT (2), STONE (3 gray), OAK_LOG (4 brown)
   LEAVES (5 green), SAND (6 yellow), PLANKS (7 tan)
   COBBLE (8), BRICK (10 red), GLASS (11 blue)
+  SNOW (12 white), ICE (13 cyan)
 
 Color guide: metal/blade→STONE or COBBLE, wood→OAK_LOG or PLANKS, foliage→LEAVES, red/fire→BRICK, water/sky→GLASS, bone/white→GRASS.
 
@@ -152,7 +153,7 @@ function makeSandbox() {
   const api = {
     // Block constants
     AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, OAK_LOG: 4, LEAVES: 5,
-    SAND: 6, PLANKS: 7, COBBLE: 8, BRICK: 10, GLASS: 11,
+    SAND: 6, PLANKS: 7, COBBLE: 8, BRICK: 10, GLASS: 11, SNOW: 12, ICE: 13,
 
     block: addBlock,
 
@@ -252,7 +253,7 @@ function runSandbox(code) {
   const { api, ops } = makeSandbox();
   const ctx = vm.createContext(api);
   vm.runInContext(code, ctx, { timeout: 5000, displayErrors: true });
-  const valid = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11]);
+  const valid = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13]);
   return ops()
     .filter(op => valid.has(op.block))
     .filter(op => Math.abs(op.x) <= 22 && Math.abs(op.z) <= 22 && op.y >= 0 && op.y <= 40);

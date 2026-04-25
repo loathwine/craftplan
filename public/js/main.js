@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Block, TASK_SIZES } from './Textures.js';
-import { World, WORLD_HEIGHT } from './World.js';
+import { World, WORLD_HEIGHT, WORLD_SIZE } from './World.js';
 import { Network } from './Network.js';
 import { TaskManager } from './TaskManager.js';
 import { UI } from './UI.js';
@@ -319,8 +319,8 @@ function updatePhysics(dt) {
   }
 
   // World bounds & void respawn
-  pos.x = Math.max(0.5, Math.min(127.5, pos.x));
-  pos.z = Math.max(0.5, Math.min(127.5, pos.z));
+  pos.x = Math.max(0.5, Math.min(WORLD_SIZE - 0.5, pos.x));
+  pos.z = Math.max(0.5, Math.min(WORLD_SIZE - 0.5, pos.z));
   pos.y = Math.max(-10, Math.min(WORLD_HEIGHT + 20, pos.y));
   if (pos.y <= -10) { pos.y = world.getHighestBlock(64, 64) + 2; velY = 0; }
 }

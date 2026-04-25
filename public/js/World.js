@@ -3,7 +3,8 @@ import { Block, BLOCK_COLORS, colorVariation } from './Textures.js';
 
 export const CHUNK_SIZE = 16;
 export const WORLD_HEIGHT = 64;
-const CHUNKS = 8; // 8x8 = 128x128 world
+const CHUNKS = 16; // 16x16 chunks = 256x256 world
+export const WORLD_SIZE = CHUNKS * CHUNK_SIZE;
 
 // --- Deterministic noise ---
 function hash2(x, z) {
@@ -23,18 +24,50 @@ function smoothNoise(x, z) {
          (n01 * (1 - sx) + n11 * sx) * sz;
 }
 
+// Biome noise - slow variation so biomes are large regions
+function biomeAt(x, z) {
+  const b = smoothNoise(x * 0.008 + 50, z * 0.008 + 50);
+  const m = smoothNoise(x * 0.015 + 99, z * 0.015 + 99); // moisture
+  if (b < 0.32) return 'desert';
+  if (b > 0.72) return m > 0.5 ? 'taiga' : 'forest';
+  return m > 0.55 ? 'forest' : 'plains';
+}
+
 function terrainHeight(x, z) {
-  return Math.floor(
+  const biome = biomeAt(x, z);
+  const base =
     10 +
     6 * smoothNoise(x * 0.025, z * 0.025) +
     3 * smoothNoise(x * 0.06, z * 0.06) +
-    1.5 * smoothNoise(x * 0.13, z * 0.13)
-  );
+    1.5 * smoothNoise(x * 0.13, z * 0.13);
+  // Biome-specific terrain modifiers
+  if (biome === 'desert') return Math.floor(base - 1 + 2 * smoothNoise(x * 0.05, z * 0.05));
+  if (biome === 'taiga')  return Math.floor(base + 2 + 5 * smoothNoise(x * 0.04, z * 0.04));
+  if (biome === 'forest') return Math.floor(base + 1 + 2 * smoothNoise(x * 0.04, z * 0.04));
+  return Math.floor(base);
+}
+
+// Surface block based on biome + height (snowy mountain caps)
+function surfaceBlock(x, z, h) {
+  if (h >= 22) return Block.SNOW;             // snow cap
+  if (h >= 19) return Block.STONE;            // rocky mountain
+  const biome = biomeAt(x, z);
+  if (biome === 'desert') return Block.SAND;
+  if (biome === 'taiga')  return Block.SNOW;
+  return Block.GRASS;
 }
 
 function shouldHaveTree(x, z) {
-  if (hash2(x * 13 + 37, z * 17 + 59) > 0.015) return false;
+  const biome = biomeAt(x, z);
+  // Desert = almost no trees, plains = sparse, forest = dense, taiga = medium
+  const density =
+    biome === 'desert' ? 0.0005 :
+    biome === 'forest' ? 0.04 :
+    biome === 'taiga'  ? 0.015 :
+                         0.006;
+  if (hash2(x * 13 + 37, z * 17 + 59) > density) return false;
   const h = terrainHeight(x, z);
+  if (h >= 20) return false; // no trees on mountain tops
   return Math.abs(h - terrainHeight(x + 1, z)) <= 1 &&
          Math.abs(h - terrainHeight(x - 1, z)) <= 1 &&
          Math.abs(h - terrainHeight(x, z + 1)) <= 1 &&
@@ -85,12 +118,15 @@ export class World {
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
     for (let lx = 0; lx < CHUNK_SIZE; lx++) {
       for (let lz = 0; lz < CHUNK_SIZE; lz++) {
-        const h = terrainHeight(x0 + lx, z0 + lz);
+        const wx = x0 + lx, wz = z0 + lz;
+        const h = terrainHeight(wx, wz);
+        const biome = biomeAt(wx, wz);
+        const surface = surfaceBlock(wx, wz, h);
         for (let y = 0; y <= h && y < WORLD_HEIGHT; y++) {
           let b;
           if (y === 0) b = Block.BEDROCK;
-          else if (y === h) b = Block.GRASS;
-          else if (y >= h - 3) b = Block.DIRT;
+          else if (y === h) b = surface;
+          else if (y >= h - 3) b = biome === 'desert' ? Block.SAND : Block.DIRT;
           else b = Block.STONE;
           data[lx + lz * CHUNK_SIZE + y * CHUNK_SIZE * CHUNK_SIZE] = b;
         }

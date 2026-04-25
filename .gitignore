@@ -8,3 +8,5 @@ data.json
 craftplan.log
 bot.log
 bot-*.log
+data-backup-*.json
+tunnel.log

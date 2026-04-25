@@ -12,6 +12,8 @@ export const Block = {
   BEDROCK:  9,
   BRICK:    10,
   GLASS:    11,
+  SNOW:     12,
+  ICE:      13,
 };
 
 // Per-face colors [r, g, b] in 0-1 range
@@ -27,6 +29,8 @@ export const BLOCK_COLORS = {
   [Block.BEDROCK]: { top: [0.20, 0.20, 0.20], side: [0.18, 0.18, 0.18], bottom: [0.15, 0.15, 0.15] },
   [Block.BRICK]:   { top: [0.60, 0.25, 0.20], side: [0.58, 0.22, 0.18], bottom: [0.55, 0.20, 0.15] },
   [Block.GLASS]:   { top: [0.70, 0.85, 0.95], side: [0.70, 0.85, 0.95], bottom: [0.70, 0.85, 0.95] },
+  [Block.SNOW]:    { top: [0.96, 0.97, 1.00], side: [0.92, 0.94, 0.98], bottom: [0.85, 0.87, 0.92] },
+  [Block.ICE]:     { top: [0.65, 0.82, 0.98], side: [0.60, 0.78, 0.95], bottom: [0.55, 0.72, 0.92] },
 };
 
 // Status colors for task structures
