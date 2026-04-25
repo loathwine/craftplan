@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Block, BLOCK_COLORS, colorVariation } from './Textures.js';
 
 export const CHUNK_SIZE = 16;
-export const WORLD_HEIGHT = 64;
+export const WORLD_HEIGHT = 128;
 const CHUNKS = 16; // 16x16 chunks = 256x256 world
 export const WORLD_SIZE = CHUNKS * CHUNK_SIZE;
 

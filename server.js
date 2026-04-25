@@ -102,6 +102,9 @@ wss.on('connection', (ws) => {
       }
 
       case 'block_place': {
+        // Bounds: keep in sync with public/js/World.js (CHUNKS=16, WORLD_HEIGHT=128)
+        if (msg.y < 0 || msg.y >= 128) return;
+        if (msg.x < 0 || msg.x >= 256 || msg.z < 0 || msg.z >= 256) return;
         const key = `${msg.x},${msg.y},${msg.z}`;
         blockChanges.set(key, msg.block);
         broadcast({ type: 'block_update', x: msg.x, y: msg.y, z: msg.z, block: msg.block });
