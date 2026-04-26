@@ -6,10 +6,20 @@ PIDFILE=".craftplan.pid"
 
 # Bot pidfile + log keyed by name: .craftplan-bot-<Name>.pid / bot-<Name>.log
 
+# Find PID listening on a TCP port. Prefer lsof, fall back to ss (always
+# present on NixOS via iproute2; lsof typically isn't in the default PATH).
+port_pid() {
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -ti :"$1" 2>/dev/null
+  elif command -v ss >/dev/null 2>&1; then
+    ss -tlnHp "sport = :$1" 2>/dev/null | grep -oP 'pid=\K[0-9]+' | head -1
+  fi
+}
+
 case "${1:-help}" in
   # ---------- Server ----------
   start)
-    EXISTING=$(lsof -ti :"$PORT" 2>/dev/null || true)
+    EXISTING=$(port_pid "$PORT" || true)
     if [ -n "$EXISTING" ]; then
       echo "Port $PORT already in use (PID $EXISTING). Run: ./craftplan.sh stop"
       exit 1
@@ -33,7 +43,7 @@ case "${1:-help}" in
       fi
       rm -f "$PIDFILE"
     else
-      PID=$(lsof -ti :"$PORT" 2>/dev/null || true)
+      PID=$(port_pid "$PORT" || true)
       if [ -n "$PID" ]; then
         echo "Port $PORT in use by PID $PID (not started by craftplan.sh)"
         echo "  ps -p $PID -o command=   # to inspect"
@@ -48,7 +58,7 @@ case "${1:-help}" in
     "$0" start
     ;;
   status)
-    PID=$(lsof -ti :"$PORT" 2>/dev/null || true)
+    PID=$(port_pid "$PORT" || true)
     if [ -n "$PID" ]; then
       IP=$(hostname -I | awk '{print $1}')
       echo "Server: running (PID $PID)"
@@ -78,7 +88,7 @@ case "${1:-help}" in
     NAME="${2:-Claude}"
     BOT_PIDFILE=".craftplan-bot-${NAME}.pid"
     BOT_LOG="bot-${NAME}.log"
-    if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
+    if [ -z "$(port_pid "$PORT")" ]; then
       echo "Server not running. Run: ./craftplan.sh start"
       exit 1
     fi
@@ -143,7 +153,7 @@ case "${1:-help}" in
 
   # ---------- Tunnels ----------
   tunnel)
-    if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
+    if [ -z "$(port_pid "$PORT")" ]; then
       echo "Server not running. Run: ./craftplan.sh start"
       exit 1
     fi
@@ -153,7 +163,7 @@ case "${1:-help}" in
     nix run nixpkgs#cloudflared -- tunnel --url "http://localhost:$PORT"
     ;;
   ngrok)
-    if ! lsof -ti :"$PORT" >/dev/null 2>&1; then
+    if [ -z "$(port_pid "$PORT")" ]; then
       echo "Server not running. Run: ./craftplan.sh start"
       exit 1
     fi
