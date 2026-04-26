@@ -16,6 +16,9 @@
       devShells = forAllSystems ({ pkgs }: {
         default = pkgs.mkShell {
           buildInputs = [ pkgs.nodejs_22 ];
+          shellHook = ''
+            ln -sfnT ${self.packages.${pkgs.system}.default}/lib/node_modules node_modules
+          '';
         };
       });
 
@@ -24,7 +27,7 @@
           pname = "craftplan";
           version = "0.1.0";
           src = ./.;
-          npmDepsHash = "sha256-XLPiOKeWJBD3dx8ZKVcWUGsY3y+4idi6gL58Um8RuCg=";
+          npmDepsHash = "sha256-l4An40qC4a6cVEx2eFd2BIGR15lh0SRZ0A94Jk3z0j0=";
           dontNpmBuild = true;
           installPhase = ''
             mkdir -p $out/{lib,bin}
