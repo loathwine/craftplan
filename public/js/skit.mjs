@@ -203,11 +203,11 @@ export const SKIT_SHOTS = [
     },
     events: niceEvents(0.2, 3.0),
   },
-  // 11. Player face: amazement — close-up that fades to black for the drop
+  // 11. Player face: amazement — fades to WHITE for the music drop flash
   {
     id: 'skit-amazed',
     duration: 2.0,
-    fadeOut: 0.8,
+    fadeOut: 0.4, fadeOutColor: '#fff',
     camera: { type: 'still', pos: [PLAYER_POS[0] - 0.6, PLAYER_POS[1] + 1.9, PLAYER_POS[2] + 1.0], look: [PLAYER_POS[0], PLAYER_POS[1] + 1.7, PLAYER_POS[2]] },
     avatars: {
       Edvin: { pos: PLAYER_POS, lookAtCamera: true, expression: 'happy', showTag: false },

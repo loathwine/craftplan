@@ -43,15 +43,15 @@ export const MONTAGE_SETUP = [
 ];
 
 export const MONTAGE_SHOTS = [
-  // First montage shot fades in from black to mirror the skit-amazed fade-out.
-  // This sells the "music drop" beat.
+  // First montage shot fades in from WHITE: skit ends on a white flash and
+  // dragon reveals out of it — that's the music drop.
   Object.assign(buildShot({
     id: 'dragon',
     plan: 'dragon-tower',
     origin: O_DRAGON,
     prompt: '@Claude build a dragon coiled around a tower',
     duration: 11, radius: 38, height: 14,
-  }), { fadeIn: 0.6 }),
+  }), { fadeIn: 0.5, fadeInColor: '#fff' }),
   buildShot({
     id: 'volcano',
     plan: 'volcano',

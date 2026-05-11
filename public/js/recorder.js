@@ -398,12 +398,20 @@ export async function startRecorder() {
     overlays.title.style.opacity = overlayOpacity(shot.title, localT);
     if (shot.title) overlays.title.textContent = shot.title.html;
 
-    // Fade (black) at shot boundaries. fadeIn / fadeOut override fade.
+    // Fade at shot boundaries. Per-side color (fadeInColor/fadeOutColor)
+    // lets a transition flash white for music drops or stay black for cuts.
     const fIn  = shot.fadeIn  ?? shot.fade ?? 0;
     const fOut = shot.fadeOut ?? shot.fade ?? 0;
     let fade = 0;
-    if (fIn > 0 && localT < fIn) fade = 1 - localT / fIn;
-    else if (fOut > 0 && localT > shot.duration - fOut) fade = (localT - (shot.duration - fOut)) / fOut;
+    let fadeColor = '#000';
+    if (fIn > 0 && localT < fIn) {
+      fade = 1 - localT / fIn;
+      fadeColor = shot.fadeInColor ?? shot.fadeColor ?? '#000';
+    } else if (fOut > 0 && localT > shot.duration - fOut) {
+      fade = (localT - (shot.duration - fOut)) / fOut;
+      fadeColor = shot.fadeOutColor ?? shot.fadeColor ?? '#000';
+    }
+    overlays.fader.style.background = fadeColor;
     overlays.fader.style.opacity = Math.max(0, Math.min(1, fade));
 
     renderer.render(scene, camera);
