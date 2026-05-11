@@ -36,9 +36,24 @@ const argv = (() => {
 const ARG_FPS      = argv.fps ? parseInt(argv.fps) : null;
 const ARG_DURATION = argv.duration ? parseFloat(argv.duration) : null;
 const ARG_FRAMES   = argv.frames ? parseInt(argv.frames) : null;
-const WIDTH    = parseInt(argv.width || '1280');
-const HEIGHT   = parseInt(argv.height || '720');
-const OUT      = resolve(argv.out || 'recordings/demo.mp4');
+// Presets to skip flag-juggling during iteration.
+//   --iter  → 854x480 @ 15fps (fast)
+//   --final → 1920x1080 @ 60fps (slow, for the keeper)
+const PRESET = argv.iter ? 'iter' : argv.final ? 'final' : null;
+const PRESET_W = PRESET === 'iter' ? 854  : PRESET === 'final' ? 1920 : null;
+const PRESET_H = PRESET === 'iter' ? 480  : PRESET === 'final' ? 1080 : null;
+const PRESET_F = PRESET === 'iter' ? 15   : PRESET === 'final' ? 60   : null;
+const WIDTH    = parseInt(argv.width || PRESET_W || '1280');
+const HEIGHT   = parseInt(argv.height || PRESET_H || '720');
+const OUT_ARG  = argv.out;
+const ARCHIVE  = !!argv.archive;
+const LABEL    = argv.label || (PRESET ? PRESET : '');
+// When --archive (or no --out), name the output with a timestamp so prior
+// recordings are preserved.
+const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-'); // YYYY-MM-DD-HH-MM
+const defaultName = `montage-${stamp}${LABEL ? '-' + LABEL : ''}.mp4`;
+const OUT      = resolve(OUT_ARG || (ARCHIVE ? `recordings/archive/${defaultName}` : `recordings/${defaultName}`));
+const LATEST   = resolve('recordings/latest.mp4');
 const FRAMES_DIR = resolve(argv['frames-dir'] || 'recordings/frames');
 const KEEP     = !!argv.keep;
 const NO_MP4   = !!argv['no-mp4'];
@@ -202,7 +217,11 @@ const state = await send('Runtime.evaluate', { expression: 'JSON.stringify(windo
 const pageState = JSON.parse(state.result.value);
 console.log(`[rec] ready. ${state.result.value}`);
 
-const FPS      = ARG_FPS ?? pageState.fps ?? 30;
+// Fetch audio markers (sidecar JSON for post-production music alignment)
+const markersResult = await send('Runtime.evaluate', { expression: 'JSON.stringify(window.__demoMarkers || [])', returnByValue: true });
+const markers = JSON.parse(markersResult.result.value);
+
+const FPS      = ARG_FPS ?? PRESET_F ?? pageState.fps ?? 30;
 const DURATION = ARG_DURATION ?? pageState.duration ?? 10;
 const FRAMES   = ARG_FRAMES ?? Math.round(FPS * DURATION);
 console.log(`[rec] ${FRAMES} frames at ${FPS}fps, ${WIDTH}x${HEIGHT} → ${OUT}`);
@@ -235,6 +254,28 @@ if (!NO_MP4) {
   await new Promise((r, rej) => ff.on('exit', (c) => c === 0 ? r() : rej(new Error(`ffmpeg exited ${c}`))));
 }
 
+// Write the markers sidecar (same basename, .markers.json suffix)
+try {
+  const markersPath = OUT.replace(/\.mp4$/, '.markers.json');
+  writeFileSync(markersPath, JSON.stringify({
+    video: OUT.split('/').pop(),
+    fps: FPS, duration: DURATION, width: WIDTH, height: HEIGHT,
+    markers,
+  }, null, 2));
+  console.log(`[rec] markers -> ${markersPath}`);
+} catch (e) {
+  console.warn('[rec] markers write failed:', e.message);
+}
+
 cleanup();
+// Keep a stable 'latest.mp4' pointer so the same path always plays the
+// freshest cut. Past recordings stay around under their timestamped name.
+try {
+  if (existsSync(LATEST)) rmSync(LATEST);
+  // Symlink keeps it lightweight; fall back to copy if symlink fails.
+  try { (await import('node:fs')).symlinkSync(OUT, LATEST); }
+  catch { (await import('node:fs')).copyFileSync(OUT, LATEST); }
+} catch {}
 console.log(`[rec] done. ${OUT}`);
+console.log(`[rec] latest -> ${LATEST}`);
 process.exit(0);

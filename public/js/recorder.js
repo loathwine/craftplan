@@ -4,7 +4,7 @@
 // plan from public/data/plans/, and compiles them into a global timeline.
 // The page exposes:
 //   window.__demoReady   -- true once world + plans are loaded
-//   window.__demoFrame(t) -- update world/bots/camera/overlays for time t (s)
+//   window.__demoFrame(t) -- update world/avatars/camera/overlays for time t
 //   window.__demoState   -- { width, height, duration, fps }
 //
 // The page never reads a wall clock; the recorder is the clock.
@@ -13,10 +13,12 @@ import { World } from './World.js';
 import { TaskManager } from './TaskManager.js';
 import { MANUSCRIPT } from './manuscript.mjs';
 import { terrainHeight } from './terrain.js';
+import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
 
 const ease = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
 const lerpVec = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+const clamp01 = (t) => Math.max(0, Math.min(1, t));
 
 // ---------------------------------------------------------------------------
 // Camera path: each shot's camera spec → function(localT) -> { pos, look }
@@ -26,7 +28,7 @@ function makeCameraPath(spec, duration) {
     case 'orbit': {
       const { center, radius, height, startAngle, endAngle } = spec;
       return (t) => {
-        const f = duration > 0 ? ease(Math.min(1, Math.max(0, t / duration))) : 0;
+        const f = duration > 0 ? ease(clamp01(t / duration)) : 0;
         const a = startAngle + (endAngle - startAngle) * f;
         return {
           pos: [center[0] + radius * Math.cos(a), center[1] + height, center[2] + radius * Math.sin(a)],
@@ -38,7 +40,7 @@ function makeCameraPath(spec, duration) {
       const { from, to, lookFrom, lookTo } = spec;
       const look0 = lookFrom, look1 = lookTo || lookFrom;
       return (t) => {
-        const f = duration > 0 ? ease(Math.min(1, Math.max(0, t / duration))) : 0;
+        const f = duration > 0 ? ease(clamp01(t / duration)) : 0;
         return { pos: lerpVec(from, to, f), look: lerpVec(look0, look1, f) };
       };
     }
@@ -50,78 +52,75 @@ function makeCameraPath(spec, duration) {
 }
 
 // ---------------------------------------------------------------------------
-// Bot avatar: small humanoid (body + head + name sprite)
+// Overlays (DOM): prompt card (top), dialog/subtitle (bottom), title (center)
 // ---------------------------------------------------------------------------
-function makeBotAvatar(name, color = 0x4ade80) {
-  const g = new THREE.Group();
-  // Slightly oversized so it reads at orbit distance (~16 blocks).
-  const body = new THREE.Mesh(
-    new THREE.BoxGeometry(0.8, 1.8, 0.55),
-    new THREE.MeshLambertMaterial({ color }),
-  );
-  body.position.y = 0.9;
-  g.add(body);
-  const head = new THREE.Mesh(
-    new THREE.BoxGeometry(0.7, 0.7, 0.7),
-    new THREE.MeshLambertMaterial({ color: 0xffcc88 }),
-  );
-  head.position.y = 2.15;
-  g.add(head);
-  // Name sprite
-  const c = document.createElement('canvas');
-  c.width = 256; c.height = 64;
-  const ctx = c.getContext('2d');
-  ctx.fillStyle = 'rgba(0,0,0,0.55)';
-  ctx.beginPath(); ctx.roundRect(0, 0, 256, 64, 10); ctx.fill();
-  ctx.fillStyle = '#fff';
-  ctx.font = 'bold 26px system-ui, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(name, 128, 32);
-  const tex = new THREE.CanvasTexture(c);
-  tex.minFilter = THREE.LinearFilter;
-  const tagMat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
-  const tag = new THREE.Sprite(tagMat);
-  tag.position.y = 3.0;
-  tag.scale.set(3.2, 0.8, 1);
-  tag.renderOrder = 1;
-  g.add(tag);
-  return g;
-}
-
-// ---------------------------------------------------------------------------
-// Overlay (DOM): prompt text card
-// ---------------------------------------------------------------------------
-function ensureOverlay() {
-  let el = document.getElementById('demo-rec-overlay');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = 'demo-rec-overlay';
-    Object.assign(el.style, {
+function ensureOverlays() {
+  let prompt = document.getElementById('demo-rec-prompt');
+  if (!prompt) {
+    prompt = document.createElement('div');
+    prompt.id = 'demo-rec-prompt';
+    Object.assign(prompt.style, {
       position: 'fixed', left: '50%', top: '40px', transform: 'translateX(-50%)',
       padding: '14px 28px', borderRadius: '12px', background: 'rgba(0,0,0,0.6)',
       color: '#fff', fontFamily: 'system-ui, sans-serif', fontSize: '28px',
       fontWeight: 600, letterSpacing: '0.5px', opacity: 0, pointerEvents: 'none',
-      backdropFilter: 'blur(6px)', textShadow: '0 2px 6px rgba(0,0,0,0.5)',
+      textShadow: '0 2px 6px rgba(0,0,0,0.5)', maxWidth: '90%', textAlign: 'center',
     });
-    document.body.appendChild(el);
+    document.body.appendChild(prompt);
   }
-  return el;
+  let dialog = document.getElementById('demo-rec-dialog');
+  if (!dialog) {
+    dialog = document.createElement('div');
+    dialog.id = 'demo-rec-dialog';
+    Object.assign(dialog.style, {
+      position: 'fixed', left: '50%', bottom: '60px', transform: 'translateX(-50%)',
+      padding: '12px 22px', borderRadius: '6px', background: 'rgba(0,0,0,0.7)',
+      color: '#fff', fontFamily: 'system-ui, sans-serif', fontSize: '24px',
+      fontWeight: 500, opacity: 0, pointerEvents: 'none', maxWidth: '80%',
+      textAlign: 'center', borderLeft: '4px solid #4ade80',
+    });
+    document.body.appendChild(dialog);
+  }
+  let title = document.getElementById('demo-rec-title');
+  if (!title) {
+    title = document.createElement('div');
+    title.id = 'demo-rec-title';
+    Object.assign(title.style, {
+      position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
+      color: '#fff', fontFamily: 'system-ui, sans-serif', fontSize: '64px',
+      fontWeight: 800, letterSpacing: '2px', opacity: 0, pointerEvents: 'none',
+      textShadow: '0 4px 16px rgba(0,0,0,0.7)', textAlign: 'center',
+    });
+    document.body.appendChild(title);
+  }
+  let fader = document.getElementById('demo-rec-fader');
+  if (!fader) {
+    fader = document.createElement('div');
+    fader.id = 'demo-rec-fader';
+    Object.assign(fader.style, {
+      position: 'fixed', inset: 0, background: '#000', opacity: 0,
+      pointerEvents: 'none', zIndex: 100,
+    });
+    document.body.appendChild(fader);
+  }
+  return { prompt, dialog, title, fader };
 }
 
 function overlayOpacity(o, localT) {
-  if (!o || localT < o.t0 || localT > o.t1) return 0;
+  if (!o) return 0;
+  const t0 = o.t0 ?? 0, t1 = o.t1 ?? Infinity;
+  if (localT < t0 || localT > t1) return 0;
   const fadeIn = o.fadeIn ?? 0.3;
   const fadeOut = o.fadeOut ?? 0.6;
-  const sinceStart = localT - o.t0;
-  const tillEnd = o.t1 - localT;
+  const sinceStart = localT - t0;
+  const tillEnd = t1 - localT;
   if (sinceStart < fadeIn) return sinceStart / fadeIn;
   if (tillEnd < fadeOut) return Math.max(0, tillEnd / fadeOut);
   return 1;
 }
 
 // ---------------------------------------------------------------------------
-// Build replay: a shot's `build` is compiled to (event[], botMotion(localT)).
+// Build replay: a shot's `build` is compiled to events + bot motion.
 // ---------------------------------------------------------------------------
 async function fetchPlan(slug) {
   const r = await fetch(`/data/plans/${slug}.json`);
@@ -132,12 +131,23 @@ async function fetchPlan(slug) {
 function compileBuild(buildSpec, planJson) {
   const { startT, endT, bot } = buildSpec;
   const span = Math.max(0.001, endT - startT);
-  // Allow the manuscript to override where the build appears in the world.
   const origin = buildSpec.origin
     ? { x: buildSpec.origin[0], y: buildSpec.origin[1], z: buildSpec.origin[2] }
     : planJson.origin;
-  // Sort by Y so the build grows bottom-up; small visual win.
-  const ordered = [...planJson.plan].sort((a, b) => a.y - b.y || a.z - b.z || a.x - b.x);
+  const rotY = buildSpec.rotateY ? Math.round(buildSpec.rotateY / (Math.PI / 2)) & 3 : 0;
+  const rotate = ([x, z]) => {
+    switch (rotY) {
+      case 1: return [-z, x];
+      case 2: return [-x, -z];
+      case 3: return [z, -x];
+      default: return [x, z];
+    }
+  };
+  const rotated = planJson.plan.map(b => {
+    const [rx, rz] = rotate([b.x, b.z]);
+    return { x: rx, y: b.y, z: rz, block: b.block };
+  });
+  const ordered = rotated.sort((a, b) => a.y - b.y || a.z - b.z || a.x - b.x);
   const events = ordered.map((b, i) => ({
     t: startT + (span * i) / ordered.length,
     x: origin.x + b.x, y: origin.y + b.y, z: origin.z + b.z,
@@ -145,22 +155,18 @@ function compileBuild(buildSpec, planJson) {
   }));
   const radius = buildSpec.botRadius ?? 5;
   const heightOff = buildSpec.botHeight ?? 3;
-  // Bot hovers next to the current block, biased toward the camera so it
-  // stays visible. Offset perpendicular so it doesn't block the build either.
   function botAt(localT, cameraPos) {
     if (localT <= startT || events.length === 0) {
       return { pos: [origin.x + radius, origin.y + heightOff, origin.z], look: [origin.x, origin.y, origin.z] };
     }
-    const progress = Math.min(1, (localT - startT) / span);
+    const progress = clamp01((localT - startT) / span);
     const idx = Math.min(events.length - 1, Math.floor(progress * events.length));
     const b = events[idx];
     if (cameraPos) {
       const toCamX = cameraPos[0] - b.x, toCamZ = cameraPos[2] - b.z;
       const len = Math.hypot(toCamX, toCamZ) || 1;
       const ux = toCamX / len, uz = toCamZ / len;
-      // Perpendicular (rotate 90deg) so the bot stands to one side
       const perpX = -uz, perpZ = ux;
-      // Slow swing so the perp offset alternates left/right gently
       const swing = Math.sin(localT * 0.5);
       const front = radius * 0.6;
       const side = radius * 0.6 * swing;
@@ -169,7 +175,6 @@ function compileBuild(buildSpec, planJson) {
         look: [b.x, b.y, b.z],
       };
     }
-    // Fallback: independent orbit (used before cameraPos is plumbed)
     const orbit = 0.6 * localT;
     return {
       pos: [b.x + radius * Math.cos(orbit), b.y + heightOff, b.z + radius * Math.sin(orbit)],
@@ -180,10 +185,34 @@ function compileBuild(buildSpec, planJson) {
 }
 
 // ---------------------------------------------------------------------------
+// Avatar registry: one persistent group per character in the scene.
+// ---------------------------------------------------------------------------
+function buildAvatarRegistry(scene) {
+  const defs = MANUSCRIPT.avatars || {};
+  const reg = new Map();
+  for (const [name, def] of Object.entries(defs)) {
+    const av = makeAvatar({ name, ...def });
+    av.visible = false;
+    scene.add(av);
+    reg.set(name, av);
+  }
+  // Ensure any bot referenced by a build but not declared in MANUSCRIPT.avatars
+  // still gets a default avatar.
+  function ensure(name) {
+    if (reg.has(name)) return reg.get(name);
+    const av = makeAvatar({ name });
+    av.visible = false;
+    scene.add(av);
+    reg.set(name, av);
+    return av;
+  }
+  return { reg, ensure };
+}
+
+// ---------------------------------------------------------------------------
 // Bootstrap
 // ---------------------------------------------------------------------------
 export async function startRecorder() {
-  // Hide live-mode UI
   for (const id of ['join-screen', 'hud', 'task-panel', 'chat', 'task-detail']) {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
@@ -191,11 +220,13 @@ export async function startRecorder() {
   document.body.style.margin = '0';
   document.body.style.background = '#000';
 
-  const W = MANUSCRIPT.width, H = MANUSCRIPT.height;
+  // URL params win so the headless recorder can request a specific render
+  // size without us re-publishing the manuscript.
+  const params = new URLSearchParams(location.search);
+  const W = parseInt(params.get('w')) || MANUSCRIPT.width;
+  const H = parseInt(params.get('h')) || MANUSCRIPT.height;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x7ec8e3);
-  // Push fog farther than the live game (60..200) so wide outro shots
-  // don't lose the corner builds.
   scene.fog = new THREE.Fog(0x7ec8e3, 120, 360);
 
   const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 400);
@@ -213,10 +244,9 @@ export async function startRecorder() {
   scene.add(new THREE.HemisphereLight(0x87CEEB, 0x556633, 0.45));
 
   const world = new World(scene);
-  const _tm = new TaskManager(scene, world); // empty, for parity
+  const _tm = new TaskManager(scene, world);
 
-  // Apply pre-timeline setup (e.g. clear forest at build sites). Batched
-  // through applyBlockChanges so chunks rebuild once instead of per-cell.
+  // Apply pre-timeline setup (clear forest at build sites etc.)
   if (MANUSCRIPT.setup) {
     const bulk = {};
     for (const op of MANUSCRIPT.setup) {
@@ -227,8 +257,6 @@ export async function startRecorder() {
             for (let z = z0; z <= z1; z++)
               bulk[`${x},${y},${z}`] = 0;
       } else if (op.type === 'clearAboveGround') {
-        // Clear from terrainHeight(x,z)+1 up to topY. Wipes trees without
-        // creating pits below the surface.
         const [x0, z0] = op.min, [x1, z1] = op.max, topY = op.topY;
         for (let x = x0; x <= x1; x++) {
           for (let z = z0; z <= z1; z++) {
@@ -236,14 +264,18 @@ export async function startRecorder() {
             for (let y = h + 1; y <= topY; y++) bulk[`${x},${y},${z}`] = 0;
           }
         }
+      } else if (op.type === 'block') {
+        bulk[`${op.x},${op.y},${op.z}`] = op.block;
       }
     }
     if (Object.keys(bulk).length) world.applyBlockChanges(bulk);
   }
 
+  // Avatars
+  const avatars = buildAvatarRegistry(scene);
+
   // Compile shots → global timeline
   const shots = [];
-  const bots = new Map(); // botName -> avatar group
   let totalDuration = 0;
   for (const s of MANUSCRIPT.shots) {
     const start = totalDuration;
@@ -260,21 +292,22 @@ export async function startRecorder() {
       shot.appliedIdx = 0;
       shot.botFn = compiled.botAt;
       shot.botName = compiled.botName;
-      if (!bots.has(compiled.botName)) {
-        const avatar = makeBotAvatar(compiled.botName);
-        avatar.visible = false;
-        scene.add(avatar);
-        bots.set(compiled.botName, avatar);
-      }
+      avatars.ensure(compiled.botName);
+    }
+    // Pre-sort explicit events if the shot provides them directly
+    if (s.events && !shot.events) {
+      shot.events = [...s.events].sort((a, b) => a.t - b.t);
+      shot.appliedIdx = 0;
+    } else if (s.events && shot.events) {
+      // Both build and explicit events: merge
+      shot.events = [...shot.events, ...s.events].sort((a, b) => a.t - b.t);
+      shot.appliedIdx = 0;
     }
     shots.push(shot);
     totalDuration += s.duration;
   }
 
-  const overlayEl = ensureOverlay();
-
-  // Track which shot's events we've applied. Recorder is forward-only.
-  let lastT = -1;
+  const overlays = ensureOverlays();
 
   function frame(t) {
     // Find current shot
@@ -282,9 +315,7 @@ export async function startRecorder() {
     for (const s of shots) { if (t < s.end) { shot = s; break; } }
     const localT = Math.max(0, t - shot.start);
 
-    // Apply pending world events (forward only). Batch this frame's events
-    // through applyBlockChanges so each affected chunk rebuilds at most once
-    // per frame, not once per block.
+    // Apply pending world events (batched)
     if (shot.events && shot.appliedIdx < shot.events.length) {
       const batch = {};
       let n = 0;
@@ -297,41 +328,100 @@ export async function startRecorder() {
     }
 
     // Camera
-    const { pos, look } = shot.cameraFn(localT);
-    camera.position.set(pos[0], pos[1], pos[2]);
-    camera.lookAt(look[0], look[1], look[2]);
+    const cam = shot.cameraFn(localT);
+    camera.position.set(cam.pos[0], cam.pos[1], cam.pos[2]);
+    camera.lookAt(cam.look[0], cam.look[1], cam.look[2]);
 
-    // Bots: hide all, then position the active one
-    for (const av of bots.values()) av.visible = false;
+    // Hide all avatars, then position the active ones for this shot
+    for (const av of avatars.reg.values()) av.visible = false;
+
+    // Build-driven bot (montage shots)
     if (shot.botFn && shot.botName) {
-      const av = bots.get(shot.botName);
-      if (av) {
-        const { pos: bp, look: bl } = shot.botFn(localT, pos);
-        av.position.set(bp[0], bp[1], bp[2]);
-        // Yaw toward look target
-        const dx = bl[0] - bp[0], dz = bl[2] - bp[2];
-        av.rotation.y = Math.atan2(dx, dz);
+      const av = avatars.ensure(shot.botName);
+      const { pos: bp, look: bl } = shot.botFn(localT, cam.pos);
+      av.position.set(bp[0], bp[1], bp[2]);
+      const dx = bl[0] - bp[0], dz = bl[2] - bp[2];
+      av.rotation.y = Math.atan2(dx, dz);
+      av.visible = true;
+      if (shot.botExpression) setExpression(av, shot.botExpression);
+    }
+
+    // Explicit per-shot avatar positions (skit shots). Format:
+    //   shot.avatars = { Name: { pos, look, posTo?, lookTo?, expression?,
+    //                            expressionAt?, lookAtCamera?, showTag? } }
+    if (shot.avatars) {
+      for (const [name, spec] of Object.entries(shot.avatars)) {
+        const av = avatars.ensure(name);
+        const f = clamp01(localT / Math.max(0.001, shot.duration));
+        const p = spec.posTo ? lerpVec(spec.pos, spec.posTo, ease(f)) : spec.pos;
+        // lookAtCamera: snap the avatar's facing toward the camera each frame
+        // so close-up reaction shots see the face, not the side or back.
+        let l = spec.lookTo ? lerpVec(spec.look ?? spec.pos, spec.lookTo, ease(f)) : (spec.look ?? spec.pos);
+        if (spec.lookAtCamera) l = cam.pos;
+        av.position.set(p[0], p[1], p[2]);
+        const dx = l[0] - p[0], dz = l[2] - p[2];
+        if (dx !== 0 || dz !== 0) av.rotation.y = Math.atan2(dx, dz);
         av.visible = true;
+        if (spec.showTag !== undefined) setTagVisible(av, !!spec.showTag);
+        if (spec.expressionAt) {
+          let exp = spec.expression || 'neutral';
+          for (const ex of spec.expressionAt) {
+            if (localT >= ex.t) exp = ex.expression;
+            else break;
+          }
+          setExpression(av, exp);
+        } else if (spec.expression) {
+          setExpression(av, spec.expression);
+        }
       }
     }
-
-    // Overlay
-    const op = overlayOpacity(shot.overlay, localT);
-    if (op > 0) {
-      overlayEl.textContent = shot.overlay.html;
-      overlayEl.style.opacity = op;
-    } else {
-      overlayEl.style.opacity = 0;
+    // Shot-wide tag default for build-driven bots
+    if (shot.botName && shot.hideTags) {
+      const av = avatars.ensure(shot.botName);
+      setTagVisible(av, false);
+    } else if (shot.botName) {
+      const av = avatars.ensure(shot.botName);
+      setTagVisible(av, true);
     }
 
+    // Overlays
+    overlays.prompt.style.opacity = overlayOpacity(shot.overlay, localT);
+    if (shot.overlay) overlays.prompt.textContent = shot.overlay.html;
+
+    overlays.dialog.style.opacity = overlayOpacity(shot.dialog, localT);
+    if (shot.dialog) {
+      const speaker = shot.dialog.speaker ? `${shot.dialog.speaker}: ` : '';
+      overlays.dialog.textContent = speaker + shot.dialog.text;
+    }
+
+    overlays.title.style.opacity = overlayOpacity(shot.title, localT);
+    if (shot.title) overlays.title.textContent = shot.title.html;
+
+    // Fade (black) at shot boundaries. fadeIn / fadeOut override fade.
+    const fIn  = shot.fadeIn  ?? shot.fade ?? 0;
+    const fOut = shot.fadeOut ?? shot.fade ?? 0;
+    let fade = 0;
+    if (fIn > 0 && localT < fIn) fade = 1 - localT / fIn;
+    else if (fOut > 0 && localT > shot.duration - fOut) fade = (localT - (shot.duration - fOut)) / fOut;
+    overlays.fader.style.opacity = Math.max(0, Math.min(1, fade));
+
     renderer.render(scene, camera);
-    lastT = t;
   }
 
-  // Render one frame at t=0 so the first screenshot is valid
   frame(0);
 
+  // Audio markers: one per shot start, plus any custom cues from the manuscript.
+  // Recorder script reads this and writes a sidecar JSON for post-production.
+  const markers = [];
+  for (const s of shots) {
+    markers.push({ t: +s.start.toFixed(3), kind: 'shot', id: s.id });
+    if (s.audio) markers.push({ t: +s.start.toFixed(3), kind: 'audio', ...s.audio });
+  }
+  if (MANUSCRIPT.audioMarkers) for (const m of MANUSCRIPT.audioMarkers) markers.push({ kind: 'audio', ...m });
+  markers.sort((a, b) => a.t - b.t);
+
   window.__demoFrame = frame;
+  window.__demoMarkers = markers;
   window.__demoState = { width: W, height: H, duration: totalDuration, fps: MANUSCRIPT.fps };
   window.__demoReady = true;
 }
