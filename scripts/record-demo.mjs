@@ -31,9 +31,11 @@ const argv = (() => {
   return a;
 })();
 
-const FPS      = parseInt(argv.fps || '30');
-const DURATION = parseFloat(argv.duration || '10');
-const FRAMES   = parseInt(argv.frames || '0') || Math.round(FPS * DURATION);
+// FPS / DURATION default to whatever the manuscript declares; we discover
+// those after the page's __demoReady fires. CLI flags still override.
+const ARG_FPS      = argv.fps ? parseInt(argv.fps) : null;
+const ARG_DURATION = argv.duration ? parseFloat(argv.duration) : null;
+const ARG_FRAMES   = argv.frames ? parseInt(argv.frames) : null;
 const WIDTH    = parseInt(argv.width || '1280');
 const HEIGHT   = parseInt(argv.height || '720');
 const OUT      = resolve(argv.out || 'recordings/demo.mp4');
@@ -41,13 +43,11 @@ const FRAMES_DIR = resolve(argv['frames-dir'] || 'recordings/frames');
 const KEEP     = !!argv.keep;
 const NO_MP4   = !!argv['no-mp4'];
 
-console.log(`[rec] ${FRAMES} frames at ${FPS}fps, ${WIDTH}x${HEIGHT} → ${OUT}`);
-
 // --- Static server ----------------------------------------------------------
 const PUBLIC_DIR = resolve('public');
 const MIME = {
-  '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css',
-  '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml',
+  '.html': 'text/html', '.js': 'application/javascript', '.mjs': 'application/javascript',
+  '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml',
 };
 const staticServer = http.createServer((req, res) => {
   const urlPath = decodeURIComponent(req.url.split('?')[0]);
@@ -199,7 +199,13 @@ while (true) {
   await new Promise(r => setTimeout(r, 100));
 }
 const state = await send('Runtime.evaluate', { expression: 'JSON.stringify(window.__demoState)', returnByValue: true });
+const pageState = JSON.parse(state.result.value);
 console.log(`[rec] ready. ${state.result.value}`);
+
+const FPS      = ARG_FPS ?? pageState.fps ?? 30;
+const DURATION = ARG_DURATION ?? pageState.duration ?? 10;
+const FRAMES   = ARG_FRAMES ?? Math.round(FPS * DURATION);
+console.log(`[rec] ${FRAMES} frames at ${FPS}fps, ${WIDTH}x${HEIGHT} → ${OUT}`);
 
 // --- Render & capture frames ------------------------------------------------
 const t0 = Date.now();
