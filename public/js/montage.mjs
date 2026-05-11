@@ -111,19 +111,62 @@ export const MONTAGE_SHOTS = [
     prompt: '@Claude build a Japanese pagoda',
     duration: 9, radius: 30, height: 14,
   }), { fadeOut: 0.6 }),
-  // Outro pull-back: high arc with all 9 builds in frame.
+  // Outro: Edvin on a brick throne in the middle of the grid, surrounded
+  // by working bots; camera dollies from a close-on-throne shot out to a
+  // high wide aerial revealing everything.
   {
     id: 'outro',
-    duration: 9,
-    fadeIn: 0.8, fadeOut: 1.2,
+    duration: 11,
+    fadeIn: 0.8, fadeOut: 1.4,
     camera: {
       type: 'dolly',
-      from: [-30, 50, 170],        // start low on the west
-      to:   [-50, 180, 100],       // end high, pulling back northwest
-      lookFrom: [130, 30, 170],
-      lookTo:   [130, 35, 170],
+      from: [130, 25, 162],       // close, south of the throne
+      to:   [-10, 140, 30],        // far NW, high — full aerial of the 3x3
+      lookFrom: [130, 23, 137],   // throne head height
+      lookTo:   [130, 35, 170],   // sweep gaze toward the centre of builds
     },
-    title: { html: 'CraftPlan', t0: 1.0, t1: 7.0, fadeIn: 0.6, fadeOut: 0.8 },
-    overlay: { html: 'AI-designed worlds · built in real time', t0: 1.8, t1: 7.5, fadeIn: 0.6, fadeOut: 1.0 },
+    title: { html: 'CraftPlan', t0: 5.5, t1: 9.5, fadeIn: 0.6, fadeOut: 0.8 },
+    overlay: { html: 'AI-designed worlds · built in real time', t0: 6.2, t1: 10.0, fadeIn: 0.6, fadeOut: 1.0 },
+    // Throne placement: a small brick chair at the center of the grid.
+    events: (() => {
+      const TX = 130, TY = 19, TZ = 137;
+      const ops = [];
+      const BRICK = 10, OAK = 4, GLASS = 11, STONE = 3, GRASS = 1;
+      // 3x3 stone platform, 2 high
+      for (let dy = 0; dy < 2; dy++)
+        for (let dx = -1; dx <= 1; dx++)
+          for (let dz = -1; dz <= 1; dz++)
+            ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ + dz, block: STONE });
+      // Brick seat one above platform
+      for (let dx = -1; dx <= 1; dx++) ops.push({ t: 0.05, x: TX + dx, y: TY + 2, z: TZ, block: BRICK });
+      // Brick back wall (3 wide, 3 tall) one z behind
+      for (let dx = -1; dx <= 1; dx++)
+        for (let dy = 2; dy <= 4; dy++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 1, block: BRICK });
+      // Side armrests (oak log)
+      for (let dy = 2; dy <= 3; dy++) {
+        ops.push({ t: 0.05, x: TX - 2, y: TY + dy, z: TZ, block: OAK });
+        ops.push({ t: 0.05, x: TX + 2, y: TY + dy, z: TZ, block: OAK });
+      }
+      // Glass cap on the back (decorative)
+      for (let dx = -1; dx <= 1; dx++) ops.push({ t: 0.05, x: TX + dx, y: TY + 5, z: TZ - 1, block: GLASS });
+      // Carpet leading up: planks block at front of throne
+      for (let dz = 1; dz <= 4; dz++) ops.push({ t: 0.05, x: TX, y: TY + 2, z: TZ + dz, block: BRICK });
+      return ops;
+    })(),
+    avatars: {
+      Edvin: {
+        pos: [130, 22, 137],            // perched on the throne
+        look: [130, 22, 200],            // looking south, toward the start-of-dolly camera
+        expression: 'smug',
+        showTag: false,
+        still: true,                    // no idle bob — he sits regal
+      },
+      // A few background bots "working" — visible as tiny figures at distance.
+      Bot_NW: { pos: [108, 21, 108], look: [99, 21, 99], expression: 'focused', showTag: false },
+      Bot_NE: { pos: [178, 21, 108], look: [200, 21, 99], expression: 'focused', showTag: false },
+      Bot_SW: { pos: [68,  21, 178], look: [60, 21, 200], expression: 'focused', showTag: false },
+      Bot_SE: { pos: [208, 21, 178], look: [200, 21, 200], expression: 'focused', showTag: false },
+    },
   },
 ];

@@ -348,17 +348,18 @@ export async function startRecorder() {
 
     // Explicit per-shot avatar positions (skit shots). Format:
     //   shot.avatars = { Name: { pos, look, posTo?, lookTo?, expression?,
-    //                            expressionAt?, lookAtCamera?, showTag? } }
+    //                            expressionAt?, lookAtCamera?, showTag?, still? } }
     if (shot.avatars) {
       for (const [name, spec] of Object.entries(shot.avatars)) {
         const av = avatars.ensure(name);
         const f = clamp01(localT / Math.max(0.001, shot.duration));
         const p = spec.posTo ? lerpVec(spec.pos, spec.posTo, ease(f)) : spec.pos;
-        // lookAtCamera: snap the avatar's facing toward the camera each frame
-        // so close-up reaction shots see the face, not the side or back.
         let l = spec.lookTo ? lerpVec(spec.look ?? spec.pos, spec.lookTo, ease(f)) : (spec.look ?? spec.pos);
         if (spec.lookAtCamera) l = cam.pos;
-        av.position.set(p[0], p[1], p[2]);
+        // Subtle idle: gentle head bob so characters don't read as statues.
+        // Disable with `still: true` for shots that need locked framing.
+        const bob = spec.still ? 0 : 0.04 * Math.sin(t * 2.6 + (name.charCodeAt(0) || 0));
+        av.position.set(p[0], p[1] + bob, p[2]);
         const dx = l[0] - p[0], dz = l[2] - p[2];
         if (dx !== 0 || dz !== 0) av.rotation.y = Math.atan2(dx, dz);
         av.visible = true;
