@@ -24,14 +24,36 @@ const HOST = process.env.HOST || 'localhost:3000';
 const NAME = process.env.BOT_NAME || 'Claude';
 const BUILD_RATE = parseInt(process.env.BUILD_RATE || '40'); // blocks/sec
 
+// Idle behavior (traditional, no LLM)
+const TICK_HZ = 10;
+const WANDER_SPEED = 3.5; // blocks/sec
+const WORLD_MIN = 16, WORLD_MAX = 240; // stay away from world edges (256x256)
+
+// Autonomous building (LLM). Disable with AUTO_BUILD=0
+const AUTO_BUILD = process.env.AUTO_BUILD !== '0';
+const AUTO_BUILD_MIN_S = parseInt(process.env.AUTO_BUILD_MIN_INTERVAL || '300'); // 5 min
+const AUTO_BUILD_MAX_S = parseInt(process.env.AUTO_BUILD_MAX_INTERVAL || '900'); // 15 min
+const AUTO_BUILD_THEMES = [
+  'small wooden cottage', 'stone watchtower', 'flower garden',
+  'wooden well', 'campfire pit', 'large mushroom', 'outdoor bench',
+  'stone fountain', 'snowman', 'tiny windmill', 'pumpkin patch',
+  'archway', 'wooden bridge', 'stone obelisk', 'fox sculpture',
+  'meditation pond', 'flagpole', 'sandcastle', 'gazebo',
+];
+
 // Bot state
 let ws = null;
 let myId = null;
 const pos = [64, 30, 64];
 let yaw = 0, pitch = 0;
 let currentTask = null; // { cancel: bool }
-let lastPosSend = 0;
 let posInterval = null;
+
+// Idle state machine
+let state = 'idle';
+let idleUntil = 0;
+let wanderTarget = null;
+let nextAutoBuildAt = 0;
 
 // Track other players: id -> { name, position: [x,y,z] }
 const players = new Map();
@@ -46,7 +68,92 @@ function sendChat(text) { send('chat', { message: text }); }
 
 function sendPosition() {
   send('move', { position: [...pos], rotation: [yaw, pitch] });
-  lastPosSend = Date.now();
+}
+
+const rand = (min, max) => min + Math.random() * (max - min);
+const clampBounds = v => Math.max(WORLD_MIN, Math.min(WORLD_MAX, v));
+
+function setIdle(minS = 2, maxS = 6) {
+  state = 'idle';
+  idleUntil = Date.now() + rand(minS, maxS) * 1000;
+}
+
+function startWander() {
+  const angle = Math.random() * Math.PI * 2;
+  const dist = rand(10, 40);
+  const tx = clampBounds(pos[0] + Math.cos(angle) * dist);
+  const tz = clampBounds(pos[2] + Math.sin(angle) * dist);
+  wanderTarget = [tx, tz];
+  state = 'wander';
+}
+
+function tickIdle() {
+  if (Date.now() < idleUntil) return;
+  if (tryStartAutoBuild()) return;
+  startWander();
+}
+
+function tickWander() {
+  const [tx, tz] = wanderTarget;
+  const dx = tx - pos[0], dz = tz - pos[2];
+  const dist = Math.hypot(dx, dz);
+  if (dist < 0.5) { setIdle(); return; }
+  const step = WANDER_SPEED / TICK_HZ;
+  if (step >= dist) { pos[0] = tx; pos[2] = tz; }
+  else {
+    pos[0] += dx * step / dist;
+    pos[2] += dz * step / dist;
+  }
+  pos[1] = terrainHeight(Math.floor(pos[0]), Math.floor(pos[2])) + 1;
+  yaw = Math.atan2(-dx, -dz);
+  pitch = 0;
+}
+
+function tryStartAutoBuild() {
+  if (!AUTO_BUILD) return false;
+  if (currentTask) return false;
+  if (Date.now() < nextAutoBuildAt) return false;
+  const theme = AUTO_BUILD_THEMES[Math.floor(Math.random() * AUTO_BUILD_THEMES.length)];
+  const angle = Math.random() * Math.PI * 2;
+  const dist = rand(15, 30);
+  const x = Math.round(clampBounds(pos[0] + Math.cos(angle) * dist));
+  const z = Math.round(clampBounds(pos[2] + Math.sin(angle) * dist));
+  // Reschedule before kicking off so failures don't spam the LLM
+  nextAutoBuildAt = Date.now() + rand(AUTO_BUILD_MIN_S, AUTO_BUILD_MAX_S) * 1000;
+  console.log(`[auto-build] "${theme}" at ${x},${z}`);
+  runAutoBuild(theme, x, z).catch(e => {
+    console.error('[auto-build error]', e);
+    sendChat(`Hmm, that didn't work: ${(e.message || '').slice(0, 80)}`);
+    currentTask = null;
+    setIdle(5, 10);
+  });
+  return true;
+}
+
+async function runAutoBuild(theme, x, z) {
+  const ground = terrainHeight(x, z) + 1;
+  sendChat(`I think I'll build a ${theme}.`);
+  let plan;
+  try {
+    const relPlan = await botPlanWithAI(theme, x, z, ground);
+    if (relPlan.length === 0) { sendChat('Never mind, lost my train of thought.'); setIdle(5, 10); return; }
+    plan = relPlan.map(b => ({ x: x + b.x, y: ground + b.y, z: z + b.z, block: b.block }));
+  } catch (e) {
+    sendChat(`Couldn't plan a ${theme}: ${(e.message || '').slice(0, 60)}`);
+    setIdle(5, 10);
+    return;
+  }
+  await teleport(x + 8, ground + 10, z + 8);
+  await sleep(200);
+  await executePlan(plan, theme);
+}
+
+function tick() {
+  if (!currentTask) {
+    if (state === 'idle') tickIdle();
+    else if (state === 'wander') tickWander();
+  }
+  if (ws && ws.readyState === 1) sendPosition();
 }
 
 function lookAt(tx, ty, tz) {
@@ -74,20 +181,35 @@ async function executePlan(plan, description) {
 
   const start = Date.now();
   for (let i = 0; i < ordered.length; i++) {
-    if (currentTask.cancel) { sendChat('Stopped.'); currentTask = null; return; }
+    if (currentTask.cancel) {
+      sendChat('Stopped.');
+      currentTask = null;
+      setIdle(2, 5);
+      return;
+    }
     const b = ordered[i];
+
+    // Hover and slowly orbit around the block being placed
+    const elapsed = (Date.now() - start) / 1000;
+    const orbitR = 6, theta = elapsed * 0.4;
+    pos[0] = b.x + 0.5 + Math.cos(theta) * orbitR;
+    pos[1] = b.y + 4;
+    pos[2] = b.z + 0.5 + Math.sin(theta) * orbitR;
     lookAt(b.x + 0.5, b.y + 0.5, b.z + 0.5);
+
     const type = b.block === AIR ? 'block_break' : 'block_place';
     send(type, { x: b.x, y: b.y, z: b.z, block: b.block });
 
     if (i % batchSize === batchSize - 1) {
-      if (Date.now() - lastPosSend > 150) sendPosition();
       await sleep(delay * batchSize);
     }
   }
   const elapsed = ((Date.now() - start) / 1000).toFixed(1);
   sendChat(`Done in ${elapsed}s (${ordered.length} blocks)`);
   currentTask = null;
+  // Space out the next auto-build so it doesn't fire right after this one
+  nextAutoBuildAt = Date.now() + rand(AUTO_BUILD_MIN_S, AUTO_BUILD_MAX_S) * 1000;
+  setIdle(5, 12);
 }
 
 // --- AI builder: LLM writes JavaScript that calls builder primitives ---
@@ -256,6 +378,7 @@ async function handleCommand(speakerId, speakerName, words) {
       const defaults = cmd === 'come' ? speakerPos : pos;
       const [x, y, z] = parseCoords(args, defaults);
       await teleport(x, y, z);
+      setIdle(8, 15); // hang out instead of immediately wandering off
       sendChat(`@ ${x},${y},${z}`);
       break;
     }
@@ -263,6 +386,7 @@ async function handleCommand(speakerId, speakerName, words) {
     case 'stop': {
       if (currentTask) currentTask.cancel = true;
       else sendChat('Nothing to stop.');
+      setIdle(3, 6);
       break;
     }
 
@@ -299,8 +423,12 @@ ws.on('message', (data) => {
       for (const p of msg.players || [])
         players.set(p.id, { name: p.name, position: [...p.position] });
       console.log(`Connected. Listening for @${NAME} commands in chat.`);
+      // Drop bot onto the surface near spawn so it doesn't appear floating
+      pos[1] = terrainHeight(Math.floor(pos[0]), Math.floor(pos[2])) + 1;
+      setIdle(3, 6);
+      nextAutoBuildAt = Date.now() + rand(AUTO_BUILD_MIN_S, AUTO_BUILD_MAX_S) * 1000;
       if (posInterval) clearInterval(posInterval);
-      posInterval = setInterval(sendPosition, 500);
+      posInterval = setInterval(tick, 1000 / TICK_HZ);
       setTimeout(() => sendChat(`Hi! I'm ${NAME}. Say "@${NAME} help" for commands.`), 800);
       break;
     case 'player_join':
