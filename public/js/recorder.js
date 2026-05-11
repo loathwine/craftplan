@@ -12,6 +12,7 @@ import * as THREE from 'three';
 import { World } from './World.js';
 import { TaskManager } from './TaskManager.js';
 import { MANUSCRIPT } from './manuscript.mjs';
+import { terrainHeight } from './terrain.js';
 
 const ease = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -53,17 +54,18 @@ function makeCameraPath(spec, duration) {
 // ---------------------------------------------------------------------------
 function makeBotAvatar(name, color = 0x4ade80) {
   const g = new THREE.Group();
+  // Slightly oversized so it reads at orbit distance (~16 blocks).
   const body = new THREE.Mesh(
-    new THREE.BoxGeometry(0.5, 1.2, 0.35),
+    new THREE.BoxGeometry(0.8, 1.8, 0.55),
     new THREE.MeshLambertMaterial({ color }),
   );
-  body.position.y = 0.6;
+  body.position.y = 0.9;
   g.add(body);
   const head = new THREE.Mesh(
-    new THREE.BoxGeometry(0.42, 0.42, 0.42),
+    new THREE.BoxGeometry(0.7, 0.7, 0.7),
     new THREE.MeshLambertMaterial({ color: 0xffcc88 }),
   );
-  head.position.y = 1.42;
+  head.position.y = 2.15;
   g.add(head);
   // Name sprite
   const c = document.createElement('canvas');
@@ -80,8 +82,8 @@ function makeBotAvatar(name, color = 0x4ade80) {
   tex.minFilter = THREE.LinearFilter;
   const tagMat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
   const tag = new THREE.Sprite(tagMat);
-  tag.position.y = 2.0;
-  tag.scale.set(2.5, 0.625, 1);
+  tag.position.y = 3.0;
+  tag.scale.set(3.2, 0.8, 1);
   tag.renderOrder = 1;
   g.add(tag);
   return g;
@@ -130,7 +132,10 @@ async function fetchPlan(slug) {
 function compileBuild(buildSpec, planJson) {
   const { startT, endT, bot } = buildSpec;
   const span = Math.max(0.001, endT - startT);
-  const origin = planJson.origin;
+  // Allow the manuscript to override where the build appears in the world.
+  const origin = buildSpec.origin
+    ? { x: buildSpec.origin[0], y: buildSpec.origin[1], z: buildSpec.origin[2] }
+    : planJson.origin;
   // Sort by Y so the build grows bottom-up; small visual win.
   const ordered = [...planJson.plan].sort((a, b) => a.y - b.y || a.z - b.z || a.x - b.x);
   const events = ordered.map((b, i) => ({
@@ -140,16 +145,32 @@ function compileBuild(buildSpec, planJson) {
   }));
   const radius = buildSpec.botRadius ?? 5;
   const heightOff = buildSpec.botHeight ?? 3;
-  // Bot orbits the most recently placed block at a soft radius
-  function botAt(localT) {
+  // Bot hovers next to the current block, biased toward the camera so it
+  // stays visible. Offset perpendicular so it doesn't block the build either.
+  function botAt(localT, cameraPos) {
     if (localT <= startT || events.length === 0) {
       return { pos: [origin.x + radius, origin.y + heightOff, origin.z], look: [origin.x, origin.y, origin.z] };
     }
-    // Find current block index based on progress through the build
     const progress = Math.min(1, (localT - startT) / span);
     const idx = Math.min(events.length - 1, Math.floor(progress * events.length));
     const b = events[idx];
-    const orbit = 0.6 * localT; // gentle spin
+    if (cameraPos) {
+      const toCamX = cameraPos[0] - b.x, toCamZ = cameraPos[2] - b.z;
+      const len = Math.hypot(toCamX, toCamZ) || 1;
+      const ux = toCamX / len, uz = toCamZ / len;
+      // Perpendicular (rotate 90deg) so the bot stands to one side
+      const perpX = -uz, perpZ = ux;
+      // Slow swing so the perp offset alternates left/right gently
+      const swing = Math.sin(localT * 0.5);
+      const front = radius * 0.6;
+      const side = radius * 0.6 * swing;
+      return {
+        pos: [b.x + ux * front + perpX * side, b.y + heightOff, b.z + uz * front + perpZ * side],
+        look: [b.x, b.y, b.z],
+      };
+    }
+    // Fallback: independent orbit (used before cameraPos is plumbed)
+    const orbit = 0.6 * localT;
     return {
       pos: [b.x + radius * Math.cos(orbit), b.y + heightOff, b.z + radius * Math.sin(orbit)],
       look: [b.x, b.y, b.z],
@@ -173,7 +194,9 @@ export async function startRecorder() {
   const W = MANUSCRIPT.width, H = MANUSCRIPT.height;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x7ec8e3);
-  scene.fog = new THREE.Fog(0x7ec8e3, 60, 200);
+  // Push fog farther than the live game (60..200) so wide outro shots
+  // don't lose the corner builds.
+  scene.fog = new THREE.Fog(0x7ec8e3, 120, 360);
 
   const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 400);
   const canvas = document.getElementById('game');
@@ -203,6 +226,16 @@ export async function startRecorder() {
           for (let y = y0; y <= y1; y++)
             for (let z = z0; z <= z1; z++)
               bulk[`${x},${y},${z}`] = 0;
+      } else if (op.type === 'clearAboveGround') {
+        // Clear from terrainHeight(x,z)+1 up to topY. Wipes trees without
+        // creating pits below the surface.
+        const [x0, z0] = op.min, [x1, z1] = op.max, topY = op.topY;
+        for (let x = x0; x <= x1; x++) {
+          for (let z = z0; z <= z1; z++) {
+            const h = terrainHeight(x, z);
+            for (let y = h + 1; y <= topY; y++) bulk[`${x},${y},${z}`] = 0;
+          }
+        }
       }
     }
     if (Object.keys(bulk).length) world.applyBlockChanges(bulk);
@@ -249,14 +282,18 @@ export async function startRecorder() {
     for (const s of shots) { if (t < s.end) { shot = s; break; } }
     const localT = Math.max(0, t - shot.start);
 
-    // Apply pending world events (forward only). If the recorder skips back,
-    // events from later shots may already have been applied; that's fine —
-    // we'd reload the page for a rewind.
+    // Apply pending world events (forward only). Batch this frame's events
+    // through applyBlockChanges so each affected chunk rebuilds at most once
+    // per frame, not once per block.
     if (shot.events && shot.appliedIdx < shot.events.length) {
+      const batch = {};
+      let n = 0;
       while (shot.appliedIdx < shot.events.length && shot.events[shot.appliedIdx].t <= localT) {
         const e = shot.events[shot.appliedIdx++];
-        world.setBlock(e.x, e.y, e.z, e.block);
+        batch[`${e.x},${e.y},${e.z}`] = e.block;
+        n++;
       }
+      if (n > 0) world.applyBlockChanges(batch);
     }
 
     // Camera
@@ -269,7 +306,7 @@ export async function startRecorder() {
     if (shot.botFn && shot.botName) {
       const av = bots.get(shot.botName);
       if (av) {
-        const { pos: bp, look: bl } = shot.botFn(localT);
+        const { pos: bp, look: bl } = shot.botFn(localT, pos);
         av.position.set(bp[0], bp[1], bp[2]);
         // Yaw toward look target
         const dx = bl[0] - bp[0], dz = bl[2] - bp[2];
