@@ -662,4 +662,10 @@ function animate() {
 }
 
 // =====================================================
-init();
+if (new URLSearchParams(location.search).has('record')) {
+  // Headless recording: skip live mode entirely
+  const { startRecorder } = await import('./recorder.js');
+  startRecorder();
+} else {
+  init();
+}

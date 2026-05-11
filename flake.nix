@@ -20,6 +20,12 @@
             ln -sfnT ${self.packages.${pkgs.system}.default}/lib/node_modules node_modules
           '';
         };
+        # For headless demo recording: chromium drives the page frame-by-frame
+        # via CDP; ffmpeg stitches the captured PNGs into MP4.
+        record = pkgs.mkShell {
+          inputsFrom = [ self.devShells.${pkgs.system}.default ];
+          buildInputs = [ pkgs.chromium pkgs.ffmpeg ];
+        };
       });
 
       packages = forAllSystems ({ pkgs }: {

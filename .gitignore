@@ -10,3 +10,4 @@ bot-*.log
 data-backup-*.json
 data-demo-backup-*.json
 tunnel.log
+recordings/
