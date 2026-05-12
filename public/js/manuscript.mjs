@@ -15,8 +15,10 @@ const AVATARS = {
   Bot_SE: { bodyColor: 0xeab308, headColor: 0xffcc88, hat: { shape: 'cone', color: 0xa16207 } },
 };
 
-// Compute the timestamp at which the montage begins (= sum of skit durations)
+// Compute the timestamp at which the montage and outro begin so audio
+// cues stay correct when build counts change.
 const SKIT_END = SKIT_SHOTS.reduce((acc, s) => acc + s.duration, 0);
+const OUTRO_START = SKIT_END + MONTAGE_SHOTS.slice(0, -1).reduce((acc, s) => acc + s.duration, 0);
 
 export const MANUSCRIPT = {
   fps: 30,
@@ -27,11 +29,10 @@ export const MANUSCRIPT = {
   shots: [...SKIT_SHOTS, ...MONTAGE_SHOTS],
   // Post-production cues: drop your music/SFX file aligned to these times.
   audioMarkers: [
-    { t: 0,        kind: 'music', section: 'intro',  note: 'soft ambient, mildly comedic strings' },
-    { t: SKIT_END - 1.0, kind: 'sfx',   id: 'whoosh', note: 'rising whoosh before the drop' },
-    { t: SKIT_END, kind: 'music', section: 'drop',   note: 'techno drop — montage begins' },
-    // Outro = last shot. Recorder also emits a shot marker for it; this is
-    // an extra music cue.
-    { t: SKIT_END + 89, kind: 'music', section: 'outro', note: 'orchestral swell / fade' },
+    { t: 0,             kind: 'music', section: 'intro',  note: 'soft ambient, mildly comedic strings' },
+    { t: SKIT_END - 1,  kind: 'sfx',   id: 'whoosh',      note: 'rising whoosh before the drop' },
+    { t: SKIT_END,      kind: 'music', section: 'drop',   note: 'techno drop — montage begins' },
+    { t: OUTRO_START - 1, kind: 'sfx', id: 'swell',       note: 'rising swell into outro' },
+    { t: OUTRO_START,   kind: 'music', section: 'outro',  note: 'orchestral swell / fade' },
   ],
 };
