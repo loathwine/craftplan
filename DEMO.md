@@ -80,6 +80,13 @@ at those times. Sample marker cues already in the manuscript:
 Edit `MANUSCRIPT.audioMarkers` in `manuscript.mjs` to add or move cues, or add
 `audio: {...}` on any individual shot.
 
+If you only changed cue timings (no visual change), you can regenerate the
+sidecar JSON against an existing MP4 without re-rendering:
+
+```bash
+nix develop --command node scripts/dump-markers.mjs recordings/latest.markers.json
+```
+
 ### Determinism
 
 The page never reads a wall clock — the recorder is the clock. Two consecutive
