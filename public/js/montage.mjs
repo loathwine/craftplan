@@ -59,7 +59,7 @@ export const MONTAGE_SETUP = [
 // Each helper places blocks linearly across [startT, startT+duration] so the
 // matching bot reads as "actively building" during the pull-back.
 
-function spiralStaircase(cx, cy, cz, { startT, duration = 9, height = 25, radius = 4 } = {}) {
+export function spiralStaircase(cx, cy, cz, { startT, duration = 9, height = 25, radius = 4 } = {}) {
   const STONE = 3, COBBLE = 8;
   const ops = [];
   for (let i = 0; i < height; i++) ops.push({ x: cx, y: cy + i, z: cz, block: COBBLE });
@@ -73,7 +73,7 @@ function spiralStaircase(cx, cy, cz, { startT, duration = 9, height = 25, radius
   return ops.map((op, i) => ({ ...op, t: startT + (i / N) * duration }));
 }
 
-function bigTreeWithVines(cx, cy, cz, { startT, duration = 9, trunkH = 12, canopyR = 5, vineDrop = 6 } = {}) {
+export function bigTreeWithVines(cx, cy, cz, { startT, duration = 9, trunkH = 12, canopyR = 5, vineDrop = 6 } = {}) {
   const OAK = 4, LEAVES = 5;
   const ops = [];
   for (let i = 0; i < trunkH; i++) ops.push({ x: cx, y: cy + i, z: cz, block: OAK });
@@ -96,7 +96,7 @@ function bigTreeWithVines(cx, cy, cz, { startT, duration = 9, trunkH = 12, canop
   return ops.map((op, i) => ({ ...op, t: startT + (i / N) * duration }));
 }
 
-function sauronEye(cx, cy, cz, { startT, duration = 9, towerH = 22 } = {}) {
+export function sauronEye(cx, cy, cz, { startT, duration = 9, towerH = 22 } = {}) {
   const BRICK = 10, COBBLE = 8, STONE = 3;
   const ops = [];
   // Cobble tower base (3x3, towerH tall)
