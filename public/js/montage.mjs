@@ -211,21 +211,29 @@ export const MONTAGE_SHOTS = [
     duration: 9, radius: 28, height: 14,
     fadeOut: 0.6,
   }),
-  // Outro: extreme close-up on Steve's happy face, two giant knight statues
-  // flank the throne, three bots actively build new wonders during the
-  // pull-back. Camera dollies from his face all the way up to a wide aerial.
+  // Outro: linger on Steve's face for the first few seconds, then a long
+  // dolly back and up to the aerial reveal. Camera also delays the
+  // look-pan so we stay locked on him until the pullback really begins.
   {
     id: 'outro',
-    duration: 14,
+    duration: 19,
     fadeIn: 0.8, fadeOut: 1.6,
     camera: {
-      type: 'dolly',
-      from: [130, 52, 51.6],   // EXTREME close-up on Steve's face
-      to:   [130, 210, 255],   // far south + very high — full aerial
-      lookFrom: [130, 52, 50], // Steve's eyes
-      lookTo:   [130, 35, 160],// centre of all builds
+      type: 'keyframes',
+      keys: [
+        // 0-4s: extreme close-up on Steve, only a tiny drift back so the
+        // smile reads but the face stays huge in frame.
+        { t: 0,    pos: [130, 52, 51.6], look: [130, 52, 50] },
+        { t: 4.0,  pos: [130, 53, 54],   look: [130, 52, 50] },
+        // 4-10s: pull back, still keeping the look target on Steve (so the
+        // camera "looks back" at the throne rather than tilting down).
+        { t: 10.0, pos: [130, 75, 110],  look: [130, 50, 55] },
+        // 10-19s: rise and tilt down to the wide aerial — only NOW does the
+        // look pan onto the centre of the grid.
+        { t: 19.0, pos: [130, 210, 255], look: [130, 35, 160] },
+      ],
     },
-    title: { html: 'CraftPlan', t0: 7.0, t1: 12.5, fadeIn: 0.6, fadeOut: 0.8 },
+    title: { html: 'CraftPlan', t0: 12.0, t1: 17.5, fadeIn: 0.6, fadeOut: 0.8 },
     // Knight statues flanking the throne, placed instantly at outro start.
     placements: [
       { slug: 'knight-statue', origin: [108, 19, 50] }, // left knight (west)
@@ -281,10 +289,12 @@ export const MONTAGE_SHOTS = [
       }
       // Active background bot builds during the pull-back — three wonders
       // grow in the distance: a tree with vines, a spiral staircase, the
-      // Eye of Sauron looking up from atop a cobble tower.
-      ops = ops.concat(bigTreeWithVines(70, 19, 135, { startT: 0.5, duration: 9 }));
-      ops = ops.concat(spiralStaircase(250, 19, 135, { startT: 0.5, duration: 9, height: 22, radius: 4 }));
-      ops = ops.concat(sauronEye(70, 19, 200, { startT: 0.5, duration: 9, towerH: 22 }));
+      // Eye of Sauron looking up from atop a cobble tower. Start after the
+      // closeup-on-Steve beat so the viewer notices them as the camera
+      // pulls back.
+      ops = ops.concat(bigTreeWithVines(70, 19, 135, { startT: 3.0, duration: 14 }));
+      ops = ops.concat(spiralStaircase(250, 19, 135, { startT: 3.0, duration: 14, height: 22, radius: 4 }));
+      ops = ops.concat(sauronEye(70, 19, 200, { startT: 3.0, duration: 14, towerH: 22 }));
       return ops;
     })(),
     avatars: {

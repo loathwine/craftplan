@@ -46,6 +46,25 @@ function makeCameraPath(spec, duration) {
     }
     case 'still':
       return () => ({ pos: spec.pos, look: spec.look });
+    case 'keyframes': {
+      // spec.keys: [{ t, pos, look, ease? }, ...]
+      // Linearly interpolate (with optional per-segment ease) between keys.
+      const keys = spec.keys;
+      return (t) => {
+        if (t <= keys[0].t) return { pos: keys[0].pos, look: keys[0].look };
+        for (let i = 0; i < keys.length - 1; i++) {
+          const a = keys[i], b = keys[i + 1];
+          if (t <= b.t) {
+            const span = Math.max(0.001, b.t - a.t);
+            const local = (t - a.t) / span;
+            const f = b.ease === false ? local : ease(local);
+            return { pos: lerpVec(a.pos, b.pos, f), look: lerpVec(a.look, b.look, f) };
+          }
+        }
+        const last = keys[keys.length - 1];
+        return { pos: last.pos, look: last.look };
+      };
+    }
     default:
       throw new Error(`Unknown camera type: ${spec.type}`);
   }
