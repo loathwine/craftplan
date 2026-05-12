@@ -13,6 +13,21 @@
     }
   }
   </script>
+  <script>
+    // Hide the join screen immediately on non-live entry points (record /
+    // explore / static hosts) so it never flashes while the JS modules load.
+    (() => {
+      const p = new URLSearchParams(location.search);
+      const isLocal = ['localhost', '127.0.0.1', '0.0.0.0'].includes(location.hostname)
+                   || location.protocol === 'file:';
+      if (p.has('record') || p.has('explore') || (!p.has('live') && !isLocal)) {
+        document.documentElement.classList.add('no-live-ui');
+      }
+    })();
+  </script>
+  <style>
+    html.no-live-ui #join-screen { display: none; }
+  </style>
 </head>
 <body>
   <canvas id="game"></canvas>
