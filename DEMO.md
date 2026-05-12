@@ -26,21 +26,25 @@ The output is `public/data/world-snapshot.json` (~1.4 MB; only the
 
 ### Deploying to GitHub Pages
 
-`public/` is the entire site (importmap loads three.js from unpkg, so
-no bundler). Two easy paths:
+`public/` is the entire site (importmap loads three.js from unpkg, no
+bundler) so any static host works. The repo ships a workflow at
+`.github/workflows/pages.yml` that publishes `public/` automatically.
 
-```bash
-# Branch-based: push public/ as the gh-pages branch
-git subtree split --prefix=public -b gh-pages
-git push origin gh-pages --force
-# Then in Settings → Pages, source: gh-pages branch / root
-```
+One-time setup on github.com:
+1. Push the repo (with the workflow file) to GitHub.
+2. Go to **Settings → Pages**.
+3. Under **Source**, pick **"GitHub Actions"** (not "Deploy from a branch").
+4. The workflow runs on every push to `master`/`main`/`demo-mode`; watch
+   it in the **Actions** tab. When it goes green, Pages shows the URL.
 
-or copy `public/` to `docs/` on master and serve from there. The page
-fetches `data/world-snapshot.json` and `data/plans/*.json` relative to
-the page URL, so any static host works.
+Visitors land at:
+`https://<user>.github.io/<repo>/?explore=demo`
 
-Visitors land on the explore page via `https://<user>.github.io/craftplan/?explore=demo`.
+The page fetches `data/world-snapshot.json` and `data/plans/*.json`
+relative to the page URL, so subpath hosting works out of the box.
+
+Trigger a manual rebuild any time via the Actions tab → "Deploy demo
+to GitHub Pages" → **Run workflow**.
 
 ## Quick start
 
