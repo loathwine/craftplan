@@ -77,7 +77,8 @@ export const MONTAGE_SHOTS = [
   buildShot({
     id: 'octopus', plan: 'octopus', origin: O_OCTOPUS,
     prompt: '@Claude build a giant octopus rising from the ground',
-    duration: 9, radius: 30, height: 12,
+    duration: 10, radius: 40, height: 16,
+    startA: Math.PI * 0.4, endA: Math.PI * 1.6,  // start south to see eyes
   }),
   buildShot({
     id: 'colosseum', plan: 'colosseum', origin: O_COLOSSEUM,
@@ -97,7 +98,7 @@ export const MONTAGE_SHOTS = [
   buildShot({
     id: 'pyramid', plan: 'pyramid', origin: O_PYRAMID,
     prompt: '@Claude build the Great Pyramid of Giza',
-    duration: 8, radius: 26, height: 12,
+    duration: 9, radius: 38, height: 12,
   }),
   buildShot({
     id: 'eiffel', plan: 'eiffel-tower', origin: O_EIFFEL,
