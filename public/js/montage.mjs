@@ -19,7 +19,10 @@ const O_OCTOPUS   = O(1, 1);
 const O_COLOSSEUM = O(2, 1);
 const O_PYRAMID   = O(3, 1);
 const O_ROCINANTE = O(0, 2);
-const O_KURAMA    = O(1, 2);
+// Kurama plan extends z=±22 from origin. At z=235 (default row C) the
+// face clipped past the world's z=255 edge. Move this fox alone north
+// to z=215 so the entire build stays inside the world.
+const O_KURAMA    = [100, 19, 215];
 const O_PAGODA    = O(2, 2);
 const O_EIFFEL    = O(3, 2);  // SE
 
@@ -161,7 +164,7 @@ export const MONTAGE_SHOTS = [
   buildShot({
     id: 'kurama', plan: 'naruto-kurama', origin: O_KURAMA,
     prompt: '@Claude build Kurama the nine-tailed fox',
-    duration: 10, radius: 38, height: 14,
+    duration: 10, radius: 30, height: 14,
     // Tight arc on the south side only — Kurama's face is at +Z so we keep
     // the camera in front of it the whole time, never circling round back.
     startA: Math.PI * 0.35, endA: Math.PI * 0.75,
