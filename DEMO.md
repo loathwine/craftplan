@@ -5,6 +5,43 @@ comedic intro skit, a 9-build AI montage, and an outro pull-back. The page
 is driven frame-by-frame over CDP so the same script always produces the
 same video.
 
+## Static explore mode (browser-only)
+
+`?explore=demo` opens the page in a server-less mode: the deterministic
+terrain plus a snapshot of every demo build are loaded straight in the
+browser, the viewer flies around in first person, and an on-page menu
+lets them spawn any of the 13 cached LLM plans (dragon, Hogwarts,
+Stonehenge, Eiffel, …). A small green Claude avatar appears at the
+build spot and places blocks visibly over ~10 s — same replay path the
+recorder uses, no LLM call needed.
+
+Regenerate the snapshot whenever the manuscript changes:
+
+```bash
+nix develop --command node scripts/generate-snapshot.mjs
+```
+
+The output is `public/data/world-snapshot.json` (~1.4 MB; only the
+~100 K block deltas that actually differ from the natural terrain).
+
+### Deploying to GitHub Pages
+
+`public/` is the entire site (importmap loads three.js from unpkg, so
+no bundler). Two easy paths:
+
+```bash
+# Branch-based: push public/ as the gh-pages branch
+git subtree split --prefix=public -b gh-pages
+git push origin gh-pages --force
+# Then in Settings → Pages, source: gh-pages branch / root
+```
+
+or copy `public/` to `docs/` on master and serve from there. The page
+fetches `data/world-snapshot.json` and `data/plans/*.json` relative to
+the page URL, so any static host works.
+
+Visitors land on the explore page via `https://<user>.github.io/craftplan/?explore=demo`.
+
 ## Quick start
 
 ```bash

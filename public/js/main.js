@@ -662,10 +662,16 @@ function animate() {
 }
 
 // =====================================================
-if (new URLSearchParams(location.search).has('record')) {
+const params = new URLSearchParams(location.search);
+if (params.has('record')) {
   // Headless recording: skip live mode entirely
   const { startRecorder } = await import('./recorder.js');
   startRecorder();
+} else if (params.has('explore')) {
+  // Static demo explore mode: load the snapshot, fly around, trigger
+  // pre-recorded bot builds. No server, no LLM.
+  const { startExplore } = await import('./explore.js');
+  startExplore();
 } else {
   init();
 }
