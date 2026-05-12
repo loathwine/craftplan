@@ -90,6 +90,10 @@ mkdirSync(resolve(OUT, '..'), { recursive: true });
 // --- Spawn chromium ---------------------------------------------------------
 const CDP_PORT = 9222 + Math.floor(Math.random() * 1000);
 const profileDir = mkdtempSync(join(tmpdir(), 'craftplan-rec-'));
+// detached: true puts chromium (and every renderer/gpu/zygote it forks) in
+// its own process group, so a SIGKILL to -chrome.pid tears the whole tree
+// down. Without this, killing this node script orphaned the GPU + renderer
+// children, which would then spin at 100% CPU forever.
 const chrome = spawn('chromium', [
   '--headless=new',
   '--no-sandbox',
@@ -104,7 +108,7 @@ const chrome = spawn('chromium', [
   `--remote-debugging-port=${CDP_PORT}`,
   `--user-data-dir=${profileDir}`,
   PAGE_URL,
-], { stdio: ['ignore', 'pipe', 'pipe'] });
+], { stdio: ['ignore', 'pipe', 'pipe'], detached: true });
 
 let chromeStderr = '';
 chrome.stderr.on('data', (d) => { chromeStderr += d.toString(); });
@@ -112,12 +116,24 @@ chrome.on('exit', (code) => {
   if (code !== 0 && code !== null) console.error(`[rec] chromium exited ${code}\n${chromeStderr.slice(-2000)}`);
 });
 
+let cleanedUp = false;
 function cleanup() {
-  try { chrome.kill('SIGKILL'); } catch {}
+  if (cleanedUp) return;
+  cleanedUp = true;
+  // Kill the entire chromium process group, not just the parent. SIGKILL on
+  // -pid signals every process in the group (gpu, renderer, zygote, etc.).
+  try { process.kill(-chrome.pid, 'SIGKILL'); } catch {
+    try { chrome.kill('SIGKILL'); } catch {}
+  }
   try { staticServer.close(); } catch {}
   if (!KEEP) { try { rmSync(profileDir, { recursive: true, force: true }); } catch {} }
 }
-process.on('SIGINT', () => { cleanup(); process.exit(130); });
+process.on('SIGINT',  () => { cleanup(); process.exit(130); });
+process.on('SIGTERM', () => { cleanup(); process.exit(143); });
+// If anything throws past the top-level try/await, still clean up before
+// crashing — otherwise the chromium tree would be orphaned.
+process.on('uncaughtException', (e) => { console.error('[rec] uncaught:', e); cleanup(); process.exit(1); });
+process.on('exit', cleanup);
 
 // --- Wait for CDP -----------------------------------------------------------
 async function fetchJSON(url, retries = 100) {
