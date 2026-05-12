@@ -48,8 +48,9 @@ function buildShot({ id, plan, origin, prompt, duration = 9, radius = 30, height
 export const MONTAGE_SETUP = [
   // Cover the entire 4x3 grid + a bit of margin so trees never bleed in.
   { type: 'clearAboveGround', min: [10, 85], max: [255, 260], topY: 60 },
-  // Clear the throne site north of Row A.
-  { type: 'clearAboveGround', min: [110, 30], max: [150, 80], topY: 40 },
+  // Clear the throne site north of Row A — much taller now so the throne
+  // can tower above the sculptures.
+  { type: 'clearAboveGround', min: [115, 30], max: [145, 75], topY: 95 },
 ];
 
 export const MONTAGE_SHOTS = [
@@ -120,67 +121,76 @@ export const MONTAGE_SHOTS = [
     duration: 9, radius: 28, height: 14,
     fadeOut: 0.6,
   }),
-  // Outro: Steve on an epic throne in the north, looking south over all the
-  // sculptures. Camera dollies from a close two-shot up and back to a wide
-  // aerial that reveals the throne foregrounded against the entire grid.
+  // Outro: Steve on a monumental throne atop a tall stone plinth, towering
+  // above every sculpture. Camera dollies from eye-level on Steve up into a
+  // sweeping aerial that pulls back through the entire grid.
   {
     id: 'outro',
-    duration: 12,
-    fadeIn: 0.8, fadeOut: 1.4,
+    duration: 13,
+    fadeIn: 0.8, fadeOut: 1.6,
     camera: {
       type: 'dolly',
-      from: [130, 23, 65],     // south of throne, eye-level, close
-      to:   [130, 150, 250],   // way south, high — full aerial with throne in distance
-      lookFrom: [130, 22, 50], // throne head
-      lookTo:   [130, 35, 150],// centre of all builds
+      from: [130, 54, 80],     // eye-level with Steve atop his plinth
+      to:   [130, 210, 255],   // way south + very high — full aerial
+      lookFrom: [130, 52, 50], // Steve's face
+      lookTo:   [130, 35, 160],// centre of all builds
     },
-    title: { html: 'CraftPlan', t0: 5.5, t1: 10.5, fadeIn: 0.6, fadeOut: 0.8 },
+    title: { html: 'CraftPlan', t0: 6.0, t1: 11.5, fadeIn: 0.6, fadeOut: 0.8 },
     events: (() => {
-      // Throne placed at (TX, _, TZ) north of Row A, facing +Z (south).
+      // Massive throne at (TX, _, TZ) north of Row A. Plinth 11x11x30 raises
+      // the seat to ~y=51 — above every sculpture top.
       const TX = 130, TY = 19, TZ = 50;
       const ops = [];
-      const BRICK = 10, OAK = 4, GLASS = 11, STONE = 3;
-      // 7x5 stone base (2 high) — wide regal platform
-      for (let dy = 0; dy < 2; dy++)
-        for (let dx = -3; dx <= 3; dx++)
-          for (let dz = -2; dz <= 2; dz++)
+      const BRICK = 10, OAK = 4, GLASS = 11, STONE = 3, COBBLE = 8;
+      // Plinth: 11x11 footprint, 30 high (y=TY..TY+29).
+      for (let dy = 0; dy < 30; dy++)
+        for (let dx = -5; dx <= 5; dx++)
+          for (let dz = -5; dz <= 5; dz++)
             ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ + dz, block: STONE });
-      // Brick seat (3 wide, 2 deep) on top of platform near the back
+      // Cobble crown around the top of the plinth (frame)
+      for (let dx = -5; dx <= 5; dx++) for (let dz = -5; dz <= 5; dz++) {
+        if (dx === -5 || dx === 5 || dz === -5 || dz === 5)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + 30, z: TZ + dz, block: COBBLE });
+      }
+      // Brick throne base on the plinth (7x5 at y=TY+30)
+      for (let dx = -3; dx <= 3; dx++)
+        for (let dz = -2; dz <= 2; dz++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + 31, z: TZ + dz, block: BRICK });
+      // Brick seat (3 wide x 2 deep) above the base
       for (let dx = -1; dx <= 1; dx++)
         for (let dz = -1; dz <= 0; dz++)
-          ops.push({ t: 0.05, x: TX + dx, y: TY + 2, z: TZ + dz, block: BRICK });
-      // Tall brick back wall (7 wide x 4 high) at the north edge (z = TZ-2)
-      for (let dx = -3; dx <= 3; dx++)
-        for (let dy = 2; dy <= 5; dy++)
-          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 2, block: BRICK });
-      // Higher back wall in the centre (3 wide x 2 extra high)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + 32, z: TZ + dz, block: BRICK });
+      // Towering brick back wall (11 wide x 22 high) at the north edge
+      for (let dx = -5; dx <= 5; dx++)
+        for (let dy = 32; dy <= 53; dy++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 3, block: BRICK });
+      // Higher centre of the back wall (3 wide x 5 extra high)
       for (let dx = -1; dx <= 1; dx++)
-        for (let dy = 6; dy <= 7; dy++)
-          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 2, block: BRICK });
-      // Oak armrests on both sides of the seat
-      for (let dy = 2; dy <= 3; dy++) {
+        for (let dy = 54; dy <= 58; dy++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 3, block: BRICK });
+      // Oak armrests
+      for (let dy = 32; dy <= 33; dy++) {
         ops.push({ t: 0.05, x: TX - 2, y: TY + dy, z: TZ - 1, block: OAK });
         ops.push({ t: 0.05, x: TX + 2, y: TY + dy, z: TZ - 1, block: OAK });
       }
-      // Glass spires on the corners + centre of the back wall
-      for (let dy = 6; dy <= 8; dy++) {
-        ops.push({ t: 0.05, x: TX - 3, y: TY + dy, z: TZ - 2, block: GLASS });
-        ops.push({ t: 0.05, x: TX + 3, y: TY + dy, z: TZ - 2, block: GLASS });
+      // Glass spires along the top edges of the back wall
+      for (let dx of [-5, -3, 3, 5]) {
+        for (let dy = 54; dy <= 57; dy++) ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 3, block: GLASS });
       }
-      ops.push({ t: 0.05, x: TX, y: TY + 8, z: TZ - 2, block: GLASS });
-      ops.push({ t: 0.05, x: TX, y: TY + 9, z: TZ - 2, block: GLASS });
-      // Brick "stairs" leading up from the south
-      for (let dx = -2; dx <= 2; dx++) {
-        ops.push({ t: 0.05, x: TX + dx, y: TY,     z: TZ + 3, block: BRICK });
-        ops.push({ t: 0.05, x: TX + dx, y: TY + 1, z: TZ + 3, block: BRICK });
-        ops.push({ t: 0.05, x: TX + dx, y: TY,     z: TZ + 4, block: BRICK });
+      // Centre crown spire above the back wall (3 tall extra)
+      for (let dy = 59; dy <= 62; dy++) ops.push({ t: 0.05, x: TX, y: TY + dy, z: TZ - 3, block: GLASS });
+      // Decorative bands of cobble down the front of the plinth (so the
+      // structure isn't just a solid block when viewed close)
+      for (let dy = 5; dy <= 25; dy += 5) {
+        for (let dx = -5; dx <= 5; dx++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ + 5, block: COBBLE });
       }
       return ops;
     })(),
     avatars: {
-      // Steve sits enthroned facing south toward the sculptures (and camera).
-      Steve:  { pos: [130, 21, 49], look: [130, 21, 200], expression: 'happy', showTag: false, still: true },
-      // Background bots tucked between rows so they read at the wide angle.
+      // Steve sits on top of the plinth facing south toward the sculptures.
+      Steve:  { pos: [130, 51, 50], look: [130, 51, 200], expression: 'happy', showTag: false, still: true },
+      // Background bots scattered around the grid as tiny working figures.
       Bot_NW: { pos: [70,  21, 135], look: [40, 21, 105], expression: 'focused', showTag: false },
       Bot_NE: { pos: [250, 21, 135], look: [220, 21, 105], expression: 'focused', showTag: false },
       Bot_SW: { pos: [70,  21, 200], look: [40, 21, 235], expression: 'focused', showTag: false },
