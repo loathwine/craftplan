@@ -148,23 +148,12 @@ export const SKIT_SHOTS = [
       Claude: { pos: CLAUDE_POS, look: lookAtPlayer, expression: 'happy' },
     },
   },
-  // 6. Claude waves: "Hi!" (close-up on Claude, name + face visible)
-  {
-    id: 'skit-hi-claude',
-    duration: 1.8,
-    camera: { type: 'still',
-      pos: [CLAUDE_POS[0] + 0.3, CLAUDE_POS[1] + 2.0, CLAUDE_POS[2] + 2.3],
-      look: [CLAUDE_POS[0], CLAUDE_POS[1] + 1.6, CLAUDE_POS[2]] },
-    dialog: { speaker: 'Claude', text: 'Hi!', t0: 0.2, t1: 1.6, fadeIn: 0.2, fadeOut: 0.3 },
-    avatars: {
-      Steve:  { pos: PLAYER_POS, look: lookAtClaude, expression: 'thinking', showTag: false },
-      Claude: { pos: CLAUDE_POS, lookAtCamera: true, expression: 'happy' }, // tag visible
-    },
-  },
-  // 7. Awkward silence: long beat, both characters static, no dialog
+  // 6. Awkward silence: both in frame, glances exchanged, no words.
+  //    Name tags already established Claude in shot 5; comedy is the
+  //    quiet beat with no dialogue.
   {
     id: 'skit-silence',
-    duration: 3.0,
+    duration: 4.0,
     camera: { type: 'still',
       pos: [(PLAYER_POS[0] + CLAUDE_POS[0]) / 2, PLAYER_POS[1] + 2.4, PLAYER_POS[2] + 7],
       look: [(PLAYER_POS[0] + CLAUDE_POS[0]) / 2, PLAYER_POS[1] + 1.5, PLAYER_POS[2]] },

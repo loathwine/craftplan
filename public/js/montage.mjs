@@ -48,10 +48,97 @@ function buildShot({ id, plan, origin, prompt, duration = 9, radius = 30, height
 export const MONTAGE_SETUP = [
   // Cover the entire 4x3 grid + a bit of margin so trees never bleed in.
   { type: 'clearAboveGround', min: [10, 85], max: [255, 260], topY: 60 },
-  // Clear the throne site north of Row A — much taller now so the throne
-  // can tower above the sculptures.
-  { type: 'clearAboveGround', min: [115, 30], max: [145, 75], topY: 95 },
+  // Throne + two flanking knight statues sit north of Row A.
+  { type: 'clearAboveGround', min: [95, 30], max: [165, 75], topY: 95 },
 ];
+
+// -- Outro side-builds: helpers that emit timed block events -----------------
+// Each helper places blocks linearly across [startT, startT+duration] so the
+// matching bot reads as "actively building" during the pull-back.
+
+function spiralStaircase(cx, cy, cz, { startT, duration = 9, height = 25, radius = 4 } = {}) {
+  const STONE = 3, COBBLE = 8;
+  const ops = [];
+  for (let i = 0; i < height; i++) ops.push({ x: cx, y: cy + i, z: cz, block: COBBLE });
+  for (let i = 0; i < height; i++) {
+    const a = (i / 8) * Math.PI * 2;
+    const x = cx + Math.round(radius * Math.cos(a));
+    const z = cz + Math.round(radius * Math.sin(a));
+    ops.push({ x, y: cy + i, z, block: STONE });
+  }
+  const N = ops.length;
+  return ops.map((op, i) => ({ ...op, t: startT + (i / N) * duration }));
+}
+
+function bigTreeWithVines(cx, cy, cz, { startT, duration = 9, trunkH = 12, canopyR = 5, vineDrop = 6 } = {}) {
+  const OAK = 4, LEAVES = 5;
+  const ops = [];
+  for (let i = 0; i < trunkH; i++) ops.push({ x: cx, y: cy + i, z: cz, block: OAK });
+  for (let dx = -canopyR; dx <= canopyR; dx++) {
+    for (let dy = -1; dy <= canopyR; dy++) {
+      for (let dz = -canopyR; dz <= canopyR; dz++) {
+        const d = Math.sqrt(dx*dx + dy*dy*1.4 + dz*dz);
+        if (d > canopyR + 0.5 || d < canopyR - 1.5) continue;
+        if (dx === 0 && dy < 0 && dz === 0) continue;
+        ops.push({ x: cx + dx, y: cy + trunkH + dy, z: cz + dz, block: LEAVES });
+      }
+    }
+  }
+  for (let i = 0; i < vineDrop; i++) {
+    for (const [vx, vz] of [[-canopyR + 1, 0], [canopyR - 1, 0], [0, -canopyR + 1], [0, canopyR - 1]]) {
+      ops.push({ x: cx + vx, y: cy + trunkH - 1 - i, z: cz + vz, block: LEAVES });
+    }
+  }
+  const N = ops.length;
+  return ops.map((op, i) => ({ ...op, t: startT + (i / N) * duration }));
+}
+
+function sauronEye(cx, cy, cz, { startT, duration = 9, towerH = 22 } = {}) {
+  const BRICK = 10, COBBLE = 8, STONE = 3;
+  const ops = [];
+  // Cobble tower base (3x3, towerH tall)
+  for (let dy = 0; dy < towerH; dy++)
+    for (let dx = -1; dx <= 1; dx++)
+      for (let dz = -1; dz <= 1; dz++)
+        ops.push({ x: cx + dx, y: cy + dy, z: cz + dz, block: COBBLE });
+  // Eye in the horizontal plane at top of tower — "looking up"
+  const eyeY = cy + towerH;
+  // Iris (brick fill, ellipse roughly 9x5)
+  for (let dx = -4; dx <= 4; dx++)
+    for (let dz = -2; dz <= 2; dz++) {
+      const d = (dx*dx) / 16 + (dz*dz) / 4;
+      if (d <= 0.95) ops.push({ x: cx + dx, y: eyeY, z: cz + dz, block: BRICK });
+    }
+  // Outer ring (cobble)
+  for (let dx = -5; dx <= 5; dx++)
+    for (let dz = -3; dz <= 3; dz++) {
+      const d = (dx*dx) / 25 + (dz*dz) / 9;
+      if (d > 0.72 && d <= 1.05) ops.push({ x: cx + dx, y: eyeY, z: cz + dz, block: COBBLE });
+    }
+  // Vertical pupil (stone slit)
+  for (let dz = -2; dz <= 2; dz++) ops.push({ x: cx, y: eyeY, z: cz + dz, block: STONE });
+  // A bit raised pupil center
+  ops.push({ x: cx, y: eyeY + 1, z: cz, block: STONE });
+  const N = ops.length;
+  return ops.map((op, i) => ({ ...op, t: startT + (i / N) * duration }));
+}
+
+// Place a cached plan as throwaway outro events at t (instant placement).
+function placeCachedSync(plan, origin, t = 0.05, rotateY = 0) {
+  const rotN = Math.round(rotateY / (Math.PI / 2)) & 3;
+  const rot = ([x, z]) => {
+    switch (rotN) {
+      case 1: return [-z, x];
+      case 2: return [-x, -z];
+      case 3: return [z, -x];
+      default: return [x, z];
+    }
+  };
+  return plan.map(b => {
+    const [rx, rz] = rot([b.x, b.z]);
+    return { t, x: origin[0] + rx, y: origin[1] + b.y, z: origin[2] + rz, block: b.block };
+  });
+}
 
 export const MONTAGE_SHOTS = [
   // Music drop: dragon opens out of white.
@@ -121,26 +208,30 @@ export const MONTAGE_SHOTS = [
     duration: 9, radius: 28, height: 14,
     fadeOut: 0.6,
   }),
-  // Outro: Steve on a monumental throne atop a tall stone plinth, towering
-  // above every sculpture. Camera dollies from eye-level on Steve up into a
-  // sweeping aerial that pulls back through the entire grid.
+  // Outro: extreme close-up on Steve's happy face, two giant knight statues
+  // flank the throne, three bots actively build new wonders during the
+  // pull-back. Camera dollies from his face all the way up to a wide aerial.
   {
     id: 'outro',
-    duration: 13,
+    duration: 14,
     fadeIn: 0.8, fadeOut: 1.6,
     camera: {
       type: 'dolly',
-      from: [130, 54, 80],     // eye-level with Steve atop his plinth
-      to:   [130, 210, 255],   // way south + very high — full aerial
-      lookFrom: [130, 52, 50], // Steve's face
+      from: [130, 52, 51.6],   // EXTREME close-up on Steve's face
+      to:   [130, 210, 255],   // far south + very high — full aerial
+      lookFrom: [130, 52, 50], // Steve's eyes
       lookTo:   [130, 35, 160],// centre of all builds
     },
-    title: { html: 'CraftPlan', t0: 6.0, t1: 11.5, fadeIn: 0.6, fadeOut: 0.8 },
+    title: { html: 'CraftPlan', t0: 7.0, t1: 12.5, fadeIn: 0.6, fadeOut: 0.8 },
+    // Knight statues flanking the throne, placed instantly at outro start.
+    placements: [
+      { slug: 'knight-statue', origin: [108, 19, 50] }, // left knight (west)
+      { slug: 'knight-statue', origin: [152, 19, 50] }, // right knight (east)
+    ],
     events: (() => {
-      // Massive throne at (TX, _, TZ) north of Row A. Plinth 11x11x30 raises
-      // the seat to ~y=51 — above every sculpture top.
+      // Throne + bot-built side structures.
       const TX = 130, TY = 19, TZ = 50;
-      const ops = [];
+      let ops = [];
       const BRICK = 10, OAK = 4, GLASS = 11, STONE = 3, COBBLE = 8;
       // Plinth: 11x11 footprint, 30 high (y=TY..TY+29).
       for (let dy = 0; dy < 30; dy++)
@@ -185,16 +276,25 @@ export const MONTAGE_SHOTS = [
         for (let dx = -5; dx <= 5; dx++)
           ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ + 5, block: COBBLE });
       }
+      // Active background bot builds during the pull-back — three wonders
+      // grow in the distance: a tree with vines, a spiral staircase, the
+      // Eye of Sauron looking up from atop a cobble tower.
+      ops = ops.concat(bigTreeWithVines(70, 19, 135, { startT: 0.5, duration: 9 }));
+      ops = ops.concat(spiralStaircase(250, 19, 135, { startT: 0.5, duration: 9, height: 22, radius: 4 }));
+      ops = ops.concat(sauronEye(70, 19, 200, { startT: 0.5, duration: 9, towerH: 22 }));
       return ops;
     })(),
     avatars: {
       // Steve sits on top of the plinth facing south toward the sculptures.
       Steve:  { pos: [130, 51, 50], look: [130, 51, 200], expression: 'happy', showTag: false, still: true },
-      // Background bots scattered around the grid as tiny working figures.
-      Bot_NW: { pos: [70,  21, 135], look: [40, 21, 105], expression: 'focused', showTag: false },
-      Bot_NE: { pos: [250, 21, 135], look: [220, 21, 105], expression: 'focused', showTag: false },
-      Bot_SW: { pos: [70,  21, 200], look: [40, 21, 235], expression: 'focused', showTag: false },
-      Bot_SE: { pos: [250, 21, 200], look: [220, 21, 235], expression: 'focused', showTag: false },
+      // Three bots stand at their construction sites, building actively.
+      // Position is offset south of the build so the bot is in front of it
+      // from the camera's perspective.
+      Bot_NW: { pos: [70,  20, 142], look: [70, 25, 135], expression: 'focused', showTag: false }, // tree builder
+      Bot_NE: { pos: [250, 20, 142], look: [250, 25, 135], expression: 'focused', showTag: false }, // spiral builder
+      Bot_SW: { pos: [70,  20, 210], look: [70, 30, 200], expression: 'focused', showTag: false }, // Sauron eye builder
+      // Fourth bot mid-grid as an extra "everywhere there are bots" cue.
+      Bot_SE: { pos: [250, 20, 210], look: [220, 21, 235], expression: 'focused', showTag: false },
     },
   },
 ];

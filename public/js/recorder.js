@@ -295,13 +295,38 @@ export async function startRecorder() {
       shot.botName = compiled.botName;
       avatars.ensure(compiled.botName);
     }
+    // Cached placements: { slug, origin, rotateY?, t? } drop a whole cached
+    // plan into the shot's event list at an instant time (default 0.05).
+    if (s.placements) {
+      const placed = [];
+      for (const p of s.placements) {
+        const plan = await fetchPlan(p.slug);
+        const t = p.t ?? 0.05;
+        const rotN = p.rotateY ? Math.round(p.rotateY / (Math.PI / 2)) & 3 : 0;
+        const rot = (x, z) => {
+          switch (rotN) {
+            case 1: return [-z, x];
+            case 2: return [-x, -z];
+            case 3: return [z, -x];
+            default: return [x, z];
+          }
+        };
+        for (const b of plan.plan) {
+          const [rx, rz] = rot(b.x, b.z);
+          placed.push({ t, x: p.origin[0] + rx, y: p.origin[1] + b.y, z: p.origin[2] + rz, block: b.block });
+        }
+      }
+      shot.events = (shot.events || []).concat(placed);
+    }
     // Pre-sort explicit events if the shot provides them directly
     if (s.events && !shot.events) {
       shot.events = [...s.events].sort((a, b) => a.t - b.t);
       shot.appliedIdx = 0;
-    } else if (s.events && shot.events) {
-      // Both build and explicit events: merge
+    } else if (s.events) {
       shot.events = [...shot.events, ...s.events].sort((a, b) => a.t - b.t);
+      shot.appliedIdx = 0;
+    } else if (shot.events) {
+      shot.events.sort((a, b) => a.t - b.t);
       shot.appliedIdx = 0;
     }
     shots.push(shot);
