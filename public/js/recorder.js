@@ -87,9 +87,10 @@ function ensureOverlays() {
     title.id = 'demo-rec-title';
     Object.assign(title.style, {
       position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
-      color: '#fff', fontFamily: 'system-ui, sans-serif', fontSize: '64px',
-      fontWeight: 800, letterSpacing: '2px', opacity: 0, pointerEvents: 'none',
-      textShadow: '0 4px 16px rgba(0,0,0,0.7)', textAlign: 'center',
+      color: '#fff', fontFamily: 'system-ui, sans-serif', fontSize: '88px',
+      fontWeight: 800, letterSpacing: '3px', opacity: 0, pointerEvents: 'none',
+      textShadow: '0 6px 24px rgba(0,0,0,0.8)', textAlign: 'center',
+      whiteSpace: 'nowrap',
     });
     document.body.appendChild(title);
   }

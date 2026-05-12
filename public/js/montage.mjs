@@ -46,8 +46,10 @@ function buildShot({ id, plan, origin, prompt, duration = 9, radius = 30, height
 }
 
 export const MONTAGE_SETUP = [
-  // Cover the entire 4x3 + a bit of margin so trees never bleed in.
+  // Cover the entire 4x3 grid + a bit of margin so trees never bleed in.
   { type: 'clearAboveGround', min: [10, 85], max: [255, 260], topY: 60 },
+  // Clear the throne site north of Row A.
+  { type: 'clearAboveGround', min: [110, 30], max: [150, 80], topY: 40 },
 ];
 
 export const MONTAGE_SHOTS = [
@@ -71,8 +73,10 @@ export const MONTAGE_SHOTS = [
   buildShot({
     id: 'kurama', plan: 'naruto-kurama', origin: O_KURAMA,
     prompt: '@Claude build Kurama the nine-tailed fox',
-    duration: 10, radius: 32, height: 12,
-    startA: Math.PI * 0.5, endA: Math.PI * 1.5,  // start south so face is toward camera
+    duration: 10, radius: 38, height: 14,
+    // Tight arc on the south side only — Kurama's face is at +Z so we keep
+    // the camera in front of it the whole time, never circling round back.
+    startA: Math.PI * 0.35, endA: Math.PI * 0.75,
   }),
   buildShot({
     id: 'octopus', plan: 'octopus', origin: O_OCTOPUS,
@@ -116,46 +120,71 @@ export const MONTAGE_SHOTS = [
     duration: 9, radius: 28, height: 14,
     fadeOut: 0.6,
   }),
-  // Outro: Edvin on his throne; camera dollies out to a wide aerial.
+  // Outro: Steve on an epic throne in the north, looking south over all the
+  // sculptures. Camera dollies from a close two-shot up and back to a wide
+  // aerial that reveals the throne foregrounded against the entire grid.
   {
     id: 'outro',
     duration: 12,
     fadeIn: 0.8, fadeOut: 1.4,
     camera: {
       type: 'dolly',
-      from: [130, 25, 162],
-      to:   [-30, 160, 0],
-      lookFrom: [130, 23, 137],
-      lookTo:   [130, 35, 170],
+      from: [130, 23, 65],     // south of throne, eye-level, close
+      to:   [130, 150, 250],   // way south, high — full aerial with throne in distance
+      lookFrom: [130, 22, 50], // throne head
+      lookTo:   [130, 35, 150],// centre of all builds
     },
     title: { html: 'CraftPlan', t0: 5.5, t1: 10.5, fadeIn: 0.6, fadeOut: 0.8 },
-    overlay: { html: 'AI-designed worlds · built in real time', t0: 6.2, t1: 11.0, fadeIn: 0.6, fadeOut: 1.0 },
     events: (() => {
-      const TX = 130, TY = 19, TZ = 137;
+      // Throne placed at (TX, _, TZ) north of Row A, facing +Z (south).
+      const TX = 130, TY = 19, TZ = 50;
       const ops = [];
       const BRICK = 10, OAK = 4, GLASS = 11, STONE = 3;
+      // 7x5 stone base (2 high) — wide regal platform
       for (let dy = 0; dy < 2; dy++)
-        for (let dx = -1; dx <= 1; dx++)
-          for (let dz = -1; dz <= 1; dz++)
+        for (let dx = -3; dx <= 3; dx++)
+          for (let dz = -2; dz <= 2; dz++)
             ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ + dz, block: STONE });
-      for (let dx = -1; dx <= 1; dx++) ops.push({ t: 0.05, x: TX + dx, y: TY + 2, z: TZ, block: BRICK });
+      // Brick seat (3 wide, 2 deep) on top of platform near the back
       for (let dx = -1; dx <= 1; dx++)
-        for (let dy = 2; dy <= 4; dy++)
-          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 1, block: BRICK });
+        for (let dz = -1; dz <= 0; dz++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + 2, z: TZ + dz, block: BRICK });
+      // Tall brick back wall (7 wide x 4 high) at the north edge (z = TZ-2)
+      for (let dx = -3; dx <= 3; dx++)
+        for (let dy = 2; dy <= 5; dy++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 2, block: BRICK });
+      // Higher back wall in the centre (3 wide x 2 extra high)
+      for (let dx = -1; dx <= 1; dx++)
+        for (let dy = 6; dy <= 7; dy++)
+          ops.push({ t: 0.05, x: TX + dx, y: TY + dy, z: TZ - 2, block: BRICK });
+      // Oak armrests on both sides of the seat
       for (let dy = 2; dy <= 3; dy++) {
-        ops.push({ t: 0.05, x: TX - 2, y: TY + dy, z: TZ, block: OAK });
-        ops.push({ t: 0.05, x: TX + 2, y: TY + dy, z: TZ, block: OAK });
+        ops.push({ t: 0.05, x: TX - 2, y: TY + dy, z: TZ - 1, block: OAK });
+        ops.push({ t: 0.05, x: TX + 2, y: TY + dy, z: TZ - 1, block: OAK });
       }
-      for (let dx = -1; dx <= 1; dx++) ops.push({ t: 0.05, x: TX + dx, y: TY + 5, z: TZ - 1, block: GLASS });
-      for (let dz = 1; dz <= 4; dz++) ops.push({ t: 0.05, x: TX, y: TY + 2, z: TZ + dz, block: BRICK });
+      // Glass spires on the corners + centre of the back wall
+      for (let dy = 6; dy <= 8; dy++) {
+        ops.push({ t: 0.05, x: TX - 3, y: TY + dy, z: TZ - 2, block: GLASS });
+        ops.push({ t: 0.05, x: TX + 3, y: TY + dy, z: TZ - 2, block: GLASS });
+      }
+      ops.push({ t: 0.05, x: TX, y: TY + 8, z: TZ - 2, block: GLASS });
+      ops.push({ t: 0.05, x: TX, y: TY + 9, z: TZ - 2, block: GLASS });
+      // Brick "stairs" leading up from the south
+      for (let dx = -2; dx <= 2; dx++) {
+        ops.push({ t: 0.05, x: TX + dx, y: TY,     z: TZ + 3, block: BRICK });
+        ops.push({ t: 0.05, x: TX + dx, y: TY + 1, z: TZ + 3, block: BRICK });
+        ops.push({ t: 0.05, x: TX + dx, y: TY,     z: TZ + 4, block: BRICK });
+      }
       return ops;
     })(),
     avatars: {
-      Edvin:  { pos: [130, 22, 137], look: [130, 22, 200], expression: 'smug', showTag: false, still: true },
-      Bot_NW: { pos: [50,  21, 105], look: [40, 21, 80], expression: 'focused', showTag: false },
-      Bot_NE: { pos: [225, 21, 105], look: [240, 21, 80], expression: 'focused', showTag: false },
-      Bot_SW: { pos: [50,  21, 235], look: [40, 21, 260], expression: 'focused', showTag: false },
-      Bot_SE: { pos: [225, 21, 235], look: [240, 21, 260], expression: 'focused', showTag: false },
+      // Steve sits enthroned facing south toward the sculptures (and camera).
+      Steve:  { pos: [130, 21, 49], look: [130, 21, 200], expression: 'happy', showTag: false, still: true },
+      // Background bots tucked between rows so they read at the wide angle.
+      Bot_NW: { pos: [70,  21, 135], look: [40, 21, 105], expression: 'focused', showTag: false },
+      Bot_NE: { pos: [250, 21, 135], look: [220, 21, 105], expression: 'focused', showTag: false },
+      Bot_SW: { pos: [70,  21, 200], look: [40, 21, 235], expression: 'focused', showTag: false },
+      Bot_SE: { pos: [250, 21, 200], look: [220, 21, 235], expression: 'focused', showTag: false },
     },
   },
 ];
