@@ -663,13 +663,15 @@ function animate() {
 
 // =====================================================
 const params = new URLSearchParams(location.search);
+// On static hosts (github.io, netlify, …) there's no WebSocket server, so
+// default to the explore mode instead of the live join screen which would
+// hang on a failed connection. Pass ?live=1 to force the multiplayer flow.
+const isLocal = ['localhost', '127.0.0.1', '0.0.0.0'].includes(location.hostname)
+             || location.protocol === 'file:';
 if (params.has('record')) {
-  // Headless recording: skip live mode entirely
   const { startRecorder } = await import('./recorder.js');
   startRecorder();
-} else if (params.has('explore')) {
-  // Static demo explore mode: load the snapshot, fly around, trigger
-  // pre-recorded bot builds. No server, no LLM.
+} else if (params.has('explore') || (!params.has('live') && !isLocal)) {
   const { startExplore } = await import('./explore.js');
   startExplore();
 } else {
