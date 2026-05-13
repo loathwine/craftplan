@@ -1,8 +1,10 @@
 // Static explore mode — fly around the finished demo world in the browser.
 // No server, no LLM. The page loads world-snapshot.json (a delta against
-// the natural terrain) plus the cached LLM build plans. Viewers cycle
-// through the build menu with the scroll wheel and press B to spawn the
-// selected one — no need to leave pointer-lock.
+// the natural terrain) plus the cached LLM build plans.
+//
+// Desktop: pointer-lock, WASD, scroll to cycle builds, B to spawn.
+// Touch:   virtual joystick (move), drag to look, up/down + spawn buttons,
+//          tap the build pill to open the build picker.
 //
 // To unlock real Claude-driven builds from a freeform prompt, the viewer
 // has to clone + run locally — there's a note on screen explaining this.
@@ -45,12 +47,19 @@ const BUILDS = [
 const FLY_SPEED = 14;
 const FAST_FLY_SPEED = 28;
 
+// "Touch device" = primary input is touch (phone/tablet). Hybrid laptops with
+// touchscreens but a mouse stay on the desktop path. `pointer: coarse` is the
+// standard signal for this; we fall back to maxTouchPoints for old browsers.
+const isTouchDevice = (typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches)
+  || (!matchMedia && (navigator.maxTouchPoints || 0) > 0);
+
 export async function startExplore() {
   for (const id of ['join-screen', 'task-panel', 'task-detail', 'chat', 'hud']) {
     const el = document.getElementById(id);
     if (el) el.style.display = 'none';
   }
   document.body.style.margin = '0';
+  if (isTouchDevice) document.body.classList.add('touch');
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x7ec8e3);
@@ -89,35 +98,74 @@ export async function startExplore() {
   let pointerLocked = false;
   const clock = new THREE.Clock();
 
-  canvas.addEventListener('click', () => canvas.requestPointerLock());
-  document.addEventListener('pointerlockchange', () => {
-    pointerLocked = document.pointerLockElement === canvas;
-  });
-  document.addEventListener('mousemove', (e) => {
-    if (!pointerLocked) return;
-    yaw   -= e.movementX * 0.006;
-    pitch -= e.movementY * 0.006;
-    pitch  = Math.max(-1.55, Math.min(1.55, pitch));
-  });
+  // Mobile/touch input state
+  const joy = { x: 0, y: 0 };          // [-1..1], y positive = forward
+  const touchBtns = { up: false, down: false };
+  let lookTouchId = null;
+  let lookLastX = 0, lookLastY = 0;
+
+  // --- Desktop: pointer-lock + keyboard ----------------------------------
+  if (!isTouchDevice) {
+    canvas.addEventListener('click', () => canvas.requestPointerLock());
+    document.addEventListener('pointerlockchange', () => {
+      pointerLocked = document.pointerLockElement === canvas;
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (!pointerLocked) return;
+      yaw   -= e.movementX * 0.006;
+      pitch -= e.movementY * 0.006;
+      pitch  = Math.max(-1.55, Math.min(1.55, pitch));
+    });
+    canvas.addEventListener('wheel', (e) => {
+      if (!pointerLocked) return;
+      e.preventDefault();
+      const dir = e.deltaY > 0 ? 1 : -1;
+      cycleBuild(dir);
+    }, { passive: false });
+  }
+
   document.addEventListener('keydown', (e) => {
     keys[e.code] = true;
-    if (e.code === 'KeyB' && pointerLocked) { e.preventDefault(); spawnSelected(); }
+    if (e.code === 'KeyB' && (pointerLocked || isTouchDevice)) {
+      e.preventDefault();
+      spawnSelected();
+    }
   });
-  document.addEventListener('keyup',   (e) => { keys[e.code] = false; });
+  document.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
-  // Scroll wheel cycles the selected build when in fly mode.
+  // --- Touch input -------------------------------------------------------
+  if (isTouchDevice) {
+    setupTouchLook(canvas);
+    setupJoystick(document.getElementById('touch-joystick'));
+    bindHoldButton(document.getElementById('touch-up'),   () => touchBtns.up = true,   () => touchBtns.up = false);
+    bindHoldButton(document.getElementById('touch-down'), () => touchBtns.down = true, () => touchBtns.down = false);
+    document.getElementById('touch-build').addEventListener('click', (e) => {
+      e.preventDefault();
+      spawnSelected();
+    });
+    document.getElementById('touch-menu').addEventListener('click', (e) => {
+      e.preventDefault();
+      ui.toggleMenu();
+    });
+  }
+
   let selectedIdx = 0;
   ui.setSelected(selectedIdx);
-  canvas.addEventListener('wheel', (e) => {
-    if (!pointerLocked) return;
-    e.preventDefault();
-    const dir = e.deltaY > 0 ? 1 : -1;
+  function cycleBuild(dir) {
     selectedIdx = (selectedIdx + dir + BUILDS.length) % BUILDS.length;
     ui.setSelected(selectedIdx);
-  }, { passive: false });
+  }
 
-  // Also let direct menu clicks trigger a build (only when pointer-lock off).
-  ui.onMenuClick((i) => { selectedIdx = i; ui.setSelected(i); spawnSelected(); });
+  ui.onMenuClick((i) => {
+    selectedIdx = i;
+    ui.setSelected(i);
+    if (isTouchDevice) {
+      ui.closeMenu();
+      spawnSelected();
+    } else if (!pointerLocked) {
+      spawnSelected();
+    }
+  });
 
   // --- Bot avatar + build replay ------------------------------------------
   const claudeBot = makeAvatar({
@@ -185,13 +233,121 @@ export async function startExplore() {
     };
   }
 
+  // --- Touch helpers ------------------------------------------------------
+  function setupTouchLook(canvasEl) {
+    canvasEl.addEventListener('touchstart', (e) => {
+      for (const t of e.changedTouches) {
+        // Skip touches that started inside an interactive overlay.
+        const tgt = document.elementFromPoint(t.clientX, t.clientY);
+        if (tgt && tgt.closest('.no-look')) continue;
+        if (lookTouchId === null) {
+          lookTouchId = t.identifier;
+          lookLastX = t.clientX;
+          lookLastY = t.clientY;
+        }
+      }
+    }, { passive: true });
+    canvasEl.addEventListener('touchmove', (e) => {
+      for (const t of e.changedTouches) {
+        if (t.identifier === lookTouchId) {
+          const dx = t.clientX - lookLastX;
+          const dy = t.clientY - lookLastY;
+          lookLastX = t.clientX;
+          lookLastY = t.clientY;
+          yaw   -= dx * 0.006;
+          pitch -= dy * 0.006;
+          pitch  = Math.max(-1.55, Math.min(1.55, pitch));
+        }
+      }
+    }, { passive: true });
+    const end = (e) => {
+      for (const t of e.changedTouches) {
+        if (t.identifier === lookTouchId) lookTouchId = null;
+      }
+    };
+    canvasEl.addEventListener('touchend', end);
+    canvasEl.addEventListener('touchcancel', end);
+  }
+
+  function setupJoystick(stick) {
+    if (!stick) return;
+    const knob = stick.querySelector('.knob');
+    const radius = 50; // px
+    let activeId = null;
+    let cx = 0, cy = 0;
+
+    const reset = () => {
+      activeId = null;
+      joy.x = 0; joy.y = 0;
+      knob.style.transform = '';
+      stick.classList.remove('active');
+    };
+
+    stick.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (activeId !== null) return;
+      const t = e.changedTouches[0];
+      activeId = t.identifier;
+      const r = stick.getBoundingClientRect();
+      cx = r.left + r.width / 2;
+      cy = r.top + r.height / 2;
+      stick.classList.add('active');
+      updateFromTouch(t);
+    }, { passive: false });
+
+    stick.addEventListener('touchmove', (e) => {
+      for (const t of e.changedTouches) {
+        if (t.identifier === activeId) {
+          e.preventDefault();
+          updateFromTouch(t);
+        }
+      }
+    }, { passive: false });
+
+    const endHandler = (e) => {
+      for (const t of e.changedTouches) {
+        if (t.identifier === activeId) reset();
+      }
+    };
+    stick.addEventListener('touchend', endHandler);
+    stick.addEventListener('touchcancel', endHandler);
+
+    function updateFromTouch(t) {
+      let dx = t.clientX - cx;
+      let dy = t.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      if (d > radius) {
+        dx = dx * radius / d;
+        dy = dy * radius / d;
+      }
+      knob.style.transform = `translate(${dx}px, ${dy}px)`;
+      joy.x =  dx / radius;
+      joy.y = -dy / radius; // up on screen = forward
+    }
+  }
+
+  function bindHoldButton(el, onDown, onUp) {
+    if (!el) return;
+    const down = (e) => { e.preventDefault(); el.classList.add('active'); onDown(); };
+    const up   = (e) => { e.preventDefault(); el.classList.remove('active'); onUp(); };
+    el.addEventListener('touchstart', down, { passive: false });
+    el.addEventListener('touchend',   up,   { passive: false });
+    el.addEventListener('touchcancel', up,  { passive: false });
+    // Mouse fallback (helpful for desktop browser DevTools "touch" simulation)
+    el.addEventListener('mousedown', down);
+    el.addEventListener('mouseup',   up);
+    el.addEventListener('mouseleave', up);
+  }
+
   // --- Game loop -----------------------------------------------------------
   function animate() {
     requestAnimationFrame(animate);
     const dt = Math.min(0.05, clock.getDelta());
 
-    if (pointerLocked) {
-      const speed = (keys['ShiftLeft'] || keys['ShiftRight']) ? FAST_FLY_SPEED : FLY_SPEED;
+    const fastKey = keys['ShiftLeft'] || keys['ShiftRight'];
+    const speed = fastKey ? FAST_FLY_SPEED : FLY_SPEED;
+    const inputActive = pointerLocked || isTouchDevice;
+    if (inputActive) {
       const fwd = new THREE.Vector3(-Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), -Math.cos(yaw) * Math.cos(pitch));
       const right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
       const move = new THREE.Vector3();
@@ -201,6 +357,14 @@ export async function startExplore() {
       if (keys['KeyA']) move.sub(right);
       if (keys['Space']) move.y += 1;
       if (keys['ControlLeft'] || keys['KeyC']) move.y -= 1;
+      // Touch joystick: y forward/back, x strafe
+      if (joy.x !== 0 || joy.y !== 0) {
+        const flat = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw));
+        move.add(flat.multiplyScalar(joy.y));
+        move.add(right.clone().multiplyScalar(joy.x));
+      }
+      if (touchBtns.up)   move.y += 1;
+      if (touchBtns.down) move.y -= 1;
       if (move.lengthSq() > 0) {
         move.normalize().multiplyScalar(speed * dt);
         pos.add(move);
@@ -228,90 +392,105 @@ export async function startExplore() {
 
 // --- UI ---------------------------------------------------------------------
 function installUI(builds) {
-  // Help / hint overlay
+  // Hint (collapsible). Hidden on touch — there's no keyboard to call out.
   const hint = document.createElement('div');
-  Object.assign(hint.style, {
-    position: 'fixed', top: '12px', left: '12px', padding: '10px 14px',
-    background: 'rgba(0,0,0,0.55)', color: '#fff', fontFamily: 'system-ui, sans-serif',
-    fontSize: '13px', lineHeight: '1.5', borderRadius: '8px', pointerEvents: 'none',
-    maxWidth: '340px', zIndex: 5, backdropFilter: 'blur(4px)',
-  });
+  hint.id = 'explore-hint';
+  hint.classList.add('no-look');
   hint.innerHTML = `
-    <div style="font-weight:700;font-size:14px;margin-bottom:4px">CraftPlan · static demo</div>
-    Click the canvas to start · <b>WASD</b> fly · <b>Space</b>/<b>Ctrl</b> up/down · <b>Shift</b> faster<br>
-    <b>Scroll</b> to pick a build · <b>B</b> to spawn it · <b>Esc</b> to release the mouse
-    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:8px 0">
-    Want Claude to <i>invent</i> NEW builds from your prompt? Clone the repo and run:
-    <div style="margin:4px 0;padding:4px 8px;background:rgba(255,255,255,0.08);border-radius:4px;font-family:monospace;font-size:12px">
-      ./craftplan.sh start &nbsp;<span style="opacity:0.6">— server</span><br>
-      ./craftplan.sh bot   &nbsp;<span style="opacity:0.6">— @Claude builder</span>
+    <div class="hint-title">
+      <span>CraftPlan · static demo</span>
+      <button id="explore-hint-toggle" aria-label="Collapse">−</button>
     </div>
-    Then chat <code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:3px">@Claude build a dragon, here</code> in-game.
-    <div style="margin-top:6px"><a href="https://github.com/loathwine/craftplan" style="color:#7dd3fc;pointer-events:auto" target="_blank">github.com/loathwine/craftplan</a></div>
+    <div class="hint-body">
+      Click the canvas to start · <b>WASD</b> fly · <b>Space</b>/<b>Ctrl</b> up/down · <b>Shift</b> faster<br>
+      <b>Scroll</b> to pick a build · <b>B</b> to spawn it · <b>Esc</b> to release the mouse
+      <hr style="border:none;border-top:1px solid rgba(255,255,255,0.2);margin:8px 0">
+      Want Claude to <i>invent</i> NEW builds from your prompt? Clone the repo and run:
+      <div style="margin:4px 0;padding:4px 8px;background:rgba(255,255,255,0.08);border-radius:4px;font-family:monospace;font-size:12px">
+        ./craftplan.sh start &nbsp;<span style="opacity:0.6">— server</span><br>
+        ./craftplan.sh bot   &nbsp;<span style="opacity:0.6">— @Claude builder</span>
+      </div>
+      Then chat <code style="background:rgba(255,255,255,0.1);padding:1px 4px;border-radius:3px">@Claude build a dragon, here</code> in-game.
+      <div style="margin-top:6px"><a href="https://github.com/loathwine/craftplan" style="color:#7dd3fc" target="_blank">github.com/loathwine/craftplan</a></div>
+    </div>
   `;
   document.body.appendChild(hint);
+  const hintToggle = hint.querySelector('#explore-hint-toggle');
+  hintToggle.addEventListener('click', () => {
+    const collapsed = hint.classList.toggle('collapsed');
+    hintToggle.textContent = collapsed ? '+' : '−';
+  });
 
   // Crosshair
   const crosshair = document.createElement('div');
-  Object.assign(crosshair.style, {
-    position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
-    color: '#fff', fontSize: '20px', opacity: 0.5, pointerEvents: 'none', zIndex: 4,
-    textShadow: '0 0 2px rgba(0,0,0,0.5)',
-  });
+  crosshair.id = 'explore-crosshair';
   crosshair.textContent = '+';
   document.body.appendChild(crosshair);
 
   // Status line
   const status = document.createElement('div');
-  Object.assign(status.style, {
-    position: 'fixed', bottom: '16px', left: '50%', transform: 'translateX(-50%)',
-    background: 'rgba(0,0,0,0.6)', color: '#fff', fontFamily: 'system-ui, sans-serif',
-    fontSize: '14px', padding: '8px 14px', borderRadius: '6px', pointerEvents: 'none',
-    opacity: 0, transition: 'opacity 0.3s', zIndex: 5,
-  });
+  status.id = 'explore-status';
   document.body.appendChild(status);
 
   // Build menu
   const menu = document.createElement('div');
-  Object.assign(menu.style, {
-    position: 'fixed', top: '12px', right: '12px', padding: '10px',
-    background: 'rgba(0,0,0,0.65)', color: '#fff', fontFamily: 'system-ui, sans-serif',
-    fontSize: '13px', borderRadius: '8px', zIndex: 6, maxWidth: '260px',
-    backdropFilter: 'blur(4px)', maxHeight: 'calc(100vh - 40px)', overflowY: 'auto',
-  });
+  menu.id = 'explore-menu';
+  menu.classList.add('no-look');
   menu.innerHTML = `
-    <div style="font-weight:700;margin-bottom:4px">Tell Claude what to build:</div>
-    <div style="font-size:11px;opacity:0.7;margin-bottom:8px">Scroll wheel cycles · B spawns</div>
+    <div class="menu-header">
+      <span class="menu-title">Tell Claude what to build</span>
+      <button id="explore-menu-close" aria-label="Close">×</button>
+    </div>
+    <div class="menu-hint">Scroll cycles · B spawns</div>
+    <div id="explore-menu-list"></div>
   `;
   document.body.appendChild(menu);
 
+  const list = menu.querySelector('#explore-menu-list');
+  const menuTitle = menu.querySelector('.menu-title');
   const onClickHandlers = [];
   const btns = builds.map((b, i) => {
     const btn = document.createElement('button');
+    btn.className = 'build-btn';
     btn.textContent = b.name;
-    Object.assign(btn.style, {
-      display: 'block', width: '100%', margin: '2px 0', padding: '5px 9px',
-      background: 'rgba(255,255,255,0.08)', color: '#fff',
-      border: '1px solid rgba(255,255,255,0.18)', borderRadius: '4px',
-      fontFamily: 'inherit', fontSize: '13px', cursor: 'pointer',
-      textAlign: 'left', transition: 'background 0.15s',
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      for (const h of onClickHandlers) h(i);
     });
-    btn.addEventListener('mouseenter', () => { if (!btn.dataset.active) btn.style.background = 'rgba(255,255,255,0.18)'; });
-    btn.addEventListener('mouseleave', () => { if (!btn.dataset.active) btn.style.background = 'rgba(255,255,255,0.08)'; });
-    btn.addEventListener('click', () => { for (const h of onClickHandlers) h(i); });
-    menu.appendChild(btn);
+    list.appendChild(btn);
     return btn;
   });
 
-  // Selected-build chip near the crosshair
-  const chip = document.createElement('div');
-  Object.assign(chip.style, {
-    position: 'fixed', left: '50%', top: 'calc(50% + 22px)', transform: 'translateX(-50%)',
-    background: 'rgba(0,0,0,0.55)', color: '#fff', fontFamily: 'system-ui, sans-serif',
-    fontSize: '13px', padding: '4px 10px', borderRadius: '12px', pointerEvents: 'none',
-    zIndex: 4, whiteSpace: 'nowrap',
+  // Menu header behavior on small screens: tap header to expand/collapse.
+  const menuClose = menu.querySelector('#explore-menu-close');
+  const menuHeader = menu.querySelector('.menu-header');
+  const closeMenu = () => menu.classList.remove('open');
+  menuClose.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeMenu(); });
+  menuHeader.addEventListener('click', (e) => {
+    if (e.target === menuClose) return;
+    if (!document.body.classList.contains('touch')) return;
+    if (menu.classList.contains('open')) return;
+    e.preventDefault();
+    menu.classList.add('open');
   });
+
+  // Selected-build chip (centered, hidden on touch since there's no crosshair)
+  const chip = document.createElement('div');
+  chip.id = 'explore-chip';
   document.body.appendChild(chip);
+
+  // Touch controls (visible only when body.touch). Built unconditionally so
+  // CSS controls visibility; cheap and avoids branching.
+  const touch = document.createElement('div');
+  touch.id = 'touch-controls';
+  touch.innerHTML = `
+    <div id="touch-joystick" class="no-look"><div class="knob"></div></div>
+    <button id="touch-up"    class="touch-btn no-look" aria-label="Up">▲</button>
+    <button id="touch-down"  class="touch-btn no-look" aria-label="Down">▼</button>
+    <button id="touch-menu"  class="touch-btn no-look" aria-label="Builds">≡</button>
+    <button id="touch-build" class="touch-btn no-look" aria-label="Spawn">Spawn</button>
+  `;
+  document.body.appendChild(touch);
 
   return {
     status(msg) {
@@ -321,13 +500,16 @@ function installUI(builds) {
     },
     setSelected(i) {
       btns.forEach((b, j) => {
-        if (j === i) { b.dataset.active = '1'; b.style.background = 'rgba(125,211,252,0.35)'; b.style.borderColor = '#7dd3fc'; }
-        else          { delete b.dataset.active;  b.style.background = 'rgba(255,255,255,0.08)'; b.style.borderColor = 'rgba(255,255,255,0.18)'; }
+        if (j === i) b.dataset.active = '1';
+        else delete b.dataset.active;
       });
+      const onTouch = document.body.classList.contains('touch');
       chip.innerHTML = `<b>${builds[i].name}</b> &nbsp;<span style="opacity:0.7">— press B</span>`;
-      // Scroll the selected button into view in the menu
+      menuTitle.textContent = onTouch ? `Build: ${builds[i].name}` : 'Tell Claude what to build';
       btns[i].scrollIntoView({ block: 'nearest' });
     },
     onMenuClick(handler) { onClickHandlers.push(handler); },
+    toggleMenu() { menu.classList.toggle('open'); },
+    closeMenu,
   };
 }
