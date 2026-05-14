@@ -31,7 +31,7 @@ The static demo is on GitHub Pages: <https://loathwine.github.io/craftplan/>
 | What you want to run | Needs |
 | -- | -- |
 | The static demo above | A browser. That's it. |
-| Live multiplayer server | [Nix](https://nixos.org/download) (with flakes). The flake pins Node 22 and all npm deps via `buildNpmPackage`, so nothing touches your host. |
+| Live multiplayer server | [Nix](https://nixos.org/download) (with flakes). The flake pins Node 22 and resolves all npm deps via `buildNpmPackage`, so there's no host-level `npm install` and no global packages on your `$PATH`. |
 | AI builder bot | Nix **plus** the [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) CLI on `$PATH`. The bot shells out to `claude -p --model claude-opus-4-7` to turn freeform prompts into block-placement scripts. |
 
 ### Server
