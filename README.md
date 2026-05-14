@@ -7,7 +7,7 @@ into block-placement code (`@Claude build a dragon, here`), and importing
 a JIRA backlog spawns the issues as clustered structures you can walk
 through.
 
-<!-- TODO: drop the demo video / GIF here -->
+**Demo video:** <https://youtu.be/GDJijs-ZlSk>
 
 ## Try it without installing anything
 
