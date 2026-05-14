@@ -1,13 +1,18 @@
 # CraftPlan
 
-Browser-based, Minecraft-style multiplayer voxel world where your project
-backlog becomes a 3D town. Tasks render as colored towers (size = effort,
-color = status), an in-world player named **Claude** turns chat prompts
-into block-placement code (`@Claude build a dragon, here`), and importing
-a JIRA backlog spawns the issues as clustered structures you can walk
-through.
+A browser-based, Minecraft-style multiplayer voxel world where an
+in-world player named **Claude** builds anything you ask. Type
+`@Claude build a dragon, here` in chat and watch the LLM stream blocks
+into the world over ~10 seconds. Dragons, Hogwarts, pirate ships,
+whatever you can describe.
 
 **Demo video:** <https://youtu.be/GDJijs-ZlSk>
+
+> CraftPlan started life as a JIRA-backlog visualizer — story points
+> became tower sizes, status became color, parent links became spatial
+> clusters. Then the AI builder bot landed and quietly took over the
+> project. The JIRA import still works (see below), but the fun part is
+> asking Claude to build you a castle.
 
 ## Try it without installing anything
 
