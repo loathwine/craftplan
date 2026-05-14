@@ -14,6 +14,13 @@ whatever you can describe.
 > project. The JIRA import still works (see below), but the fun part is
 > asking Claude to build you a castle.
 
+> **A note on how this was built:** every line of code in this repo was
+> written by Claude. So were the cached LLM builds, the recording
+> pipeline, and the demo video itself (shot list, fades, audio cues,
+> the lot). I drove, Claude typed. The whole thing is a vibe-coding
+> experiment — I wanted to see how far Claude could be pushed on a real
+> multi-component project, end to end.
+
 ## Try it without installing anything
 
 The static demo is on GitHub Pages: <https://loathwine.github.io/craftplan/>
