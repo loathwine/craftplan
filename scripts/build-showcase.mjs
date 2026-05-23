@@ -59,8 +59,28 @@ const filterParts = clips.map((c, i) => {
     `format=yuv420p[v${i}]`;
 });
 
-const concatInputs = clips.map((_, i) => `[v${i}]`).join('');
-const filter = filterParts.join(';') + `;${concatInputs}concat=n=${clips.length}:v=1:a=0[out]`;
+// Optional --epilogue "Title|Line1|Line2|..." appends a static-color
+// title card at the end. Useful for "everything we added" summaries.
+let totalClips = clips.length;
+if (argv.epilogue) {
+  const parts = argv.epilogue.split('|');
+  const title = labelEsc(parts[0] || '');
+  const lines = parts.slice(1).map(labelEsc);
+  const lineDur = parseFloat(argv['epilogue-dur'] || '4');
+  const lineFilters = lines.map((l, idx) =>
+    `drawtext=fontfile='${FONT}':text='${l}':fontsize=36:fontcolor=white:borderw=2:bordercolor=black:x=(w-text_w)/2:y=${440 + idx * 70}`
+  ).join(',');
+  filterParts.push(
+    `color=c=#0a1828:s=${WIDTH}x${HEIGHT}:d=${lineDur},setsar=1,` +
+      `drawtext=fontfile='${FONT}':text='${title}':fontsize=64:fontcolor=#ffe34a:borderw=4:bordercolor=black:x=(w-text_w)/2:y=320` +
+      (lineFilters ? ',' + lineFilters : '') +
+      `,format=yuv420p[v${totalClips}]`,
+  );
+  totalClips++;
+}
+
+const concatInputs = Array.from({ length: totalClips }, (_, i) => `[v${i}]`).join('');
+const filter = filterParts.join(';') + `;${concatInputs}concat=n=${totalClips}:v=1:a=0[out]`;
 
 const args = [
   '-y', '-hide_banner', '-loglevel', 'warning',
