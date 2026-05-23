@@ -26,7 +26,7 @@ import { terrainHeight } from './terrain.js';
 function buildSyntheticManuscript(slug, params) {
   const W = parseInt(params.get('w')) || 1080;
   const H = parseInt(params.get('h')) || 1920;
-  const dur     = parseFloat(params.get('dur'))    || 22;
+  const dur     = parseFloat(params.get('dur'))    || 18;
   // Full-size world by default so natural terrain forms a backdrop on
   // every side as the camera orbits the build. Down to 6-8 chunks for
   // fast smoke iteration when you don't care about the horizon.

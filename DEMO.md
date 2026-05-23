@@ -46,44 +46,115 @@ relative to the page URL, so subpath hosting works out of the box.
 Trigger a manual rebuild any time via the Actions tab → "Deploy demo
 to GitHub Pages" → **Run workflow**.
 
-## Shorts mode (fast single-build renders)
+## Shorts mode (single-build vertical Shorts)
 
-For the YouTube Shorts pipeline (`shorts-mode` branch), the recorder accepts
-a `?single=<slug>` URL param that synthesises a one-shot orbit manuscript
-around a single cached plan. The world is generated at a smaller size
-(`?chunks=8` → 128×128 by default) for faster iteration in SwiftShader.
+The `shorts-mode` branch adds a parallel pipeline for producing YouTube
+Shorts: one cached LLM build, a smooth full 360° camera orbit around it,
+upgraded rendering (real shadows, SSAO, bloom, ACES tonemapping,
+gradient sky), optional weather, and the natural 256×256 world as
+background.
+
+### TL;DR — render one Short
 
 ```bash
 nix develop .#record --command node scripts/record-demo.mjs \
-  --single dragons-fighting --chunks 10 \
-  --duration 8 --fps 24 \
-  --width 720 --height 1280 \
-  --orbitR 75 --orbitH 28 --camY 18 --sweep 0.35 \
-  --order structural --weather snow \
-  --out recordings/shorts-mode/dragons-fighting.mp4
+  --single dragon-attacking \
+  --width 1080 --height 1920 \
+  --order flood-fill \
+  --out recordings/shorts-mode/dragon-attacking.mp4
 ```
 
-Flags forwarded to the URL:
-- `--single <slug>` — name of a cached plan under `public/data/plans/`
-- `--chunks <n>` — world size (default 6); 8-10 is good for medium builds
-- `--orbitR/--orbitH/--camY/--sweep` — camera path
-- `--order` — `bottom-up` | `structural` | `outline-first` | `painterly` | `sparse-then-dense`
-- `--weather` — `clear` | `snow` | `rain` | `storm`
-- `--buildFrac` — what fraction of the shot is build-animation (default 0.75)
+That's it. Default duration 18s, full world (chunks=16, 256×256), one
+smooth full revolution around the build, flood-fill build order
+(structure rises from the floor up). The recorder defaults all the
+camera/orbit knobs to sensible values for shorts.
 
-The shorts-mode branch also adds:
-- AO baking, cast shadows, ACES tonemapping, SSAO + bloom (see `sky.js`, `composer.js`)
-- Cinematic build orders (`buildOrder.js`)
-- Weather particle systems (`weather.js`)
-- Bigger build budgets via `cache-plan.mjs --budget` / `--radius` / `--vradius`
+### CLI flags
 
-Cache a new big build with the bigger budget:
+| Flag | URL param | Default | Notes |
+|---|---|---|---|
+| `--single <slug>` | `?single=` | — | Required. Name of a cached plan under `public/data/plans/`. |
+| `--duration <s>` | `?dur=` | 18 | Whole shot length. |
+| `--chunks <n>` | `?chunks=` | 16 | World size in chunks (16 → 256×256). Drop to 6-8 for faster iteration. |
+| `--orbitR <units>` | `?orbitR=` | 50 | Orbit radius. Use 60-75 for medium builds. |
+| `--orbitH <units>` | `?orbitH=` | 14 | Camera height above orbit centre. |
+| `--camY <units>` | `?camY=` | 12 | Y of orbit centre above ground. |
+| `--sweep <fraction>` | `?sweep=` | 1.0 | `sweep × 2π` = orbit angle. 1.0 = full revolution. |
+| `--order <mode>` | `?order=` | `structural` | See "Build orders" below. |
+| `--weather <kind>` | `?weather=` | `clear` | `snow` / `rain` / `storm` / `clouds` / `fog`. |
+| `--buildFrac <0..1>` | `?buildFrac=` | 0.5 | What fraction of the shot is build-animation. Rest is camera continuing to orbit the finished build. |
+| `--cam <mode>` | `?cam=` | `orbit` | `orbit` = single smooth sweep (default), `multi` = keyframed multi-angle reveal after build. |
+| `--camStyle <s>` | `?camStyle=` | `wide` | Only for `cam=multi`: `wide`, `low-up`, `overhead`. |
+| `--width / --height` | `?w=/?h=` | 1280/720 | For Shorts pass `--width 1080 --height 1920`. |
+| `--fps <n>` | — | 30 | Output framerate. |
+| `--out <path>` | — | — | Output MP4 path. |
+
+### Build orders (`--order`)
+
+| Mode | Behaviour |
+|---|---|
+| `bottom-up` | Y ascending — classic 3D-printer feel, layer by layer. Default for the full manuscript path. |
+| `structural` | Bottom half first, then upper-shell silhouette, then upper interior. Reads as "foundation → silhouette → fill". |
+| `outline-first` | Per-Y plane: edge blocks before interior. Wireframe-fills-in look. |
+| `painterly` | Centre outward in radial shells with light Y bias. Good for symmetrical builds. |
+| `sparse-then-dense` | Stride-3 scaffold first, then fill in the gaps. Materialising-from-nothing feel. |
+| `bfs-corner` | 6-connected BFS from one corner of the bounding box. Expanding wave from a single seed. |
+| `dfs-corner` | DFS variant — a single tendril snakes through the structure. |
+| `flood-fill` | DFS direction + per-step BFS ball. Wide river of placement; seeded from the lowest Y block so structures grow up from the floor. Best default for shorts. |
+
+### Weather (`--weather`)
+
+| Kind | Implementation |
+|---|---|
+| `clear` | No effect. |
+| `snow` | Particle system: drifting white flakes. |
+| `rain` | Particle system: slanted streaks. |
+| `storm` | Rain + grey-tinted scene fog. |
+| `clouds` | Large soft-edged white quads drifting across the upper hemisphere. |
+| `fog` | Dense grey scene fog plus drifting fog quads near the world floor. |
+
+### Rendering upgrades (apply to all three entry points)
+
+Implemented in `public/js/sky.js`, `composer.js`, plus mesher/avatar
+shadow flags:
+
+- Gradient sky shader (custom; replaces THREE.Sky which read too hazy)
+- Per-corner ambient occlusion baked into vertex colors in the chunk
+  mesher (`World.js`)
+- Real cast shadows from a sun-aligned directional light, 2048² shadow
+  map, PCFSoftShadowMap, ortho frustum covering the 256×256 world
+- ACES filmic tonemapping + sRGB output
+- Post-processing composer: RenderPass → SSAO → UnrealBloom → OutputPass
+- Optional ocean (off by default; opt-in via `?ocean=true` — has wave
+  shader and brighter colour but the default natural-terrain backdrop
+  reads better at the horizon)
+
+### Caching bigger LLM builds
+
+`cache-plan.mjs` accepts `--budget` / `--radius` / `--vradius` / `--timeout`
+flags so you can request larger and more detailed builds:
 
 ```bash
 nix develop --command node scripts/cache-plan.mjs \
   --slug my-big-thing --radius 30 --vradius 22 --budget 12000 --timeout 1200000 \
   --prompt "..." --force
 ```
+
+Existing big builds:
+- `dragon-attacking.json` — 12K-block dragon mid-leap (BRICK/STONE/OAK_LOG/SAND)
+- `dragons-fighting.json` — 13K-block fire+ice dragon combat (BRICK + GLASS/ICE/SNOW)
+- `hogwarts-big.json` — 14K-block castle complex (STONE/COBBLE/BRICK/OAK_LOG/GLASS)
+
+### Helper scripts
+
+- `scripts/smoke-record.mjs <t> <out.png>` — load `?record` mode and
+  screenshot at one manuscript time. Used to audit visual changes
+  without running a full render.
+- `scripts/build-showcase.mjs --clip "label|file|start|dur" …`
+  — stitch multiple clips into a single labelled MP4. Optional
+  `--epilogue "Title|line1|line2|…"` appends a summary card.
+- `scripts/stitch-compare.mjs --before A.mp4 --after B.mp4 …` —
+  side-by-side BEFORE/AFTER stitch.
 
 ## Quick start
 

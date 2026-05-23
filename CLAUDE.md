@@ -53,6 +53,41 @@ scripts/
                         Multiple named bots can run concurrently.
 ```
 
+### Branches
+
+- `master` — base project (server, bot, demo recorder).
+- `demo-mode` — adds the original 2:40 demo recorder + static GitHub Pages
+  explore mode. Branched off master.
+- `shorts-mode` — branched off `demo-mode`. Adds the vertical YouTube
+  Shorts pipeline + cinematic rendering upgrades (real shadows, SSAO,
+  bloom, gradient sky, multi-angle camera, build-order strategies,
+  weather, configurable world size). See `DEMO.md` "Shorts mode" for
+  the full workflow.
+
+Key files added in shorts-mode:
+```
+public/js/sky.js           Shared sky/sun/shadow/ocean setup. setupSky()
+                           + setupRenderer() called from all 3 entry
+                           points (main / record / explore).
+public/js/composer.js      EffectComposer pipeline: SSAO + UnrealBloom +
+                           OutputPass with ACES tonemap.
+public/js/buildOrder.js    Build-order strategies: structural, painterly,
+                           bfs-corner, dfs-corner, flood-fill, etc.
+public/js/weather.js       Particle/quad weather: snow, rain, storm,
+                           clouds, fog.
+scripts/smoke-record.mjs   Single-frame screenshot helper.
+scripts/build-showcase.mjs Multi-clip showcase stitcher.
+public/data/plans/dragon-attacking.json
+public/data/plans/dragons-fighting.json
+public/data/plans/hogwarts-big.json
+                           Bigger LLM-cached builds (10-14K blocks).
+```
+
+The recorder gains a `?single=<slug>` URL param that synthesises a
+single-build orbit manuscript, bypassing the full 2:40 movie. World
+size is now configurable via `World` constructor `{ chunks }`. The
+chunk mesher bakes per-corner ambient occlusion into vertex colors.
+
 ## Networking
 
 - One server on a port (default 3000). All clients connect via WebSocket.
