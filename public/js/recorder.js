@@ -11,8 +11,56 @@
 import * as THREE from 'three';
 import { World } from './World.js';
 import { TaskManager } from './TaskManager.js';
-import { MANUSCRIPT } from './manuscript.mjs';
+import { MANUSCRIPT as FULL_MANUSCRIPT } from './manuscript.mjs';
 import { terrainHeight } from './terrain.js';
+
+// Synthetic single-build manuscript for shorts iteration. Skips the full
+// movie and just orbits a camera around one cached plan placed at world
+// centre. Driven by URL params:
+//   ?single=<slug>   build slug
+//   ?dur=<seconds>   shot length (default 10)
+//   ?chunks=<n>      world size in chunks (default 6 → 96×96)
+//   ?orbitR=<units>  orbit radius (default 50)
+//   ?orbitH=<units>  camera height above centre (default 14)
+//   ?camY=<units>    centre Y the camera looks at (default 12)
+function buildSyntheticManuscript(slug, params) {
+  const W = parseInt(params.get('w')) || 1080;
+  const H = parseInt(params.get('h')) || 1920;
+  const dur     = parseFloat(params.get('dur'))    || 10;
+  const chunks  = parseInt(params.get('chunks'))   || 6;
+  const orbitR  = parseFloat(params.get('orbitR')) || 50;
+  const orbitH  = parseFloat(params.get('orbitH')) || 14;
+  const camY    = parseFloat(params.get('camY'))   || 12;
+  const sweep   = parseFloat(params.get('sweep'))  || 0.6;     // sweep × 2π = how far the orbit travels
+
+  const cxParam = parseInt(params.get('cx'));
+  const czParam = parseInt(params.get('cz'));
+  const cx = Number.isFinite(cxParam) ? cxParam : Math.floor((chunks * 16) / 2);
+  const cz = Number.isFinite(czParam) ? czParam : Math.floor((chunks * 16) / 2);
+  const groundY = terrainHeight(cx, cz) + 1;
+
+  return {
+    fps: 30, width: W, height: H, chunks,
+    avatars: {},
+    setup: [
+      { type: 'clearAboveGround',
+        min: [cx - 40, cz - 40], max: [cx + 40, cz + 40], topY: 90 },
+    ],
+    shots: [{
+      id: 'single-' + slug,
+      duration: dur,
+      camera: {
+        type: 'orbit',
+        center: [cx, groundY + camY, cz],
+        radius: orbitR, height: orbitH,
+        startAngle: -sweep * Math.PI,
+        endAngle:   +sweep * Math.PI,
+      },
+      placements: [{ slug, origin: [cx, groundY, cz], t: 0 }],
+    }],
+    audioMarkers: [],
+  };
+}
 import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
 import { setupSky, setupRenderer } from './sky.js';
 import { setupComposer } from './composer.js';
@@ -209,8 +257,8 @@ function compileBuild(buildSpec, planJson) {
 // ---------------------------------------------------------------------------
 // Avatar registry: one persistent group per character in the scene.
 // ---------------------------------------------------------------------------
-function buildAvatarRegistry(scene) {
-  const defs = MANUSCRIPT.avatars || {};
+function buildAvatarRegistry(scene, manuscript) {
+  const defs = manuscript.avatars || {};
   const reg = new Map();
   for (const [name, def] of Object.entries(defs)) {
     const av = makeAvatar({ name, ...def });
@@ -245,6 +293,8 @@ export async function startRecorder() {
   // URL params win so the headless recorder can request a specific render
   // size without us re-publishing the manuscript.
   const params = new URLSearchParams(location.search);
+  const singleSlug = params.get('single');
+  const MANUSCRIPT = singleSlug ? buildSyntheticManuscript(singleSlug, params) : FULL_MANUSCRIPT;
   const W = parseInt(params.get('w')) || MANUSCRIPT.width;
   const H = parseInt(params.get('h')) || MANUSCRIPT.height;
   const scene = new THREE.Scene();
@@ -261,7 +311,7 @@ export async function startRecorder() {
   setupSky(scene, { fogNear: 120, fogFar: 360 });
   const composer = setupComposer(renderer, scene, camera, W, H);
 
-  const world = new World(scene);
+  const world = new World(scene, { chunks: MANUSCRIPT.chunks });
   const _tm = new TaskManager(scene, world);
 
   // Apply pre-timeline setup (clear forest at build sites etc.)
@@ -290,7 +340,7 @@ export async function startRecorder() {
   }
 
   // Avatars
-  const avatars = buildAvatarRegistry(scene);
+  const avatars = buildAvatarRegistry(scene, MANUSCRIPT);
 
   // Compile shots → global timeline
   const shots = [];

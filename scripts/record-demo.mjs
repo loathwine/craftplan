@@ -82,7 +82,14 @@ const staticServer = http.createServer((req, res) => {
   }
 });
 const STATIC_PORT = await new Promise((r) => staticServer.listen(0, () => r(staticServer.address().port)));
-const PAGE_URL = `http://127.0.0.1:${STATIC_PORT}/?record=1&w=${WIDTH}&h=${HEIGHT}`;
+// Forward shorts/orbit URL params from CLI flags. Any value not set gets
+// the recorder's default behaviour.
+const FORWARD_PARAMS = ['single', 'chunks', 'dur', 'orbitR', 'orbitH', 'camY', 'sweep', 'cx', 'cz'];
+const extraParams = FORWARD_PARAMS
+  .filter((k) => argv[k] != null && argv[k] !== true)
+  .map((k) => `${k}=${encodeURIComponent(argv[k])}`)
+  .join('&');
+const PAGE_URL = `http://127.0.0.1:${STATIC_PORT}/?record=1&w=${WIDTH}&h=${HEIGHT}${extraParams ? '&' + extraParams : ''}`;
 console.log(`[rec] static: http://127.0.0.1:${STATIC_PORT}`);
 
 // --- Output dir -------------------------------------------------------------

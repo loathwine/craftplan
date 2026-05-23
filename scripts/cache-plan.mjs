@@ -73,8 +73,11 @@ if (BUILDER) {
   sourceLabel = `builder:${BUILDER}`;
   console.log(`[plan] builder=${BUILDER}: ${plan.length} blocks`);
 } else {
-  const RADIUS = 22, VRADIUS = 14;
+  const RADIUS  = parseInt(argv.radius  || '22');
+  const VRADIUS = parseInt(argv.vradius || '14');
+  const BUDGET  = parseInt(argv.budget  || '4000');
   const geomCtx = describeLocalGeometry({ origin: ORIGIN, radius: RADIUS, vradius: VRADIUS });
+  const detailHint = argv['detail-hint'] || '';
   const prompt = `You are a voxel architect. Design: "${PROMPT}".
 
 You write JavaScript that calls builder functions. Your code runs in a sandbox that collects block placements. Your output OVERRIDES whatever was at those coordinates.
@@ -82,17 +85,19 @@ You write JavaScript that calls builder functions. Your code runs in a sandbox t
 ${SANDBOX_API_DOC}
 
 COORDS: Relative - origin (0,0,0) is the player's feet at the build location, on top of the ground. +X east, +Y up, +Z south.
-Limits: X,Z in [-${RADIUS},${RADIUS}], Y in [-8,${VRADIUS * 2 + 5}]. Negative Y allowed for foundations / digging in. Total <= 4000 blocks.
+Limits: X,Z in [-${RADIUS},${RADIUS}], Y in [-8,${VRADIUS * 2 + 5}]. Negative Y allowed for foundations / digging in. Total <= ${BUDGET} blocks.
 
 ${geomCtx}
 
 If terrain rises into your footprint: carve in (AIR) or step the build up. If it drops: foundation blocks at negative Y, or raise the build.
 
+${detailHint ? `STYLE GUIDANCE: ${detailHint}\n` : ''}DETAIL EXPECTATION: Use most of your ${BUDGET}-block budget. Add layered detail — ornamentation, asymmetry, multiple structures or characters, foreground/background separation. Avoid simple geometric shells.
+
 Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
 
-  console.log(`[plan] calling Claude (${MODEL}) for "${PROMPT}"...`);
+  console.log(`[plan] calling Claude (${MODEL}) for "${PROMPT}" (budget ${BUDGET}, radius ${RADIUS})...`);
   const { code, plan: relPlan } = await planWithAI(prompt, {
-    model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8,
+    model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET,
   });
   plan = relPlan;
   sourceLabel = `ai:${MODEL}`;

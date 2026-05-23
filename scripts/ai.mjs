@@ -4,7 +4,7 @@ import vm from 'vm';
 import { spawn } from 'child_process';
 
 const VALID_BLOCKS = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13]);
-const MAX_BLOCKS = 5000;
+const DEFAULT_MAX_BLOCKS = 5000;
 
 export const SANDBOX_API_DOC = `AVAILABLE FUNCTIONS:
   block(x, y, z, id)                           single block
@@ -28,13 +28,14 @@ foliage → LEAVES, red/fire → BRICK, water/sky → GLASS, white/snow → SNOW
 
 Math is available. You can define local helper functions.`;
 
-export function makeSandbox() {
+export function makeSandbox(opts = {}) {
+  const maxBlocks = opts.maxBlocks ?? DEFAULT_MAX_BLOCKS;
   const ops = [];
   let hitLimit = false;
 
   const addBlock = (x, y, z, id) => {
     if (hitLimit) return;
-    if (ops.length >= MAX_BLOCKS) { hitLimit = true; return; }
+    if (ops.length >= maxBlocks) { hitLimit = true; return; }
     x = Math.round(x); y = Math.round(y); z = Math.round(z);
     if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) return;
     if (typeof id !== 'number') return;
@@ -139,10 +140,10 @@ export function extractCode(stdout) {
 }
 
 export function runSandbox(code, opts = {}) {
-  const { maxX = 22, maxZ = 22, maxY = 40, minY = 0 } = opts;
-  const { api, ops } = makeSandbox();
+  const { maxX = 22, maxZ = 22, maxY = 40, minY = 0, maxBlocks } = opts;
+  const { api, ops } = makeSandbox({ maxBlocks });
   const ctx = vm.createContext(api);
-  vm.runInContext(code, ctx, { timeout: 5000, displayErrors: true });
+  vm.runInContext(code, ctx, { timeout: 10000, displayErrors: true });
   return ops()
     .filter(op => VALID_BLOCKS.has(op.block))
     .filter(op => Math.abs(op.x) <= maxX && Math.abs(op.z) <= maxZ && op.y >= minY && op.y <= maxY);

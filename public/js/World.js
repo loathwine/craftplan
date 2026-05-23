@@ -4,8 +4,8 @@ import { hash2, biomeAt, terrainHeight, surfaceBlock, shouldHaveTree } from './t
 
 export const CHUNK_SIZE = 16;
 export const WORLD_HEIGHT = 128;
-const CHUNKS = 16; // 16x16 chunks = 256x256 world
-export const WORLD_SIZE = CHUNKS * CHUNK_SIZE;
+const DEFAULT_CHUNKS = 16; // 16x16 chunks = 256x256 world
+export const WORLD_SIZE = DEFAULT_CHUNKS * CHUNK_SIZE;
 
 // --- Face definitions (CCW winding, normal points outward) ---
 // For each corner we precompute AO neighbour offsets: the two tangent-plane
@@ -39,11 +39,13 @@ const FACES = RAW_FACES.map(f => {
 const AO_LEVELS = [1.0, 0.82, 0.65, 0.48];
 
 export class World {
-  constructor(scene) {
+  constructor(scene, opts = {}) {
     this.scene = scene;
     this.chunks = new Map();
     this.meshes = new Map();
     this.blockChanges = new Map();
+    this.chunkCount = opts.chunks ?? DEFAULT_CHUNKS;
+    this.worldSize = this.chunkCount * CHUNK_SIZE;
     this.material = new THREE.MeshLambertMaterial({ vertexColors: true });
     this.transparentMaterial = new THREE.MeshLambertMaterial({
       vertexColors: true, transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide,
@@ -54,19 +56,20 @@ export class World {
   }
 
   _generate() {
+    const C = this.chunkCount;
     // Pass 1: terrain
-    for (let cx = 0; cx < CHUNKS; cx++)
-      for (let cz = 0; cz < CHUNKS; cz++)
+    for (let cx = 0; cx < C; cx++)
+      for (let cz = 0; cz < C; cz++)
         this._genTerrain(cx, cz);
 
     // Pass 2: trees (can write to any chunk)
-    for (let cx = 0; cx < CHUNKS; cx++)
-      for (let cz = 0; cz < CHUNKS; cz++)
+    for (let cx = 0; cx < C; cx++)
+      for (let cz = 0; cz < C; cz++)
         this._genTrees(cx, cz);
 
     // Pass 3: meshes
-    for (let cx = 0; cx < CHUNKS; cx++)
-      for (let cz = 0; cz < CHUNKS; cz++)
+    for (let cx = 0; cx < C; cx++)
+      for (let cz = 0; cz < C; cz++)
         this._buildMesh(cx, cz);
   }
 
@@ -149,9 +152,9 @@ export class World {
     const lx = ((x % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
     const lz = ((z % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
     if (lx === 0 && cx > 0) this._buildMesh(cx - 1, cz);
-    if (lx === CHUNK_SIZE - 1 && cx < CHUNKS - 1) this._buildMesh(cx + 1, cz);
+    if (lx === CHUNK_SIZE - 1 && cx < this.chunkCount - 1) this._buildMesh(cx + 1, cz);
     if (lz === 0 && cz > 0) this._buildMesh(cx, cz - 1);
-    if (lz === CHUNK_SIZE - 1 && cz < CHUNKS - 1) this._buildMesh(cx, cz + 1);
+    if (lz === CHUNK_SIZE - 1 && cz < this.chunkCount - 1) this._buildMesh(cx, cz + 1);
   }
 
   getTerrainHeight(x, z) {
