@@ -91,6 +91,7 @@ export function setupWeather(scene, kind = 'clear', opts = {}) {
     return { kind: 'clear', update: () => {} };
   }
   if (kind === 'clouds') return setupClouds(scene, opts);
+  if (kind === 'fog')    return setupFog(scene, opts);
   const preset = SHADERS[kind === 'storm' ? 'rain' : kind];
   if (!preset) {
     console.warn(`[weather] unknown kind "${kind}"`);
@@ -141,6 +142,82 @@ export function setupWeather(scene, kind = 'clear', opts = {}) {
     update(dt, camera) {
       mat.uniforms.uTime.value += dt;
       if (camera) mat.uniforms.uCamPos.value.copy(camera.position);
+    },
+  };
+}
+
+// Dense ground fog: pulls scene.fog much closer and grey, plus adds a
+// horizontal layer of soft fog quads drifting just above the world floor.
+// Reads as "fog rolling in" because the layer is dynamic.
+function setupFog(scene, opts = {}) {
+  const count = opts.count ?? 22;
+  const baseY = opts.baseY ?? 22;
+  const yJitter = opts.yJitter ?? 14;
+  const area = opts.area ?? 320;
+  const fogSize = opts.fogSize ?? 110;
+  const driftSpeed = opts.driftSpeed ?? 2.5;
+
+  // Override scene fog: closer + greyer for the fog mood.
+  const prevFog = scene.fog;
+  if (scene.fog) {
+    scene.fog = new THREE.Fog(0x9aa6b0, 30, 160);
+  }
+
+  const group = new THREE.Group();
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+      void main() {
+        vec2 d = vUv - vec2(0.5);
+        float r = length(d * vec2(1.0, 2.0));    // flatter ellipse
+        float a = smoothstep(0.5, 0.1, r);
+        gl_FragColor = vec4(0.78, 0.82, 0.87, a * 0.55);
+      }
+    `,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  });
+  const fogs = [];
+  for (let i = 0; i < count; i++) {
+    const w = fogSize * (0.7 + Math.random() * 0.8);
+    const h = fogSize * (0.5 + Math.random() * 0.5);
+    const geo = new THREE.PlaneGeometry(w, h);
+    const m = new THREE.Mesh(geo, mat);
+    m.rotation.x = -Math.PI / 2;
+    m.position.set(
+      (Math.random() - 0.5) * area,
+      baseY + Math.random() * yJitter,
+      (Math.random() - 0.5) * area,
+    );
+    m.userData.driftX = (Math.random() - 0.5) * 0.9 + 0.4;
+    m.userData.driftZ = (Math.random() - 0.5) * 0.6;
+    group.add(m);
+    fogs.push(m);
+  }
+  scene.add(group);
+
+  return {
+    kind: 'fog',
+    update(dt, camera) {
+      const camX = camera ? camera.position.x : 0;
+      const camZ = camera ? camera.position.z : 0;
+      for (const c of fogs) {
+        c.position.x += c.userData.driftX * driftSpeed * dt;
+        c.position.z += c.userData.driftZ * driftSpeed * dt;
+        const halfArea = area * 0.6;
+        if (c.position.x - camX > halfArea) c.position.x -= area * 1.2;
+        if (c.position.x - camX < -halfArea) c.position.x += area * 1.2;
+        if (c.position.z - camZ > halfArea) c.position.z -= area * 1.2;
+        if (c.position.z - camZ < -halfArea) c.position.z += area * 1.2;
+      }
     },
   };
 }

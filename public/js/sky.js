@@ -37,12 +37,16 @@ const DEFAULTS = {
   shadowBias:    -0.0008,
   shadowNormalBias: 0.04,
 
-  // Ocean horizon: a giant flat blue plane below world Y, extending
-  // beyond the camera so the gradient sky meets a water line far away.
+  // Ocean horizon: a tessellated blue plane below world Y, displaced by a
+  // sine-wave shader for slow rolling waves. Extends beyond the camera so
+  // the gradient sky meets a water line far away.
   ocean:        true,
   oceanY:       12,
   oceanExtent:  3000,
-  oceanColor:   0x2a5f7a,
+  oceanColor:   0x1d6ea3,   // brighter saturated cobalt, was 0x2a5f7a
+  oceanWaveAmp: 0.45,
+  oceanWaveLen: 24,
+  oceanWaveSpeed: 1.2,
 };
 
 const VS = `
@@ -140,13 +144,61 @@ export function setupSky(scene, opts = {}) {
   let ocean = null;
   if (o.ocean) {
     const e = o.oceanExtent;
-    const geo = new THREE.PlaneGeometry(e * 2, e * 2);
-    const mat = new THREE.MeshLambertMaterial({ color: o.oceanColor });
-    ocean = new THREE.Mesh(geo, mat);
+    // Tessellate so the wave displacement actually has vertices to move.
+    const segs = 96;
+    const geo = new THREE.PlaneGeometry(e * 2, e * 2, segs, segs);
+    const oceanMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime:       { value: 0 },
+        uColor:      { value: new THREE.Color(o.oceanColor) },
+        uHighlight:  { value: new THREE.Color(0x7fbedf) },
+        uAmp:        { value: o.oceanWaveAmp },
+        uWavelen:    { value: o.oceanWaveLen },
+        uSpeed:      { value: o.oceanWaveSpeed },
+        uSunDir:     { value: sunDir.clone() },
+      },
+      vertexShader: `
+        uniform float uTime;
+        uniform float uAmp;
+        uniform float uWavelen;
+        uniform float uSpeed;
+        varying float vWaveH;
+        varying vec3 vWorldNormal;
+        void main() {
+          vec3 p = position;
+          // Two perpendicular sine waves to break up the symmetry.
+          float k = 6.28318530718 / uWavelen;
+          float w1 = sin(p.x * k + uTime * uSpeed);
+          float w2 = sin(p.y * k * 0.7 + uTime * uSpeed * 1.3 + 1.7);
+          float h = (w1 + 0.6 * w2) * uAmp;
+          p.z += h;
+          vWaveH = h / uAmp;
+          // Cheap normal: gradient of the height field.
+          float dx = cos(p.x * k + uTime * uSpeed) * k * uAmp;
+          float dy = cos(p.y * k * 0.7 + uTime * uSpeed * 1.3 + 1.7) * k * 0.7 * uAmp * 0.6;
+          vWorldNormal = normalize(vec3(-dx, -dy, 1.0));
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 uColor;
+        uniform vec3 uHighlight;
+        uniform vec3 uSunDir;
+        varying float vWaveH;
+        varying vec3 vWorldNormal;
+        void main() {
+          // Crests get the lighter highlight tint; troughs get base colour.
+          vec3 base = mix(uColor, uHighlight, smoothstep(-0.2, 0.9, vWaveH));
+          // Cheap specular: dot of crest normal with sun direction.
+          float spec = pow(max(dot(vWorldNormal, normalize(uSunDir)), 0.0), 18.0);
+          gl_FragColor = vec4(base + vec3(spec) * 0.35, 1.0);
+        }
+      `,
+    });
+    ocean = new THREE.Mesh(geo, oceanMat);
     ocean.rotation.x = -Math.PI / 2;
     ocean.position.y = o.oceanY;
-    ocean.receiveShadow = false;  // water shouldn't catch sharp shadows
-    ocean.castShadow = false;
+    ocean.frustumCulled = false;
     scene.add(ocean);
   }
 

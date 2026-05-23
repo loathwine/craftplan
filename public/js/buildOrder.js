@@ -176,17 +176,18 @@ function dfsFromCorner(plan, opts = {}) {
 // than pure BFS. Reads like a river of placement.
 function floodFill(plan, opts = {}) {
   if (plan.length === 0) return [];
-  const corner = opts.corner || 'low-x-low-z';
-  const radius = opts.floodRadius ?? 2;  // BFS radius around each DFS node
+  // Always seed from the GROUND (lowest Y) by default. User feedback: when
+  // floodFill seeded from a low-X-low-Z corner with no Y bias, the dragon-
+  // tower built dragon-coil chunks in mid-air before the supporting tower;
+  // ground-seeding makes structures grow up from the floor, which reads
+  // as natural construction order. Y-weight dominates so we always start
+  // at floor and reach up.
+  const radius = opts.floodRadius ?? 2;
   const set = new Set(plan.map(b => `${b.x},${b.y},${b.z}`));
   const lookup = new Map(plan.map(b => [`${b.x},${b.y},${b.z}`, b]));
-  const score = (b) => {
-    let s = 0;
-    s += corner.includes('low-x') ? b.x : -b.x;
-    s += corner.includes('low-y') ? b.y : (corner.includes('high-y') ? -b.y : b.y * 0.5);
-    s += corner.includes('low-z') ? b.z : -b.z;
-    return s;
-  };
+  // Heavy Y bias, light X/Z bias (so the seed is at the floor but in a
+  // deterministic spot, not jittery between near-equal candidates).
+  const score = (b) => b.y * 10 + b.x * 0.1 + b.z * 0.1;
   const seed = plan.reduce((best, b) => score(b) < score(best) ? b : best);
   const stack = [seed];
   const visited = new Set();

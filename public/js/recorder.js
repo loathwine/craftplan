@@ -26,7 +26,7 @@ import { terrainHeight } from './terrain.js';
 function buildSyntheticManuscript(slug, params) {
   const W = parseInt(params.get('w')) || 1080;
   const H = parseInt(params.get('h')) || 1920;
-  const dur     = parseFloat(params.get('dur'))    || 10;
+  const dur     = parseFloat(params.get('dur'))    || 18;
   const chunks  = parseInt(params.get('chunks'))   || 6;
   const orbitR  = parseFloat(params.get('orbitR')) || 50;
   const orbitH  = parseFloat(params.get('orbitH')) || 14;
@@ -116,43 +116,43 @@ function buildMultiAngleCamera({ center, radius, height, sweep, buildSpan, durat
   const revealStart = buildSpan;
   const revealSpan  = Math.max(0.01, duration - buildSpan);
 
-  // 3 reveal angles instead of 4 → slower switches and longer holds.
-  // Each angle has its own look target so we can look UP for the low-up
-  // shot, etc. lookOffset is added to center.
+  // Look offsets per style: lookOffset is added to `center`. For low-up
+  // shots we want the look to aim at the dragon's FACE (high Y), not just
+  // generally upward. H is roughly the build's mid-height so H*1.4 is the
+  // top of the build.
   const STYLES = {
     wide: [
-      // Front close-up, low + a bit zoomed in
       { pos: [cx + R * 0.35, cy + H * 0.25, cz + R * 0.95], lookOffset: [0, 0, 0] },
-      // Side, mid-height, mid-distance
       { pos: [cx + R * 1.0,  cy + H * 0.8,  cz - R * 0.2],  lookOffset: [0, 0, 0] },
-      // Wide pull-back, back-and-up
       { pos: [cx - R * 1.05, cy + H * 1.0,  cz + R * 0.55], lookOffset: [0, 0, 0] },
+      { pos: [cx + R * 0.3,  cy + H * 1.5,  cz - R * 1.05], lookOffset: [0, 0, 0] },
     ],
     'low-up': [
-      // Ground-front: very low, looking UP at the build
-      { pos: [cx + R * 0.2,  cy - 4,        cz + R * 0.95], lookOffset: [0,  H * 1.2, 0] },
-      // Ground-side: low side angle
-      { pos: [cx + R * 1.0,  cy + 1,        cz + R * 0.1],  lookOffset: [0,  H * 0.8, 0] },
-      // Pull back to medium height for context
-      { pos: [cx - R * 0.6,  cy + H * 0.8,  cz + R * 0.95], lookOffset: [0,  0, 0] },
+      // Ground-front: very low, looking UP at the dragon's face (high Y).
+      { pos: [cx + R * 0.15, cy - 4,        cz + R * 0.95], lookOffset: [0, H * 1.5, 0] },
+      // Ground-side: tracking the body, look still tilted up.
+      { pos: [cx + R * 1.05, cy - 2,        cz + R * 0.05], lookOffset: [0, H * 1.2, 0] },
+      // Rising behind: rear-and-up, looking at face.
+      { pos: [cx - R * 0.8,  cy + H * 0.6,  cz + R * 0.8],  lookOffset: [0, H * 0.9, 0] },
+      // High wide pull-back, looking back at the build.
+      { pos: [cx - R * 1.2,  cy + H * 1.3,  cz - R * 0.4],  lookOffset: [0, H * 0.4, 0] },
     ],
     overhead: [
-      // Mid-height side
       { pos: [cx + R * 0.9,  cy + H * 0.5,  cz + R * 0.3],  lookOffset: [0, 0, 0] },
-      // Rising orbital
       { pos: [cx - R * 0.4,  cy + H * 1.4,  cz - R * 0.6],  lookOffset: [0, 0, 0] },
-      // Directly above
       { pos: [cx,            cy + H * 2.5,  cz],            lookOffset: [0, -H, 0] },
     ],
   };
   const reveals = STYLES[camStyle] || STYLES.wide;
-  const slot = revealSpan / reveals.length;
-  // Hold ~55% of each slot, then glide. Longer holds so the viewer can
-  // actually register each angle before it moves on.
+  // No more "hold" pairs — single keyframe per angle and linear (not eased)
+  // interpolation between them. The camera glides continuously through
+  // every angle instead of jump-and-stop. User feedback: "I want a slow
+  // always-moving camera, not jumping fast".
+  const slot = revealSpan / Math.max(1, reveals.length - 1);
   const keys = [
-    { t: 0,             pos: ang(orbitStart),               look: center },
-    { t: buildSpan*0.5, pos: ang((orbitStart+orbitEnd)/2),  look: center },
-    { t: buildSpan,     pos: ang(orbitEnd),                 look: center },
+    { t: 0,             pos: ang(orbitStart),               look: center, ease: false },
+    { t: buildSpan*0.5, pos: ang((orbitStart+orbitEnd)/2),  look: center, ease: false },
+    { t: buildSpan,     pos: ang(orbitEnd),                 look: center, ease: false },
   ];
   for (let i = 0; i < reveals.length; i++) {
     const r = reveals[i];
@@ -161,10 +161,8 @@ function buildMultiAngleCamera({ center, radius, height, sweep, buildSpan, durat
       center[1] + r.lookOffset[1],
       center[2] + r.lookOffset[2],
     ];
-    const tStart = revealStart + slot * i + slot * 0.2;
-    const tHold  = revealStart + slot * (i + 1) - slot * 0.05;
-    keys.push({ t: tStart, pos: r.pos, look });
-    keys.push({ t: tHold,  pos: r.pos, look });
+    const t = revealStart + slot * i;
+    keys.push({ t, pos: r.pos, look, ease: false });
   }
   return { type: 'keyframes', keys };
 }
@@ -417,7 +415,7 @@ export async function startRecorder() {
   renderer.setPixelRatio(1);
   setupRenderer(renderer);
 
-  setupSky(scene, { fogNear: 120, fogFar: 360 });
+  const skyHandle = setupSky(scene, { fogNear: 120, fogFar: 360 });
   const composer = setupComposer(renderer, scene, camera, W, H);
   const weather = setupWeather(scene, MANUSCRIPT.weather);
 
@@ -521,6 +519,9 @@ export async function startRecorder() {
     const dt = Math.max(0, Math.min(0.1, t - lastFrameT));
     lastFrameT = t;
     weather.update(dt, camera);
+    if (skyHandle.ocean && skyHandle.ocean.material.uniforms?.uTime) {
+      skyHandle.ocean.material.uniforms.uTime.value += dt;
+    }
 
     // Apply pending world events (batched)
     if (shot.events && shot.appliedIdx < shot.events.length) {
