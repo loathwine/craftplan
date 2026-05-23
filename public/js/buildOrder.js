@@ -169,6 +169,70 @@ function dfsFromCorner(plan, opts = {}) {
   return out;
 }
 
+// Flood-fill: DFS picks the "direction of travel" through the structure,
+// but at each DFS step we also place a small BFS-ball of nearby blocks.
+// The net effect: a thick wave snakes through the structure, eating
+// adjacent blocks as it passes — wider than pure DFS, more directional
+// than pure BFS. Reads like a river of placement.
+function floodFill(plan, opts = {}) {
+  if (plan.length === 0) return [];
+  const corner = opts.corner || 'low-x-low-z';
+  const radius = opts.floodRadius ?? 2;  // BFS radius around each DFS node
+  const set = new Set(plan.map(b => `${b.x},${b.y},${b.z}`));
+  const lookup = new Map(plan.map(b => [`${b.x},${b.y},${b.z}`, b]));
+  const score = (b) => {
+    let s = 0;
+    s += corner.includes('low-x') ? b.x : -b.x;
+    s += corner.includes('low-y') ? b.y : (corner.includes('high-y') ? -b.y : b.y * 0.5);
+    s += corner.includes('low-z') ? b.z : -b.z;
+    return s;
+  };
+  const seed = plan.reduce((best, b) => score(b) < score(best) ? b : best);
+  const stack = [seed];
+  const visited = new Set();
+  const out = [];
+
+  // For each DFS node, expand a small BFS ball around it within 'radius'.
+  const localBFS = (node) => {
+    const q = [{ b: node, d: 0 }];
+    const seen = new Set([`${node.x},${node.y},${node.z}`]);
+    const localOut = [];
+    while (q.length) {
+      const { b, d } = q.shift();
+      const key = `${b.x},${b.y},${b.z}`;
+      if (visited.has(key)) continue;
+      visited.add(key);
+      localOut.push(b);
+      if (d < radius) {
+        for (const [dx, dy, dz] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+          const k = `${b.x+dx},${b.y+dy},${b.z+dz}`;
+          if (!seen.has(k) && set.has(k) && !visited.has(k)) {
+            seen.add(k);
+            q.push({ b: lookup.get(k), d: d + 1 });
+          }
+        }
+      }
+    }
+    return localOut;
+  };
+
+  while (stack.length) {
+    const cur = stack.pop();
+    if (visited.has(`${cur.x},${cur.y},${cur.z}`)) continue;
+    // Place a flood ball around the current DFS node
+    out.push(...localBFS(cur));
+    // Pick next DFS step from unvisited neighbours
+    for (const [dx, dy, dz] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+      const k = `${cur.x+dx},${cur.y+dy},${cur.z+dz}`;
+      if (set.has(k) && !visited.has(k)) stack.push(lookup.get(k));
+    }
+  }
+  for (const b of plan) {
+    if (!visited.has(`${b.x},${b.y},${b.z}`)) out.push(b);
+  }
+  return out;
+}
+
 const STRATEGIES = {
   'bottom-up':        bottomUp,
   'structural':       structural,
@@ -177,6 +241,7 @@ const STRATEGIES = {
   'sparse-then-dense': sparseThenDense,
   'bfs-corner':       bfsFromCorner,
   'dfs-corner':       dfsFromCorner,
+  'flood-fill':       floodFill,
 };
 
 export function reorderPlan(plan, mode = 'bottom-up') {

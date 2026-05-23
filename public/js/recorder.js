@@ -52,6 +52,9 @@ function buildSyntheticManuscript(slug, params) {
   // Camera path mode: 'orbit' = single sweep, 'multi' = orbit while
   // building then keyframed reveal angles after.
   const camMode = params.get('cam') || 'multi';
+  // Within multi: which reveal sequence to play. 'wide' (default),
+  // 'low-up' (good for tall builds), 'overhead' (sweep upward).
+  const camStyle = params.get('camStyle') || 'wide';
 
   return {
     fps: 30, width: W, height: H, chunks, weather,
@@ -74,7 +77,7 @@ function buildSyntheticManuscript(slug, params) {
         : buildMultiAngleCamera({
             center: [cx, groundY + camY, cz],
             radius: orbitR, height: orbitH,
-            sweep, buildSpan, duration: dur,
+            sweep, buildSpan, duration: dur, camStyle,
           }),
       build: {
         plan: slug,
@@ -92,10 +95,15 @@ function buildSyntheticManuscript(slug, params) {
 }
 
 // Construct a keyframes camera that orbits during the build phase, then
-// cycles through several distinct viewing angles (front close, side, high
-// look-down, wide pull-back) so a finished build is seen from multiple
-// perspectives — not just one orbit pass.
-function buildMultiAngleCamera({ center, radius, height, sweep, buildSpan, duration }) {
+// cycles through several distinct viewing angles so a finished build is
+// seen from multiple perspectives — not just one orbit pass.
+//
+// camStyle:
+//   'wide'    (default) — front close → side → high pull-back
+//   'low-up'             — ground-up looking up at the build (good for
+//                          tall/leaping subjects)
+//   'overhead'           — sweep from low side to high overhead
+function buildMultiAngleCamera({ center, radius, height, sweep, buildSpan, duration, camStyle = 'wide' }) {
   const [cx, cy, cz] = center;
   const R = radius;
   const H = height;
@@ -105,32 +113,58 @@ function buildMultiAngleCamera({ center, radius, height, sweep, buildSpan, durat
   const orbitStart = -sweep * Math.PI;
   const orbitEnd   =  sweep * Math.PI;
 
-  // Reveal phase: split the leftover time into ~equal slots, each holding
-  // for a beat at one angle.
   const revealStart = buildSpan;
   const revealSpan  = Math.max(0.01, duration - buildSpan);
-  const reveals = [
-    // Front close-up, low + a bit zoomed in
-    [cx + R * 0.35, cy + H * 0.3,  cz + R * 0.95],
-    // Side angle, mid-height
-    [cx + R * 1.0,  cy + H * 0.8,  cz - R * 0.2],
-    // High orbital, slightly behind
-    [cx - R * 0.3,  cy + H * 1.6,  cz - R * 0.7],
-    // Wide pull-back, back-and-up
-    [cx - R * 1.1,  cy + H * 1.1,  cz + R * 0.6],
-  ];
+
+  // 3 reveal angles instead of 4 → slower switches and longer holds.
+  // Each angle has its own look target so we can look UP for the low-up
+  // shot, etc. lookOffset is added to center.
+  const STYLES = {
+    wide: [
+      // Front close-up, low + a bit zoomed in
+      { pos: [cx + R * 0.35, cy + H * 0.25, cz + R * 0.95], lookOffset: [0, 0, 0] },
+      // Side, mid-height, mid-distance
+      { pos: [cx + R * 1.0,  cy + H * 0.8,  cz - R * 0.2],  lookOffset: [0, 0, 0] },
+      // Wide pull-back, back-and-up
+      { pos: [cx - R * 1.05, cy + H * 1.0,  cz + R * 0.55], lookOffset: [0, 0, 0] },
+    ],
+    'low-up': [
+      // Ground-front: very low, looking UP at the build
+      { pos: [cx + R * 0.2,  cy - 4,        cz + R * 0.95], lookOffset: [0,  H * 1.2, 0] },
+      // Ground-side: low side angle
+      { pos: [cx + R * 1.0,  cy + 1,        cz + R * 0.1],  lookOffset: [0,  H * 0.8, 0] },
+      // Pull back to medium height for context
+      { pos: [cx - R * 0.6,  cy + H * 0.8,  cz + R * 0.95], lookOffset: [0,  0, 0] },
+    ],
+    overhead: [
+      // Mid-height side
+      { pos: [cx + R * 0.9,  cy + H * 0.5,  cz + R * 0.3],  lookOffset: [0, 0, 0] },
+      // Rising orbital
+      { pos: [cx - R * 0.4,  cy + H * 1.4,  cz - R * 0.6],  lookOffset: [0, 0, 0] },
+      // Directly above
+      { pos: [cx,            cy + H * 2.5,  cz],            lookOffset: [0, -H, 0] },
+    ],
+  };
+  const reveals = STYLES[camStyle] || STYLES.wide;
   const slot = revealSpan / reveals.length;
-  // Hold ~30% of each slot, then move; gives a beat-then-glide feel.
+  // Hold ~55% of each slot, then glide. Longer holds so the viewer can
+  // actually register each angle before it moves on.
   const keys = [
-    { t: 0,            pos: ang(orbitStart),         look: center },
-    { t: buildSpan*0.5, pos: ang((orbitStart+orbitEnd)/2), look: center },
-    { t: buildSpan,    pos: ang(orbitEnd),           look: center },
+    { t: 0,             pos: ang(orbitStart),               look: center },
+    { t: buildSpan*0.5, pos: ang((orbitStart+orbitEnd)/2),  look: center },
+    { t: buildSpan,     pos: ang(orbitEnd),                 look: center },
   ];
   for (let i = 0; i < reveals.length; i++) {
-    const tStart = revealStart + slot * i + slot * 0.15;
+    const r = reveals[i];
+    const look = [
+      center[0] + r.lookOffset[0],
+      center[1] + r.lookOffset[1],
+      center[2] + r.lookOffset[2],
+    ];
+    const tStart = revealStart + slot * i + slot * 0.2;
     const tHold  = revealStart + slot * (i + 1) - slot * 0.05;
-    keys.push({ t: tStart, pos: reveals[i], look: center });
-    keys.push({ t: tHold,  pos: reveals[i], look: center });
+    keys.push({ t: tStart, pos: r.pos, look });
+    keys.push({ t: tHold,  pos: r.pos, look });
   }
   return { type: 'keyframes', keys };
 }
