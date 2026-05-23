@@ -64,7 +64,7 @@ export async function startExplore() {
 
   const scene = new THREE.Scene();
 
-  const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 400);
+  const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 8000);
   const canvas = document.getElementById('game');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setSize(innerWidth, innerHeight);

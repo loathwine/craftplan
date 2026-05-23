@@ -248,7 +248,7 @@ export async function startRecorder() {
   const H = parseInt(params.get('h')) || MANUSCRIPT.height;
   const scene = new THREE.Scene();
 
-  const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 400);
+  const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 8000);
   const canvas = document.getElementById('game');
   canvas.width = W; canvas.height = H;
   canvas.style.width = W + 'px'; canvas.style.height = H + 'px';

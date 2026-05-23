@@ -46,7 +46,7 @@ const PW = 0.29; // player half-width
 function init() {
   scene = new THREE.Scene();
 
-  camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 300);
+  camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 8000);
   const canvas = document.getElementById('game');
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setSize(innerWidth, innerHeight);
