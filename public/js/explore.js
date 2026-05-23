@@ -14,7 +14,7 @@ import { Block } from './Textures.js';
 import { terrainHeight } from './terrain.js';
 import { makeAvatar, setExpression } from './avatar.js';
 import { spiralStaircase, bigTreeWithVines, sauronEye } from './montage.mjs';
-import { setupSky } from './sky.js';
+import { setupSky, setupRenderer } from './sky.js';
 
 // Each build returns a list of blocks RELATIVE to (0,0,0). Cached LLM
 // plans are fetched lazily; helper builds run synchronously.
@@ -69,6 +69,7 @@ export async function startExplore() {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setSize(innerWidth, innerHeight);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  setupRenderer(renderer);
 
   setupSky(scene, { fogNear: 120, fogFar: 360 });
 

@@ -135,6 +135,7 @@ export function makeAvatar({
     new THREE.MeshLambertMaterial({ color: bodyColor }),
   );
   body.position.y = 0.9;
+  body.castShadow = true; body.receiveShadow = true;
   g.add(body);
 
   // Head: 6 materials so the front face can carry an expression texture.
@@ -144,6 +145,7 @@ export function makeAvatar({
   const headMats = [plain, plain, plain, plain, faceMat, plain];
   const head = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.7), headMats);
   head.position.y = 2.15;
+  head.castShadow = true; head.receiveShadow = true;
   g.add(head);
   g.userData.headFront = faceMat;
 
@@ -156,6 +158,7 @@ export function makeAvatar({
                               new THREE.BoxGeometry(0.75, 0.18, 0.75);
     const hatMesh = new THREE.Mesh(hatGeo, hatMat);
     hatMesh.position.y = 2.6;
+    hatMesh.castShadow = true; hatMesh.receiveShadow = true;
     g.add(hatMesh);
   }
 

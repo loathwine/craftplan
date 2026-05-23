@@ -276,6 +276,10 @@ export class World {
       const mat = pass === 'transparent' ? this.transparentMaterial : this.material;
       const mesh = new THREE.Mesh(geo, mat);
       mesh.renderOrder = pass === 'transparent' ? 1 : 0;
+      // Opaque chunks cast + receive shadows; transparent (glass, leaves)
+      // only receive so we don't get black silhouettes through glass.
+      mesh.castShadow = pass !== 'transparent';
+      mesh.receiveShadow = true;
       built.push(mesh);
       this.chunkGroup.add(mesh);
     }

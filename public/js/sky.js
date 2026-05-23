@@ -9,22 +9,33 @@
 import * as THREE from 'three';
 
 const DEFAULTS = {
-  elevationDeg: 45,
+  elevationDeg: 42,
   azimuthDeg:  135,     // 0 = north, 90 = east
   zenithColor:  0x3a7fc8,  // deep saturated blue
   horizonColor: 0xb4dcef,  // pale cyan
   sunColor:     0xfff4d4,
   sunSize:      0.0008,    // angular size of the sun disc (smaller = sharper)
   sunGlowSize:  0.06,      // soft halo around the sun
-  sunIntensity: 1.7,
-  ambientIntensity: 0.32,
-  hemiIntensity:    0.30,
+  sunIntensity: 2.6,       // bright + contrasty; tonemapping rolls highlights back
+  ambientIntensity: 0.18,  // keep shadow areas readable but clearly dimmer
+  hemiIntensity:    0.22,
   hemiSky:    0xbedaf0,
-  hemiGround: 0x4a5a3a,
+  hemiGround: 0x3a4a2a,
   fogNear: 60,
   fogFar:  220,
   fogColor: 0xa6cee0,
   skyScale: 4000,          // sky sphere radius; must be < camera.far
+
+  // Shadow map: ortho frustum centred on the world (256×256). Big enough to
+  // cover the whole map at once — for tighter scenes a future commit can
+  // follow the camera, but a static frustum keeps the look consistent across
+  // every shot in the manuscript.
+  shadowCenter:   [128, 32, 128],
+  shadowExtent:   200,
+  shadowDistance: 320,
+  shadowMapSize:  2048,
+  shadowBias:    -0.0008,
+  shadowNormalBias: 0.04,
 };
 
 const VS = `
@@ -93,12 +104,42 @@ export function setupSky(scene, opts = {}) {
   scene.background = new THREE.Color(o.horizonColor);
   scene.fog = new THREE.Fog(o.fogColor, o.fogNear, o.fogFar);
 
+  const center = new THREE.Vector3(...o.shadowCenter);
+
   const sun = new THREE.DirectionalLight(o.sunColor, o.sunIntensity);
-  sun.position.copy(sunDir).multiplyScalar(200);
+  sun.position.copy(center).add(sunDir.clone().multiplyScalar(o.shadowDistance));
+  const target = new THREE.Object3D();
+  target.position.copy(center);
+  scene.add(target);
+  sun.target = target;
+
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(o.shadowMapSize, o.shadowMapSize);
+  const ext = o.shadowExtent;
+  sun.shadow.camera.left   = -ext;
+  sun.shadow.camera.right  =  ext;
+  sun.shadow.camera.top    =  ext;
+  sun.shadow.camera.bottom = -ext;
+  sun.shadow.camera.near = 1;
+  sun.shadow.camera.far  = o.shadowDistance + ext + 100;
+  sun.shadow.bias        = o.shadowBias;
+  sun.shadow.normalBias  = o.shadowNormalBias;
+  sun.shadow.camera.updateProjectionMatrix();
   scene.add(sun);
 
   scene.add(new THREE.AmbientLight(0xb0c4d8, o.ambientIntensity));
   scene.add(new THREE.HemisphereLight(o.hemiSky, o.hemiGround, o.hemiIntensity));
 
   return { sun, sky, sunDir };
+}
+
+// Renderer setup that pairs with setupSky: shadows on, ACES tonemapping for
+// cinematic contrast, sRGB output. Call this right after WebGLRenderer is
+// constructed in each entry point so shadow + tonemap state is consistent.
+export function setupRenderer(renderer, opts = {}) {
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = opts.exposure ?? 1.05;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
 }

@@ -36,6 +36,9 @@ const argv = (() => {
 const ARG_FPS      = argv.fps ? parseInt(argv.fps) : null;
 const ARG_DURATION = argv.duration ? parseFloat(argv.duration) : null;
 const ARG_FRAMES   = argv.frames ? parseInt(argv.frames) : null;
+// --start <t> renders a single manuscript shot in isolation (e.g. dragon
+// shot is t=31..42). Combine with --duration to cap how much to capture.
+const ARG_START    = argv.start ? parseFloat(argv.start) : 0;
 // Presets to skip flag-juggling during iteration.
 //   --iter  → 854x480 @ 15fps (fast)
 //   --final → 1920x1080 @ 60fps (slow, for the keeper)
@@ -245,7 +248,7 @@ console.log(`[rec] ${FRAMES} frames at ${FPS}fps, ${WIDTH}x${HEIGHT} → ${OUT}`
 // --- Render & capture frames ------------------------------------------------
 const t0 = Date.now();
 for (let f = 0; f < FRAMES; f++) {
-  const t = f / FPS;
+  const t = ARG_START + f / FPS;
   await send('Runtime.evaluate', { expression: `window.__demoFrame(${t})` });
   const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
   writeFileSync(join(FRAMES_DIR, `frame_${String(f).padStart(5, '0')}.png`), Buffer.from(shot.data, 'base64'));

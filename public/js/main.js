@@ -5,7 +5,7 @@ import { Network } from './Network.js';
 import { TaskManager, applyRotation } from './TaskManager.js';
 import { UI } from './UI.js';
 import { Demo } from './demo.js';
-import { setupSky } from './sky.js';
+import { setupSky, setupRenderer } from './sky.js';
 
 // --- State ---
 let scene, camera, renderer, clock;
@@ -51,6 +51,7 @@ function init() {
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setSize(innerWidth, innerHeight);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  setupRenderer(renderer);
 
   setupSky(scene, { fogNear: 60, fogFar: 150 });
 

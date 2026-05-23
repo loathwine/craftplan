@@ -14,7 +14,7 @@ import { TaskManager } from './TaskManager.js';
 import { MANUSCRIPT } from './manuscript.mjs';
 import { terrainHeight } from './terrain.js';
 import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
-import { setupSky } from './sky.js';
+import { setupSky, setupRenderer } from './sky.js';
 
 const ease = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -255,6 +255,7 @@ export async function startRecorder() {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
   renderer.setSize(W, H, false);
   renderer.setPixelRatio(1);
+  setupRenderer(renderer);
 
   setupSky(scene, { fogNear: 120, fogFar: 360 });
 

@@ -52,6 +52,8 @@ export class TaskManager {
     const blockGeo = new THREE.BoxGeometry(0.92, 0.92, 0.92);
     const blockMat = new THREE.MeshLambertMaterial();
     const instMesh = new THREE.InstancedMesh(blockGeo, blockMat, count);
+    instMesh.castShadow = true;
+    instMesh.receiveShadow = true;
 
     const matrix = new THREE.Matrix4();
     const tmpColor = new THREE.Color();
@@ -118,6 +120,8 @@ export class TaskManager {
         : new THREE.MeshLambertMaterial();
       const mesh = new THREE.InstancedMesh(geo, mat, blocks.length);
       if (isTransparent(blockType)) mesh.renderOrder = 1;
+      mesh.castShadow = !isTransparent(blockType);
+      mesh.receiveShadow = true;
 
       for (let i = 0; i < blocks.length; i++) {
         const b = blocks[i];
