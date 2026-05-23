@@ -44,8 +44,10 @@ function buildSyntheticManuscript(slug, params) {
   //   bfs-corner | dfs-corner
   const order = params.get('order') || 'structural';
   // What fraction of the shot is build-animation? Rest is the multi-angle
-  // reveal sequence over the finished build.
-  const buildFrac = parseFloat(params.get('buildFrac')) || 0.65;
+  // reveal sequence over the finished build. Reveal gets the bigger share
+  // so the always-moving camera has time to glide smoothly between 4
+  // positions without feeling rushed.
+  const buildFrac = parseFloat(params.get('buildFrac')) || 0.5;
   const buildSpan = dur * buildFrac;
 
   const weather = params.get('weather') || 'clear';
@@ -128,14 +130,17 @@ function buildMultiAngleCamera({ center, radius, height, sweep, buildSpan, durat
       { pos: [cx + R * 0.3,  cy + H * 1.5,  cz - R * 1.05], lookOffset: [0, 0, 0] },
     ],
     'low-up': [
-      // Ground-front: very low, looking UP at the dragon's face (high Y).
-      { pos: [cx + R * 0.15, cy - 4,        cz + R * 0.95], lookOffset: [0, H * 1.5, 0] },
-      // Ground-side: tracking the body, look still tilted up.
-      { pos: [cx + R * 1.05, cy - 2,        cz + R * 0.05], lookOffset: [0, H * 1.2, 0] },
-      // Rising behind: rear-and-up, looking at face.
-      { pos: [cx - R * 0.8,  cy + H * 0.6,  cz + R * 0.8],  lookOffset: [0, H * 0.9, 0] },
-      // High wide pull-back, looking back at the build.
-      { pos: [cx - R * 1.2,  cy + H * 1.3,  cz - R * 0.4],  lookOffset: [0, H * 0.4, 0] },
+      // Ground-front: low, far enough back that the full build fits in
+      // frame with an upward tilt. Look at face level — orbit camera height
+      // (H above centre) is roughly where the build top is for our caches,
+      // so lookOffsetY=H aims AT the face not above it.
+      { pos: [cx + R * 0.10, cy - 3,        cz + R * 1.4], lookOffset: [0, H * 1.0, 0] },
+      // Ground-side: low, off to the side, similar distance.
+      { pos: [cx + R * 1.4,  cy - 1,        cz + R * 0.3], lookOffset: [0, H * 0.8, 0] },
+      // Rising behind: rear-and-up, look at upper torso.
+      { pos: [cx - R * 0.6,  cy + H * 0.4,  cz + R * 1.1], lookOffset: [0, H * 0.5, 0] },
+      // High wide pull-back, look back at the build from above.
+      { pos: [cx - R * 1.5,  cy + H * 1.2,  cz - R * 0.4], lookOffset: [0, H * 0.1, 0] },
     ],
     overhead: [
       { pos: [cx + R * 0.9,  cy + H * 0.5,  cz + R * 0.3],  lookOffset: [0, 0, 0] },
