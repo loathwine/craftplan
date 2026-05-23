@@ -15,6 +15,7 @@ import { MANUSCRIPT } from './manuscript.mjs';
 import { terrainHeight } from './terrain.js';
 import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
 import { setupSky, setupRenderer } from './sky.js';
+import { setupComposer } from './composer.js';
 
 const ease = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -258,6 +259,7 @@ export async function startRecorder() {
   setupRenderer(renderer);
 
   setupSky(scene, { fogNear: 120, fogFar: 360 });
+  const composer = setupComposer(renderer, scene, camera, W, H);
 
   const world = new World(scene);
   const _tm = new TaskManager(scene, world);
@@ -455,7 +457,7 @@ export async function startRecorder() {
     overlays.fader.style.background = fadeColor;
     overlays.fader.style.opacity = Math.max(0, Math.min(1, fade));
 
-    renderer.render(scene, camera);
+    composer.render();
   }
 
   frame(0);

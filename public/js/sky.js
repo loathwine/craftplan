@@ -16,8 +16,8 @@ const DEFAULTS = {
   sunColor:     0xfff4d4,
   sunSize:      0.0008,    // angular size of the sun disc (smaller = sharper)
   sunGlowSize:  0.06,      // soft halo around the sun
-  sunIntensity: 2.6,       // bright + contrasty; tonemapping rolls highlights back
-  ambientIntensity: 0.18,  // keep shadow areas readable but clearly dimmer
+  sunIntensity: 2.1,       // bright + contrasty; tonemapping rolls highlights back
+  ambientIntensity: 0.22,  // keep shadow areas readable but clearly dimmer
   hemiIntensity:    0.22,
   hemiSky:    0xbedaf0,
   hemiGround: 0x3a4a2a,
@@ -133,13 +133,14 @@ export function setupSky(scene, opts = {}) {
   return { sun, sky, sunDir };
 }
 
-// Renderer setup that pairs with setupSky: shadows on, ACES tonemapping for
-// cinematic contrast, sRGB output. Call this right after WebGLRenderer is
-// constructed in each entry point so shadow + tonemap state is consistent.
+// Renderer setup that pairs with setupSky: shadows on, sRGB output.
+// Tonemapping is set here as a baseline but the post-processing composer
+// (composer.js) takes ownership when active. Call this right after the
+// WebGLRenderer is constructed in each entry point.
 export function setupRenderer(renderer, opts = {}) {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = opts.exposure ?? 1.05;
+  renderer.toneMappingExposure = opts.exposure ?? 0.95;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 }

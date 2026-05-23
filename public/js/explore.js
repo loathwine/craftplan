@@ -15,6 +15,7 @@ import { terrainHeight } from './terrain.js';
 import { makeAvatar, setExpression } from './avatar.js';
 import { spiralStaircase, bigTreeWithVines, sauronEye } from './montage.mjs';
 import { setupSky, setupRenderer } from './sky.js';
+import { setupComposer } from './composer.js';
 
 // Each build returns a list of blocks RELATIVE to (0,0,0). Cached LLM
 // plans are fetched lazily; helper builds run synchronously.
@@ -72,6 +73,7 @@ export async function startExplore() {
   setupRenderer(renderer);
 
   setupSky(scene, { fogNear: 120, fogFar: 360 });
+  const composer = setupComposer(renderer, scene, camera, innerWidth, innerHeight);
 
   const world = new World(scene);
   const ui = installUI(BUILDS);
@@ -375,7 +377,7 @@ export async function startExplore() {
     camera.position.copy(pos);
     camera.rotation.order = 'YXZ';
     camera.rotation.set(pitch, yaw, 0);
-    renderer.render(scene, camera);
+    composer.render();
   }
   animate();
 
@@ -383,6 +385,7 @@ export async function startExplore() {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
+    composer.resize(innerWidth, innerHeight);
   });
 }
 

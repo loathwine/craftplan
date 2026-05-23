@@ -6,6 +6,7 @@ import { TaskManager, applyRotation } from './TaskManager.js';
 import { UI } from './UI.js';
 import { Demo } from './demo.js';
 import { setupSky, setupRenderer } from './sky.js';
+import { setupComposer } from './composer.js';
 
 // --- State ---
 let scene, camera, renderer, clock;
@@ -29,6 +30,7 @@ let carryPos = { x: 0, y: 0, z: 0 };
 const raycaster = new THREE.Raycaster();
 raycaster.far = 7;
 
+let composer;
 let lastNetSend = 0;
 
 // --- Constants ---
@@ -54,6 +56,7 @@ function init() {
   setupRenderer(renderer);
 
   setupSky(scene, { fogNear: 60, fogFar: 150 });
+  composer = setupComposer(renderer, scene, camera, innerWidth, innerHeight);
 
   clock = new THREE.Clock();
 
@@ -98,6 +101,7 @@ function init() {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
+    composer.resize(innerWidth, innerHeight);
   });
 
   animate();
@@ -653,7 +657,7 @@ function animate() {
   }
 
   ui.updateCoords(pos.x, pos.y, pos.z, flying);
-  renderer.render(scene, camera);
+  composer.render();
 }
 
 // =====================================================
