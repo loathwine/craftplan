@@ -68,11 +68,11 @@ if (argv.epilogue) {
   const lines = parts.slice(1).map(labelEsc);
   const lineDur = parseFloat(argv['epilogue-dur'] || '4');
   const lineFilters = lines.map((l, idx) =>
-    `drawtext=fontfile='${FONT}':text='${l}':fontsize=36:fontcolor=white:borderw=2:bordercolor=black:x=(w-text_w)/2:y=${440 + idx * 70}`
+    `drawtext=fontfile='${FONT}':text='${l}':fontsize=30:fontcolor=white:borderw=2:bordercolor=black:x=(w-text_w)/2:y=${430 + idx * 56}`
   ).join(',');
   filterParts.push(
     `color=c=#0a1828:s=${WIDTH}x${HEIGHT}:d=${lineDur},setsar=1,` +
-      `drawtext=fontfile='${FONT}':text='${title}':fontsize=64:fontcolor=#ffe34a:borderw=4:bordercolor=black:x=(w-text_w)/2:y=320` +
+      `drawtext=fontfile='${FONT}':text='${title}':fontsize=48:fontcolor=#ffe34a:borderw=3:bordercolor=black:x=(w-text_w)/2:y=320` +
       (lineFilters ? ',' + lineFilters : '') +
       `,format=yuv420p[v${totalClips}]`,
   );
