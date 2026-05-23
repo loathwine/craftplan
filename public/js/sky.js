@@ -36,6 +36,13 @@ const DEFAULTS = {
   shadowMapSize:  2048,
   shadowBias:    -0.0008,
   shadowNormalBias: 0.04,
+
+  // Ocean horizon: a giant flat blue plane below world Y, extending
+  // beyond the camera so the gradient sky meets a water line far away.
+  ocean:        true,
+  oceanY:       12,
+  oceanExtent:  3000,
+  oceanColor:   0x2a5f7a,
 };
 
 const VS = `
@@ -130,7 +137,20 @@ export function setupSky(scene, opts = {}) {
   scene.add(new THREE.AmbientLight(0xb0c4d8, o.ambientIntensity));
   scene.add(new THREE.HemisphereLight(o.hemiSky, o.hemiGround, o.hemiIntensity));
 
-  return { sun, sky, sunDir };
+  let ocean = null;
+  if (o.ocean) {
+    const e = o.oceanExtent;
+    const geo = new THREE.PlaneGeometry(e * 2, e * 2);
+    const mat = new THREE.MeshLambertMaterial({ color: o.oceanColor });
+    ocean = new THREE.Mesh(geo, mat);
+    ocean.rotation.x = -Math.PI / 2;
+    ocean.position.y = o.oceanY;
+    ocean.receiveShadow = false;  // water shouldn't catch sharp shadows
+    ocean.castShadow = false;
+    scene.add(ocean);
+  }
+
+  return { sun, sky, sunDir, ocean };
 }
 
 // Renderer setup that pairs with setupSky: shadows on, sRGB output.

@@ -90,6 +90,7 @@ export function setupWeather(scene, kind = 'clear', opts = {}) {
   if (!kind || kind === 'clear' || kind === 'none') {
     return { kind: 'clear', update: () => {} };
   }
+  if (kind === 'clouds') return setupClouds(scene, opts);
   const preset = SHADERS[kind === 'storm' ? 'rain' : kind];
   if (!preset) {
     console.warn(`[weather] unknown kind "${kind}"`);
@@ -140,6 +141,81 @@ export function setupWeather(scene, kind = 'clear', opts = {}) {
     update(dt, camera) {
       mat.uniforms.uTime.value += dt;
       if (camera) mat.uniforms.uCamPos.value.copy(camera.position);
+    },
+  };
+}
+
+// Semi-transparent drifting clouds: a handful of large horizontal quads
+// scattered above the world, slowly translating with the wind. Each quad
+// has a soft alpha falloff so the edges blend with the sky.
+function setupClouds(scene, opts = {}) {
+  const count = opts.count ?? 14;
+  const baseY = opts.baseY ?? 95;
+  const yJitter = opts.yJitter ?? 18;
+  const area = opts.area ?? 380;
+  const cloudSize = opts.cloudSize ?? 80;
+  const driftSpeed = opts.driftSpeed ?? 3.5;
+
+  const group = new THREE.Group();
+  const mat = new THREE.ShaderMaterial({
+    uniforms: { uTint: { value: new THREE.Color(0xffffff) } },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 uTint;
+      varying vec2 vUv;
+      void main() {
+        // Soft elliptical alpha so edges don't have hard lines
+        vec2 d = vUv - vec2(0.5);
+        float r = length(d * vec2(1.0, 1.6));
+        float a = smoothstep(0.5, 0.18, r);
+        gl_FragColor = vec4(uTint, a * 0.72);
+      }
+    `,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  });
+
+  const clouds = [];
+  for (let i = 0; i < count; i++) {
+    const w = cloudSize * (0.7 + Math.random() * 0.8);
+    const h = cloudSize * (0.35 + Math.random() * 0.4);
+    const geo = new THREE.PlaneGeometry(w, h);
+    const m = new THREE.Mesh(geo, mat);
+    m.rotation.x = -Math.PI / 2;
+    m.position.set(
+      (Math.random() - 0.5) * area,
+      baseY + Math.random() * yJitter,
+      (Math.random() - 0.5) * area,
+    );
+    m.userData.driftX = (Math.random() - 0.5) * 1.2 + 0.6;  // mostly +X
+    m.userData.driftZ = (Math.random() - 0.5) * 0.8;
+    group.add(m);
+    clouds.push(m);
+  }
+  scene.add(group);
+
+  return {
+    kind: 'clouds',
+    update(dt, camera) {
+      const camX = camera ? camera.position.x : 0;
+      const camZ = camera ? camera.position.z : 0;
+      for (const c of clouds) {
+        c.position.x += c.userData.driftX * driftSpeed * dt;
+        c.position.z += c.userData.driftZ * driftSpeed * dt;
+        // Wrap the cloud field around the camera so it always looks populated.
+        const halfArea = area * 0.6;
+        if (c.position.x - camX > halfArea) c.position.x -= area * 1.2;
+        if (c.position.x - camX < -halfArea) c.position.x += area * 1.2;
+        if (c.position.z - camZ > halfArea) c.position.z -= area * 1.2;
+        if (c.position.z - camZ < -halfArea) c.position.z += area * 1.2;
+      }
     },
   };
 }

@@ -39,13 +39,19 @@ function buildSyntheticManuscript(slug, params) {
   const cz = Number.isFinite(czParam) ? czParam : Math.floor((chunks * 16) / 2);
   const groundY = terrainHeight(cx, cz) + 1;
 
-  // Build-order knob: bottom-up | structural | outline-first | painterly | sparse-then-dense
+  // Build-order knob:
+  //   bottom-up | structural | outline-first | painterly | sparse-then-dense
+  //   bfs-corner | dfs-corner
   const order = params.get('order') || 'structural';
-  // What fraction of the shot is build-animation? Rest sits on the finished build.
-  const buildFrac = parseFloat(params.get('buildFrac')) || 0.75;
+  // What fraction of the shot is build-animation? Rest is the multi-angle
+  // reveal sequence over the finished build.
+  const buildFrac = parseFloat(params.get('buildFrac')) || 0.65;
   const buildSpan = dur * buildFrac;
 
   const weather = params.get('weather') || 'clear';
+  // Camera path mode: 'orbit' = single sweep, 'multi' = orbit while
+  // building then keyframed reveal angles after.
+  const camMode = params.get('cam') || 'multi';
 
   return {
     fps: 30, width: W, height: H, chunks, weather,
@@ -57,13 +63,19 @@ function buildSyntheticManuscript(slug, params) {
     shots: [{
       id: 'single-' + slug,
       duration: dur,
-      camera: {
-        type: 'orbit',
-        center: [cx, groundY + camY, cz],
-        radius: orbitR, height: orbitH,
-        startAngle: -sweep * Math.PI,
-        endAngle:   +sweep * Math.PI,
-      },
+      camera: camMode === 'orbit'
+        ? {
+            type: 'orbit',
+            center: [cx, groundY + camY, cz],
+            radius: orbitR, height: orbitH,
+            startAngle: -sweep * Math.PI,
+            endAngle:   +sweep * Math.PI,
+          }
+        : buildMultiAngleCamera({
+            center: [cx, groundY + camY, cz],
+            radius: orbitR, height: orbitH,
+            sweep, buildSpan, duration: dur,
+          }),
       build: {
         plan: slug,
         origin: [cx, groundY, cz],
@@ -77,6 +89,50 @@ function buildSyntheticManuscript(slug, params) {
     }],
     audioMarkers: [],
   };
+}
+
+// Construct a keyframes camera that orbits during the build phase, then
+// cycles through several distinct viewing angles (front close, side, high
+// look-down, wide pull-back) so a finished build is seen from multiple
+// perspectives — not just one orbit pass.
+function buildMultiAngleCamera({ center, radius, height, sweep, buildSpan, duration }) {
+  const [cx, cy, cz] = center;
+  const R = radius;
+  const H = height;
+  const ang = (a) => [cx + R * Math.cos(a), cy + H, cz + R * Math.sin(a)];
+
+  // Build phase: smooth orbit covering 2×sweep radians.
+  const orbitStart = -sweep * Math.PI;
+  const orbitEnd   =  sweep * Math.PI;
+
+  // Reveal phase: split the leftover time into ~equal slots, each holding
+  // for a beat at one angle.
+  const revealStart = buildSpan;
+  const revealSpan  = Math.max(0.01, duration - buildSpan);
+  const reveals = [
+    // Front close-up, low + a bit zoomed in
+    [cx + R * 0.35, cy + H * 0.3,  cz + R * 0.95],
+    // Side angle, mid-height
+    [cx + R * 1.0,  cy + H * 0.8,  cz - R * 0.2],
+    // High orbital, slightly behind
+    [cx - R * 0.3,  cy + H * 1.6,  cz - R * 0.7],
+    // Wide pull-back, back-and-up
+    [cx - R * 1.1,  cy + H * 1.1,  cz + R * 0.6],
+  ];
+  const slot = revealSpan / reveals.length;
+  // Hold ~30% of each slot, then move; gives a beat-then-glide feel.
+  const keys = [
+    { t: 0,            pos: ang(orbitStart),         look: center },
+    { t: buildSpan*0.5, pos: ang((orbitStart+orbitEnd)/2), look: center },
+    { t: buildSpan,    pos: ang(orbitEnd),           look: center },
+  ];
+  for (let i = 0; i < reveals.length; i++) {
+    const tStart = revealStart + slot * i + slot * 0.15;
+    const tHold  = revealStart + slot * (i + 1) - slot * 0.05;
+    keys.push({ t: tStart, pos: reveals[i], look: center });
+    keys.push({ t: tHold,  pos: reveals[i], look: center });
+  }
+  return { type: 'keyframes', keys };
 }
 import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
 import { setupSky, setupRenderer } from './sky.js';

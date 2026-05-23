@@ -95,12 +95,88 @@ function sparseThenDense(plan, stride = 4) {
   return tagged.map(t => t.b);
 }
 
+// BFS from one chosen corner of the build's bounding box. The first block
+// placed is the corner-closest, then 6-connected neighbours, expanding in
+// roughly-spherical shells from that seed. Visually: the build washes
+// outward from a corner like water rising, very different from layer-by-
+// layer 3D-printing.
+function bfsFromCorner(plan, opts = {}) {
+  if (plan.length === 0) return [];
+  const corner = opts.corner || 'low-x-low-z';
+  const set = new Set(plan.map(b => `${b.x},${b.y},${b.z}`));
+  const lookup = new Map(plan.map(b => [`${b.x},${b.y},${b.z}`, b]));
+  const score = (b) => {
+    let s = 0;
+    s += corner.includes('low-x') ? b.x : -b.x;
+    s += corner.includes('low-y') ? b.y : (corner.includes('high-y') ? -b.y : b.y * 0.5);
+    s += corner.includes('low-z') ? b.z : -b.z;
+    return s;
+  };
+  const seed = plan.reduce((best, b) => score(b) < score(best) ? b : best);
+  const queue = [seed];
+  const visited = new Set([`${seed.x},${seed.y},${seed.z}`]);
+  const out = [];
+  while (queue.length) {
+    const cur = queue.shift();
+    out.push(cur);
+    for (const [dx, dy, dz] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+      const k = `${cur.x+dx},${cur.y+dy},${cur.z+dz}`;
+      if (!visited.has(k) && set.has(k)) {
+        visited.add(k);
+        queue.push(lookup.get(k));
+      }
+    }
+  }
+  for (const b of plan) {
+    if (!visited.has(`${b.x},${b.y},${b.z}`)) out.push(b);
+  }
+  return out;
+}
+
+// DFS from the same corner. Uses a stack so the build grows as a tendril
+// that snakes through the structure rather than expanding shells. More
+// chaotic, good for organic shapes (dragons).
+function dfsFromCorner(plan, opts = {}) {
+  if (plan.length === 0) return [];
+  const corner = opts.corner || 'low-x-low-z';
+  const set = new Set(plan.map(b => `${b.x},${b.y},${b.z}`));
+  const lookup = new Map(plan.map(b => [`${b.x},${b.y},${b.z}`, b]));
+  const score = (b) => {
+    let s = 0;
+    s += corner.includes('low-x') ? b.x : -b.x;
+    s += corner.includes('low-y') ? b.y : (corner.includes('high-y') ? -b.y : b.y * 0.5);
+    s += corner.includes('low-z') ? b.z : -b.z;
+    return s;
+  };
+  const seed = plan.reduce((best, b) => score(b) < score(best) ? b : best);
+  const stack = [seed];
+  const visited = new Set([`${seed.x},${seed.y},${seed.z}`]);
+  const out = [];
+  while (stack.length) {
+    const cur = stack.pop();
+    out.push(cur);
+    for (const [dx, dy, dz] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+      const k = `${cur.x+dx},${cur.y+dy},${cur.z+dz}`;
+      if (!visited.has(k) && set.has(k)) {
+        visited.add(k);
+        stack.push(lookup.get(k));
+      }
+    }
+  }
+  for (const b of plan) {
+    if (!visited.has(`${b.x},${b.y},${b.z}`)) out.push(b);
+  }
+  return out;
+}
+
 const STRATEGIES = {
   'bottom-up':        bottomUp,
   'structural':       structural,
   'outline-first':    outlineFirst,
   'painterly':        painterly,
   'sparse-then-dense': sparseThenDense,
+  'bfs-corner':       bfsFromCorner,
+  'dfs-corner':       dfsFromCorner,
 };
 
 export function reorderPlan(plan, mode = 'bottom-up') {
