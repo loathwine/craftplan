@@ -8,7 +8,11 @@ const CHUNKS = 16; // 16x16 chunks = 256x256 world
 export const WORLD_SIZE = CHUNKS * CHUNK_SIZE;
 
 // --- Face definitions (CCW winding, normal points outward) ---
-const FACES = [
+// For each corner we precompute AO neighbour offsets: the two tangent-plane
+// blocks and the diagonal, all sampled in the cell *outside* the face. If
+// either tangent neighbour is solid the corner gets darkened; both solid →
+// fully occluded regardless of the diagonal (classic 0fps recipe).
+const RAW_FACES = [
   { dir: [0, 1, 0], corners: [[0,1,1],[1,1,1],[1,1,0],[0,1,0]], type: 'top' },
   { dir: [0,-1, 0], corners: [[0,0,0],[1,0,0],[1,0,1],[0,0,1]], type: 'bottom' },
   { dir: [1, 0, 0], corners: [[1,0,0],[1,1,0],[1,1,1],[1,0,1]], type: 'side' },
@@ -16,6 +20,23 @@ const FACES = [
   { dir: [0, 0, 1], corners: [[1,0,1],[1,1,1],[0,1,1],[0,0,1]], type: 'side' },
   { dir: [0, 0,-1], corners: [[0,0,0],[0,1,0],[1,1,0],[1,0,0]], type: 'side' },
 ];
+
+const FACES = RAW_FACES.map(f => {
+  // Identify the two tangent axes (the non-normal ones).
+  const tangentAxes = [0, 1, 2].filter(i => f.dir[i] === 0);
+  const aoOffsets = f.corners.map(corner => {
+    // Each corner sits at a tangent offset {-1, +1} from the block centre.
+    const sides = tangentAxes.map(ax => corner[ax] === 0 ? -1 : +1);
+    const s1Off = [...f.dir]; s1Off[tangentAxes[0]] += sides[0];
+    const s2Off = [...f.dir]; s2Off[tangentAxes[1]] += sides[1];
+    const cOff  = [...f.dir]; cOff[tangentAxes[0]] += sides[0]; cOff[tangentAxes[1]] += sides[1];
+    return [s1Off, s2Off, cOff];
+  });
+  return { ...f, aoOffsets };
+});
+
+// Multipliers per AO bucket (0 = no occlusion, 3 = fully boxed in).
+const AO_LEVELS = [1.0, 0.82, 0.65, 0.48];
 
 export class World {
   constructor(scene) {
@@ -202,6 +223,9 @@ export class World {
             // For a transparent block, hide the face if neighbor is opaque (we look at the back of glass through the other 5 sides)
             if (isTrans && isOpaque(neighbor)) continue;
 
+            // Transparent blocks (glass, leaves) skip AO so they don't get
+            // ugly dark patches where they touch solids.
+            const skipAO = isTrans;
             const fc = bc[face.type];
             for (let i = 0; i < 4; i++) {
               const c = face.corners[i];
@@ -215,6 +239,22 @@ export class World {
                 g = g * 0.45 + gt[1] * cv * 0.55;
                 b = b * 0.45 + gt[2] * cv * 0.55;
               }
+
+              if (!skipAO) {
+                const [s1, s2, cd] = face.aoOffsets[i];
+                const s1Solid = isOpaque(this.getBlock(wx + s1[0], y + s1[1], wz + s1[2]));
+                const s2Solid = isOpaque(this.getBlock(wx + s2[0], y + s2[1], wz + s2[2]));
+                let occ;
+                if (s1Solid && s2Solid) {
+                  occ = 3;
+                } else {
+                  const cdSolid = isOpaque(this.getBlock(wx + cd[0], y + cd[1], wz + cd[2]));
+                  occ = (s1Solid ? 1 : 0) + (s2Solid ? 1 : 0) + (cdSolid ? 1 : 0);
+                }
+                const ao = AO_LEVELS[occ];
+                r *= ao; g *= ao; b *= ao;
+              }
+
               target.colors.push(Math.min(1, r), Math.min(1, g), Math.min(1, b));
             }
             target.indices.push(target.vtx, target.vtx + 1, target.vtx + 2, target.vtx, target.vtx + 2, target.vtx + 3);

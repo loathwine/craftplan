@@ -14,6 +14,7 @@ import { TaskManager } from './TaskManager.js';
 import { MANUSCRIPT } from './manuscript.mjs';
 import { terrainHeight } from './terrain.js';
 import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
+import { setupSky } from './sky.js';
 
 const ease = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -246,8 +247,6 @@ export async function startRecorder() {
   const W = parseInt(params.get('w')) || MANUSCRIPT.width;
   const H = parseInt(params.get('h')) || MANUSCRIPT.height;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x7ec8e3);
-  scene.fog = new THREE.Fog(0x7ec8e3, 120, 360);
 
   const camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 400);
   const canvas = document.getElementById('game');
@@ -257,11 +256,7 @@ export async function startRecorder() {
   renderer.setSize(W, H, false);
   renderer.setPixelRatio(1);
 
-  scene.add(new THREE.AmbientLight(0x808080));
-  const sun = new THREE.DirectionalLight(0xfff4e0, 0.85);
-  sun.position.set(80, 120, 40);
-  scene.add(sun);
-  scene.add(new THREE.HemisphereLight(0x87CEEB, 0x556633, 0.45));
+  setupSky(scene, { fogNear: 120, fogFar: 360 });
 
   const world = new World(scene);
   const _tm = new TaskManager(scene, world);

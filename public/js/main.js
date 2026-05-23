@@ -5,6 +5,7 @@ import { Network } from './Network.js';
 import { TaskManager, applyRotation } from './TaskManager.js';
 import { UI } from './UI.js';
 import { Demo } from './demo.js';
+import { setupSky } from './sky.js';
 
 // --- State ---
 let scene, camera, renderer, clock;
@@ -44,8 +45,6 @@ const PW = 0.29; // player half-width
 // =====================================================
 function init() {
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x7ec8e3);
-  scene.fog = new THREE.Fog(0x7ec8e3, 60, 150);
 
   camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 300);
   const canvas = document.getElementById('game');
@@ -53,12 +52,7 @@ function init() {
   renderer.setSize(innerWidth, innerHeight);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-  // Lighting
-  scene.add(new THREE.AmbientLight(0x808080));
-  const sun = new THREE.DirectionalLight(0xfff4e0, 0.85);
-  sun.position.set(80, 120, 40);
-  scene.add(sun);
-  scene.add(new THREE.HemisphereLight(0x87CEEB, 0x556633, 0.45));
+  setupSky(scene, { fogNear: 60, fogFar: 150 });
 
   clock = new THREE.Clock();
 

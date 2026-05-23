@@ -14,6 +14,7 @@ import { Block } from './Textures.js';
 import { terrainHeight } from './terrain.js';
 import { makeAvatar, setExpression } from './avatar.js';
 import { spiralStaircase, bigTreeWithVines, sauronEye } from './montage.mjs';
+import { setupSky } from './sky.js';
 
 // Each build returns a list of blocks RELATIVE to (0,0,0). Cached LLM
 // plans are fetched lazily; helper builds run synchronously.
@@ -62,8 +63,6 @@ export async function startExplore() {
   if (isTouchDevice) document.body.classList.add('touch');
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x7ec8e3);
-  scene.fog = new THREE.Fog(0x7ec8e3, 120, 360);
 
   const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 400);
   const canvas = document.getElementById('game');
@@ -71,11 +70,7 @@ export async function startExplore() {
   renderer.setSize(innerWidth, innerHeight);
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-  scene.add(new THREE.AmbientLight(0x808080));
-  const sun = new THREE.DirectionalLight(0xfff4e0, 0.85);
-  sun.position.set(80, 120, 40);
-  scene.add(sun);
-  scene.add(new THREE.HemisphereLight(0x87CEEB, 0x556633, 0.45));
+  setupSky(scene, { fogNear: 120, fogFar: 360 });
 
   const world = new World(scene);
   const ui = installUI(BUILDS);
