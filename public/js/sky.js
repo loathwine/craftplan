@@ -37,13 +37,13 @@ const DEFAULTS = {
   shadowBias:    -0.0008,
   shadowNormalBias: 0.04,
 
-  // Ocean horizon: a tessellated blue plane below world Y, displaced by a
-  // sine-wave shader for slow rolling waves. Extends beyond the camera so
-  // the gradient sky meets a water line far away.
-  ocean:        true,
+  // Ocean horizon: off by default. Tried, user found it jarring against
+  // the natural terrain. Leaving the wave shader behind an opt-in flag in
+  // case we want it back later. Set ocean: true to re-enable.
+  ocean:        false,
   oceanY:       12,
   oceanExtent:  3000,
-  oceanColor:   0x1d6ea3,   // brighter saturated cobalt, was 0x2a5f7a
+  oceanColor:   0x1d6ea3,
   oceanWaveAmp: 0.45,
   oceanWaveLen: 24,
   oceanWaveSpeed: 1.2,

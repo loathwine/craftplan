@@ -26,12 +26,16 @@ import { terrainHeight } from './terrain.js';
 function buildSyntheticManuscript(slug, params) {
   const W = parseInt(params.get('w')) || 1080;
   const H = parseInt(params.get('h')) || 1920;
-  const dur     = parseFloat(params.get('dur'))    || 18;
-  const chunks  = parseInt(params.get('chunks'))   || 6;
+  const dur     = parseFloat(params.get('dur'))    || 22;
+  // Full-size world by default so natural terrain forms a backdrop on
+  // every side as the camera orbits the build. Down to 6-8 chunks for
+  // fast smoke iteration when you don't care about the horizon.
+  const chunks  = parseInt(params.get('chunks'))   || 16;
   const orbitR  = parseFloat(params.get('orbitR')) || 50;
   const orbitH  = parseFloat(params.get('orbitH')) || 14;
   const camY    = parseFloat(params.get('camY'))   || 12;
-  const sweep   = parseFloat(params.get('sweep'))  || 0.6;     // sweep × 2π = how far the orbit travels
+  // sweep × 2π = orbit travel. 1.0 = full revolution.
+  const sweep   = parseFloat(params.get('sweep'))  || 1.0;
 
   const cxParam = parseInt(params.get('cx'));
   const czParam = parseInt(params.get('cz'));
@@ -51,11 +55,10 @@ function buildSyntheticManuscript(slug, params) {
   const buildSpan = dur * buildFrac;
 
   const weather = params.get('weather') || 'clear';
-  // Camera path mode: 'orbit' = single sweep, 'multi' = orbit while
-  // building then keyframed reveal angles after.
-  const camMode = params.get('cam') || 'multi';
-  // Within multi: which reveal sequence to play. 'wide' (default),
-  // 'low-up' (good for tall builds), 'overhead' (sweep upward).
+  // Camera path mode: 'orbit' = single smooth sweep around the build
+  // (default; user feedback preferred this), 'multi' = keyframed reveal
+  // angles after the build finishes (more cinematic but jumpier).
+  const camMode = params.get('cam') || 'orbit';
   const camStyle = params.get('camStyle') || 'wide';
 
   return {
@@ -75,6 +78,7 @@ function buildSyntheticManuscript(slug, params) {
             radius: orbitR, height: orbitH,
             startAngle: -sweep * Math.PI,
             endAngle:   +sweep * Math.PI,
+            linear: true,   // constant angular velocity, no ease
           }
         : buildMultiAngleCamera({
             center: [cx, groundY + camY, cz],
@@ -188,9 +192,10 @@ const clamp01 = (t) => Math.max(0, Math.min(1, t));
 function makeCameraPath(spec, duration) {
   switch (spec.type) {
     case 'orbit': {
-      const { center, radius, height, startAngle, endAngle } = spec;
+      const { center, radius, height, startAngle, endAngle, linear } = spec;
       return (t) => {
-        const f = duration > 0 ? ease(clamp01(t / duration)) : 0;
+        const raw = duration > 0 ? clamp01(t / duration) : 0;
+        const f = linear ? raw : ease(raw);
         const a = startAngle + (endAngle - startAngle) * f;
         return {
           pos: [center[0] + radius * Math.cos(a), center[1] + height, center[2] + radius * Math.sin(a)],
