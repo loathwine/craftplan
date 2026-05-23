@@ -46,6 +46,45 @@ relative to the page URL, so subpath hosting works out of the box.
 Trigger a manual rebuild any time via the Actions tab → "Deploy demo
 to GitHub Pages" → **Run workflow**.
 
+## Shorts mode (fast single-build renders)
+
+For the YouTube Shorts pipeline (`shorts-mode` branch), the recorder accepts
+a `?single=<slug>` URL param that synthesises a one-shot orbit manuscript
+around a single cached plan. The world is generated at a smaller size
+(`?chunks=8` → 128×128 by default) for faster iteration in SwiftShader.
+
+```bash
+nix develop .#record --command node scripts/record-demo.mjs \
+  --single dragons-fighting --chunks 10 \
+  --duration 8 --fps 24 \
+  --width 720 --height 1280 \
+  --orbitR 75 --orbitH 28 --camY 18 --sweep 0.35 \
+  --order structural --weather snow \
+  --out recordings/shorts-mode/dragons-fighting.mp4
+```
+
+Flags forwarded to the URL:
+- `--single <slug>` — name of a cached plan under `public/data/plans/`
+- `--chunks <n>` — world size (default 6); 8-10 is good for medium builds
+- `--orbitR/--orbitH/--camY/--sweep` — camera path
+- `--order` — `bottom-up` | `structural` | `outline-first` | `painterly` | `sparse-then-dense`
+- `--weather` — `clear` | `snow` | `rain` | `storm`
+- `--buildFrac` — what fraction of the shot is build-animation (default 0.75)
+
+The shorts-mode branch also adds:
+- AO baking, cast shadows, ACES tonemapping, SSAO + bloom (see `sky.js`, `composer.js`)
+- Cinematic build orders (`buildOrder.js`)
+- Weather particle systems (`weather.js`)
+- Bigger build budgets via `cache-plan.mjs --budget` / `--radius` / `--vradius`
+
+Cache a new big build with the bigger budget:
+
+```bash
+nix develop --command node scripts/cache-plan.mjs \
+  --slug my-big-thing --radius 30 --vradius 22 --budget 12000 --timeout 1200000 \
+  --prompt "..." --force
+```
+
 ## Quick start
 
 ```bash
