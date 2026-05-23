@@ -45,8 +45,10 @@ function buildSyntheticManuscript(slug, params) {
   const buildFrac = parseFloat(params.get('buildFrac')) || 0.75;
   const buildSpan = dur * buildFrac;
 
+  const weather = params.get('weather') || 'clear';
+
   return {
-    fps: 30, width: W, height: H, chunks,
+    fps: 30, width: W, height: H, chunks, weather,
     avatars: {},
     setup: [
       { type: 'clearAboveGround',
@@ -80,6 +82,7 @@ import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
 import { setupSky, setupRenderer } from './sky.js';
 import { setupComposer } from './composer.js';
 import { reorderPlan } from './buildOrder.js';
+import { setupWeather } from './weather.js';
 
 const ease = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -326,6 +329,7 @@ export async function startRecorder() {
 
   setupSky(scene, { fogNear: 120, fogFar: 360 });
   const composer = setupComposer(renderer, scene, camera, W, H);
+  const weather = setupWeather(scene, MANUSCRIPT.weather);
 
   const world = new World(scene, { chunks: MANUSCRIPT.chunks });
   const _tm = new TaskManager(scene, world);
@@ -417,12 +421,16 @@ export async function startRecorder() {
   }
 
   const overlays = ensureOverlays();
+  let lastFrameT = 0;
 
   function frame(t) {
     // Find current shot
     let shot = shots[shots.length - 1];
     for (const s of shots) { if (t < s.end) { shot = s; break; } }
     const localT = Math.max(0, t - shot.start);
+    const dt = Math.max(0, Math.min(0.1, t - lastFrameT));
+    lastFrameT = t;
+    weather.update(dt, camera);
 
     // Apply pending world events (batched)
     if (shot.events && shot.appliedIdx < shot.events.length) {
