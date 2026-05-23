@@ -26,11 +26,11 @@ const DEFAULTS = {
   ssaoMaxDistance:  0.02,
   ssaoEnabled:      true,
 
-  // Bloom: gentle glow on bright pixels. The sun disc + lit tops of
-  // bright blocks (snow, sand) will bleed slightly.
-  bloomThreshold: 0.85,
-  bloomStrength:  0.35,
-  bloomRadius:    0.55,
+  // Bloom: glow on bright pixels. Threshold low enough that the sky band
+  // and sunlit faces bleed; strength tuned so it reads as glow, not haze.
+  bloomThreshold: 0.72,
+  bloomStrength:  0.55,
+  bloomRadius:    0.6,
   bloomEnabled:   true,
 };
 
