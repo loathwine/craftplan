@@ -39,6 +39,12 @@ function buildSyntheticManuscript(slug, params) {
   const cz = Number.isFinite(czParam) ? czParam : Math.floor((chunks * 16) / 2);
   const groundY = terrainHeight(cx, cz) + 1;
 
+  // Build-order knob: bottom-up | structural | outline-first | painterly | sparse-then-dense
+  const order = params.get('order') || 'structural';
+  // What fraction of the shot is build-animation? Rest sits on the finished build.
+  const buildFrac = parseFloat(params.get('buildFrac')) || 0.75;
+  const buildSpan = dur * buildFrac;
+
   return {
     fps: 30, width: W, height: H, chunks,
     avatars: {},
@@ -56,7 +62,16 @@ function buildSyntheticManuscript(slug, params) {
         startAngle: -sweep * Math.PI,
         endAngle:   +sweep * Math.PI,
       },
-      placements: [{ slug, origin: [cx, groundY, cz], t: 0 }],
+      build: {
+        plan: slug,
+        origin: [cx, groundY, cz],
+        startT: 0,
+        endT: buildSpan,
+        order,
+        bot: 'Claude',
+        botRadius: orbitR * 0.5,
+        botHeight: orbitH,
+      },
     }],
     audioMarkers: [],
   };
@@ -64,6 +79,7 @@ function buildSyntheticManuscript(slug, params) {
 import { makeAvatar, setExpression, setTagVisible } from './avatar.js';
 import { setupSky, setupRenderer } from './sky.js';
 import { setupComposer } from './composer.js';
+import { reorderPlan } from './buildOrder.js';
 
 const ease = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -217,7 +233,7 @@ function compileBuild(buildSpec, planJson) {
     const [rx, rz] = rotate([b.x, b.z]);
     return { x: rx, y: b.y, z: rz, block: b.block };
   });
-  const ordered = rotated.sort((a, b) => a.y - b.y || a.z - b.z || a.x - b.x);
+  const ordered = reorderPlan(rotated, buildSpec.order || 'bottom-up');
   const events = ordered.map((b, i) => ({
     t: startT + (span * i) / ordered.length,
     x: origin.x + b.x, y: origin.y + b.y, z: origin.z + b.z,
