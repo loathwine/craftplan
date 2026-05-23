@@ -14,6 +14,31 @@ import { TaskManager } from './TaskManager.js';
 import { MANUSCRIPT as FULL_MANUSCRIPT } from './manuscript.mjs';
 import { terrainHeight } from './terrain.js';
 
+// Turn a slug like "dragon-attacking" into "a leaping dragon" for the
+// on-screen "@Claude build ..." overlay. Caller can override via the
+// ?promptText URL param.
+function prettifySlug(slug) {
+  const overrides = {
+    'dragon-attacking':  'a leaping dragon',
+    'dragon-tower':      'a dragon coiled around a tower',
+    'dragons-fighting':  'two dragons in combat',
+    'hogwarts':          'Hogwarts castle',
+    'hogwarts-big':      'a massive Hogwarts castle',
+    'naruto-kurama':     'the Nine-Tailed Fox',
+    'eiffel-tower':      'the Eiffel Tower',
+    'pyramid':           'the Great Pyramid of Giza',
+    'stonehenge':        'Stonehenge',
+    'colosseum':         'the Roman Colosseum',
+    'volcano':           'an erupting volcano',
+    'octopus':           'a giant octopus',
+    'pirate-ship':       'a pirate ship',
+    'glass-pagoda':      'a Japanese pagoda',
+    'rocinante':         'a sci-fi spaceship',
+    'knight-statue':     'a knight statue',
+  };
+  return overrides[slug] || slug.replace(/-/g, ' ');
+}
+
 // Synthetic single-build manuscript for shorts iteration. Skips the full
 // movie and just orbits a camera around one cached plan placed at world
 // centre. Driven by URL params:
@@ -60,6 +85,9 @@ function buildSyntheticManuscript(slug, params) {
   // angles after the build finishes (more cinematic but jumpier).
   const camMode = params.get('cam') || 'orbit';
   const camStyle = params.get('camStyle') || 'wide';
+  // On-screen prompt overlay matching the full-manuscript style ("@Claude
+  // build <thing>"). Set ?promptText=... or it falls back to the slug.
+  const promptText = params.get('promptText') || prettifySlug(slug);
 
   return {
     fps: 30, width: W, height: H, chunks, weather,
@@ -71,6 +99,13 @@ function buildSyntheticManuscript(slug, params) {
     shots: [{
       id: 'single-' + slug,
       duration: dur,
+      overlay: {
+        html: `@Claude build ${promptText}`,
+        t0: 0.3,
+        t1: dur - 0.5,
+        fadeIn: 0.4,
+        fadeOut: 0.8,
+      },
       camera: camMode === 'orbit'
         ? {
             type: 'orbit',
