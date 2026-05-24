@@ -99,12 +99,17 @@ function buildSyntheticManuscript(slug, params) {
     shots: [{
       id: 'single-' + slug,
       duration: dur,
-      overlay: {
-        html: `@Claude build ${promptText}`,
+      // YouTube-thumbnail-style title baked into the render: "I asked an
+      // AI to build" (white) above "{noun}." (yellow). Old Shorts had this
+      // and YouTube auto-picked it as the thumbnail; user had to hand-
+      // craft one for the new format without it.
+      cardTitle: {
+        line1: 'I asked an AI to build',
+        line2: promptText.endsWith('.') ? promptText : `${promptText}.`,
         t0: 0.3,
-        t1: dur - 0.5,
+        t1: dur - 0.4,
         fadeIn: 0.4,
-        fadeOut: 0.8,
+        fadeOut: 0.6,
       },
       camera: camMode === 'orbit'
         ? {
@@ -315,6 +320,40 @@ function ensureOverlays() {
     });
     document.body.appendChild(title);
   }
+
+  // YouTube-thumbnail-style title card: two lines at the top of the frame,
+  // "I asked an AI to build" in white, "{noun}." in yellow. Built into the
+  // render so YouTube's auto-thumbnail picks a frame with the title baked
+  // in — no need to hand-craft a thumbnail.
+  let card = document.getElementById('demo-rec-card');
+  if (!card) {
+    card = document.createElement('div');
+    card.id = 'demo-rec-card';
+    Object.assign(card.style, {
+      position: 'fixed', left: 0, right: 0, top: '5%',
+      padding: '14px 18px', opacity: 0, pointerEvents: 'none',
+      color: '#fff', fontFamily: 'system-ui, sans-serif', textAlign: 'center',
+      background: 'rgba(10, 14, 24, 0.6)',
+      // Two child spans hold the two lines so each can be styled
+      // independently. Set via cardTitle.line1 / line2.
+    });
+    const l1 = document.createElement('div');
+    l1.id = 'demo-rec-card-l1';
+    Object.assign(l1.style, {
+      fontSize: '54px', fontWeight: 700, color: '#fff',
+      textShadow: '0 4px 12px rgba(0,0,0,0.85)', lineHeight: 1.05,
+    });
+    const l2 = document.createElement('div');
+    l2.id = 'demo-rec-card-l2';
+    Object.assign(l2.style, {
+      fontSize: '74px', fontWeight: 800, color: '#ffe34a',
+      textShadow: '0 4px 12px rgba(0,0,0,0.85)', lineHeight: 1.05,
+      marginTop: '6px',
+    });
+    card.appendChild(l1);
+    card.appendChild(l2);
+    document.body.appendChild(card);
+  }
   let fader = document.getElementById('demo-rec-fader');
   if (!fader) {
     fader = document.createElement('div');
@@ -325,7 +364,11 @@ function ensureOverlays() {
     });
     document.body.appendChild(fader);
   }
-  return { prompt, dialog, title, fader };
+  return {
+    prompt, dialog, title, fader, card,
+    cardL1: document.getElementById('demo-rec-card-l1'),
+    cardL2: document.getElementById('demo-rec-card-l2'),
+  };
 }
 
 function overlayOpacity(o, localT) {
@@ -650,6 +693,12 @@ export async function startRecorder() {
 
     overlays.title.style.opacity = overlayOpacity(shot.title, localT);
     if (shot.title) overlays.title.textContent = shot.title.html;
+
+    overlays.card.style.opacity = overlayOpacity(shot.cardTitle, localT);
+    if (shot.cardTitle) {
+      overlays.cardL1.textContent = shot.cardTitle.line1 || '';
+      overlays.cardL2.textContent = shot.cardTitle.line2 || '';
+    }
 
     // Fade at shot boundaries. Per-side color (fadeInColor/fadeOutColor)
     // lets a transition flash white for music drops or stay black for cuts.
