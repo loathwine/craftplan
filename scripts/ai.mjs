@@ -149,9 +149,11 @@ export function runSandbox(code, opts = {}) {
     .filter(op => Math.abs(op.x) <= maxX && Math.abs(op.z) <= maxZ && op.y >= minY && op.y <= maxY);
 }
 
-export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 360000) {
+export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 360000, effort = 'max') {
   return new Promise((resolve, reject) => {
-    const proc = spawn('claude', ['-p', '--model', model], { stdio: ['pipe', 'pipe', 'pipe'] });
+    const args = ['-p', '--model', model];
+    if (effort) args.push('--effort', effort);
+    const proc = spawn('claude', args, { stdio: ['pipe', 'pipe', 'pipe'] });
     let stdout = '', stderr = '';
     let timer = null;
     if (timeoutMs > 0) {
@@ -171,7 +173,7 @@ export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 360000
 }
 
 export async function planWithAI(prompt, opts = {}) {
-  const stdout = await callClaude(prompt, opts.model, opts.timeoutMs);
+  const stdout = await callClaude(prompt, opts.model, opts.timeoutMs, opts.effort);
   const code = extractCode(stdout);
   if (!code) throw new Error('Empty AI response');
   return { code, plan: runSandbox(code, opts) };

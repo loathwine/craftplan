@@ -96,9 +96,10 @@ ${detailHint ? `STYLE GUIDANCE: ${detailHint}\n` : ''}DETAIL EXPECTATION: Use mo
 Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
 
   const TIMEOUT_MS = parseInt(argv.timeout || '900000');
-  console.log(`[plan] calling Claude (${MODEL}) for "${PROMPT}" (budget ${BUDGET}, radius ${RADIUS}, timeout ${TIMEOUT_MS}ms)...`);
+  const EFFORT = argv.effort || 'max';
+  console.log(`[plan] calling Claude (${MODEL}, effort=${EFFORT}) for "${PROMPT}" (budget ${BUDGET}, radius ${RADIUS}, timeout ${TIMEOUT_MS}ms)...`);
   const { code, plan: relPlan } = await planWithAI(prompt, {
-    model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET, timeoutMs: TIMEOUT_MS,
+    model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET, timeoutMs: TIMEOUT_MS, effort: EFFORT,
   });
   plan = relPlan;
   sourceLabel = `ai:${MODEL}`;
