@@ -68,10 +68,13 @@ function buildSyntheticManuscript(slug, params) {
   // centred on the front face keeps the interesting side on screen the
   // whole time. Bump sweep toward 1.0 for builds that look good all-round.
   const sweep   = parseFloat(params.get('sweep'))  || 0.35;
-  // Angle (degrees) the camera sweep is centred on. The LLM is told to
-  // face builds toward +Z, which is camera angle 90°. So a 90° centre
-  // keeps the front of the build toward the camera.
-  const faceAngle = (parseFloat(params.get('faceAngleDeg')) || 90) * Math.PI / 180;
+  // Angle (degrees) the camera sweep is centred on. Empirically, builds
+  // the LLM is told to "face toward the viewer" end up facing the −Z
+  // side (camera angle −90°), not +Z — confirmed on the Moai. Default to
+  // −90 so figural builds show their front. Override per-build with
+  // --faceAngleDeg if a particular build faces elsewhere.
+  const faceAngleDeg = params.get('faceAngleDeg') != null ? parseFloat(params.get('faceAngleDeg')) : -90;
+  const faceAngle = faceAngleDeg * Math.PI / 180;
 
   const cxParam = parseInt(params.get('cx'));
   const czParam = parseInt(params.get('cz'));
