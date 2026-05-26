@@ -415,7 +415,22 @@ function compileBuild(buildSpec, planJson) {
     const [rx, rz] = rotate([b.x, b.z]);
     return { x: rx, y: b.y, z: rz, block: b.block };
   });
-  const ordered = reorderPlan(rotated, buildSpec.order || 'bottom-up');
+  // Resolve the plan to its final SOLID state before animating. The LLM
+  // often builds a solid mass then carves the shape with AIR ops (the
+  // T-Rex was 4148/7000 AIR). If we animate those AIR ops they take time
+  // slots placing nothing visible — the bot appears to "draw empty
+  // blocks" for the first few seconds. Replaying the plan in order
+  // (AIR deletes) collapses it to just the blocks that actually survive,
+  // so the reveal animates only visible blocks and the carving is baked
+  // in for free.
+  const finalState = new Map();
+  for (const b of rotated) {
+    const key = `${b.x},${b.y},${b.z}`;
+    if (b.block === 0) finalState.delete(key);
+    else finalState.set(key, b);
+  }
+  const solid = [...finalState.values()];
+  const ordered = reorderPlan(solid, buildSpec.order || 'bottom-up');
   const events = ordered.map((b, i) => ({
     t: startT + (span * i) / ordered.length,
     x: origin.x + b.x, y: origin.y + b.y, z: origin.z + b.z,
