@@ -84,7 +84,7 @@ const staticServer = http.createServer((req, res) => {
 const STATIC_PORT = await new Promise((r) => staticServer.listen(0, () => r(staticServer.address().port)));
 // Forward shorts/orbit URL params from CLI flags. Any value not set gets
 // the recorder's default behaviour.
-const FORWARD_PARAMS = ['single', 'chunks', 'dur', 'orbitR', 'orbitH', 'camY', 'sweep', 'cx', 'cz', 'order', 'buildFrac', 'weather', 'cam', 'camStyle', 'promptText'];
+const FORWARD_PARAMS = ['single', 'chunks', 'dur', 'orbitR', 'orbitH', 'camY', 'sweep', 'cx', 'cz', 'order', 'buildFrac', 'weather', 'cam', 'camStyle', 'promptText', 'faceAngleDeg'];
 const extraParams = FORWARD_PARAMS
   .filter((k) => argv[k] != null && argv[k] !== true)
   .map((k) => `${k}=${encodeURIComponent(argv[k])}`)

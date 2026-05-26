@@ -62,8 +62,16 @@ function buildSyntheticManuscript(slug, params) {
   const orbitR  = parseFloat(params.get('orbitR')) || 50;
   const orbitH  = parseFloat(params.get('orbitH')) || 14;
   const camY    = parseFloat(params.get('camY'))   || 12;
-  // sweep × 2π = orbit travel. 1.0 = full revolution.
-  const sweep   = parseFloat(params.get('sweep'))  || 1.0;
+  // sweep × 2π = orbit travel. 0.35 ≈ a 126° pan. We deliberately do NOT
+  // do a full revolution by default: figural builds (Moai, dragons,
+  // Pikachu) face one direction and their backs are boring. A slow pan
+  // centred on the front face keeps the interesting side on screen the
+  // whole time. Bump sweep toward 1.0 for builds that look good all-round.
+  const sweep   = parseFloat(params.get('sweep'))  || 0.35;
+  // Angle (degrees) the camera sweep is centred on. The LLM is told to
+  // face builds toward +Z, which is camera angle 90°. So a 90° centre
+  // keeps the front of the build toward the camera.
+  const faceAngle = (parseFloat(params.get('faceAngleDeg')) || 90) * Math.PI / 180;
 
   const cxParam = parseInt(params.get('cx'));
   const czParam = parseInt(params.get('cz'));
@@ -119,8 +127,8 @@ function buildSyntheticManuscript(slug, params) {
             type: 'orbit',
             center: [cx, groundY + camY, cz],
             radius: orbitR, height: orbitH,
-            startAngle: -sweep * Math.PI,
-            endAngle:   +sweep * Math.PI,
+            startAngle: faceAngle - sweep * Math.PI,
+            endAngle:   faceAngle + sweep * Math.PI,
             linear: true,   // constant angular velocity, no ease
           }
         : buildMultiAngleCamera({
