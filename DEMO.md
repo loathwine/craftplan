@@ -293,3 +293,33 @@ surprised, frustrated, smug, focused, sad, thinking. Add `expressionAt:
 
 `lookAtCamera: true` snaps an avatar's facing toward the camera every frame
 (use for close-up reaction shots so the face is visible, not the side).
+
+## Scheduled uploads (YouTube Data API)
+
+`scripts/yt-upload.mjs` uploads a Short with metadata and an optional
+future publish time, so a batch can be queued once and released
+automatically.
+
+One-time setup (manual — Google requires a human through the consent
+screen):
+1. console.cloud.google.com → new project.
+2. Enable **YouTube Data API v3**.
+3. Credentials → OAuth client ID → **Desktop app** → download JSON.
+4. Save as `secrets/yt-client.json` (gitignored).
+5. First run opens a browser for consent; refresh token caches to
+   `secrets/yt-token.json`.
+
+Usage:
+```bash
+nix develop --command node scripts/yt-upload.mjs \
+  --file recordings/shorts-mode/moai-10s-v4.mp4 \
+  --title "I asked an AI to build the Easter Island heads" \
+  --description-file desc.txt \
+  --tags "shorts,ai,minecraft,moai,history" \
+  --publish-at 2026-05-28T16:00:00Z
+```
+
+`--publish-at` (ISO 8601 UTC) schedules the video private-until-then.
+Omit it to upload as a private draft. Requires the `googleapis` npm
+package (not in the bundled server deps — add to package.json + refresh
+npmDepsHash, or run with npx).

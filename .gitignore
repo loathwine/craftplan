@@ -12,3 +12,4 @@ data-demo-backup-*.json
 tunnel.log
 recordings/
 .claude/
+secrets/
