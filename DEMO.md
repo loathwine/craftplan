@@ -64,30 +64,38 @@ nix develop .#record --command node scripts/record-demo.mjs \
   --out recordings/shorts-mode/dragon-attacking.mp4
 ```
 
-That's it. Default duration 18s, full world (chunks=16, 256×256), one
-smooth full revolution around the build, flood-fill build order
-(structure rises from the floor up). The recorder defaults all the
-camera/orbit knobs to sensible values for shorts.
+That's it. Default duration 10s (short clips loop, which the Shorts
+algo rewards — see the analytics-driven tuning history), full world
+(chunks=16, 256×256), a slow front-facing pan (not a full revolution —
+figural builds have boring backs), flood-fill build order (structure
+rises from the floor up). The recorder defaults all the camera/orbit
+knobs to sensible values for shorts.
 
 ### CLI flags
 
 | Flag | URL param | Default | Notes |
 |---|---|---|---|
 | `--single <slug>` | `?single=` | — | Required. Name of a cached plan under `public/data/plans/`. |
-| `--duration <s>` | `?dur=` | 18 | Whole shot length. |
+| `--duration <s>` | `?dur=` | 10 | Whole shot length. 8-10s loops best (algo rewards it); 18s hurt retention badly in practice. |
 | `--chunks <n>` | `?chunks=` | 16 | World size in chunks (16 → 256×256). Drop to 6-8 for faster iteration. |
-| `--orbitR <units>` | `?orbitR=` | 50 | Orbit radius. Use 60-75 for medium builds. |
+| `--orbitR <units>` | `?orbitR=` | 50 | Orbit radius. Use 55-75 for medium builds. |
 | `--orbitH <units>` | `?orbitH=` | 14 | Camera height above orbit centre. |
 | `--camY <units>` | `?camY=` | 12 | Y of orbit centre above ground. |
-| `--sweep <fraction>` | `?sweep=` | 1.0 | `sweep × 2π` = orbit angle. 1.0 = full revolution. |
+| `--sweep <fraction>` | `?sweep=` | 0.35 | `sweep × 2π` = pan angle. 0.35 ≈ 126° front pan; 1.0 = full revolution. |
+| `--faceAngleDeg <deg>` | `?faceAngleDeg=` | -90 | Camera angle the pan is centred on. -90 = the build's front (LLM orients "face the viewer" builds toward -Z in practice). |
 | `--order <mode>` | `?order=` | `structural` | See "Build orders" below. |
 | `--weather <kind>` | `?weather=` | `clear` | `snow` / `rain` / `storm` / `clouds` / `fog`. |
-| `--buildFrac <0..1>` | `?buildFrac=` | 0.5 | What fraction of the shot is build-animation. Rest is camera continuing to orbit the finished build. |
-| `--cam <mode>` | `?cam=` | `orbit` | `orbit` = single smooth sweep (default), `multi` = keyframed multi-angle reveal after build. |
+| `--buildFrac <0..1>` | `?buildFrac=` | 0.5 | What fraction of the shot is build-animation. Rest is camera continuing to pan the finished build. |
+| `--cam <mode>` | `?cam=` | `orbit` | `orbit` = single smooth pan (default), `multi` = keyframed multi-angle reveal after build. |
 | `--camStyle <s>` | `?camStyle=` | `wide` | Only for `cam=multi`: `wide`, `low-up`, `overhead`. |
+| `--promptText <s>` | `?promptText=` | slug | Text after "I asked an AI to build" in the baked-in title card. |
 | `--width / --height` | `?w=/?h=` | 1280/720 | For Shorts pass `--width 1080 --height 1920`. |
 | `--fps <n>` | — | 30 | Output framerate. |
 | `--out <path>` | — | — | Output MP4 path. |
+
+Note: the build animation resolves AIR carve-ops at compile time and
+animates only surviving solid blocks, so builds that carve their shape
+with AIR (T-Rex, Moai) don't show "dead time" placing invisible blocks.
 
 ### Build orders (`--order`)
 
