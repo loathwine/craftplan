@@ -33,7 +33,7 @@
           pname = "craftplan";
           version = "0.1.0";
           src = ./.;
-          npmDepsHash = "sha256-l4An40qC4a6cVEx2eFd2BIGR15lh0SRZ0A94Jk3z0j0=";
+          npmDepsHash = "sha256-RotoC/2RhVMy9mjVElcNw+1xfwL15zdt4ye4K4EeWrc=";
           dontNpmBuild = true;
           installPhase = ''
             mkdir -p $out/{lib,bin}
