@@ -76,9 +76,10 @@ if (!existsSync(CLIENT_PATH)) fail(`OAuth client missing: ${CLIENT_PATH} (see he
 // --- OAuth ------------------------------------------------------------------
 async function authorize() {
   const creds = JSON.parse(readFileSync(CLIENT_PATH, 'utf-8'));
-  const { client_id, client_secret, redirect_uris } = creds.installed || creds.web;
-  // Loopback redirect on a fixed port for the desktop OAuth flow.
-  const redirectUri = (redirect_uris && redirect_uris[0]) || 'http://127.0.0.1:9876';
+  const { client_id, client_secret } = creds.installed || creds.web;
+  // Desktop-app OAuth uses a loopback redirect. Force the explicit port
+  // we listen on; the GCP OAuth client must allow http://127.0.0.1:9876.
+  const redirectUri = 'http://127.0.0.1:9876';
   const oauth2 = new google.auth.OAuth2(client_id, client_secret, redirectUri);
 
   if (existsSync(TOKEN_PATH)) {
@@ -89,7 +90,7 @@ async function authorize() {
   // Interactive consent: open the URL, capture the code on the loopback.
   const authUrl = oauth2.generateAuthUrl({ access_type: 'offline', scope: SCOPES, prompt: 'consent' });
   console.log('[yt] Open this URL in a browser and grant access:\n', authUrl);
-  const port = parseInt(new URL(redirectUri).port || '9876');
+  const port = 9876;
   const code = await new Promise((res, rej) => {
     const server = http.createServer((req, r) => {
       const u = new URL(req.url, redirectUri);
