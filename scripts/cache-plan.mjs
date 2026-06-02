@@ -96,6 +96,13 @@ ${detailHint ? `STYLE GUIDANCE: ${detailHint}\n` : ''}DETAIL EXPECTATION: Use mo
 Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
 
   const TIMEOUT_MS = parseInt(argv.timeout || '900000');
+  // --effort default = 'max'. A/B tested 2026-06-02 (demogorgon, frieren):
+  //   max:    3.0-3.1K solid blocks, dense and recognisable
+  //   medium: spammed 8000 AIR blocks (rendered to empty terrain) OR shrank further
+  //   low:    ~2K blocks, less detailed
+  // Lower effort tempts the model to emit short code that compiles but
+  // produces little / nothing visible. Block count alone is misleading —
+  // count AIR separately. Don't flip this without re-running the A/B.
   const EFFORT = argv.effort || 'max';
   console.log(`[plan] calling Claude (${MODEL}, effort=${EFFORT}) for "${PROMPT}" (budget ${BUDGET}, radius ${RADIUS}, timeout ${TIMEOUT_MS}ms)...`);
   const { code, plan: relPlan } = await planWithAI(prompt, {
