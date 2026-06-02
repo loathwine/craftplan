@@ -57,7 +57,9 @@ const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-'); // YY
 const defaultName = `montage-${stamp}${LABEL ? '-' + LABEL : ''}.mp4`;
 const OUT      = resolve(OUT_ARG || (ARCHIVE ? `recordings/archive/${defaultName}` : `recordings/${defaultName}`));
 const LATEST   = resolve('recordings/latest.mp4');
-const FRAMES_DIR = resolve(argv['frames-dir'] || 'recordings/frames');
+// Per-process FRAMES_DIR keeps parallel renders from clobbering each other's
+// frame_NNNNN.png files. Override with --frames-dir for debugging.
+const FRAMES_DIR = resolve(argv['frames-dir'] || `recordings/frames-${process.pid}`);
 const KEEP     = !!argv.keep;
 const NO_MP4   = !!argv['no-mp4'];
 
