@@ -5,6 +5,13 @@ import { spawn } from 'child_process';
 
 const VALID_BLOCKS = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13]);
 const DEFAULT_MAX_BLOCKS = 5000;
+// Raw collection cap: runaway-loop protection only. The *budget* (maxBlocks)
+// is applied to SOLID blocks after dedup in runSandbox — if it were applied
+// to raw ops in collection order, a site-clearing AIR pass would eat the
+// whole cap before the build started (cathedral June 2026: three runs in a
+// row returned exactly budget×AIR, 0 solid, because the model opened with
+// cube(...AIR) over the footprint and everything after was truncated).
+const RAW_OP_CAP = 400000;
 
 export const SANDBOX_API_DOC = `AVAILABLE FUNCTIONS:
   block(x, y, z, id)                           single block
@@ -140,13 +147,30 @@ export function extractCode(stdout) {
 }
 
 export function runSandbox(code, opts = {}) {
-  const { maxX = 22, maxZ = 22, maxY = 40, minY = 0, maxBlocks } = opts;
-  const { api, ops } = makeSandbox({ maxBlocks });
+  const { maxX = 22, maxZ = 22, maxY = 40, minY = 0, maxBlocks = DEFAULT_MAX_BLOCKS } = opts;
+  const { api, ops } = makeSandbox({ maxBlocks: RAW_OP_CAP });
   const ctx = vm.createContext(api);
   vm.runInContext(code, ctx, { timeout: 10000, displayErrors: true });
-  return ops()
+  const inBounds = ops()
     .filter(op => VALID_BLOCKS.has(op.block))
     .filter(op => Math.abs(op.x) <= maxX && Math.abs(op.z) <= maxZ && op.y >= minY && op.y <= maxY);
+  // Last write per coordinate wins, same as placing the ops in a world.
+  // Keeps op order (the survivor stays at its final write's position in
+  // the stream) so throttled/animated replay still builds sensibly.
+  const lastWrite = new Map();
+  inBounds.forEach((op, i) => lastWrite.set(`${op.x},${op.y},${op.z}`, i));
+  const result = [];
+  let solids = 0;
+  for (let i = 0; i < inBounds.length; i++) {
+    const op = inBounds[i];
+    if (lastWrite.get(`${op.x},${op.y},${op.z}`) !== i) continue;
+    if (op.block !== 0) {
+      if (solids >= maxBlocks) continue; // budget counts solids only; AIR is free
+      solids++;
+    }
+    result.push(op);
+  }
+  return result;
 }
 
 // effort='max' is the right default — see the A/B note in scripts/cache-plan.mjs

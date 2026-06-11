@@ -59,7 +59,7 @@ if (existsSync(outPath) && !FORCE) {
 
 // --- Get the plan -----------------------------------------------------------
 const startT = Date.now();
-let plan, sourceLabel;
+let plan, sourceLabel, llmCode = null;
 
 if (BUILDER) {
   const planner = PLANNERS[BUILDER];
@@ -85,7 +85,8 @@ You write JavaScript that calls builder functions. Your code runs in a sandbox t
 ${SANDBOX_API_DOC}
 
 COORDS: Relative - origin (0,0,0) is the player's feet at the build location, on top of the ground. +X east, +Y up, +Z south.
-Limits: X,Z in [-${RADIUS},${RADIUS}], Y in [-8,${VRADIUS * 2 + 5}]. Negative Y allowed for foundations / digging in. Total <= ${BUDGET} blocks.
+Limits: X,Z in [-${RADIUS},${RADIUS}], Y in [-8,${VRADIUS * 2 + 5}]. Negative Y allowed for foundations / digging in.
+Budget: up to ${BUDGET} SOLID blocks. AIR is free and does NOT count against the budget — use it to carve window openings, dig craters, or remove terrain. Do NOT blanket-clear the whole site with a giant AIR box; it is unnecessary.
 
 ${geomCtx}
 
@@ -108,9 +109,15 @@ Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
   const { code, plan: relPlan } = await planWithAI(prompt, {
     model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET, timeoutMs: TIMEOUT_MS, effort: EFFORT,
   });
-  plan = relPlan;
+  // AIR ops aimed at empty sky delete nothing — drop them so a defensive
+  // site-clearing pass can't bloat the cache. Keep AIR at/below terrain
+  // (+7 for tree height): those are real carves the recorder applies.
+  plan = relPlan.filter(b => b.block !== 0
+    || ORIGIN[1] + b.y <= terrainHeight(ORIGIN[0] + b.x, ORIGIN[2] + b.z) + 7);
+  llmCode = code;
   sourceLabel = `ai:${MODEL}`;
-  console.log(`[plan] AI returned ${plan.length} blocks; code ${code.length} chars`);
+  const nSolid = plan.filter(b => b.block !== 0).length;
+  console.log(`[plan] AI returned ${relPlan.length} ops -> ${nSolid} solid + ${plan.length - nSolid} carve AIR (${relPlan.length - plan.length} no-op AIR dropped); code ${code.length} chars`);
 }
 
 // --- Save -------------------------------------------------------------------
@@ -125,4 +132,10 @@ const payload = {
 };
 
 writeFileSync(outPath, JSON.stringify(payload, null, 2));
+// Persist the LLM's raw code next to the cache so we can diagnose
+// AIR-only / sparse runs without re-paying for the call.
+if (llmCode) {
+  const codePath = outPath.replace(/\.json$/, '.code.js');
+  writeFileSync(codePath, `// ${SLUG} — prompt:\n// ${PROMPT?.slice(0, 200)}...\n\n${llmCode}`);
+}
 console.log(`[plan] wrote ${outPath} (${plan.length} blocks, ${((Date.now() - startT) / 1000).toFixed(1)}s)`);

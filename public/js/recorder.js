@@ -441,12 +441,24 @@ function compileBuild(buildSpec, planJson) {
     else finalState.set(key, b);
   }
   const solid = [...finalState.values()];
+  // AIR ops whose position never ends up solid are terrain carves (craters,
+  // half-buried hulls, dug-in foundations). Apply them all on the shot's
+  // first frame so the dig is baked in before the build animates.
+  const carveKeys = new Set();
+  const carves = [];
+  for (const b of rotated) {
+    const key = `${b.x},${b.y},${b.z}`;
+    if (b.block === 0 && !finalState.has(key) && !carveKeys.has(key)) {
+      carveKeys.add(key);
+      carves.push({ t: 0, x: origin.x + b.x, y: origin.y + b.y, z: origin.z + b.z, block: 0 });
+    }
+  }
   const ordered = reorderPlan(solid, buildSpec.order || 'bottom-up');
-  const events = ordered.map((b, i) => ({
+  const events = carves.concat(ordered.map((b, i) => ({
     t: startT + (span * i) / ordered.length,
     x: origin.x + b.x, y: origin.y + b.y, z: origin.z + b.z,
     block: b.block,
-  }));
+  })));
   const radius = buildSpec.botRadius ?? 5;
   const heightOff = buildSpec.botHeight ?? 3;
   function botAt(localT, cameraPos) {
