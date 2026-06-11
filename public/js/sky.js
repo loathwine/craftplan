@@ -76,7 +76,7 @@ void main() {
   float t = smoothstep(-0.05, 0.55, dir.y);
   vec3 color = mix(uHorizon, uZenith, t);
 
-  // Sun disc + soft glow around it
+  // Sun/moon disc + soft glow around it
   float cosTheta = clamp(dot(dir, uSunDir), -1.0, 1.0);
   float angDist  = acos(cosTheta);
   float disc     = smoothstep(uSunSize * 1.5, uSunSize * 0.5, angDist);
@@ -87,8 +87,33 @@ void main() {
 }
 `;
 
+// Moonlight preset: cool blue night, dimmer moon disc with a thicker halo,
+// low ambient so the build is rim-lit and shadows are deep, ground mist for
+// atmosphere. Tonemapping + composer bloom take care of overall exposure
+// and highlight glow. (Tried a procedural starfield earlier; it flickered
+// during camera pans because the hash is computed in screen-projected
+// coords — the grid cells slide as the camera moves. Removed.)
+const MOONLIGHT = {
+  zenithColor:  0x06122a,   // near-black indigo at zenith
+  horizonColor: 0x223f6b,   // dim blue at horizon
+  sunColor:     0xeaf2ff,   // cool white-blue moon
+  sunSize:      0.0028,     // moon disc — visibly bigger than sun
+  sunGlowSize:  0.13,       // thick soft halo around the moon
+  sunIntensity: 0.85,
+  ambientIntensity: 0.09,   // deeper shadows
+  hemiIntensity:    0.14,
+  hemiSky:    0x3c5a85,
+  hemiGround: 0x0a121b,
+  fogColor:   0x0c1830,
+  fogNear:    40,           // pull the mist forward so ground catches it
+  fogFar:     180,
+  elevationDeg: 60,         // moon high
+  azimuthDeg:  205,         // behind/right of subject for rim-light
+};
+
 export function setupSky(scene, opts = {}) {
-  const o = { ...DEFAULTS, ...opts };
+  const merged = opts.moonlight ? { ...DEFAULTS, ...MOONLIGHT, ...opts } : { ...DEFAULTS, ...opts };
+  const o = merged;
 
   const phi = THREE.MathUtils.degToRad(90 - o.elevationDeg);
   const theta = THREE.MathUtils.degToRad(o.azimuthDeg);

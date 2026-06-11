@@ -532,8 +532,13 @@ export async function startRecorder() {
   renderer.setPixelRatio(1);
   setupRenderer(renderer);
 
-  const skyHandle = setupSky(scene, { fogNear: 120, fogFar: 360 });
-  const composer = setupComposer(renderer, scene, camera, W, H);
+  const moonlight = params.get('moonlight') === '1';
+  const skyHandle = setupSky(scene, { fogNear: 120, fogFar: 360, moonlight });
+  // Stronger bloom for moonlight: the moon disc + any bright rim lighting
+  // should bloom harder against the dark sky to sell the night atmosphere.
+  const composer = setupComposer(renderer, scene, camera, W, H, moonlight
+    ? { bloomThreshold: 0.55, bloomStrength: 0.95, bloomRadius: 0.7 }
+    : {});
   const weather = setupWeather(scene, MANUSCRIPT.weather);
 
   const world = new World(scene, { chunks: MANUSCRIPT.chunks });
