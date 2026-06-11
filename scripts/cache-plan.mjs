@@ -106,9 +106,20 @@ Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
   // count AIR separately. Don't flip this without re-running the A/B.
   const EFFORT = argv.effort || 'max';
   console.log(`[plan] calling Claude (${MODEL}, effort=${EFFORT}) for "${PROMPT}" (budget ${BUDGET}, radius ${RADIUS}, timeout ${TIMEOUT_MS}ms)...`);
-  const { code, plan: relPlan } = await planWithAI(prompt, {
-    model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET, timeoutMs: TIMEOUT_MS, effort: EFFORT,
-  });
+  let aiResult;
+  try {
+    aiResult = await planWithAI(prompt, {
+      model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET, timeoutMs: TIMEOUT_MS, effort: EFFORT,
+    });
+  } catch (e) {
+    if (e.llmCode || e.llmStdout) {
+      const failPath = resolve(PLANS_DIR, `${SLUG}.failed.code.js`);
+      writeFileSync(failPath, `// ${SLUG} — sandbox error: ${e.message}\n// --- extracted code ---\n${e.llmCode || ''}\n\n// --- raw stdout ---\n/*\n${(e.llmStdout || '').replace(/\*\//g, '*\\/')}\n*/\n`);
+      console.error(`[plan] sandbox failed; dumped LLM output to ${failPath}`);
+    }
+    throw e;
+  }
+  const { code, plan: relPlan } = aiResult;
   // AIR ops aimed at empty sky delete nothing — drop them so a defensive
   // site-clearing pass can't bloat the cache. Keep AIR at/below terrain
   // (+7 for tree height): those are real carves the recorder applies.

@@ -177,7 +177,11 @@ export function runSandbox(code, opts = {}) {
 // (lower levels produce shorter code that often emits AIR-only or sparse builds).
 export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 360000, effort = 'max') {
   return new Promise((resolve, reject) => {
-    const args = ['-p', '--model', model];
+    // --output-format json: plain -p stdout dropped the HEAD of long
+    // responses (seen twice with fable-5 at xhigh — raw stdout began
+    // mid-expression). The json envelope's `result` field carries the
+    // complete final text.
+    const args = ['-p', '--model', model, '--output-format', 'json'];
     if (effort) args.push('--effort', effort);
     const proc = spawn('claude', args, { stdio: ['pipe', 'pipe', 'pipe'] });
     let stdout = '', stderr = '';
@@ -191,6 +195,10 @@ export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 360000
     proc.on('close', (code) => {
       if (timer) clearTimeout(timer);
       if (code !== 0) return reject(new Error(`claude exit ${code}: ${stderr.slice(0, 150)}`));
+      try {
+        const envelope = JSON.parse(stdout);
+        if (typeof envelope.result === 'string') return resolve(envelope.result);
+      } catch { /* not json (older CLI?) — fall through to raw stdout */ }
       resolve(stdout);
     });
     proc.stdin.write(prompt);
@@ -202,5 +210,14 @@ export async function planWithAI(prompt, opts = {}) {
   const stdout = await callClaude(prompt, opts.model, opts.timeoutMs, opts.effort);
   const code = extractCode(stdout);
   if (!code) throw new Error('Empty AI response');
-  return { code, plan: runSandbox(code, opts) };
+  try {
+    return { code, plan: runSandbox(code, opts) };
+  } catch (e) {
+    // Attach the code (and raw stdout) so callers can dump them for
+    // diagnosis — a sandbox SyntaxError with no surviving artifact is
+    // undebuggable without re-paying for the LLM call.
+    e.llmCode = code;
+    e.llmStdout = stdout;
+    throw e;
+  }
 }
