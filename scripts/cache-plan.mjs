@@ -48,7 +48,7 @@ const oy = terrainHeight(ox, oz) + 1;
 const ORIGIN = [ox, oy, oz];
 
 const FORCE = !!argv.force;
-const MODEL = argv.model || 'claude-opus-4-7';
+const MODEL = argv.model || 'claude-opus-4-8';
 
 const outPath = resolve(PLANS_DIR, `${SLUG}.json`);
 mkdirSync(PLANS_DIR, { recursive: true });

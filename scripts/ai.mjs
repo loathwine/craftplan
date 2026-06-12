@@ -175,7 +175,7 @@ export function runSandbox(code, opts = {}) {
 
 // effort='max' is the right default — see the A/B note in scripts/cache-plan.mjs
 // (lower levels produce shorter code that often emits AIR-only or sparse builds).
-export function callClaude(prompt, model = 'claude-opus-4-7', timeoutMs = 360000, effort = 'max') {
+export function callClaude(prompt, model = 'claude-opus-4-8', timeoutMs = 360000, effort = 'max') {
   return new Promise((resolve, reject) => {
     // --output-format json: plain -p stdout dropped the HEAD of long
     // responses (seen twice with fable-5 at xhigh — raw stdout began

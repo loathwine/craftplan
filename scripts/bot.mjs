@@ -18,7 +18,7 @@ import { planWithAI, SANDBOX_API_DOC } from './ai.mjs';
 import { terrainHeight } from '../public/js/terrain.js';
 import { describeLocalGeometry } from './geometry.mjs';
 
-const AI_MODEL = process.env.AI_MODEL || 'claude-opus-4-7';
+const AI_MODEL = process.env.AI_MODEL || 'claude-opus-4-8';
 
 const HOST = process.env.HOST || 'localhost:3000';
 const NAME = process.env.BOT_NAME || 'Claude';

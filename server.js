@@ -13,7 +13,7 @@ const wss = new WebSocketServer({ server });
 
 const DATA_FILE = './data.json';
 const AI_TASK_STRUCTURES = process.env.AI_TASK_STRUCTURES !== '0';
-const TASK_AI_MODEL = process.env.TASK_AI_MODEL || 'claude-opus-4-7';
+const TASK_AI_MODEL = process.env.TASK_AI_MODEL || 'claude-opus-4-8';
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));

@@ -46,7 +46,7 @@ scripts/
   build-castle.mjs      One-shot: connect, place a castle, disconnect.
   bot.mjs               Persistent WebSocket client named "Claude". Listens
                         for "@Name" in chat. For freeform builds it shells out
-                        to `claude -p` (Opus 4.7 by default), feeds it a prompt
+                        to `claude -p` (Opus 4.8 by default), feeds it a prompt
                         describing a sandbox API, and runs the returned
                         JavaScript inside `vm.createContext` to collect block
                         ops. Throttled to ~40 blocks/sec for visible builds.
@@ -138,7 +138,7 @@ The bot is a normal WebSocket player. Triggers on chat regex `^@<Name>\s+(.+)$`.
 
 For preset builds (`@Claude build castle here`), it calls a function from
 `builders.mjs`. For freeform (`@Claude build a dragon here`), it spawns
-`claude -p --model claude-opus-4-7` with a prompt that defines an API:
+`claude -p --model claude-opus-4-8` with a prompt that defines an API:
 
 ```js
 block(x, y, z, BLOCK)
