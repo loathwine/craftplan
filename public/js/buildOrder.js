@@ -133,6 +133,44 @@ function bfsFromCorner(plan, opts = {}) {
   return out;
 }
 
+// BFS seeded from the block nearest the structure's 3D centroid, so the
+// build grows OUTWARD from its core in roughly-spherical shells — a blob
+// swelling into its final shape. Reads very differently from corner BFS
+// (which washes across) or bottom-up (which 3D-prints in layers). Best on
+// subjects with a strong middle the eye tracks: a tree from its trunk, a
+// sphere from its core, a tower from its base column.
+function bfsFromCenter(plan, opts = {}) {
+  if (plan.length === 0) return [];
+  const n = plan.length;
+  let mx = 0, my = 0, mz = 0;
+  for (const b of plan) { mx += b.x; my += b.y; mz += b.z; }
+  mx /= n; my /= n; mz /= n;
+  const set = new Set(plan.map(b => `${b.x},${b.y},${b.z}`));
+  const lookup = new Map(plan.map(b => [`${b.x},${b.y},${b.z}`, b]));
+  const d2 = (b) => (b.x-mx)**2 + (b.y-my)**2 + (b.z-mz)**2;
+  const seed = plan.reduce((best, b) => d2(b) < d2(best) ? b : best);
+  const queue = [seed];
+  const visited = new Set([`${seed.x},${seed.y},${seed.z}`]);
+  const out = [];
+  while (queue.length) {
+    const cur = queue.shift();
+    out.push(cur);
+    for (const [dx, dy, dz] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+      const k = `${cur.x+dx},${cur.y+dy},${cur.z+dz}`;
+      if (!visited.has(k) && set.has(k)) {
+        visited.add(k);
+        queue.push(lookup.get(k));
+      }
+    }
+  }
+  // Disconnected components (floating bits) won't be reached by the flood;
+  // append them so nothing is dropped from the build.
+  for (const b of plan) {
+    if (!visited.has(`${b.x},${b.y},${b.z}`)) out.push(b);
+  }
+  return out;
+}
+
 // DFS from the same corner. Uses a stack so the build grows as a tendril
 // that snakes through the structure rather than expanding shells. More
 // chaotic, good for organic shapes (dragons).
@@ -241,6 +279,7 @@ const STRATEGIES = {
   'painterly':        painterly,
   'sparse-then-dense': sparseThenDense,
   'bfs-corner':       bfsFromCorner,
+  'bfs-center':       bfsFromCenter,
   'dfs-corner':       dfsFromCorner,
   'flood-fill':       floodFill,
 };

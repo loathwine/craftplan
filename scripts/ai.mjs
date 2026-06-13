@@ -142,8 +142,13 @@ export function makeSandbox(opts = {}) {
 
 export function extractCode(stdout) {
   const fence = stdout.match(/```(?:javascript|js)?\s*([\s\S]*?)```/);
-  if (fence) return fence[1].trim();
-  return stdout.trim();
+  let code = fence ? fence[1].trim() : stdout.trim();
+  // The sandbox is a plain vm context, not an ES module. Models sometimes
+  // prefix `export const meta = ...` (bleeding in the workflow-script
+  // convention) or `export function`, which is a SyntaxError here. Strip
+  // the leading `export ` token; the declaration itself stays valid.
+  code = code.replace(/^[ \t]*export[ \t]+/gm, '');
+  return code;
 }
 
 export function runSandbox(code, opts = {}) {
