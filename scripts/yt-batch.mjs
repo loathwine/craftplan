@@ -8,6 +8,10 @@
 //
 // Per-video keys: file (required), title (required), tags (array),
 //   description (optional, overrides manifest default),
+//   hashtags (optional array, e.g. ["shorts","minecraft","ai"] — the VISIBLE
+//     #tags appended to the description; first 3 show above the title. Falls
+//     back to manifest-level `hashtags`, then to deriving from `tags`. Without
+//     this every upload showed only a lone "#shorts".),
 //   publishAt (optional ISO string, overrides the auto-generated slot).
 
 import { readFileSync, existsSync, writeFileSync, mkdirSync, createReadStream } from 'node:fs';
@@ -49,6 +53,32 @@ const baseStart = new Date(queue.startDate);
 if (isNaN(baseStart.getTime())) fail(`invalid startDate: ${queue.startDate}`);
 const defaultDescription = queue.description || '';
 
+// --- Hashtags ---------------------------------------------------------------
+// YouTube keyword `tags` are invisible to viewers; only #hashtags in the
+// DESCRIPTION render (the first 3 show above the title). Without this, every
+// upload showed a lone "#shorts". We derive a small visible hashtag line per
+// video so discovery isn't left to invisible metadata.
+//   priority: per-video `hashtags` > manifest `hashtags` > derived from `tags`
+// YouTube ignores ALL hashtags if a description has >15, so we cap hard.
+const HASHTAG_CAP = 6;
+const sanitizeTag = (s) => String(s).toLowerCase().replace(/[^a-z0-9]/g, '');
+function hashtagLineFor(v) {
+  let words = v.hashtags || queue.hashtags
+    || ['shorts', ...(v.tags || []).filter(t => sanitizeTag(t) !== 'shorts')];
+  words = [...new Set(words.map(sanitizeTag).filter(Boolean))].slice(0, HASHTAG_CAP);
+  return words.map(w => `#${w}`).join(' ');
+}
+// Append the hashtag line, first stripping any trailing hashtag-only lines the
+// manifest description may already carry (e.g. a hardcoded "#shorts") so we
+// never duplicate.
+function withHashtags(desc, line) {
+  if (!line) return desc;
+  const lines = desc.replace(/\s+$/, '').split('\n');
+  while (lines.length && /^(\s*#[\w]+\s*)+$/.test(lines[lines.length - 1])) lines.pop();
+  while (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
+  return `${lines.join('\n')}\n\n${line}`;
+}
+
 // Compute schedule first; print it; then upload if not dry-run.
 const plan = queue.videos.map((v, i) => {
   const publishAt = v.publishAt
@@ -61,6 +91,7 @@ console.log('[yt-batch] schedule:');
 for (const v of plan) {
   console.log(`  ${v.publishAt.toISOString()}  ${v.title}`);
   console.log(`                            file: ${v.file}`);
+  console.log(`                            tags: ${hashtagLineFor(v)}`);
 }
 if (DRY) { console.log('[yt-batch] --dry-run: not uploading'); process.exit(0); }
 
@@ -97,7 +128,7 @@ const youtube = google.youtube({ version: 'v3', auth: oauth2 });
 for (const v of plan) {
   const file = resolve(REPO, v.file);
   if (!existsSync(file)) { console.error(`[yt-batch] SKIP (missing): ${v.file}`); continue; }
-  const description = v.description || defaultDescription;
+  const description = withHashtags(v.description || defaultDescription, hashtagLineFor(v));
   const tags = v.tags || [];
   const status = {
     selfDeclaredMadeForKids: false,
