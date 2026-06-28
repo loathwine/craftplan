@@ -12,6 +12,8 @@
 //     #tags appended to the description; first 3 show above the title. Falls
 //     back to manifest-level `hashtags`, then to deriving from `tags`. Without
 //     this every upload showed only a lone "#shorts".),
+//   musicCredit (optional string — inserted before the hashtags; use for
+//     CC-BY tracks that require attribution, e.g. Kevin MacLeod/Incompetech),
 //   publishAt (optional ISO string, overrides the auto-generated slot).
 
 import { readFileSync, existsSync, writeFileSync, mkdirSync, createReadStream } from 'node:fs';
@@ -128,7 +130,11 @@ const youtube = google.youtube({ version: 'v3', auth: oauth2 });
 for (const v of plan) {
   const file = resolve(REPO, v.file);
   if (!existsSync(file)) { console.error(`[yt-batch] SKIP (missing): ${v.file}`); continue; }
-  const description = withHashtags(v.description || defaultDescription, hashtagLineFor(v));
+  // musicCredit (per-video) is inserted between the body and the hashtag
+  // line — required for CC-BY tracks (e.g. Kevin MacLeod / Incompetech).
+  let body = v.description || defaultDescription;
+  if (v.musicCredit) body += `\n\n${v.musicCredit}`;
+  const description = withHashtags(body, hashtagLineFor(v));
   const tags = v.tags || [];
   const status = {
     selfDeclaredMadeForKids: false,
