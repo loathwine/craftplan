@@ -117,7 +117,9 @@ function buildSyntheticManuscript(slug, params) {
       // AI to build" (white) above "{noun}." (yellow). Old Shorts had this
       // and YouTube auto-picked it as the thumbnail; user had to hand-
       // craft one for the new format without it.
-      cardTitle: {
+      // ?promptText=none suppresses the card entirely — used when the clip
+      // is a quadrant in a composed grid and the label is drawn by ffmpeg.
+      cardTitle: promptText === 'none' ? null : {
         line1: 'I asked an AI to build',
         line2: promptText.endsWith('.') ? promptText : `${promptText}.`,
         t0: 0.3,

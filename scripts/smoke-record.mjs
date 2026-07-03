@@ -11,6 +11,9 @@ import WebSocket from 'ws';
 
 const TIME = parseFloat(process.argv[2] || '48');
 const OUT  = process.argv[3] || `recordings/record-smoke-t${TIME}.png`;
+// Optional extra query params appended to the ?record URL, e.g.
+// "single=dragon-4x-haiku&faceAngleDeg=90" to smoke a single-build shot.
+const EXTRA = process.argv[4] || '';
 
 const PUBLIC_DIR = resolve('public');
 const MIME = { '.html': 'text/html', '.js': 'application/javascript', '.mjs': 'application/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png' };
@@ -34,7 +37,7 @@ const chrome = spawn('chromium', [
   '--window-size=1920,1080',
   `--remote-debugging-port=${CDP_PORT}`,
   `--user-data-dir=${profileDir}`,
-  `http://127.0.0.1:${PORT}/?record&w=1920&h=1080`,
+  `http://127.0.0.1:${PORT}/?record&w=1920&h=1080${EXTRA ? '&' + EXTRA : ''}`,
 ], { stdio: ['ignore', 'pipe', 'pipe'], detached: true });
 
 const fetchJSON = async (url, tries = 50) => {

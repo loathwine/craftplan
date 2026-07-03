@@ -105,6 +105,11 @@ Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
   // produces little / nothing visible. Block count alone is misleading —
   // count AIR separately. Don't flip this without re-running the A/B.
   const EFFORT = argv.effort || 'max';
+  if (argv['dump-prompt']) {
+    writeFileSync(resolve(argv['dump-prompt']), prompt);
+    console.log(`[plan] prompt dumped to ${argv['dump-prompt']} (${prompt.length} chars), exiting`);
+    process.exit(0);
+  }
   console.log(`[plan] calling Claude (${MODEL}, effort=${EFFORT}) for "${PROMPT}" (budget ${BUDGET}, radius ${RADIUS}, timeout ${TIMEOUT_MS}ms)...`);
   let aiResult;
   try {
