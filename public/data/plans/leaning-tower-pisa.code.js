@@ -1,95 +1,92 @@
 // leaning-tower-pisa — prompt:
-// The Leaning Tower of Pisa, the famous tilted bell tower. A tall cylindrical tower of SNOW (white marble) and STONE, clearly LEANING to one side (shift each stacked level sideways so it visibly tilts)....
+// The Leaning Tower of Pisa. TWO CRITICAL FEATURES: (1) it must clearly LEAN - tilt the whole tower so the top is offset 5-6 blocks sideways from the base, an obvious dramatic lean. (2) It must show 8 S...
 
-// ============ The Leaning Tower of Pisa ============
-// White-marble (SNOW) + STONE campanile, 8 stacked colonnaded levels,
-// visibly LEANING in +X (sideways to the -Z viewer), on a green lawn.
-const LEAN = 0.22, YMID = 15;
-const cX = y => LEAN * (y - YMID);   // leaning centreline X
-const cZ = y => 0;
+// ===== The Leaning Tower of Pisa =====
+// Slender white-marble tower: 8 stacked tiers, open arcaded galleries,
+// dramatically leaning +6 blocks toward +X (sideways to the -Z viewer).
 
-// ---------- leaning helpers (centre follows the lean per Y) ----------
-function fillDisk(y, r, id){
-  const cx=cX(y), cz=cZ(y), R=Math.ceil(r)+1, ox=Math.round(cx), oz=Math.round(cz);
-  for(let X=ox-R;X<=ox+R;X++)for(let Z=oz-R;Z<=oz+R;Z++){
-    const a=X-cx,b=Z-cz; if(a*a+b*b<=r*r+0.001) block(X,y,Z,id);
+const TOP  = 29;
+const LEAN = 6;                              // top sideways offset (blocks)
+const lx = (y) => Math.round(LEAN * y / TOP); // tower centre-X at height y
+
+// ---------- ground: grass lawn ----------
+disk(0, 0, 0, 16, GRASS);
+
+// clear surrounding trees/foliage so the tower reads clean against the sky
+cube(-16, 1, -16, 16, 18, 16, AIR);
+
+// ---------- marble piazza paving ----------
+disk(0, 0, 0, 10, SNOW);
+hollowCylinder(0, 0, 0, 10, 1, COBBLE);
+hollowCylinder(0, 0, 0,  7, 1, STONE);
+hollowCylinder(0, 0, 0,  4, 1, COBBLE);
+for (let k = 0; k < 8; k++) {
+  const a = k * Math.PI / 4;
+  line(0, 0, 0, Math.round(10 * Math.cos(a)), 0, Math.round(10 * Math.sin(a)),
+       (k % 2) ? STONE : COBBLE);
+}
+// low bollards ringing the plaza
+for (let k = 0; k < 12; k++) {
+  const a = k * Math.PI / 6;
+  const x = Math.round(11 * Math.cos(a)), z = Math.round(11 * Math.sin(a));
+  cube(x, 1, z, x, 2, z, COBBLE);
+  block(x, 3, z, SNOW);
+}
+
+// ---------- foundation under the tower ----------
+for (let y = -3; y <= -1; y++) disk(lx(0), y, 0, 4, STONE);
+
+// ---------- helper: a ring of open colonnade piers ----------
+function piers(yb, h, rIn, rOut, n, phase, id) {
+  for (let dy = 0; dy < h; dy++) {
+    const y = yb + dy, cx = lx(y);
+    for (let i = 0; i < n; i++) {
+      const a = phase + i * 2 * Math.PI / n;
+      for (let r = rIn; r <= rOut; r++) {
+        block(cx + Math.round(r * Math.cos(a)), y, Math.round(r * Math.sin(a)), id);
+      }
+    }
   }
 }
-function ring(y, rO, rI, id){
-  const cx=cX(y), cz=cZ(y), R=Math.ceil(rO)+1, ox=Math.round(cx), oz=Math.round(cz);
-  for(let X=ox-R;X<=ox+R;X++)for(let Z=oz-R;Z<=oz+R;Z++){
-    const a=X-cx,b=Z-cz,d=a*a+b*b; if(d<=rO*rO+0.001&&d>rI*rI) block(X,y,Z,id);
+
+// ---------- TIER 1: solid base (y0..5) ----------
+for (let y = 0; y <= 5; y++) disk(lx(y), y, 0, 3, SNOW);
+// blind-arcade engaged pilasters
+for (let y = 1; y <= 4; y++) {
+  const cx = lx(y);
+  for (let i = 0; i < 8; i++) {
+    const a = i * Math.PI / 4;
+    block(cx + Math.round(3 * Math.cos(a)), y, Math.round(3 * Math.sin(a)), STONE);
   }
 }
-function cols(y, r, n, id){
-  const cx=cX(y), cz=cZ(y);
-  for(let k=0;k<n;k++){const t=k*2*Math.PI/n;
-    block(Math.round(cx+r*Math.cos(t)), y, Math.round(cz+r*Math.sin(t)), id);}
-}
-// ---------- flat (no-lean) helpers for ground / lawn ----------
-function flatDisk(cx,cy,cz,r,id){
-  const R=Math.ceil(r)+1;
-  for(let X=Math.round(cx)-R;X<=Math.round(cx)+R;X++)for(let Z=Math.round(cz)-R;Z<=Math.round(cz)+R;Z++){
-    const a=X-cx,b=Z-cz; if(a*a+b*b<=r*r+0.001) block(X,cy,Z,id);
-  }
-}
-function flatRing(cx,cy,cz,rO,rI,id){
-  const R=Math.ceil(rO)+1;
-  for(let X=Math.round(cx)-R;X<=Math.round(cx)+R;X++)for(let Z=Math.round(cz)-R;Z<=Math.round(cz)+R;Z++){
-    const a=X-cx,b=Z-cz,d=a*a+b*b; if(d<=rO*rO+0.001&&d>rI*rI) block(X,cy,Z,id);
-  }
-}
-function cypress(cx,cz,h){
-  for(let y=0;y<=h+2;y++) block(cx,y,cz, y<=2?OAK_LOG:LEAVES);
-  for(let y=3;y<=h;y++){ block(cx+1,y,cz,LEAVES);block(cx-1,y,cz,LEAVES);block(cx,y,cz+1,LEAVES);block(cx,y,cz-1,LEAVES); }
+hollowCylinder(lx(0), 0, 0, 3, 1, COBBLE);   // plinth trim
+hollowCylinder(lx(5), 5, 0, 3, 1, COBBLE);   // string course
+// arched doorway facing the viewer (-Z)
+cube(lx(2) - 1, 1, -3, lx(2) + 1, 2, 0, AIR);
+
+// ---------- TIERS 2..7: six open arcade galleries ----------
+const galY = [6, 9, 12, 15, 18, 21];
+for (const by of galY) {
+  piers(by, 2, 2, 3, 8, Math.PI / 8, STONE);  // open ring of columns, arch at front
+  const yf = by + 2;                          // solid floor ring above
+  disk(lx(yf), yf, 0, 3, SNOW);
+  hollowCylinder(lx(yf), yf, 0, 3, 1, COBBLE); // projecting cornice band
 }
 
-const BX = Math.round(cX(1));   // base centre X (-3)
-
-// ---------- 1. clear vegetation over the lawn, lay fresh lawn ----------
-for(let y=1;y<=9;y++) flatDisk(0,y,0,12,AIR);
-flatDisk(0,-1,0,14,DIRT);
-flatDisk(0, 0,0,14,GRASS);
-
-// ---------- 2. piazza apron + stepped foundation ----------
-flatRing(BX,0,0,7,6,STONE);             // outer step
-flatDisk(BX,0,0,6,COBBLE);              // pavement
-flatRing(BX,0,0,6,5.1,SNOW);            // marble trim
-flatDisk(BX,1,0,4.8,STONE);             // foundation pad
-flatRing(BX,1,0,4.8,3.9,COBBLE);        // step lip
-for(let k=0;k<24;k++){const t=k*2*Math.PI/24,X=Math.round(BX+8*Math.cos(t)),Z=Math.round(8*Math.sin(t));
-  block(X,0,Z,COBBLE); block(X,1,Z,STONE);}   // baluster ring framing the piazza
-
-// ---------- 3. ground floor: solid blind-arcade drum + portal ----------
-for(let y=2;y<=5;y++){ fillDisk(y,3.4,SNOW); cols(y,3.4,12,STONE); }
-fillDisk(6,3.6,SNOW); ring(6,3.6,3.0,STONE);   // heavy cornice
-{ const dx=Math.round(cX(3));                   // arched portal facing the viewer (-Z)
-  for(let y=2;y<=4;y++){const w=y<=3?1:0;
-    for(let X=dx-w;X<=dx+w;X++)for(let Z=-3;Z<=-1;Z++) block(X,y,Z,AIR);}
+// ---------- central newel + spiral stair (seen through the arches) ----------
+for (let y = 6; y <= 24; y++) block(lx(y), y, 0, STONE);
+for (let y = 6; y <= 24; y++) {
+  const th = y * 0.9, cx = lx(y);
+  block(cx + Math.round(1.7 * Math.cos(th)), y, Math.round(1.7 * Math.sin(th)), SNOW);
 }
 
-// ---------- 4. six open colonnaded galleries ----------
-for(let g=0; g<6; g++){
-  const yA=7+g*3, yB=yA+1, yS=yA+2;
-  fillDisk(yA,2.3,SNOW); cols(yA,3.4,10,STONE);
-  fillDisk(yB,2.3,SNOW); cols(yB,3.4,10,STONE);
-  fillDisk(yS,3.6,SNOW); ring(yS,3.6,3.0,STONE);   // floor slab + projecting cornice
-}
-
-// ---------- 5. bell chamber (narrower belfry) ----------
-for(let y=25;y<=27;y++){ fillDisk(y,1.6,SNOW); cols(y,2.3,8,STONE); }
-fillDisk(28,2.6,SNOW); ring(28,2.6,2.0,STONE);     // belfry cornice
-block(Math.round(cX(26)),26,0,COBBLE);             // the bell
-block(Math.round(cX(26)),25,0,COBBLE);
-
-// ---------- 6. roof cap + finial ----------
-fillDisk(29,2.0,SNOW);
-fillDisk(30,1.4,SNOW);
-fillDisk(31,0.7,SNOW);
-block(Math.round(cX(32)),32,0,COBBLE);
-
-// ---------- 7. approach path, framing bollards, cypress grove ----------
-for(let Z=-13;Z<=-4;Z++)for(let dX=-1;dX<=1;dX++) block(BX+dX,0,Z,COBBLE);
-[[BX-3,-12],[BX+3,-12]].forEach(([X,Z])=>{ block(X,1,Z,STONE); block(X,2,Z,SNOW); block(X,3,Z,COBBLE); });
-cypress(-9,11,7); cypress(9,11,6); cypress(12,4,6);
-cypress(-12,4,6); cypress(11,-6,5); cypress(-11,-6,5);
+// ---------- TIER 8: narrower bell chamber (y24..29) ----------
+piers(24, 3, 1, 2, 6, 0, STONE);             // taller, slimmer colonnade
+block(lx(25), 25, 0, COBBLE);                // the bell
+block(lx(26), 26, 0, COBBLE);
+disk(lx(27), 27, 0, 2, SNOW);                // chamber roof
+hollowCylinder(lx(27), 27, 0, 2, 1, COBBLE);
+disk(lx(28), 28, 0, 1, SNOW);                // little cupola
+block(lx(29), 29, 0, SNOW);
+block(lx(30), 30, 0, COBBLE);                // finial
+block(lx(31), 31, 0, COBBLE);
