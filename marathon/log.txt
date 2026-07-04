@@ -32,3 +32,11 @@
 2026-07-04T11:34:22.013Z mario: cached (3464 solid + 2995 air, 268s)
 2026-07-04T11:34:34.276Z mario: smoked
 2026-07-04T11:34:34.276Z batch end (completed)
+2026-07-04T11:40:02.705Z batch start: sonic, optimus-prime, iron-man, hulk, yoda
+2026-07-04T11:40:02.895Z sonic: prompt dumped
+2026-07-04T11:44:42.025Z sonic: cached (2315 solid + 2507 air, 279s)
+2026-07-04T11:44:54.113Z sonic: smoked
+2026-07-04T11:44:54.303Z optimus-prime: prompt dumped
+2026-07-04T11:44:56.278Z optimus-prime: GENERATION FAILED (attempt 1, exit=1): w Error(`claude exit ${code}: ${stderr.slice(0, 150)}`)); |                                     ^ |  | Error: claude exit 1:  |     at ChildProcess.<anonymous> (file:///home/edvin/dev/craftplan/scripts/ai.mjs:202:37) |     at ChildProcess.emit (node:events:519:28) |     at maybeClose (node:internal/child_process:1101:16) |     at ChildProcess._handle.onexit (node:internal/child_process:304:5) |  | Node.js v22.22.2 | 
+2026-07-04T11:44:58.010Z window probe: resetsAt=1783176600 (2026-07-04T14:50:00.000Z) overage=rejected
+2026-07-04T11:44:58.010Z batch end (stopped on failure)

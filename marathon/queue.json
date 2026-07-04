@@ -94,12 +94,17 @@
     {
       "key": "sonic",
       "prompt": "Sonic the Hedgehog",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2315,
+      "carveAir": 2507,
+      "genSeconds": 279,
+      "note": "3/5 rings + checkerboard platform + green eyes/red shoes sell it; body is glass (no blue in palette)"
     },
     {
       "key": "optimus-prime",
       "prompt": "Optimus Prime",
-      "status": "queued"
+      "status": "queued",
+      "attempts": 1
     },
     {
       "key": "iron-man",
