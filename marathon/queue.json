@@ -149,27 +149,47 @@
     {
       "key": "stormtrooper",
       "prompt": "a Stormtrooper",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2779,
+      "carveAir": 2145,
+      "genSeconds": 328,
+      "note": "3/5 white segmented armor + helmet, back-to-camera — rotate 180 at grid time"
     },
     {
       "key": "xenomorph",
       "prompt": "the Alien xenomorph",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3023,
+      "carveAir": 4653,
+      "genSeconds": 539,
+      "note": "3/5 dark biomech mass w/ elongated crest + white egg clutch, muddled silhouette"
     },
     {
       "key": "terminator",
       "prompt": "the Terminator",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2006,
+      "carveAir": 5149,
+      "genSeconds": 571,
+      "note": "5/5 endoskeleton ribcage + skull w/ red eye band + gun, burning ruins set"
     },
     {
       "key": "thanos",
       "prompt": "Thanos",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2903,
+      "carveAir": 2441,
+      "genSeconds": 313,
+      "note": "4/5 gold armor, gauntlet w/ colored stone blocks, red/gray checker face fakes purple"
     },
     {
       "key": "shrek",
       "prompt": "Shrek",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3555,
+      "carveAir": 4116,
+      "genSeconds": 559,
+      "note": "4/5 trumpet ears sell it instantly, vest + swamp set w/ outhouse + mushroom"
     },
     {
       "key": "minion",
