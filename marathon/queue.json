@@ -1,89 +1,445 @@
 {
   "note": "Fable-5 cache marathon queue. status: queued -> cached -> smoked -> qa_ok | needs_review. Benchmark rule: fable's output is the content — low quality is still qa_ok (note the score); only pipeline failures requeue.",
   "subjects": [
-    {"key": "godzilla", "prompt": "Godzilla", "status": "queued"},
-    {"key": "pikachu", "prompt": "Pikachu", "status": "queued"},
-    {"key": "creeper", "prompt": "a Minecraft creeper", "status": "queued"},
-    {"key": "ender-dragon", "prompt": "the Ender Dragon", "status": "queued"},
-    {"key": "king-kong", "prompt": "King Kong", "status": "queued"},
-    {"key": "darth-vader", "prompt": "Darth Vader", "status": "queued"},
-    {"key": "grogu", "prompt": "Grogu (Baby Yoda)", "status": "queued"},
-    {"key": "spider-man", "prompt": "Spider-Man", "status": "queued"},
-    {"key": "batman", "prompt": "Batman", "status": "queued"},
-    {"key": "mario", "prompt": "Super Mario", "status": "queued"},
-    {"key": "sonic", "prompt": "Sonic the Hedgehog", "status": "queued"},
-    {"key": "optimus-prime", "prompt": "Optimus Prime", "status": "queued"},
-    {"key": "iron-man", "prompt": "Iron Man", "status": "queued"},
-    {"key": "hulk", "prompt": "the Incredible Hulk", "status": "queued"},
-    {"key": "yoda", "prompt": "Yoda", "status": "queued"},
-    {"key": "r2d2", "prompt": "R2-D2", "status": "queued"},
-    {"key": "stormtrooper", "prompt": "a Stormtrooper", "status": "queued"},
-    {"key": "xenomorph", "prompt": "the Alien xenomorph", "status": "queued"},
-    {"key": "terminator", "prompt": "the Terminator", "status": "queued"},
-    {"key": "thanos", "prompt": "Thanos", "status": "queued"},
-    {"key": "shrek", "prompt": "Shrek", "status": "queued"},
-    {"key": "minion", "prompt": "a Minion", "status": "queued"},
-    {"key": "spongebob", "prompt": "SpongeBob SquarePants", "status": "queued"},
-    {"key": "kirby", "prompt": "Kirby", "status": "queued"},
-    {"key": "pacman", "prompt": "Pac-Man chased by a ghost", "status": "queued"},
-    {"key": "pokeball", "prompt": "a giant Poké Ball", "status": "queued"},
-    {"key": "kraken", "prompt": "a kraken", "status": "queued"},
-    {"key": "werewolf", "prompt": "a werewolf howling at the moon", "status": "queued"},
-    {"key": "minotaur", "prompt": "a minotaur", "status": "queued"},
-    {"key": "cyclops", "prompt": "a cyclops", "status": "queued"},
-    {"key": "hydra", "prompt": "a three-headed hydra", "status": "queued"},
-    {"key": "griffin", "prompt": "a griffin", "status": "queued"},
-    {"key": "unicorn", "prompt": "a unicorn", "status": "queued"},
-    {"key": "pegasus", "prompt": "Pegasus", "status": "queued"},
-    {"key": "cerberus", "prompt": "Cerberus, the three-headed dog", "status": "queued"},
-    {"key": "yeti", "prompt": "a yeti", "status": "queued"},
-    {"key": "golem", "prompt": "a stone golem", "status": "queued"},
-    {"key": "troll", "prompt": "a troll under a bridge", "status": "queued"},
-    {"key": "giant-spider", "prompt": "a giant spider", "status": "queued"},
-    {"key": "sea-serpent", "prompt": "a sea serpent", "status": "queued"},
-    {"key": "octopus", "prompt": "a giant octopus", "status": "queued"},
-    {"key": "shark", "prompt": "a great white shark", "status": "queued"},
-    {"key": "blue-whale", "prompt": "a blue whale", "status": "queued"},
-    {"key": "mammoth", "prompt": "a woolly mammoth", "status": "queued"},
-    {"key": "sabertooth", "prompt": "a sabertooth tiger", "status": "queued"},
-    {"key": "grizzly", "prompt": "a grizzly bear standing on its hind legs", "status": "queued"},
-    {"key": "gorilla", "prompt": "a silverback gorilla", "status": "queued"},
-    {"key": "elephant", "prompt": "an African elephant", "status": "queued"},
-    {"key": "eagle", "prompt": "a bald eagle with wings spread", "status": "queued"},
-    {"key": "cobra", "prompt": "a king cobra ready to strike", "status": "queued"},
-    {"key": "peacock", "prompt": "a peacock with its tail fanned out", "status": "queued"},
-    {"key": "scorpion", "prompt": "a giant scorpion", "status": "queued"},
-    {"key": "statue-liberty", "prompt": "the Statue of Liberty", "status": "queued"},
-    {"key": "big-ben", "prompt": "Big Ben", "status": "queued"},
-    {"key": "sphinx-giza", "prompt": "the Great Sphinx of Giza", "status": "queued"},
-    {"key": "golden-gate", "prompt": "the Golden Gate Bridge", "status": "queued"},
-    {"key": "sydney-opera", "prompt": "the Sydney Opera House", "status": "queued"},
-    {"key": "taj-mahal", "prompt": "the Taj Mahal", "status": "queued"},
-    {"key": "stonehenge", "prompt": "Stonehenge", "status": "queued"},
-    {"key": "moai", "prompt": "the Moai statues of Easter Island", "status": "queued"},
-    {"key": "viking-longship", "prompt": "a Viking longship", "status": "queued"},
-    {"key": "lighthouse", "prompt": "a lighthouse on a cliff", "status": "queued"},
-    {"key": "wizard-tower", "prompt": "a wizard's tower", "status": "queued"},
-    {"key": "pagoda", "prompt": "a Japanese pagoda", "status": "queued"},
-    {"key": "locomotive", "prompt": "a steam locomotive", "status": "queued"},
-    {"key": "monster-truck", "prompt": "a monster truck", "status": "queued"},
-    {"key": "tank", "prompt": "a battle tank", "status": "queued"},
-    {"key": "helicopter", "prompt": "an attack helicopter", "status": "queued"},
-    {"key": "fighter-jet", "prompt": "a fighter jet", "status": "queued"},
-    {"key": "space-shuttle", "prompt": "the Space Shuttle on its launchpad", "status": "queued"},
-    {"key": "submarine", "prompt": "a submarine", "status": "queued"},
-    {"key": "ferris-wheel", "prompt": "a Ferris wheel", "status": "queued"},
-    {"key": "trebuchet", "prompt": "a medieval trebuchet", "status": "queued"},
-    {"key": "excalibur", "prompt": "Excalibur in the stone", "status": "queued"},
-    {"key": "mjolnir", "prompt": "Thor's hammer Mjölnir", "status": "queued"},
-    {"key": "treasure-chest", "prompt": "a treasure chest overflowing with gold", "status": "queued"},
-    {"key": "jack-o-lantern", "prompt": "a jack-o'-lantern", "status": "queued"},
-    {"key": "gingerbread", "prompt": "a gingerbread house", "status": "queued"},
-    {"key": "santa-sleigh", "prompt": "Santa's sleigh pulled by reindeer", "status": "queued"},
-    {"key": "knight-vs-dragon", "prompt": "a knight fighting a dragon", "status": "queued"},
-    {"key": "wizard-duel", "prompt": "two wizards dueling with magic", "status": "queued"},
-    {"key": "volcano", "prompt": "an erupting volcano", "status": "queued"},
-    {"key": "alien-cow", "prompt": "a UFO abducting a cow", "status": "queued"},
-    {"key": "trex-jeep", "prompt": "a T-Rex chasing a jeep", "status": "queued"}
+    {
+      "key": "godzilla",
+      "prompt": "Godzilla",
+      "status": "qa_ok",
+      "solid": 2818,
+      "carveAir": 2206,
+      "genSeconds": 292,
+      "note": "4/5 upright kaiju, blue atomic breath onto wrecked buildings"
+    },
+    {
+      "key": "pikachu",
+      "prompt": "Pikachu",
+      "status": "qa_ok",
+      "solid": 2878,
+      "carveAir": 5209,
+      "genSeconds": 185,
+      "note": "3/5 clear ears-up silhouette, sand-colored (palette has no yellow)"
+    },
+    {
+      "key": "creeper",
+      "prompt": "a Minecraft creeper",
+      "status": "qa_ok",
+      "solid": 2959,
+      "carveAir": 6092,
+      "genSeconds": 583,
+      "note": "5/5 creeper family x3 sizes around campfire, very recognizable"
+    },
+    {
+      "key": "ender-dragon",
+      "prompt": "the Ender Dragon",
+      "status": "qa_ok",
+      "solid": 3035,
+      "carveAir": 5887,
+      "genSeconds": 420,
+      "note": "3/5 End island w/ crystal pillars, dragon muddled + gray (no black in palette)"
+    },
+    {
+      "key": "king-kong",
+      "prompt": "King Kong",
+      "status": "qa_ok",
+      "solid": 3180,
+      "carveAir": 1573,
+      "genSeconds": 455,
+      "note": "5/5 gorilla swatting biplane on rock pedestal, crashed plane + skyscraper props"
+    },
+    {
+      "key": "darth-vader",
+      "prompt": "Darth Vader",
+      "status": "queued"
+    },
+    {
+      "key": "grogu",
+      "prompt": "Grogu (Baby Yoda)",
+      "status": "queued"
+    },
+    {
+      "key": "spider-man",
+      "prompt": "Spider-Man",
+      "status": "queued"
+    },
+    {
+      "key": "batman",
+      "prompt": "Batman",
+      "status": "queued"
+    },
+    {
+      "key": "mario",
+      "prompt": "Super Mario",
+      "status": "queued"
+    },
+    {
+      "key": "sonic",
+      "prompt": "Sonic the Hedgehog",
+      "status": "queued"
+    },
+    {
+      "key": "optimus-prime",
+      "prompt": "Optimus Prime",
+      "status": "queued"
+    },
+    {
+      "key": "iron-man",
+      "prompt": "Iron Man",
+      "status": "queued"
+    },
+    {
+      "key": "hulk",
+      "prompt": "the Incredible Hulk",
+      "status": "queued"
+    },
+    {
+      "key": "yoda",
+      "prompt": "Yoda",
+      "status": "queued"
+    },
+    {
+      "key": "r2d2",
+      "prompt": "R2-D2",
+      "status": "queued"
+    },
+    {
+      "key": "stormtrooper",
+      "prompt": "a Stormtrooper",
+      "status": "queued"
+    },
+    {
+      "key": "xenomorph",
+      "prompt": "the Alien xenomorph",
+      "status": "queued"
+    },
+    {
+      "key": "terminator",
+      "prompt": "the Terminator",
+      "status": "queued"
+    },
+    {
+      "key": "thanos",
+      "prompt": "Thanos",
+      "status": "queued"
+    },
+    {
+      "key": "shrek",
+      "prompt": "Shrek",
+      "status": "queued"
+    },
+    {
+      "key": "minion",
+      "prompt": "a Minion",
+      "status": "queued"
+    },
+    {
+      "key": "spongebob",
+      "prompt": "SpongeBob SquarePants",
+      "status": "queued"
+    },
+    {
+      "key": "kirby",
+      "prompt": "Kirby",
+      "status": "queued"
+    },
+    {
+      "key": "pacman",
+      "prompt": "Pac-Man chased by a ghost",
+      "status": "queued"
+    },
+    {
+      "key": "pokeball",
+      "prompt": "a giant Poké Ball",
+      "status": "queued"
+    },
+    {
+      "key": "kraken",
+      "prompt": "a kraken",
+      "status": "queued"
+    },
+    {
+      "key": "werewolf",
+      "prompt": "a werewolf howling at the moon",
+      "status": "queued"
+    },
+    {
+      "key": "minotaur",
+      "prompt": "a minotaur",
+      "status": "queued"
+    },
+    {
+      "key": "cyclops",
+      "prompt": "a cyclops",
+      "status": "queued"
+    },
+    {
+      "key": "hydra",
+      "prompt": "a three-headed hydra",
+      "status": "queued"
+    },
+    {
+      "key": "griffin",
+      "prompt": "a griffin",
+      "status": "queued"
+    },
+    {
+      "key": "unicorn",
+      "prompt": "a unicorn",
+      "status": "queued"
+    },
+    {
+      "key": "pegasus",
+      "prompt": "Pegasus",
+      "status": "queued"
+    },
+    {
+      "key": "cerberus",
+      "prompt": "Cerberus, the three-headed dog",
+      "status": "queued"
+    },
+    {
+      "key": "yeti",
+      "prompt": "a yeti",
+      "status": "queued"
+    },
+    {
+      "key": "golem",
+      "prompt": "a stone golem",
+      "status": "queued"
+    },
+    {
+      "key": "troll",
+      "prompt": "a troll under a bridge",
+      "status": "queued"
+    },
+    {
+      "key": "giant-spider",
+      "prompt": "a giant spider",
+      "status": "queued"
+    },
+    {
+      "key": "sea-serpent",
+      "prompt": "a sea serpent",
+      "status": "queued"
+    },
+    {
+      "key": "octopus",
+      "prompt": "a giant octopus",
+      "status": "queued"
+    },
+    {
+      "key": "shark",
+      "prompt": "a great white shark",
+      "status": "queued"
+    },
+    {
+      "key": "blue-whale",
+      "prompt": "a blue whale",
+      "status": "queued"
+    },
+    {
+      "key": "mammoth",
+      "prompt": "a woolly mammoth",
+      "status": "queued"
+    },
+    {
+      "key": "sabertooth",
+      "prompt": "a sabertooth tiger",
+      "status": "queued"
+    },
+    {
+      "key": "grizzly",
+      "prompt": "a grizzly bear standing on its hind legs",
+      "status": "queued"
+    },
+    {
+      "key": "gorilla",
+      "prompt": "a silverback gorilla",
+      "status": "queued"
+    },
+    {
+      "key": "elephant",
+      "prompt": "an African elephant",
+      "status": "queued"
+    },
+    {
+      "key": "eagle",
+      "prompt": "a bald eagle with wings spread",
+      "status": "queued"
+    },
+    {
+      "key": "cobra",
+      "prompt": "a king cobra ready to strike",
+      "status": "queued"
+    },
+    {
+      "key": "peacock",
+      "prompt": "a peacock with its tail fanned out",
+      "status": "queued"
+    },
+    {
+      "key": "scorpion",
+      "prompt": "a giant scorpion",
+      "status": "queued"
+    },
+    {
+      "key": "statue-liberty",
+      "prompt": "the Statue of Liberty",
+      "status": "queued"
+    },
+    {
+      "key": "big-ben",
+      "prompt": "Big Ben",
+      "status": "queued"
+    },
+    {
+      "key": "sphinx-giza",
+      "prompt": "the Great Sphinx of Giza",
+      "status": "queued"
+    },
+    {
+      "key": "golden-gate",
+      "prompt": "the Golden Gate Bridge",
+      "status": "queued"
+    },
+    {
+      "key": "sydney-opera",
+      "prompt": "the Sydney Opera House",
+      "status": "queued"
+    },
+    {
+      "key": "taj-mahal",
+      "prompt": "the Taj Mahal",
+      "status": "queued"
+    },
+    {
+      "key": "stonehenge",
+      "prompt": "Stonehenge",
+      "status": "queued"
+    },
+    {
+      "key": "moai",
+      "prompt": "the Moai statues of Easter Island",
+      "status": "queued"
+    },
+    {
+      "key": "viking-longship",
+      "prompt": "a Viking longship",
+      "status": "queued"
+    },
+    {
+      "key": "lighthouse",
+      "prompt": "a lighthouse on a cliff",
+      "status": "queued"
+    },
+    {
+      "key": "wizard-tower",
+      "prompt": "a wizard's tower",
+      "status": "queued"
+    },
+    {
+      "key": "pagoda",
+      "prompt": "a Japanese pagoda",
+      "status": "queued"
+    },
+    {
+      "key": "locomotive",
+      "prompt": "a steam locomotive",
+      "status": "queued"
+    },
+    {
+      "key": "monster-truck",
+      "prompt": "a monster truck",
+      "status": "queued"
+    },
+    {
+      "key": "tank",
+      "prompt": "a battle tank",
+      "status": "queued"
+    },
+    {
+      "key": "helicopter",
+      "prompt": "an attack helicopter",
+      "status": "queued"
+    },
+    {
+      "key": "fighter-jet",
+      "prompt": "a fighter jet",
+      "status": "queued"
+    },
+    {
+      "key": "space-shuttle",
+      "prompt": "the Space Shuttle on its launchpad",
+      "status": "queued"
+    },
+    {
+      "key": "submarine",
+      "prompt": "a submarine",
+      "status": "queued"
+    },
+    {
+      "key": "ferris-wheel",
+      "prompt": "a Ferris wheel",
+      "status": "queued"
+    },
+    {
+      "key": "trebuchet",
+      "prompt": "a medieval trebuchet",
+      "status": "queued"
+    },
+    {
+      "key": "excalibur",
+      "prompt": "Excalibur in the stone",
+      "status": "queued"
+    },
+    {
+      "key": "mjolnir",
+      "prompt": "Thor's hammer Mjölnir",
+      "status": "queued"
+    },
+    {
+      "key": "treasure-chest",
+      "prompt": "a treasure chest overflowing with gold",
+      "status": "queued"
+    },
+    {
+      "key": "jack-o-lantern",
+      "prompt": "a jack-o'-lantern",
+      "status": "queued"
+    },
+    {
+      "key": "gingerbread",
+      "prompt": "a gingerbread house",
+      "status": "queued"
+    },
+    {
+      "key": "santa-sleigh",
+      "prompt": "Santa's sleigh pulled by reindeer",
+      "status": "queued"
+    },
+    {
+      "key": "knight-vs-dragon",
+      "prompt": "a knight fighting a dragon",
+      "status": "queued"
+    },
+    {
+      "key": "wizard-duel",
+      "prompt": "two wizards dueling with magic",
+      "status": "queued"
+    },
+    {
+      "key": "volcano",
+      "prompt": "an erupting volcano",
+      "status": "queued"
+    },
+    {
+      "key": "alien-cow",
+      "prompt": "a UFO abducting a cow",
+      "status": "queued"
+    },
+    {
+      "key": "trex-jeep",
+      "prompt": "a T-Rex chasing a jeep",
+      "status": "queued"
+    }
   ]
 }
