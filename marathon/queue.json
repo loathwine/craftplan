@@ -49,27 +49,47 @@
     {
       "key": "darth-vader",
       "prompt": "Darth Vader",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3005,
+      "carveAir": 4360,
+      "genSeconds": 241,
+      "note": "4/5 helmeted figure w/ raised red saber, chest panel; gray not black (palette)"
     },
     {
       "key": "grogu",
       "prompt": "Grogu (Baby Yoda)",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2849,
+      "carveAir": 2955,
+      "genSeconds": 436,
+      "note": "4/5 green head + ears in floating pram, levitating rocks force-scene"
     },
     {
       "key": "spider-man",
       "prompt": "Spider-Man",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2799,
+      "carveAir": 2775,
+      "genSeconds": 446,
+      "note": "5/5 web-slinging off rooftop, web line + buildings + web net, white eyes"
     },
     {
       "key": "batman",
       "prompt": "Batman",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2862,
+      "carveAir": 2564,
+      "genSeconds": 306,
+      "note": "4/5 bat-ears + chest emblem + cape on rooftop, gray palette suits him"
     },
     {
       "key": "mario",
       "prompt": "Super Mario",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3464,
+      "carveAir": 2995,
+      "genSeconds": 268,
+      "note": "3/5 warp pipe + piranha plant + ?-blocks scene, figure back-to-camera (rotate 180 at grid time), glass overalls (no blue)"
     },
     {
       "key": "sonic",

@@ -15,3 +15,20 @@
 2026-07-04T11:03:05.157Z king-kong: cached (3180 solid + 1573 air, 455s)
 2026-07-04T11:03:17.539Z king-kong: smoked
 2026-07-04T11:03:17.540Z batch end (completed)
+2026-07-04T11:05:15.245Z batch start: darth-vader, grogu, spider-man, batman, mario
+2026-07-04T11:05:15.440Z darth-vader: prompt dumped
+2026-07-04T11:09:16.678Z darth-vader: cached (3005 solid + 4360 air, 241s)
+2026-07-04T11:09:28.893Z darth-vader: smoked
+2026-07-04T11:09:29.110Z grogu: prompt dumped
+2026-07-04T11:16:45.105Z grogu: cached (2849 solid + 2955 air, 436s)
+2026-07-04T11:16:56.938Z grogu: smoked
+2026-07-04T11:16:57.156Z spider-man: prompt dumped
+2026-07-04T11:24:23.059Z spider-man: cached (2799 solid + 2775 air, 446s)
+2026-07-04T11:24:35.487Z spider-man: smoked
+2026-07-04T11:24:35.677Z batman: prompt dumped
+2026-07-04T11:29:42.176Z batman: cached (2862 solid + 2564 air, 306s)
+2026-07-04T11:29:54.312Z batman: smoked
+2026-07-04T11:29:54.512Z mario: prompt dumped
+2026-07-04T11:34:22.013Z mario: cached (3464 solid + 2995 air, 268s)
+2026-07-04T11:34:34.276Z mario: smoked
+2026-07-04T11:34:34.276Z batch end (completed)
