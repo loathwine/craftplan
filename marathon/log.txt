@@ -40,3 +40,19 @@
 2026-07-04T11:44:56.278Z optimus-prime: GENERATION FAILED (attempt 1, exit=1): w Error(`claude exit ${code}: ${stderr.slice(0, 150)}`)); |                                     ^ |  | Error: claude exit 1:  |     at ChildProcess.<anonymous> (file:///home/edvin/dev/craftplan/scripts/ai.mjs:202:37) |     at ChildProcess.emit (node:events:519:28) |     at maybeClose (node:internal/child_process:1101:16) |     at ChildProcess._handle.onexit (node:internal/child_process:304:5) |  | Node.js v22.22.2 | 
 2026-07-04T11:44:58.010Z window probe: resetsAt=1783176600 (2026-07-04T14:50:00.000Z) overage=rejected
 2026-07-04T11:44:58.010Z batch end (stopped on failure)
+2026-07-04T15:02:58.892Z batch start: optimus-prime, iron-man, hulk, yoda, r2d2
+2026-07-04T15:07:10.898Z optimus-prime: cached (2812 solid + 5001 air, 252s)
+2026-07-04T15:07:23.089Z optimus-prime: smoked
+2026-07-04T15:07:23.275Z iron-man: prompt dumped
+2026-07-04T15:13:13.895Z iron-man: cached (2521 solid + 5059 air, 351s)
+2026-07-04T15:13:26.046Z iron-man: smoked
+2026-07-04T15:13:26.255Z hulk: prompt dumped
+2026-07-04T15:19:45.933Z hulk: cached (2619 solid + 2203 air, 380s)
+2026-07-04T15:19:58.281Z hulk: smoked
+2026-07-04T15:19:58.480Z yoda: prompt dumped
+2026-07-04T15:25:26.459Z yoda: cached (2921 solid + 4430 air, 328s)
+2026-07-04T15:25:38.991Z yoda: smoked
+2026-07-04T15:25:39.185Z r2d2: prompt dumped
+2026-07-04T15:31:08.946Z r2d2: cached (3383 solid + 2733 air, 330s)
+2026-07-04T15:31:21.038Z r2d2: smoked
+2026-07-04T15:31:21.038Z batch end (completed)

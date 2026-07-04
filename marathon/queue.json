@@ -103,28 +103,48 @@
     {
       "key": "optimus-prime",
       "prompt": "Optimus Prime",
-      "status": "queued",
-      "attempts": 1
+      "status": "qa_ok",
+      "attempts": 1,
+      "solid": 2812,
+      "carveAir": 5001,
+      "genSeconds": 252,
+      "note": "4/5 red torso w/ glass windshield chest, helmet + smokestack, raised fist"
     },
     {
       "key": "iron-man",
       "prompt": "Iron Man",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2521,
+      "carveAir": 5059,
+      "genSeconds": 351,
+      "note": "4/5 red suit + chest reactor, landing pose w/ dust clouds; gold is tan (palette)"
     },
     {
       "key": "hulk",
       "prompt": "the Incredible Hulk",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2619,
+      "carveAir": 2203,
+      "genSeconds": 380,
+      "note": "3/5 green muscle mass + raised fist + torn pants (glass-white, no purple); back-to-camera — rotate 180 at grid time"
     },
     {
       "key": "yoda",
       "prompt": "Yoda",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2921,
+      "carveAir": 4430,
+      "genSeconds": 328,
+      "note": "3/5 green head + robe + long green saber, Dagobah hut/swamp props, figure blends into forest"
     },
     {
       "key": "r2d2",
       "prompt": "R2-D2",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3383,
+      "carveAir": 2733,
+      "genSeconds": 330,
+      "note": "4/5 clean dome + leg struts + panels, unmistakable silhouette; blue is gray (palette)"
     },
     {
       "key": "stormtrooper",
