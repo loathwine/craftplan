@@ -17,7 +17,13 @@ const BATCH = parseInt(process.env.MARATHON_BATCH || '5');
 
 const log = (m) => { const line = `${new Date().toISOString()} ${m}`; console.log(line); appendFileSync(LOG, line + '\n'); };
 const loadQ = () => JSON.parse(readFileSync(QUEUE, 'utf8'));
-const saveQ = (q) => writeFileSync(QUEUE, JSON.stringify(q, null, 2));
+// Reload-merge-write: the QA session edits queue.json while a batch runs, so
+// never persist our stale in-memory copy — re-read, patch one subject, write.
+const patchSubject = (key, fields) => {
+  const q = loadQ();
+  Object.assign(q.subjects.find(s => s.key === key), fields);
+  writeFileSync(QUEUE, JSON.stringify(q, null, 2));
+};
 
 function probeWindow() {
   // Tiny stream-json call: completes even when throttled, and its
@@ -58,21 +64,22 @@ for (const s of todo) {
   const wrote = out.match(/wrote .*\.json \((\d+) blocks/);
   const solid = out.match(/-> (\d+) solid \+ (\d+) carve/);
   if (r.status === 0 && wrote) {
-    s.status = 'cached';
-    s.solid = solid ? parseInt(solid[1]) : null;
-    s.carveAir = solid ? parseInt(solid[2]) : null;
-    s.genSeconds = Math.round((Date.now() - t0) / 1000);
-    log(`${s.key}: cached (${s.solid} solid + ${s.carveAir} air, ${s.genSeconds}s)`);
-    saveQ(q);
+    const fields = {
+      status: 'cached',
+      solid: solid ? parseInt(solid[1]) : null,
+      carveAir: solid ? parseInt(solid[2]) : null,
+      genSeconds: Math.round((Date.now() - t0) / 1000),
+    };
+    log(`${s.key}: cached (${fields.solid} solid + ${fields.carveAir} air, ${fields.genSeconds}s)`);
+    patchSubject(s.key, fields);
     const sm = spawnSync('node', ['scripts/smoke-record.mjs', '5', `marathon/smokes/${s.key}.png`,
       `single=${slug}&order=flood-fill&promptText=none`], { encoding: 'utf8', cwd: REPO, timeout: 300_000 });
-    if (existsSync(resolve(REPO, `marathon/smokes/${s.key}.png`))) { s.status = 'smoked'; log(`${s.key}: smoked`); }
+    if (existsSync(resolve(REPO, `marathon/smokes/${s.key}.png`))) { patchSubject(s.key, { status: 'smoked' }); log(`${s.key}: smoked`); }
     else log(`${s.key}: SMOKE FAILED (plan cached fine): ${(sm.stdout || '').slice(-300)}`);
-    saveQ(q);
   } else {
-    s.attempts = (s.attempts || 0) + 1;
-    log(`${s.key}: GENERATION FAILED (attempt ${s.attempts}, exit=${r.status}): ${out.slice(-400).replace(/\n/g, ' | ')}`);
-    saveQ(q);
+    const attempts = (s.attempts || 0) + 1;
+    log(`${s.key}: GENERATION FAILED (attempt ${attempts}, exit=${r.status}): ${out.slice(-400).replace(/\n/g, ' | ')}`);
+    patchSubject(s.key, { attempts });
     probeWindow();
     failed = true;
     break; // window likely drained — do not crawl-burn the rest
