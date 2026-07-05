@@ -329,7 +329,11 @@
     {
       "key": "golem",
       "prompt": "a stone golem",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2260,
+      "carveAir": 911,
+      "genSeconds": 222,
+      "note": "4/5 crenellated tower head, moss shoulders, glass chest runes, menhir circle + rubble"
     },
     {
       "key": "troll",

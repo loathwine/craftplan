@@ -130,3 +130,8 @@
 2026-07-05T12:44:42.646Z yeti: cached (3748 solid + 4339 air, 332s)
 2026-07-05T12:44:54.809Z yeti: smoked
 2026-07-05T12:44:55.020Z golem: prompt dumped
+2026-07-05T12:48:36.727Z golem: cached (2260 solid + 911 air, 222s)
+2026-07-05T12:48:48.934Z golem: smoked
+2026-07-05T12:48:48.934Z batch end (completed)
+2026-07-05T12:49:01.957Z batch start: troll, giant-spider, sea-serpent, octopus, shark
+2026-07-05T12:49:02.165Z troll: prompt dumped
