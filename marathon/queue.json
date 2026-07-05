@@ -338,32 +338,54 @@
     {
       "key": "troll",
       "prompt": "a troll under a bridge",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3382,
+      "carveAir": 6890,
+      "genSeconds": 446,
+      "note": "3/5 arched stone bridge, troll head+club peering over the top, green moss; reads as bridge first"
     },
     {
       "key": "giant-spider",
       "prompt": "a giant spider",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3052,
+      "carveAir": 324,
+      "genSeconds": 363,
+      "note": "4/5 pale radiating legs from dark body slung in web between two trees, clear arachnid"
     },
     {
       "key": "sea-serpent",
       "prompt": "a sea serpent",
-      "status": "queued"
+      "status": "qa_ok",
+      "attempts": 1,
+      "solid": 3380,
+      "carveAir": 4030,
+      "genSeconds": 500,
+      "note": "4/5 green red-bellied serpent arcing out of a stone pool, jaws raised w/ white teeth"
     },
     {
       "key": "octopus",
       "prompt": "a giant octopus",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3086,
+      "carveAir": 1182,
+      "genSeconds": 330,
+      "note": "4/5 bulbous red-brown body, white eyes, tentacles sprawling over rocks"
     },
     {
       "key": "shark",
       "prompt": "a great white shark",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2904,
+      "carveAir": 7937,
+      "genSeconds": 530,
+      "note": "5/5 great white breaching a water pool, open red maw + dorsal fin + splash spray"
     },
     {
       "key": "blue-whale",
       "prompt": "a blue whale",
-      "status": "queued"
+      "status": "queued",
+      "attempts": 1
     },
     {
       "key": "mammoth",

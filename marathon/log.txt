@@ -135,3 +135,27 @@
 2026-07-05T12:48:48.934Z batch end (completed)
 2026-07-05T12:49:01.957Z batch start: troll, giant-spider, sea-serpent, octopus, shark
 2026-07-05T12:49:02.165Z troll: prompt dumped
+2026-07-05T12:56:27.869Z troll: cached (3382 solid + 6890 air, 446s)
+2026-07-05T12:56:40.499Z troll: smoked
+2026-07-05T12:56:40.703Z giant-spider: prompt dumped
+2026-07-05T13:02:44.040Z giant-spider: cached (3052 solid + 324 air, 363s)
+2026-07-05T13:02:56.193Z giant-spider: smoked
+2026-07-05T13:02:56.390Z sea-serpent: prompt dumped
+2026-07-05T13:02:58.402Z sea-serpent: GENERATION FAILED (attempt 1, exit=1): w Error(`claude exit ${code}: ${stderr.slice(0, 150)}`)); |                                     ^ |  | Error: claude exit 1:  |     at ChildProcess.<anonymous> (file:///home/edvin/dev/craftplan/scripts/ai.mjs:202:37) |     at ChildProcess.emit (node:events:519:28) |     at maybeClose (node:internal/child_process:1101:16) |     at ChildProcess._handle.onexit (node:internal/child_process:304:5) |  | Node.js v22.22.2 | 
+2026-07-05T13:03:00.193Z window probe: resetsAt=1783269600 (2026-07-05T16:40:00.000Z) overage=rejected
+2026-07-05T13:03:00.193Z batch end (stopped on failure)
+2026-07-05T13:03:12Z chain: window drained — sleeping until 2026-07-05T16:42:00Z
+2026-07-05T16:42:26.810Z batch start: sea-serpent, octopus, shark, blue-whale, mammoth
+2026-07-05T16:50:46.368Z sea-serpent: cached (3380 solid + 4030 air, 500s)
+2026-07-05T16:50:58.715Z sea-serpent: smoked
+2026-07-05T16:50:58.917Z octopus: prompt dumped
+2026-07-05T16:56:29.394Z octopus: cached (3086 solid + 1182 air, 330s)
+2026-07-05T16:56:41.434Z octopus: smoked
+2026-07-05T16:56:41.627Z shark: prompt dumped
+2026-07-05T17:05:31.779Z shark: cached (2904 solid + 7937 air, 530s)
+2026-07-05T17:05:44.268Z shark: smoked
+2026-07-05T17:05:44.460Z blue-whale: prompt dumped
+2026-07-05T17:05:47.264Z blue-whale: GENERATION FAILED (attempt 1, exit=1): w Error(`claude exit ${code}: ${stderr.slice(0, 150)}`)); |                                     ^ |  | Error: claude exit 1:  |     at ChildProcess.<anonymous> (file:///home/edvin/dev/craftplan/scripts/ai.mjs:202:37) |     at ChildProcess.emit (node:events:519:28) |     at maybeClose (node:internal/child_process:1101:16) |     at ChildProcess._handle.onexit (node:internal/child_process:304:5) |  | Node.js v22.22.2 | 
+2026-07-05T17:05:48.977Z window probe: resetsAt=1783548000 (2026-07-08T22:00:00.000Z) overage=rejected
+2026-07-05T17:05:48.977Z batch end (stopped on failure)
+2026-07-05T17:06:01Z chain: window drained — sleeping until 2026-07-08T22:02:00Z
