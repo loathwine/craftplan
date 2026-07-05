@@ -203,44 +203,43 @@
     {
       "key": "spongebob",
       "prompt": "SpongeBob SquarePants",
-      "status": "qa_ok",
+      "status": "smoked",
       "attempts": 1,
       "solid": 2731,
       "carveAir": 6406,
-      "genSeconds": 462,
-      "note": "4/5 rectangular sponge w/ bucktooth grin, belt + socks/shoes, Gary the snail beside; sand not yellow"
+      "genSeconds": 462
     },
     {
       "key": "kirby",
       "prompt": "Kirby",
-      "status": "qa_ok",
+      "status": "smoked",
       "solid": 3637,
       "carveAir": 6115,
-      "genSeconds": 295,
-      "note": "3/5 round blob w/ stubby limbs + floating voxel stars; brick-brown not pink (palette), facing ambiguous"
+      "genSeconds": 295
     },
     {
       "key": "pacman",
       "prompt": "Pac-Man chased by a ghost",
-      "status": "qa_ok",
+      "status": "smoked",
       "solid": 3301,
       "carveAir": 4781,
-      "genSeconds": 233,
-      "note": "4/5 full chase scene on maze strip: red ghost behind, wedge-mouth pacman, white pellet trail ahead"
+      "genSeconds": 233
     },
     {
       "key": "pokeball",
       "prompt": "a giant Poké Ball",
-      "status": "qa_ok",
+      "status": "smoked",
       "solid": 2544,
       "carveAir": 6764,
-      "genSeconds": 224,
-      "note": "5/5 red/white hemispheres + band + raised button, sitting in impact crater w/ debris"
+      "genSeconds": 224
     },
     {
       "key": "kraken",
       "prompt": "a kraken",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3949,
+      "carveAir": 4171,
+      "note": "4/5 conical mantle + sprawling sucker-tipped tentacles crushing a sailing ship, foam base; recovered from failed dump (prose preamble broke sandbox, window drained) at zero token cost"
     },
     {
       "key": "werewolf",
