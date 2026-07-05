@@ -16,33 +16,39 @@ NO pushes.** Local commits after each batch are authorized.
 - `marathon/log.txt` — timestamped batch log
 - `marathon/window.json` — last five-hour-window probe ({resetsAt, overageStatus, probedAt}, epoch seconds)
 - `marathon/smokes/<key>.png` — t=5 smoke of each cached build
-- Batches run as transient units `marathon-batch-<n>` via:
-  `systemd-run --user --unit=marathon-batch-<n> --working-directory=/home/edvin/dev/craftplan /home/edvin/dev/craftplan/marathon/run-batch.sh [waitUntilEpoch]`
+- Generation runs as ONE long-lived transient unit `marathon-chain` via:
+  `systemd-run --user --unit=marathon-chain --working-directory=/home/edvin/dev/craftplan /home/edvin/dev/craftplan/marathon/chain.sh`
+  `chain.sh` runs batch.mjs back-to-back, sleeping to resetsAt+120 after each
+  drained window, and stops itself on queue-empty or 4 consecutive
+  zero-progress batches. The Claude session is only needed for QA + commits.
+  (Legacy per-batch launcher `run-batch.sh [waitUntilEpoch]` still works for
+  one-off `marathon-batch-<n>` units.)
 
 ## Wake procedure (each /loop wake)
 
-1. If a `marathon-batch-*` unit is still active → just reschedule a wake
-   (~1800s fallback; a Monitor should already be armed on the unit).
-2. Otherwise, QA any subjects with status `smoked`: **view each smoke PNG**
+Since 2026-07-05 the session does NOT launch batches — the `marathon-chain`
+unit does. The /loop wake stalls (notifications queue until something pokes
+the session), so generation must never depend on a wake. On each wake:
+
+1. If `marathon-chain` is not active and the queue still has `queued`
+   subjects and fable is still available → relaunch it (systemd-run line
+   above) and check `tail marathon/log.txt` for why it died.
+2. QA any subjects with status `smoked`: **view each smoke PNG**
    (frame-check rule). Something recognizably built → `qa_ok` + short `note`
    with a 1–5 quality score (bad-but-honest model output is still qa_ok —
    that IS the benchmark). Empty scene / pipeline garbage → `needs_review`,
    set status back to `queued` if attempts < 2.
 3. Commit: new `public/data/plans/*-4x-fable.*`, `prompts/*.prompt.txt`,
    `marathon/queue.json`, `marathon/log.txt`. Message style:
-   `Marathon batch N: <keys> (fable-5, effort high)`. Do NOT commit
+   `Marathon batches: <keys> (fable-5, effort high)`. Do NOT commit
    marathon/smokes (recordings-sized PNGs are fine on disk).
-4. Launch the next batch:
-   - If last batch exited 1 (window drained): read `marathon/window.json`,
-     launch unit with waitUntilEpoch = resetsAt + 120. ONE batch per window.
-   - Else launch immediately (no wait arg).
-   - Arm a Monitor on the new unit; ScheduleWakeup fallback ≈ min(3600, time
-     until expected completion + slack).
-5. Stop conditions: queue exhausted, OR generation fails with a
-   model-not-found/permission error (fable pulled — mark remaining subjects
+4. Keep a persistent Monitor armed on `batch end|chain:` lines of
+   marathon/log.txt (primary wake signal), ScheduleWakeup ~1800s fallback.
+5. Stop conditions: queue exhausted, OR chain exits 2 / generation fails
+   with model-not-found (fable pulled — mark remaining subjects
    `blocked_no_fable` in a final commit), OR the user is back and says stop.
-   On stop: write a summary at the top of this file, final commit, end loop
-   (no ScheduleWakeup).
+   On stop: `systemctl --user stop marathon-chain`, write a summary at the
+   top of this file, final commit, end loop (no ScheduleWakeup).
 
 ## Window mechanics (from memory, hard-won)
 

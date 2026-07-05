@@ -194,12 +194,17 @@
     {
       "key": "minion",
       "prompt": "a Minion",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3246,
+      "carveAir": 3376,
+      "genSeconds": 388,
+      "note": "3/5 big+small capsule pair w/ goggle strap + hair tufts; tan not yellow, glass overalls; back-to-camera — rotate 180 at grid time"
     },
     {
       "key": "spongebob",
       "prompt": "SpongeBob SquarePants",
-      "status": "queued"
+      "status": "queued",
+      "attempts": 1
     },
     {
       "key": "kirby",

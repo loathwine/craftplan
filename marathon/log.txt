@@ -73,3 +73,11 @@
 2026-07-04T16:12:37.743Z shrek: cached (3555 solid + 4116 air, 559s)
 2026-07-04T16:12:49.884Z shrek: smoked
 2026-07-04T16:12:49.885Z batch end (completed)
+2026-07-04T16:14:42.264Z batch start: minion, spongebob, kirby, pacman, pokeball
+2026-07-04T16:14:42.484Z minion: prompt dumped
+2026-07-04T16:21:10.468Z minion: cached (3246 solid + 3376 air, 388s)
+2026-07-04T16:21:22.685Z minion: smoked
+2026-07-04T16:21:22.876Z spongebob: prompt dumped
+2026-07-04T16:21:24.869Z spongebob: GENERATION FAILED (attempt 1, exit=1): w Error(`claude exit ${code}: ${stderr.slice(0, 150)}`)); |                                     ^ |  | Error: claude exit 1:  |     at ChildProcess.<anonymous> (file:///home/edvin/dev/craftplan/scripts/ai.mjs:202:37) |     at ChildProcess.emit (node:events:519:28) |     at maybeClose (node:internal/child_process:1101:16) |     at ChildProcess._handle.onexit (node:internal/child_process:304:5) |  | Node.js v22.22.2 | 
+2026-07-04T16:21:26.775Z window probe: resetsAt=1783195200 (2026-07-04T20:00:00.000Z) overage=rejected
+2026-07-04T16:21:26.775Z batch end (stopped on failure)
