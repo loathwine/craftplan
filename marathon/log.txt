@@ -118,3 +118,15 @@
 2026-07-05T12:13:33.361Z batch end (completed)
 2026-07-05T12:13:46.326Z batch start: unicorn, pegasus, cerberus, yeti, golem
 2026-07-05T12:13:46.537Z unicorn: prompt dumped
+2026-07-05T12:18:31.888Z unicorn: cached (3040 solid + 4190 air, 285s)
+2026-07-05T12:18:44.254Z unicorn: smoked
+2026-07-05T12:18:44.469Z pegasus: prompt dumped
+2026-07-05T12:26:34.183Z pegasus: cached (3017 solid + 2186 air, 470s)
+2026-07-05T12:26:46.799Z pegasus: smoked
+2026-07-05T12:26:46.991Z cerberus: prompt dumped
+2026-07-05T12:38:58.443Z cerberus: cached (2813 solid + 8446 air, 731s)
+2026-07-05T12:39:10.673Z cerberus: smoked
+2026-07-05T12:39:10.901Z yeti: prompt dumped
+2026-07-05T12:44:42.646Z yeti: cached (3748 solid + 4339 air, 332s)
+2026-07-05T12:44:54.809Z yeti: smoked
+2026-07-05T12:44:55.020Z golem: prompt dumped

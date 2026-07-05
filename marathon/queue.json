@@ -293,22 +293,38 @@
     {
       "key": "unicorn",
       "prompt": "a unicorn",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3040,
+      "carveAir": 4190,
+      "genSeconds": 285,
+      "note": "3/5 white horse w/ tan horn + flower garland mane, foal prop; head area jumbled"
     },
     {
       "key": "pegasus",
       "prompt": "Pegasus",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3017,
+      "carveAir": 2186,
+      "genSeconds": 470,
+      "note": "2/5 wing slabs + clouds + Greek column ruins, body muddled — weakest so far but honest"
     },
     {
       "key": "cerberus",
       "prompt": "Cerberus, the three-headed dog",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2813,
+      "carveAir": 8446,
+      "genSeconds": 731,
+      "note": "4/5 three black heads w/ pricked ears, red chain leash, hell-gate fence props"
     },
     {
       "key": "yeti",
       "prompt": "a yeti",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3748,
+      "carveAir": 4339,
+      "genSeconds": 332,
+      "note": "4/5 shaggy white brute hoisting rock, ice spikes + snowdrift base, icefall prop"
     },
     {
       "key": "golem",
