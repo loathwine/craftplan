@@ -1,5 +1,26 @@
 # Fable-5 cache marathon — runbook
 
+## WOUND DOWN 2026-07-05 — fable quota exhausted
+
+Fable's **weekly** cap hit 100% on 2026-07-05 ~17:00Z (resets Jul 8 23:59
+Stockholm; the chain's last probe read resetsAt=2026-07-08T22:00Z, the weekly
+cap, not a 5-hour window). Since fable-5 also leaves the subscription ~Jul 7 —
+before that reset — fable generation is over.
+
+**Final fable tally: 42/84 subjects cached + smoked + QA'd** (godzilla →
+shark), each with a byte-identical prompt dump in `prompts/`. The other 42 are
+marked `blocked_no_fable` (they never got a fable quadrant, so no 4-model grid
+is possible; requeue only if fable returns after Jul 8). marathon-chain unit
+stopped. Loop ended.
+
+**Next phase (opus/sonnet/haiku halves for the 42 cached subjects)** is a
+separate decision — see the benchmark backlog memory. It does NOT need fable;
+feed each saved `prompts/<key>-4x.prompt.txt` to the other models (re-dump +
+diff first; sonnet needs stream-json + recover-plan).
+
+---
+
+
 **Goal:** cache as many `<key>-4x-fable` benchmark plans as possible before
 claude-fable-5 leaves the subscription (~2026-07-07). Each subject also gets a
 byte-identical prompt dump in `prompts/<key>-4x.prompt.txt` so haiku/sonnet/opus

@@ -384,213 +384,212 @@
     {
       "key": "blue-whale",
       "prompt": "a blue whale",
-      "status": "queued",
-      "attempts": 1
+      "status": "blocked_no_fable"
     },
     {
       "key": "mammoth",
       "prompt": "a woolly mammoth",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "sabertooth",
       "prompt": "a sabertooth tiger",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "grizzly",
       "prompt": "a grizzly bear standing on its hind legs",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "gorilla",
       "prompt": "a silverback gorilla",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "elephant",
       "prompt": "an African elephant",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "eagle",
       "prompt": "a bald eagle with wings spread",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "cobra",
       "prompt": "a king cobra ready to strike",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "peacock",
       "prompt": "a peacock with its tail fanned out",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "scorpion",
       "prompt": "a giant scorpion",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "statue-liberty",
       "prompt": "the Statue of Liberty",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "big-ben",
       "prompt": "Big Ben",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "sphinx-giza",
       "prompt": "the Great Sphinx of Giza",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "golden-gate",
       "prompt": "the Golden Gate Bridge",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "sydney-opera",
       "prompt": "the Sydney Opera House",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "taj-mahal",
       "prompt": "the Taj Mahal",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "stonehenge",
       "prompt": "Stonehenge",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "moai",
       "prompt": "the Moai statues of Easter Island",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "viking-longship",
       "prompt": "a Viking longship",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "lighthouse",
       "prompt": "a lighthouse on a cliff",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "wizard-tower",
       "prompt": "a wizard's tower",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "pagoda",
       "prompt": "a Japanese pagoda",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "locomotive",
       "prompt": "a steam locomotive",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "monster-truck",
       "prompt": "a monster truck",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "tank",
       "prompt": "a battle tank",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "helicopter",
       "prompt": "an attack helicopter",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "fighter-jet",
       "prompt": "a fighter jet",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "space-shuttle",
       "prompt": "the Space Shuttle on its launchpad",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "submarine",
       "prompt": "a submarine",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "ferris-wheel",
       "prompt": "a Ferris wheel",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "trebuchet",
       "prompt": "a medieval trebuchet",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "excalibur",
       "prompt": "Excalibur in the stone",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "mjolnir",
       "prompt": "Thor's hammer Mjölnir",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "treasure-chest",
       "prompt": "a treasure chest overflowing with gold",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "jack-o-lantern",
       "prompt": "a jack-o'-lantern",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "gingerbread",
       "prompt": "a gingerbread house",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "santa-sleigh",
       "prompt": "Santa's sleigh pulled by reindeer",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "knight-vs-dragon",
       "prompt": "a knight fighting a dragon",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "wizard-duel",
       "prompt": "two wizards dueling with magic",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "volcano",
       "prompt": "an erupting volcano",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "alien-cow",
       "prompt": "a UFO abducting a cow",
-      "status": "queued"
+      "status": "blocked_no_fable"
     },
     {
       "key": "trex-jeep",
       "prompt": "a T-Rex chasing a jeep",
-      "status": "queued"
+      "status": "blocked_no_fable"
     }
   ]
 }
