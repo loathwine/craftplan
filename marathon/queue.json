@@ -203,23 +203,39 @@
     {
       "key": "spongebob",
       "prompt": "SpongeBob SquarePants",
-      "status": "queued",
-      "attempts": 1
+      "status": "qa_ok",
+      "attempts": 1,
+      "solid": 2731,
+      "carveAir": 6406,
+      "genSeconds": 462,
+      "note": "4/5 rectangular sponge w/ bucktooth grin, belt + socks/shoes, Gary the snail beside; sand not yellow"
     },
     {
       "key": "kirby",
       "prompt": "Kirby",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3637,
+      "carveAir": 6115,
+      "genSeconds": 295,
+      "note": "3/5 round blob w/ stubby limbs + floating voxel stars; brick-brown not pink (palette), facing ambiguous"
     },
     {
       "key": "pacman",
       "prompt": "Pac-Man chased by a ghost",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3301,
+      "carveAir": 4781,
+      "genSeconds": 233,
+      "note": "4/5 full chase scene on maze strip: red ghost behind, wedge-mouth pacman, white pellet trail ahead"
     },
     {
       "key": "pokeball",
       "prompt": "a giant Poké Ball",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2544,
+      "carveAir": 6764,
+      "genSeconds": 224,
+      "note": "5/5 red/white hemispheres + band + raised button, sitting in impact crater w/ debris"
     },
     {
       "key": "kraken",

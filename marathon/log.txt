@@ -81,3 +81,17 @@
 2026-07-04T16:21:24.869Z spongebob: GENERATION FAILED (attempt 1, exit=1): w Error(`claude exit ${code}: ${stderr.slice(0, 150)}`)); |                                     ^ |  | Error: claude exit 1:  |     at ChildProcess.<anonymous> (file:///home/edvin/dev/craftplan/scripts/ai.mjs:202:37) |     at ChildProcess.emit (node:events:519:28) |     at maybeClose (node:internal/child_process:1101:16) |     at ChildProcess._handle.onexit (node:internal/child_process:304:5) |  | Node.js v22.22.2 | 
 2026-07-04T16:21:26.775Z window probe: resetsAt=1783195200 (2026-07-04T20:00:00.000Z) overage=rejected
 2026-07-04T16:21:26.775Z batch end (stopped on failure)
+2026-07-05T06:50:46Z chain: chain started (pid 27604)
+2026-07-05T06:51:12.783Z batch start: spongebob, kirby, pacman, pokeball, kraken
+2026-07-05T06:58:55.206Z spongebob: cached (2731 solid + 6406 air, 462s)
+2026-07-05T06:59:07.502Z spongebob: smoked
+2026-07-05T06:59:07.703Z kirby: prompt dumped
+2026-07-05T07:04:02.803Z kirby: cached (3637 solid + 6115 air, 295s)
+2026-07-05T07:04:14.924Z kirby: smoked
+2026-07-05T07:04:15.125Z pacman: prompt dumped
+2026-07-05T07:08:08.176Z pacman: cached (3301 solid + 4781 air, 233s)
+2026-07-05T07:08:20.414Z pacman: smoked
+2026-07-05T07:08:20.622Z pokeball: prompt dumped
+2026-07-05T07:12:04.589Z pokeball: cached (2544 solid + 6764 air, 224s)
+2026-07-05T07:12:17.115Z pokeball: smoked
+2026-07-05T07:12:17.311Z kraken: prompt dumped
