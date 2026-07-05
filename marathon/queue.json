@@ -248,27 +248,47 @@
     {
       "key": "werewolf",
       "prompt": "a werewolf howling at the moon",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3153,
+      "carveAir": 0,
+      "genSeconds": 386,
+      "note": "5/5 profile howl pose at huge cratered moon sphere, rocky outcrop — silhouette rule pays off"
     },
     {
       "key": "minotaur",
       "prompt": "a minotaur",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2955,
+      "carveAir": 3596,
+      "genSeconds": 431,
+      "note": "5/5 horned bull head + red eyes, raised double axe, red loincloth, bones on base"
     },
     {
       "key": "cyclops",
       "prompt": "a cyclops",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2942,
+      "carveAir": 4142,
+      "genSeconds": 360,
+      "note": "3/5 brute hoisting boulder overhead, good pose but back-to-camera — rotate 180 at grid time"
     },
     {
       "key": "hydra",
       "prompt": "a three-headed hydra",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 3037,
+      "carveAir": 6387,
+      "genSeconds": 322,
+      "note": "4/5 three horned serpent heads, red/white belly scales, sheep skeleton prop"
     },
     {
       "key": "griffin",
       "prompt": "a griffin",
-      "status": "queued"
+      "status": "qa_ok",
+      "solid": 2725,
+      "carveAir": 5528,
+      "genSeconds": 279,
+      "note": "4/5 spread brown-edged wings, raptor head w/ pale beak, nest + egg prop"
     },
     {
       "key": "unicorn",

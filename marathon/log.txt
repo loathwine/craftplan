@@ -99,3 +99,22 @@
 2026-07-05T07:17:29.894Z window probe: resetsAt=1783251600 (2026-07-05T11:40:00.000Z) overage=rejected
 2026-07-05T07:17:29.894Z batch end (stopped on failure)
 2026-07-05T07:17:42Z chain: window drained — sleeping until 2026-07-05T11:42:00Z
+2026-07-05T11:42:52.117Z batch start: werewolf, minotaur, cyclops, hydra, griffin
+2026-07-05T11:42:52.333Z werewolf: prompt dumped
+2026-07-05T11:49:18.722Z werewolf: cached (3153 solid + 0 air, 386s)
+2026-07-05T11:49:30.636Z werewolf: smoked
+2026-07-05T11:49:30.829Z minotaur: prompt dumped
+2026-07-05T11:56:41.725Z minotaur: cached (2955 solid + 3596 air, 431s)
+2026-07-05T11:56:54.024Z minotaur: smoked
+2026-07-05T11:56:54.238Z cyclops: prompt dumped
+2026-07-05T12:02:54.339Z cyclops: cached (2942 solid + 4142 air, 360s)
+2026-07-05T12:03:06.389Z cyclops: smoked
+2026-07-05T12:03:06.589Z hydra: prompt dumped
+2026-07-05T12:08:29.083Z hydra: cached (3037 solid + 6387 air, 322s)
+2026-07-05T12:08:41.640Z hydra: smoked
+2026-07-05T12:08:41.848Z griffin: prompt dumped
+2026-07-05T12:13:21.235Z griffin: cached (2725 solid + 5528 air, 279s)
+2026-07-05T12:13:33.361Z griffin: smoked
+2026-07-05T12:13:33.361Z batch end (completed)
+2026-07-05T12:13:46.326Z batch start: unicorn, pegasus, cerberus, yeti, golem
+2026-07-05T12:13:46.537Z unicorn: prompt dumped
