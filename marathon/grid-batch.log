@@ -2592,3 +2592,1370 @@ building '/nix/store/w46qjh9wkzczyflvqdxbflzf8c21wbmd-nix-shell-env.drv'...
 [mux] minotaur-4x-grid-10s.mp4 (10.00s) + demon-jvna.mp3 @ 3s
 11:12:11Z   GRID DONE: recordings/shorts-mode/minotaur-4x-grid-10s-demon.mp4
 11:12:11Z grid-batch end. completed: godzilla darth-vader batman iron-man minotaur
+15:07:34Z grid-batch start: mario pikachu shrek optimus-prime yoda
+15:07:34Z === mario ===
+15:08:39Z   haiku: 1277 solid + 0 carve
+15:10:58Z   opus: 4000 solid + 3231 carve
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/i9qv88fc0ymdj8pfr2cj87dz0yxz80bw-craftplan-0.1.0.drv'...
+building '/nix/store/r675aqlpgq7fwsylwxcxpm5hh4mhy1li-nix-shell-env.drv'...
+[recover] mario-4x-sonnet: 2731 solid + 8 carve AIR -> /home/edvin/dev/craftplan/public/data/plans/mario-4x-sonnet.json
+15:14:00Z   sonnet5: recovered
+15:14:00Z   rendering 4 quadrants...
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/mssf9r4zcayisn76h2sl7npfby231flc-craftplan-0.1.0.drv'...
+building '/nix/store/dx9f45ki9a6lch6ia794vyy0vpxvmb5d-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:45363
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-haiku-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (38.2s)   [rec] frame 61/300 (75.8s)   [rec] frame 91/300 (113.2s)   [rec] frame 121/300 (150.4s)   [rec] frame 151/300 (186.6s)   [rec] frame 181/300 (222.0s)   [rec] frame 211/300 (258.2s)   [rec] frame 241/300 (295.2s)   [rec] frame 271/300 (332.6s)   [rec] frame 300/300 (368.8s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-haiku-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-167007/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607840] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607840] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-haiku-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   19 fps= 13 q=24.0 size=     512KiB time=00:00:00.56 bitrate=7402.4kbits/s speed=0.377x elapsed=0:00:01.50    frame=   50 fps= 25 q=24.0 size=    1280KiB time=00:00:01.60 bitrate=6553.8kbits/s speed=0.799x elapsed=0:00:02.00    frame=   88 fps= 35 q=24.0 size=    2304KiB time=00:00:02.86 bitrate=6584.2kbits/s speed=1.14x elapsed=0:00:02.50    frame=  124 fps= 41 q=24.0 size=    3072KiB time=00:00:04.06 bitrate=6188.4kbits/s speed=1.35x elapsed=0:00:03.00    frame=  164 fps= 47 q=24.0 size=    3840KiB time=00:00:05.40 bitrate=5825.5kbits/s speed=1.54x elapsed=0:00:03.50    frame=  200 fps= 50 q=24.0 size=    4608KiB time=00:00:06.60 bitrate=5719.6kbits/s speed=1.65x elapsed=0:00:04.00    frame=  233 fps= 52 q=24.0 size=    5376KiB time=00:00:07.70 bitrate=5719.6kbits/s speed=1.71x elapsed=0:00:04.50    frame=  287 fps= 57 q=-1.0 size=    6656KiB time=00:00:09.50 bitrate=5739.6kbits/s speed= 1.9x elapsed=0:00:05.00    [out#0/mp4 @ 0x5555555fe100] video:7079KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.063018%
+frame=  300 fps= 59 q=-1.0 Lsize=    7083KiB time=00:00:09.93 bitrate=5841.5kbits/s speed=1.96x elapsed=0:00:05.06    
+[libx264 @ 0x555555607840] frame I:2     Avg QP:12.06  size:154546
+[libx264 @ 0x555555607840] frame P:76    Avg QP:14.83  size: 45229
+[libx264 @ 0x555555607840] frame B:222   Avg QP:20.46  size: 15773
+[libx264 @ 0x555555607840] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607840] mb I  I16..4: 24.7% 35.2% 40.1%
+[libx264 @ 0x555555607840] mb P  I16..4:  1.2%  2.3%  1.8%  P16..4: 19.2% 17.6% 12.3%  0.0%  0.0%    skip:45.5%
+[libx264 @ 0x555555607840] mb B  I16..4:  0.2%  0.4%  0.1%  B16..8: 29.7%  9.8%  3.9%  direct: 2.1%  skip:53.8%  L0:46.6% L1:48.0% BI: 5.5%
+[libx264 @ 0x555555607840] 8x8 transform intra:43.6% inter:44.1%
+[libx264 @ 0x555555607840] coded y,uvDC,uvAC intra: 37.9% 44.9% 34.5% inter: 7.9% 6.7% 2.8%
+[libx264 @ 0x555555607840] i16 v,h,dc,p: 36% 48%  7%  9%
+[libx264 @ 0x555555607840] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu:  9% 21% 52%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607840] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 25% 34% 17%  3%  4%  3%  7%  2%  6%
+[libx264 @ 0x555555607840] i8c dc,h,v,p: 57% 26% 13%  4%
+[libx264 @ 0x555555607840] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607840] ref P L0: 68.2%  7.4% 16.2%  8.3%
+[libx264 @ 0x555555607840] ref B L0: 80.9% 15.9%  3.2%
+[libx264 @ 0x555555607840] ref B L1: 91.0%  9.0%
+[libx264 @ 0x555555607840] kb/s:5798.39
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-haiku-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-haiku-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/ggd5k2y99vsxrs95sq8hdyfglzw6x20d-craftplan-0.1.0.drv'...
+building '/nix/store/zsx9nn5llc1ykh2vrwcr5fbqdrzlgw4s-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:43119
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-opus-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.9s)   [rec] frame 61/300 (78.8s)   [rec] frame 91/300 (117.2s)   [rec] frame 121/300 (155.5s)   [rec] frame 151/300 (193.4s)   [rec] frame 181/300 (229.2s)   [rec] frame 211/300 (266.0s)   [rec] frame 241/300 (303.2s)   [rec] frame 271/300 (341.2s)   [rec] frame 300/300 (377.9s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-opus-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-169109/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-opus-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=   11 fps= 11 q=24.0 size=     256KiB time=00:00:00.30 bitrate=6991.8kbits/s speed= 0.3x elapsed=0:00:01.00    frame=   44 fps= 29 q=24.0 size=    1280KiB time=00:00:01.40 bitrate=7490.1kbits/s speed=0.932x elapsed=0:00:01.50    frame=   80 fps= 40 q=24.0 size=    2048KiB time=00:00:02.60 bitrate=6452.9kbits/s speed= 1.3x elapsed=0:00:02.00    frame=  116 fps= 46 q=24.0 size=    2816KiB time=00:00:03.80 bitrate=6070.8kbits/s speed=1.52x elapsed=0:00:02.50    frame=  154 fps= 51 q=24.0 size=    3584KiB time=00:00:05.06 bitrate=5794.8kbits/s speed=1.69x elapsed=0:00:03.00    frame=  188 fps= 54 q=24.0 size=    4096KiB time=00:00:06.20 bitrate=5412.1kbits/s speed=1.77x elapsed=0:00:03.50    frame=  228 fps= 57 q=24.0 size=    4864KiB time=00:00:07.53 bitrate=5289.3kbits/s speed=1.88x elapsed=0:00:04.00    frame=  271 fps= 60 q=24.0 size=    5888KiB time=00:00:08.96 bitrate=5379.4kbits/s speed=1.99x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6590KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.067451%
+frame=  300 fps= 64 q=-1.0 Lsize=    6595KiB time=00:00:09.93 bitrate=5438.8kbits/s speed=2.11x elapsed=0:00:04.71    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.37  size:145576
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.00  size: 40903
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.36  size: 15082
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 26.5% 33.5% 40.0%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.6%  2.9%  2.2%  P16..4: 21.8% 17.5% 10.5%  0.0%  0.0%    skip:43.5%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.3%  0.4%  0.2%  B16..8: 32.6%  9.7%  3.2%  direct: 1.8%  skip:51.7%  L0:46.6% L1:48.9% BI: 4.5%
+[libx264 @ 0x555555607700] 8x8 transform intra:42.0% inter:48.6%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 37.4% 46.8% 33.4% inter: 7.4% 6.5% 2.4%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 45% 41%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 14% 17% 51%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 31% 31% 17%  2%  3%  3%  6%  2%  5%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 52% 26% 18%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.5%  6.7% 16.5%  8.3%
+[libx264 @ 0x555555607700] ref B L0: 82.6% 14.6%  2.8%
+[libx264 @ 0x555555607700] ref B L1: 92.1%  7.9%
+[libx264 @ 0x555555607700] kb/s:5398.36
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-opus-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-opus-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/kz6l6i5i2hz4ljcirp9ibp712qh2hn2w-craftplan-0.1.0.drv'...
+building '/nix/store/mcmm2nv4g086003dis3nipzlhha2alh1-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:34517
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-sonnet-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.6s)   [rec] frame 61/300 (78.4s)   [rec] frame 91/300 (117.2s)   [rec] frame 121/300 (154.6s)   [rec] frame 151/300 (192.3s)   [rec] frame 181/300 (227.9s)   [rec] frame 211/300 (264.2s)   [rec] frame 241/300 (301.1s)   [rec] frame 271/300 (338.6s)   [rec] frame 300/300 (374.7s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-sonnet-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-171241/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-sonnet-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=   16 fps= 16 q=24.0 size=     512KiB time=00:00:00.46 bitrate=8988.6kbits/s speed=0.466x elapsed=0:00:01.00    frame=   48 fps= 32 q=24.0 size=    1280KiB time=00:00:01.53 bitrate=6838.8kbits/s speed=1.02x elapsed=0:00:01.50    frame=   84 fps= 42 q=24.0 size=    2048KiB time=00:00:02.73 bitrate=6138.1kbits/s speed=1.37x elapsed=0:00:02.00    frame=  120 fps= 48 q=24.0 size=    3072KiB time=00:00:03.93 bitrate=6398.2kbits/s speed=1.57x elapsed=0:00:02.50    frame=  159 fps= 53 q=24.0 size=    3584KiB time=00:00:05.23 bitrate=5610.3kbits/s speed=1.74x elapsed=0:00:03.00    frame=  196 fps= 56 q=24.0 size=    4352KiB time=00:00:06.46 bitrate=5513.2kbits/s speed=1.85x elapsed=0:00:03.50    frame=  233 fps= 58 q=24.0 size=    5120KiB time=00:00:07.70 bitrate=5447.2kbits/s speed=1.92x elapsed=0:00:04.00    frame=  279 fps= 62 q=24.0 size=    6144KiB time=00:00:09.23 bitrate=5451.1kbits/s speed=2.05x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6680KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.066373%
+frame=  300 fps= 65 q=-1.0 Lsize=    6684KiB time=00:00:09.93 bitrate=5512.5kbits/s speed=2.14x elapsed=0:00:04.64    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.69  size:146304
+[libx264 @ 0x555555607700] frame P:76    Avg QP:15.55  size: 41901
+[libx264 @ 0x555555607700] frame B:222   Avg QP:20.88  size: 15146
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 24.2% 36.2% 39.7%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.4%  2.5%  1.8%  P16..4: 21.0% 17.5% 11.3%  0.0%  0.0%    skip:44.5%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 31.2%  9.4%  3.6%  direct: 2.0%  skip:53.0%  L0:46.7% L1:48.5% BI: 4.7%
+[libx264 @ 0x555555607700] 8x8 transform intra:44.5% inter:45.3%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 36.1% 44.2% 31.8% inter: 7.5% 6.2% 2.4%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 36% 49%  6%  8%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 18% 53%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 26% 33% 18%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 55% 27% 14%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 69.0%  6.8% 16.3%  7.9%
+[libx264 @ 0x555555607700] ref B L0: 81.0% 16.1%  3.0%
+[libx264 @ 0x555555607700] ref B L1: 91.4%  8.6%
+[libx264 @ 0x555555607700] kb/s:5471.58
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-sonnet-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-sonnet-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/zmbq8r0vqmqzzg71ys270niyfigngwn0-craftplan-0.1.0.drv'...
+building '/nix/store/gqw9ry9fr7bkny0nibfcj0rmqyg3qqhw-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:40271
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-fable-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.9s)   [rec] frame 61/300 (78.9s)   [rec] frame 91/300 (117.5s)   [rec] frame 121/300 (155.8s)   [rec] frame 151/300 (193.1s)   [rec] frame 181/300 (229.1s)   [rec] frame 211/300 (265.7s)   [rec] frame 241/300 (302.8s)   [rec] frame 271/300 (340.6s)   [rec] frame 300/300 (377.4s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-fable-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-173194/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-fable-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   29 fps= 19 q=24.0 size=     768KiB time=00:00:00.90 bitrate=6990.9kbits/s speed=0.599x elapsed=0:00:01.50    frame=   64 fps= 32 q=24.0 size=    1792KiB time=00:00:02.06 bitrate=7103.4kbits/s speed=1.03x elapsed=0:00:02.00    frame=   96 fps= 38 q=24.0 size=    2304KiB time=00:00:03.13 bitrate=6023.9kbits/s speed=1.25x elapsed=0:00:02.50    frame=  132 fps= 44 q=24.0 size=    3072KiB time=00:00:04.33 bitrate=5807.6kbits/s speed=1.44x elapsed=0:00:03.00    frame=  172 fps= 49 q=24.0 size=    3840KiB time=00:00:05.66 bitrate=5551.4kbits/s speed=1.62x elapsed=0:00:03.50    frame=  208 fps= 52 q=24.0 size=    4608KiB time=00:00:06.86 bitrate=5497.4kbits/s speed=1.71x elapsed=0:00:04.00    frame=  242 fps= 54 q=24.0 size=    5120KiB time=00:00:08.00 bitrate=5242.9kbits/s speed=1.78x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6567KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.067694%
+frame=  300 fps= 60 q=-1.0 Lsize=    6571KiB time=00:00:09.93 bitrate=5419.2kbits/s speed=   2x elapsed=0:00:04.96    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.28  size:146018
+[libx264 @ 0x555555607700] frame P:76    Avg QP:15.83  size: 40939
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.00  size: 14956
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 25.6% 34.3% 40.1%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.4%  2.5%  2.0%  P16..4: 21.9% 17.7% 11.0%  0.0%  0.0%    skip:43.6%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 32.3%  9.4%  3.3%  direct: 1.8%  skip:52.4%  L0:46.7% L1:48.8% BI: 4.5%
+[libx264 @ 0x555555607700] 8x8 transform intra:41.9% inter:47.1%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 36.7% 45.0% 33.6% inter: 7.4% 6.1% 2.3%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 43% 44%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 12% 18% 53%  2%  3%  2%  4%  1%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 32% 18%  2%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 53% 26% 17%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.7%  6.7% 16.5%  8.2%
+[libx264 @ 0x555555607700] ref B L0: 82.2% 15.0%  2.8%
+[libx264 @ 0x555555607700] ref B L1: 91.7%  8.3%
+[libx264 @ 0x555555607700] kb/s:5378.93
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-fable-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-fable-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/pf75vx64ff33wm4g87nh9dnif19hg0v6-craftplan-0.1.0.drv'...
+building '/nix/store/w76ac31m9vpfhqfwxrcrr8p1wipvmn7y-nix-shell-env.drv'...
+[stitch-grid] 4 cells @ 540x960 → /home/edvin/dev/craftplan/recordings/shorts-mode/mario-4x-grid-10s.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/nmzapl4m5f3w9vmn7fspyp0wrw094kbk-craftplan-0.1.0.drv'...
+building '/nix/store/2apy18z2gbwr5sy5fbdyd3666ff692dg-nix-shell-env.drv'...
+[mux] mario-4x-grid-10s.mp4 (10.00s) + demon-jvna.mp3 @ 3s
+15:41:09Z   GRID DONE: recordings/shorts-mode/mario-4x-grid-10s-demon.mp4
+15:41:09Z === pikachu ===
+15:42:14Z   haiku: 4000 solid + 0 carve
+15:43:56Z   opus: 2605 solid + 0 carve
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/5dy7by3xbmfkk1gjw0fnwahg2ifg150y-craftplan-0.1.0.drv'...
+building '/nix/store/7pzvjz8y0q332zix10lw0ghiwn41hlsw-nix-shell-env.drv'...
+[recover] pikachu-4x-sonnet: 2856 solid + 0 carve AIR -> /home/edvin/dev/craftplan/public/data/plans/pikachu-4x-sonnet.json
+15:48:32Z   sonnet5: recovered
+15:48:32Z   rendering 4 quadrants...
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/g9d0p4j6v5884xad4hxvpry397v14abz-craftplan-0.1.0.drv'...
+building '/nix/store/9s3c8ibyrra0ylwygxx69pg2chc64nfj-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:36933
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-haiku-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.4s)   [rec] frame 61/300 (78.1s)   [rec] frame 91/300 (117.2s)   [rec] frame 121/300 (155.5s)   [rec] frame 151/300 (193.9s)   [rec] frame 181/300 (230.7s)   [rec] frame 211/300 (268.2s)   [rec] frame 241/300 (305.9s)   [rec] frame 271/300 (344.1s)   [rec] frame 300/300 (380.8s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-haiku-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-178301/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-haiku-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   29 fps= 19 q=24.0 size=     768KiB time=00:00:00.90 bitrate=6990.9kbits/s speed= 0.6x elapsed=0:00:01.50    frame=   60 fps= 30 q=24.0 size=    1536KiB time=00:00:01.93 bitrate=6508.6kbits/s speed=0.965x elapsed=0:00:02.00    frame=   96 fps= 38 q=24.0 size=    2560KiB time=00:00:03.13 bitrate=6693.2kbits/s speed=1.25x elapsed=0:00:02.50    frame=  132 fps= 44 q=24.0 size=    3328KiB time=00:00:04.33 bitrate=6291.5kbits/s speed=1.44x elapsed=0:00:03.00    frame=  168 fps= 48 q=24.0 size=    4096KiB time=00:00:05.53 bitrate=6064.1kbits/s speed=1.58x elapsed=0:00:03.50    frame=  204 fps= 51 q=24.0 size=    4864KiB time=00:00:06.73 bitrate=5917.8kbits/s speed=1.68x elapsed=0:00:04.00    frame=  236 fps= 52 q=24.0 size=    5376KiB time=00:00:07.80 bitrate=5646.2kbits/s speed=1.73x elapsed=0:00:04.50    frame=  294 fps= 59 q=-1.0 size=    6656KiB time=00:00:09.76 bitrate=5582.9kbits/s speed=1.95x elapsed=0:00:05.00    [out#0/mp4 @ 0x5555555fe100] video:7009KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.063426%
+frame=  300 fps= 60 q=-1.0 Lsize=    7013KiB time=00:00:09.93 bitrate=5783.6kbits/s speed=1.97x elapsed=0:00:05.03    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.56  size:144858
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.47  size: 44382
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.69  size: 15826
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 25.2% 34.9% 39.9%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.4%  2.5%  2.0%  P16..4: 21.4% 18.2% 12.0%  0.0%  0.0%    skip:42.5%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 32.6%  9.8%  3.8%  direct: 2.1%  skip:51.0%  L0:46.8% L1:48.3% BI: 4.8%
+[libx264 @ 0x555555607700] 8x8 transform intra:42.3% inter:44.8%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 36.5% 41.3% 30.7% inter: 7.9% 5.8% 2.2%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 44% 42%  6%  8%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 13% 18% 52%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 29% 31% 17%  3%  4%  3%  6%  2%  5%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 57% 24% 16%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.1%  7.3% 16.8%  7.7%
+[libx264 @ 0x555555607700] ref B L0: 81.7% 15.5%  2.9%
+[libx264 @ 0x555555607700] ref B L1: 91.9%  8.1%
+[libx264 @ 0x555555607700] kb/s:5740.91
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-haiku-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-haiku-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/knh1lgn6lfqsy5qiqb6wkb5n9imhp5av-craftplan-0.1.0.drv'...
+building '/nix/store/3w1c7qlqya267zv5lycfhzrgl9r5w3q6-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:37103
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-opus-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.4s)   [rec] frame 61/300 (78.4s)   [rec] frame 91/300 (116.9s)   [rec] frame 121/300 (154.8s)   [rec] frame 151/300 (192.0s)   [rec] frame 181/300 (228.4s)   [rec] frame 211/300 (265.5s)   [rec] frame 241/300 (303.1s)   [rec] frame 271/300 (340.8s)   [rec] frame 300/300 (377.2s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-opus-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-180428/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-opus-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    9 fps=9.0 q=24.0 size=     256KiB time=00:00:00.23 bitrate=8989.5kbits/s speed=0.233x elapsed=0:00:01.00    frame=   38 fps= 25 q=24.0 size=    1024KiB time=00:00:01.20 bitrate=6990.8kbits/s speed=0.799x elapsed=0:00:01.50    frame=   72 fps= 36 q=24.0 size=    1792KiB time=00:00:02.33 bitrate=6291.6kbits/s speed=1.17x elapsed=0:00:02.00    frame=  108 fps= 43 q=24.0 size=    2816KiB time=00:00:03.53 bitrate=6529.0kbits/s speed=1.41x elapsed=0:00:02.50    frame=  144 fps= 48 q=24.0 size=    3584KiB time=00:00:04.73 bitrate=6202.9kbits/s speed=1.58x elapsed=0:00:03.00    frame=  176 fps= 50 q=24.0 size=    4096KiB time=00:00:05.80 bitrate=5785.3kbits/s speed=1.65x elapsed=0:00:03.50    frame=  216 fps= 54 q=24.0 size=    5120KiB time=00:00:07.13 bitrate=5879.9kbits/s speed=1.78x elapsed=0:00:04.00    frame=  255 fps= 57 q=24.0 size=    5888KiB time=00:00:08.43 bitrate=5719.6kbits/s speed=1.87x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6986KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.063461%
+frame=  300 fps= 61 q=-1.0 Lsize=    6991KiB time=00:00:09.93 bitrate=5765.3kbits/s speed=2.03x elapsed=0:00:04.90    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.57  size:147304
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.38  size: 44409
+[libx264 @ 0x555555607700] frame B:222   Avg QP:22.01  size: 15692
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 26.8% 32.2% 41.0%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.5%  2.3%  2.0%  P16..4: 21.9% 18.3% 12.2%  0.0%  0.0%    skip:41.8%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 32.9%  9.9%  3.7%  direct: 2.0%  skip:50.8%  L0:46.7% L1:48.5% BI: 4.8%
+[libx264 @ 0x555555607700] 8x8 transform intra:40.9% inter:43.8%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 35.5% 41.5% 31.6% inter: 7.7% 5.8% 2.3%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 38% 50%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 17% 55%  2%  3%  2%  4%  1%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 32% 17%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 56% 26% 14%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.6%  6.6% 16.9%  8.0%
+[libx264 @ 0x555555607700] ref B L0: 81.7% 15.2%  3.1%
+[libx264 @ 0x555555607700] ref B L1: 91.6%  8.4%
+[libx264 @ 0x555555607700] kb/s:5722.66
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-opus-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-opus-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/n07sasilsyyivd5jznicd5hgr9sqvix6-craftplan-0.1.0.drv'...
+building '/nix/store/chjg47127bvjrhx7pbh5973qxvnlzs0z-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:46697
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-sonnet-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.7s)   [rec] frame 61/300 (78.8s)   [rec] frame 91/300 (117.5s)   [rec] frame 121/300 (155.4s)   [rec] frame 151/300 (192.7s)   [rec] frame 181/300 (229.1s)   [rec] frame 211/300 (266.2s)   [rec] frame 241/300 (304.0s)   [rec] frame 271/300 (342.1s)   [rec] frame 300/300 (378.9s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-sonnet-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-182384/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-sonnet-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    4 fps=4.0 q=24.0 size=       0KiB time=00:00:00.06 bitrate=   5.8kbits/s speed=0.0665x elapsed=0:00:01.00    frame=   37 fps= 25 q=24.0 size=    1024KiB time=00:00:01.16 bitrate=7190.6kbits/s speed=0.776x elapsed=0:00:01.50    frame=   72 fps= 36 q=24.0 size=    1792KiB time=00:00:02.33 bitrate=6291.6kbits/s speed=1.16x elapsed=0:00:02.00    frame=  108 fps= 43 q=24.0 size=    2816KiB time=00:00:03.53 bitrate=6529.0kbits/s speed=1.41x elapsed=0:00:02.50    frame=  144 fps= 48 q=24.0 size=    3584KiB time=00:00:04.73 bitrate=6202.9kbits/s speed=1.57x elapsed=0:00:03.00    frame=  180 fps= 51 q=24.0 size=    4352KiB time=00:00:05.93 bitrate=6008.8kbits/s speed=1.69x elapsed=0:00:03.50    frame=  216 fps= 54 q=24.0 size=    4864KiB time=00:00:07.13 bitrate=5585.9kbits/s speed=1.78x elapsed=0:00:04.00    frame=  255 fps= 57 q=24.0 size=    5888KiB time=00:00:08.43 bitrate=5719.6kbits/s speed=1.87x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6937KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.063912%
+frame=  300 fps= 62 q=-1.0 Lsize=    6941KiB time=00:00:09.93 bitrate=5724.6kbits/s speed=2.04x elapsed=0:00:04.87    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.44  size:146836
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.44  size: 43801
+[libx264 @ 0x555555607700] frame B:222   Avg QP:22.14  size: 15677
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 24.4% 35.0% 40.6%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.4%  2.5%  2.1%  P16..4: 21.4% 17.8% 11.7%  0.0%  0.0%    skip:43.0%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 32.2%  9.8%  3.7%  direct: 2.0%  skip:51.5%  L0:47.1% L1:48.1% BI: 4.8%
+[libx264 @ 0x555555607700] 8x8 transform intra:42.2% inter:44.4%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 36.6% 41.4% 31.1% inter: 7.7% 5.9% 2.3%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 43% 43%  6%  8%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 20% 52%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 29% 31% 17%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 56% 25% 16%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 69.0%  6.7% 16.4%  7.9%
+[libx264 @ 0x555555607700] ref B L0: 81.3% 15.6%  3.0%
+[libx264 @ 0x555555607700] ref B L1: 91.5%  8.5%
+[libx264 @ 0x555555607700] kb/s:5682.30
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-sonnet-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-sonnet-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/6jgfc3lbrf69qk1jc1hpfr92nsi13f40-craftplan-0.1.0.drv'...
+building '/nix/store/9gwl23jnknf292yn78i895qshyyfs3kj-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:41337
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-fable-10s.mp4
+[rec] frame 1/300 (1.1s)   [rec] frame 31/300 (39.6s)   [rec] frame 61/300 (78.6s)   [rec] frame 91/300 (117.4s)   [rec] frame 121/300 (155.4s)   [rec] frame 151/300 (192.7s)   [rec] frame 181/300 (228.5s)   [rec] frame 211/300 (265.3s)   [rec] frame 241/300 (302.4s)   [rec] frame 271/300 (340.2s)   [rec] frame 300/300 (376.6s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-fable-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-184330/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-fable-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   31 fps= 21 q=24.0 size=     768KiB time=00:00:00.96 bitrate=6508.8kbits/s speed=0.644x elapsed=0:00:01.50    frame=   66 fps= 33 q=24.0 size=    1792KiB time=00:00:02.13 bitrate=6881.5kbits/s speed=1.07x elapsed=0:00:02.00    frame=  101 fps= 40 q=24.0 size=    2560KiB time=00:00:03.30 bitrate=6355.1kbits/s speed=1.32x elapsed=0:00:02.50    frame=  136 fps= 45 q=24.0 size=    3328KiB time=00:00:04.46 bitrate=6103.7kbits/s speed=1.49x elapsed=0:00:03.00    frame=  175 fps= 50 q=24.0 size=    4096KiB time=00:00:05.76 bitrate=5818.8kbits/s speed=1.65x elapsed=0:00:03.50    frame=  211 fps= 53 q=24.0 size=    4864KiB time=00:00:06.96 bitrate=5719.6kbits/s speed=1.74x elapsed=0:00:04.00    frame=  251 fps= 56 q=24.0 size=    5632KiB time=00:00:08.30 bitrate=5558.8kbits/s speed=1.84x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6910KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.064330%
+frame=  300 fps= 60 q=-1.0 Lsize=    6915KiB time=00:00:09.93 bitrate=5702.4kbits/s speed=   2x elapsed=0:00:04.96    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.42  size:147246
+[libx264 @ 0x555555607700] frame P:76    Avg QP:15.95  size: 43745
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.52  size: 15568
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 29.2% 30.8% 40.0%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.4%  2.4%  2.0%  P16..4: 21.7% 17.9% 11.8%  0.0%  0.0%    skip:42.8%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 32.1%  9.4%  3.6%  direct: 2.1%  skip:52.0%  L0:46.8% L1:48.6% BI: 4.7%
+[libx264 @ 0x555555607700] 8x8 transform intra:41.5% inter:45.0%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 36.5% 43.0% 32.4% inter: 7.7% 6.2% 2.4%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 41% 46%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 18% 54%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 32% 17%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 56% 26% 15%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.4%  6.7% 16.6%  8.2%
+[libx264 @ 0x555555607700] ref B L0: 81.5% 15.5%  3.0%
+[libx264 @ 0x555555607700] ref B L1: 91.4%  8.6%
+[libx264 @ 0x555555607700] kb/s:5660.24
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-fable-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-fable-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/wihvcsgpylda46if9nkcyygawk8dgsix-craftplan-0.1.0.drv'...
+building '/nix/store/raqmbq0pjzgkpdx7xmjbhm2yjjzk0n3m-nix-shell-env.drv'...
+[stitch-grid] 4 cells @ 540x960 → /home/edvin/dev/craftplan/recordings/shorts-mode/pikachu-4x-grid-10s.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/xxq6dzin7dp710003hqhbp4lw5rn01j3-craftplan-0.1.0.drv'...
+building '/nix/store/m9njjr9dzqkgh2jss1cc4xg601kf2xw8-nix-shell-env.drv'...
+[mux] pikachu-4x-grid-10s.mp4 (10.00s) + demon-jvna.mp3 @ 3s
+16:15:56Z   GRID DONE: recordings/shorts-mode/pikachu-4x-grid-10s-demon.mp4
+16:15:56Z === shrek ===
+16:16:51Z   haiku: 897 solid + 0 carve
+16:19:50Z   opus: 4000 solid + 4 carve
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/l1a27np0rg4acrb53050skjxgafybgaa-craftplan-0.1.0.drv'...
+building '/nix/store/07qqfmijaawr7kkkc2hmdqz5dykgp4pi-nix-shell-env.drv'...
+[recover] shrek-4x-sonnet: 2569 solid + 2391 carve AIR -> /home/edvin/dev/craftplan/public/data/plans/shrek-4x-sonnet.json
+16:23:09Z   sonnet5: recovered
+16:23:09Z   rendering 4 quadrants...
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/lhiqhv1bdd3fvjva9bsadmp9li711hp0-craftplan-0.1.0.drv'...
+building '/nix/store/wc3achb88yydgzg2gqrslpvmjrsdyvjv-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:43561
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-haiku-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.5s)   [rec] frame 61/300 (78.5s)   [rec] frame 91/300 (117.3s)   [rec] frame 121/300 (155.1s)   [rec] frame 151/300 (192.1s)   [rec] frame 181/300 (227.9s)   [rec] frame 211/300 (264.4s)   [rec] frame 241/300 (301.9s)   [rec] frame 271/300 (339.4s)   [rec] frame 300/300 (375.6s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-haiku-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-189266/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-haiku-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   21 fps= 14 q=24.0 size=     512KiB time=00:00:00.63 bitrate=6623.2kbits/s speed=0.422x elapsed=0:00:01.50    frame=   50 fps= 25 q=24.0 size=    1280KiB time=00:00:01.60 bitrate=6553.8kbits/s speed= 0.8x elapsed=0:00:02.00    frame=   89 fps= 36 q=24.0 size=    2304KiB time=00:00:02.90 bitrate=6508.5kbits/s speed=1.16x elapsed=0:00:02.50    frame=  126 fps= 42 q=24.0 size=    3328KiB time=00:00:04.13 bitrate=6596.0kbits/s speed=1.38x elapsed=0:00:03.00    frame=  164 fps= 47 q=24.0 size=    4096KiB time=00:00:05.40 bitrate=6213.9kbits/s speed=1.54x elapsed=0:00:03.50    frame=  200 fps= 50 q=24.0 size=    4608KiB time=00:00:06.60 bitrate=5719.6kbits/s speed=1.65x elapsed=0:00:04.00    frame=  233 fps= 52 q=24.0 size=    5376KiB time=00:00:07.70 bitrate=5719.6kbits/s speed=1.71x elapsed=0:00:04.50    frame=  289 fps= 58 q=-1.0 size=    6656KiB time=00:00:09.56 bitrate=5699.6kbits/s speed=1.91x elapsed=0:00:05.00    [out#0/mp4 @ 0x5555555fe100] video:7022KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.063307%
+frame=  300 fps= 59 q=-1.0 Lsize=    7026KiB time=00:00:09.93 bitrate=5794.6kbits/s speed=1.97x elapsed=0:00:05.04    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:11.86  size:155630
+[libx264 @ 0x555555607700] frame P:76    Avg QP:15.21  size: 45575
+[libx264 @ 0x555555607700] frame B:222   Avg QP:20.68  size: 15382
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 27.1% 33.2% 39.7%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.0%  2.1%  1.4%  P16..4: 19.7% 18.0% 13.0%  0.0%  0.0%    skip:44.8%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.1%  0.4%  0.1%  B16..8: 30.4%  9.5%  4.0%  direct: 2.3%  skip:53.2%  L0:46.8% L1:48.2% BI: 5.0%
+[libx264 @ 0x555555607700] 8x8 transform intra:44.8% inter:43.8%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 35.7% 42.7% 32.7% inter: 8.0% 6.7% 2.7%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 38% 48%  7%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu:  7% 20% 56%  2%  3%  2%  4%  1%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 23% 35% 18%  3%  4%  3%  7%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 58% 27% 11%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.4%  7.1% 16.1%  8.4%
+[libx264 @ 0x555555607700] ref B L0: 80.6% 16.1%  3.4%
+[libx264 @ 0x555555607700] ref B L1: 90.8%  9.2%
+[libx264 @ 0x555555607700] kb/s:5751.77
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-haiku-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-haiku-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/fd194a2fs2xph9mzzyshlh63cq9v97n6-craftplan-0.1.0.drv'...
+building '/nix/store/4pm43rxr4i341k1qrha185ih7j27y1hm-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:44817
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-opus-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.5s)   [rec] frame 61/300 (78.1s)   [rec] frame 91/300 (116.2s)   [rec] frame 121/300 (153.2s)   [rec] frame 151/300 (189.5s)   [rec] frame 181/300 (224.3s)   [rec] frame 211/300 (259.8s)   [rec] frame 241/300 (295.7s)   [rec] frame 271/300 (332.2s)   [rec] frame 300/300 (367.4s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-opus-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-191382/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-opus-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    8 fps=8.0 q=24.0 size=     256KiB time=00:00:00.20 bitrate=10487.7kbits/s speed=0.199x elapsed=0:00:01.00    frame=   39 fps= 26 q=24.0 size=    1024KiB time=00:00:01.23 bitrate=6801.9kbits/s speed=0.818x elapsed=0:00:01.50    frame=   76 fps= 38 q=24.0 size=    2048KiB time=00:00:02.46 bitrate=6801.7kbits/s speed=1.23x elapsed=0:00:02.00    frame=  112 fps= 45 q=24.0 size=    2816KiB time=00:00:03.66 bitrate=6291.6kbits/s speed=1.46x elapsed=0:00:02.50    frame=  150 fps= 50 q=24.0 size=    3328KiB time=00:00:04.93 bitrate=5526.4kbits/s speed=1.64x elapsed=0:00:03.01    frame=  188 fps= 54 q=24.0 size=    4096KiB time=00:00:06.20 bitrate=5412.1kbits/s speed=1.77x elapsed=0:00:03.51    frame=  230 fps= 57 q=24.0 size=    4864KiB time=00:00:07.60 bitrate=5242.9kbits/s speed=1.89x elapsed=0:00:04.01    frame=  276 fps= 61 q=24.0 size=    5632KiB time=00:00:09.13 bitrate=5051.6kbits/s speed=2.02x elapsed=0:00:04.51    [out#0/mp4 @ 0x5555555fe100] video:6203KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.071661%
+frame=  300 fps= 64 q=-1.0 Lsize=    6208KiB time=00:00:09.93 bitrate=5119.5kbits/s speed=2.13x elapsed=0:00:04.66    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.04  size:142066
+[libx264 @ 0x555555607700] frame P:76    Avg QP:15.31  size: 38643
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.30  size: 14101
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 26.1% 33.5% 40.4%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.4%  2.3%  1.6%  P16..4: 21.1% 16.9% 10.6%  0.0%  0.0%    skip:46.1%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.1%  B16..8: 31.8%  8.7%  3.2%  direct: 1.7%  skip:53.7%  L0:47.3% L1:48.6% BI: 4.1%
+[libx264 @ 0x555555607700] 8x8 transform intra:43.5% inter:45.0%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 33.9% 42.0% 30.9% inter: 6.7% 5.6% 2.2%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 45% 42%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 17% 56%  2%  3%  2%  4%  1%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 27% 33% 18%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 56% 25% 16%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 69.4%  5.6% 16.3%  8.7%
+[libx264 @ 0x555555607700] ref B L0: 80.5% 16.3%  3.2%
+[libx264 @ 0x555555607700] ref B L1: 91.0%  9.0%
+[libx264 @ 0x555555607700] kb/s:5081.15
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-opus-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-opus-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/nmviq0ms303wi2ypfafnpyx8cw2s5z52-craftplan-0.1.0.drv'...
+building '/nix/store/wymr8z7kn9m9kwz1v5xf4563zhck413x-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:46333
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-sonnet-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.2s)   [rec] frame 61/300 (78.1s)   [rec] frame 91/300 (117.4s)   [rec] frame 121/300 (155.9s)   [rec] frame 151/300 (194.0s)   [rec] frame 181/300 (231.0s)   [rec] frame 211/300 (268.8s)   [rec] frame 241/300 (307.0s)   [rec] frame 271/300 (345.8s)   [rec] frame 300/300 (382.7s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-sonnet-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-193518/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-sonnet-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   31 fps= 21 q=24.0 size=     768KiB time=00:00:00.96 bitrate=6508.8kbits/s speed=0.643x elapsed=0:00:01.50    frame=   64 fps= 32 q=24.0 size=    1792KiB time=00:00:02.06 bitrate=7103.4kbits/s speed=1.03x elapsed=0:00:02.00    frame=  100 fps= 40 q=24.0 size=    2560KiB time=00:00:03.26 bitrate=6420.0kbits/s speed= 1.3x elapsed=0:00:02.50    frame=  135 fps= 45 q=24.0 size=    3328KiB time=00:00:04.43 bitrate=6149.6kbits/s speed=1.48x elapsed=0:00:03.00    frame=  172 fps= 49 q=24.0 size=    4096KiB time=00:00:05.66 bitrate=5921.4kbits/s speed=1.62x elapsed=0:00:03.50    frame=  205 fps= 51 q=24.0 size=    4864KiB time=00:00:06.76 bitrate=5888.6kbits/s speed=1.69x elapsed=0:00:04.00    frame=  236 fps= 52 q=24.0 size=    5632KiB time=00:00:07.80 bitrate=5915.1kbits/s speed=1.73x elapsed=0:00:04.50    frame=  296 fps= 59 q=-1.0 size=    6912KiB time=00:00:09.80 bitrate=5777.9kbits/s speed=1.96x elapsed=0:00:05.00    [out#0/mp4 @ 0x5555555fe100] video:7195KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.061841%
+frame=  300 fps= 60 q=-1.0 Lsize=    7199KiB time=00:00:09.93 bitrate=5937.0kbits/s speed=1.98x elapsed=0:00:05.02    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.53  size:159475
+[libx264 @ 0x555555607700] frame P:76    Avg QP:15.65  size: 46317
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.53  size: 15890
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 23.4% 35.3% 41.2%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.2%  2.2%  1.8%  P16..4: 21.0% 18.3% 12.9%  0.0%  0.0%    skip:42.6%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.1%  B16..8: 31.4%  9.8%  3.9%  direct: 2.2%  skip:52.1%  L0:46.5% L1:48.5% BI: 5.0%
+[libx264 @ 0x555555607700] 8x8 transform intra:43.5% inter:44.1%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 37.9% 46.5% 35.9% inter: 8.0% 7.2% 2.8%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 32% 53%  6%  9%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu:  9% 21% 52%  2%  3%  2%  4%  1%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 25% 33% 17%  3%  4%  3%  7%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 54% 29% 13%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.2%  7.1% 16.5%  8.2%
+[libx264 @ 0x555555607700] ref B L0: 81.1% 15.8%  3.2%
+[libx264 @ 0x555555607700] ref B L1: 91.1%  8.9%
+[libx264 @ 0x555555607700] kb/s:5893.27
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-sonnet-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-sonnet-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/ln2dzbxvv76jhf0v28sn96r6zz9yxvfk-craftplan-0.1.0.drv'...
+building '/nix/store/05fb36a8k0319sbdxfrhflx342qh7a3h-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:46091
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-fable-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (40.1s)   [rec] frame 61/300 (80.1s)   [rec] frame 91/300 (119.2s)   [rec] frame 121/300 (158.1s)   [rec] frame 151/300 (196.8s)   [rec] frame 181/300 (234.3s)   [rec] frame 211/300 (272.4s)   [rec] frame 241/300 (311.0s)   [rec] frame 271/300 (349.8s)   [rec] frame 300/300 (387.7s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-fable-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-195681/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-fable-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   32 fps= 21 q=24.0 size=    1024KiB time=00:00:01.00 bitrate=8389.0kbits/s speed=0.665x elapsed=0:00:01.50    frame=   64 fps= 32 q=24.0 size=    1792KiB time=00:00:02.06 bitrate=7103.4kbits/s speed=1.03x elapsed=0:00:02.00    frame=  100 fps= 40 q=24.0 size=    2560KiB time=00:00:03.26 bitrate=6420.0kbits/s speed= 1.3x elapsed=0:00:02.50    frame=  135 fps= 45 q=24.0 size=    3584KiB time=00:00:04.43 bitrate=6622.7kbits/s speed=1.47x elapsed=0:00:03.00    frame=  172 fps= 49 q=24.0 size=    4352KiB time=00:00:05.66 bitrate=6291.5kbits/s speed=1.62x elapsed=0:00:03.50    frame=  206 fps= 51 q=24.0 size=    5120KiB time=00:00:06.80 bitrate=6168.2kbits/s speed= 1.7x elapsed=0:00:04.00    frame=  234 fps= 52 q=21.0 size=    5632KiB time=00:00:07.73 bitrate=5966.1kbits/s speed=1.72x elapsed=0:00:04.50    frame=  291 fps= 58 q=-1.0 size=    6912KiB time=00:00:09.63 bitrate=5877.9kbits/s speed=1.92x elapsed=0:00:05.00    [out#0/mp4 @ 0x5555555fe100] video:7294KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.061159%
+frame=  300 fps= 59 q=-1.0 Lsize=    7299KiB time=00:00:09.93 bitrate=6019.1kbits/s speed=1.97x elapsed=0:00:05.04    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.52  size:154819
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.11  size: 46492
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.44  size: 16331
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 24.6% 34.6% 40.8%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.3%  2.6%  2.1%  P16..4: 21.1% 18.4% 12.4%  0.0%  0.0%    skip:42.1%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 31.6% 10.2%  3.8%  direct: 2.3%  skip:51.3%  L0:46.5% L1:48.3% BI: 5.2%
+[libx264 @ 0x555555607700] 8x8 transform intra:43.3% inter:45.4%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 39.1% 47.9% 36.2% inter: 8.2% 7.2% 2.8%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 42% 41%  7% 10%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 12% 19% 50%  2%  4%  3%  4%  2%  5%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 29% 29% 17%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 53% 25% 18%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 67.6%  7.5% 16.7%  8.3%
+[libx264 @ 0x555555607700] ref B L0: 81.8% 15.1%  3.0%
+[libx264 @ 0x555555607700] ref B L1: 91.8%  8.2%
+[libx264 @ 0x555555607700] kb/s:5974.75
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-fable-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-fable-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/89pfw733nn1rg83hbidzglq1kijzz2d5-craftplan-0.1.0.drv'...
+building '/nix/store/p2krjpzhswqgdr9p48wbqac6m438yv3h-nix-shell-env.drv'...
+[stitch-grid] 4 cells @ 540x960 → /home/edvin/dev/craftplan/recordings/shorts-mode/shrek-4x-grid-10s.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/rqf6kv6ij6ikv8lzimhk672ckflc6v3n-craftplan-0.1.0.drv'...
+building '/nix/store/xglfvfkqvkbjnka1lli3kb17mzcng3f1-nix-shell-env.drv'...
+[mux] shrek-4x-grid-10s.mp4 (10.00s) + demon-jvna.mp3 @ 3s
+16:50:33Z   GRID DONE: recordings/shorts-mode/shrek-4x-grid-10s-demon.mp4
+16:50:33Z === optimus-prime ===
+16:51:26Z   haiku: 2608 solid + 0 carve
+16:54:05Z   opus: 4000 solid + 0 carve
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/pj2x4sf2j3y77anixzc7ybdkvm0r4rv1-craftplan-0.1.0.drv'...
+building '/nix/store/mb5kp1y1181rdbs7bzdvl0az2ndqmjf8-nix-shell-env.drv'...
+[recover] optimus-prime-4x-sonnet: 1973 solid + 2048 carve AIR -> /home/edvin/dev/craftplan/public/data/plans/optimus-prime-4x-sonnet.json
+16:56:33Z   sonnet5: recovered
+16:56:34Z   rendering 4 quadrants...
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/85qncig1r7fn5ck640ix9j5kq8pxz415-craftplan-0.1.0.drv'...
+building '/nix/store/1gl44wg8shamr75wq0cav9pj4i0a16cl-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:35193
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-haiku-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.2s)   [rec] frame 61/300 (77.9s)   [rec] frame 91/300 (116.3s)   [rec] frame 121/300 (154.0s)   [rec] frame 151/300 (190.8s)   [rec] frame 181/300 (226.3s)   [rec] frame 211/300 (262.5s)   [rec] frame 241/300 (298.9s)   [rec] frame 271/300 (335.8s)   [rec] frame 300/300 (371.3s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-haiku-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-200608/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-haiku-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=   10 fps= 10 q=24.0 size=     256KiB time=00:00:00.26 bitrate=7865.8kbits/s speed=0.266x elapsed=0:00:01.00    frame=   41 fps= 27 q=24.0 size=    1024KiB time=00:00:01.30 bitrate=6453.1kbits/s speed=0.865x elapsed=0:00:01.50    frame=   75 fps= 37 q=24.0 size=    1792KiB time=00:00:02.43 bitrate=6033.1kbits/s speed=1.21x elapsed=0:00:02.00    frame=  111 fps= 44 q=24.0 size=    2560KiB time=00:00:03.63 bitrate=5772.1kbits/s speed=1.45x elapsed=0:00:02.50    frame=  150 fps= 50 q=24.0 size=    3328KiB time=00:00:04.93 bitrate=5526.4kbits/s speed=1.64x elapsed=0:00:03.00    frame=  187 fps= 53 q=24.0 size=    4096KiB time=00:00:06.16 bitrate=5441.3kbits/s speed=1.76x elapsed=0:00:03.50    frame=  223 fps= 56 q=24.0 size=    4608KiB time=00:00:07.36 bitrate=5124.3kbits/s speed=1.84x elapsed=0:00:04.00    frame=  269 fps= 60 q=24.0 size=    5632KiB time=00:00:08.90 bitrate=5184.0kbits/s speed=1.97x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6243KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.071209%
+frame=  300 fps= 64 q=-1.0 Lsize=    6247KiB time=00:00:09.93 bitrate=5152.0kbits/s speed=2.11x elapsed=0:00:04.71    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.25  size:140401
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.17  size: 39121
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.38  size: 14134
+[libx264 @ 0x555555607700] consecutive B-frames:  1.0%  0.7%  1.0% 97.3%
+[libx264 @ 0x555555607700] mb I  I16..4: 28.2% 31.8% 40.0%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.6%  2.5%  1.9%  P16..4: 22.4% 17.6% 10.6%  0.0%  0.0%    skip:43.5%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 33.1%  9.0%  3.1%  direct: 1.7%  skip:52.3%  L0:47.0% L1:48.8% BI: 4.3%
+[libx264 @ 0x555555607700] 8x8 transform intra:41.2% inter:47.2%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 33.9% 40.7% 29.5% inter: 6.8% 5.5% 2.2%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 41% 46%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 18% 54%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 32% 18%  2%  4%  3%  6%  2%  5%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 55% 26% 15%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 69.5%  6.1% 16.4%  8.0%
+[libx264 @ 0x555555607700] ref B L0: 81.9% 15.3%  2.8%
+[libx264 @ 0x555555607700] ref B L1: 92.0%  8.0%
+[libx264 @ 0x555555607700] kb/s:5113.45
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-haiku-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-haiku-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/x0nqa7hg35db3dj9mjw3injndlvg34bi-craftplan-0.1.0.drv'...
+building '/nix/store/k86hjf8hzdaxsbds4vl9h56gxd49ik7c-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:44847
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-opus-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.7s)   [rec] frame 61/300 (78.6s)   [rec] frame 91/300 (117.3s)   [rec] frame 121/300 (155.9s)   [rec] frame 151/300 (194.3s)   [rec] frame 181/300 (231.0s)   [rec] frame 211/300 (268.0s)   [rec] frame 241/300 (306.4s)   [rec] frame 271/300 (344.6s)   [rec] frame 300/300 (381.3s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-opus-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-202725/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-opus-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    4 fps=4.0 q=24.0 size=       0KiB time=00:00:00.06 bitrate=   5.8kbits/s speed=0.0665x elapsed=0:00:01.00    frame=   36 fps= 24 q=24.0 size=    1024KiB time=00:00:01.13 bitrate=7402.1kbits/s speed=0.755x elapsed=0:00:01.50    frame=   69 fps= 34 q=24.0 size=    1792KiB time=00:00:02.23 bitrate=6573.3kbits/s speed=1.12x elapsed=0:00:02.00    frame=  108 fps= 43 q=24.0 size=    2816KiB time=00:00:03.53 bitrate=6529.0kbits/s speed=1.41x elapsed=0:00:02.50    frame=  140 fps= 47 q=24.0 size=    3328KiB time=00:00:04.60 bitrate=5926.8kbits/s speed=1.53x elapsed=0:00:03.00    frame=  180 fps= 51 q=24.0 size=    4096KiB time=00:00:05.93 bitrate=5655.3kbits/s speed=1.69x elapsed=0:00:03.50    frame=  216 fps= 54 q=24.0 size=    4864KiB time=00:00:07.13 bitrate=5585.9kbits/s speed=1.78x elapsed=0:00:04.00    frame=  255 fps= 57 q=24.0 size=    5632KiB time=00:00:08.43 bitrate=5470.9kbits/s speed=1.87x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6699KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.066361%
+frame=  300 fps= 61 q=-1.0 Lsize=    6703KiB time=00:00:09.93 bitrate=5528.0kbits/s speed=2.02x elapsed=0:00:04.90    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.42  size:148405
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.02  size: 42281
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.46  size: 15084
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 24.9% 33.6% 41.5%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.4%  2.6%  2.1%  P16..4: 21.9% 18.3% 11.4%  0.0%  0.0%    skip:42.2%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 33.0%  9.9%  3.3%  direct: 1.9%  skip:51.0%  L0:46.8% L1:48.6% BI: 4.6%
+[libx264 @ 0x555555607700] 8x8 transform intra:42.3% inter:46.5%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 37.5% 45.4% 33.6% inter: 7.3% 6.4% 2.6%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 44% 42%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 13% 17% 53%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 30% 31% 17%  2%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 52% 26% 18%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 69.1%  6.0% 16.4%  8.5%
+[libx264 @ 0x555555607700] ref B L0: 82.3% 14.8%  2.9%
+[libx264 @ 0x555555607700] ref B L1: 91.8%  8.2%
+[libx264 @ 0x555555607700] kb/s:5487.00
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-opus-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-opus-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/hf8zcdnqks8ya8dx7n8sjsv081qxki31-craftplan-0.1.0.drv'...
+building '/nix/store/lig6bl5g4nk6vsbdrjb8d8lhf8n2qnzi-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:34377
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-sonnet-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.6s)   [rec] frame 61/300 (79.7s)   [rec] frame 91/300 (118.3s)   [rec] frame 121/300 (157.0s)   [rec] frame 151/300 (195.5s)   [rec] frame 181/300 (232.2s)   [rec] frame 211/300 (269.8s)   [rec] frame 241/300 (307.7s)   [rec] frame 271/300 (346.2s)   [rec] frame 300/300 (383.2s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-sonnet-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-204869/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-sonnet-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    4 fps=4.0 q=24.0 size=       0KiB time=00:00:00.06 bitrate=   5.8kbits/s speed=0.0666x elapsed=0:00:01.00    frame=   37 fps= 25 q=24.0 size=    1024KiB time=00:00:01.16 bitrate=7190.6kbits/s speed=0.777x elapsed=0:00:01.50    frame=   72 fps= 36 q=24.0 size=    2048KiB time=00:00:02.33 bitrate=7190.4kbits/s speed=1.17x elapsed=0:00:02.00    frame=  106 fps= 42 q=24.0 size=    2816KiB time=00:00:03.46 bitrate=6654.5kbits/s speed=1.39x elapsed=0:00:02.50    frame=  140 fps= 47 q=24.0 size=    3584KiB time=00:00:04.60 bitrate=6382.7kbits/s speed=1.53x elapsed=0:00:03.00    frame=  176 fps= 50 q=24.0 size=    4352KiB time=00:00:05.80 bitrate=6146.9kbits/s speed=1.65x elapsed=0:00:03.50    frame=  212 fps= 53 q=24.0 size=    5120KiB time=00:00:07.00 bitrate=5991.9kbits/s speed=1.75x elapsed=0:00:04.00    frame=  252 fps= 56 q=24.0 size=    5888KiB time=00:00:08.33 bitrate=5788.2kbits/s speed=1.85x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:7128KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.062587%
+frame=  300 fps= 61 q=-1.0 Lsize=    7132KiB time=00:00:09.93 bitrate=5881.8kbits/s speed=2.01x elapsed=0:00:04.94    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.47  size:157608
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.30  size: 45243
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.72  size: 15965
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 25.5% 31.6% 42.9%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.3%  2.5%  2.1%  P16..4: 21.4% 18.9% 12.7%  0.0%  0.0%    skip:41.0%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 32.7% 10.3%  3.8%  direct: 2.1%  skip:50.3%  L0:46.9% L1:48.3% BI: 4.8%
+[libx264 @ 0x555555607700] 8x8 transform intra:41.5% inter:44.8%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 38.1% 45.1% 34.0% inter: 7.9% 6.6% 2.7%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 44% 43%  6%  7%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 18% 52%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 32% 17%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 54% 26% 17%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.5%  6.4% 16.6%  8.5%
+[libx264 @ 0x555555607700] ref B L0: 80.9% 16.0%  3.1%
+[libx264 @ 0x555555607700] ref B L1: 91.0%  9.0%
+[libx264 @ 0x555555607700] kb/s:5838.38
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-sonnet-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-sonnet-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/h4n3rwh6f7w4s8r6p5bddhw59jng3r3d-craftplan-0.1.0.drv'...
+building '/nix/store/qps9bjx3nn1fj76n1wrhl0h5fkzldkm2-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:39359
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-fable-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.5s)   [rec] frame 61/300 (78.8s)   [rec] frame 91/300 (118.1s)   [rec] frame 121/300 (157.2s)   [rec] frame 151/300 (196.2s)   [rec] frame 181/300 (233.3s)   [rec] frame 211/300 (271.0s)   [rec] frame 241/300 (309.3s)   [rec] frame 271/300 (347.9s)   [rec] frame 300/300 (384.9s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-fable-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-207014/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-fable-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=   12 fps= 12 q=24.0 size=     256KiB time=00:00:00.33 bitrate=6292.6kbits/s speed=0.333x elapsed=0:00:01.00    frame=   40 fps= 27 q=24.0 size=    1024KiB time=00:00:01.26 bitrate=6622.9kbits/s speed=0.844x elapsed=0:00:01.50    frame=   76 fps= 38 q=24.0 size=    2048KiB time=00:00:02.46 bitrate=6801.7kbits/s speed=1.23x elapsed=0:00:02.00    frame=  112 fps= 45 q=24.0 size=    2816KiB time=00:00:03.66 bitrate=6291.6kbits/s speed=1.46x elapsed=0:00:02.50    frame=  144 fps= 48 q=24.0 size=    3584KiB time=00:00:04.73 bitrate=6202.9kbits/s speed=1.57x elapsed=0:00:03.00    frame=  180 fps= 51 q=24.0 size=    4352KiB time=00:00:05.93 bitrate=6008.8kbits/s speed=1.69x elapsed=0:00:03.50    frame=  216 fps= 54 q=24.0 size=    5120KiB time=00:00:07.13 bitrate=5879.9kbits/s speed=1.78x elapsed=0:00:04.00    frame=  255 fps= 57 q=24.0 size=    6144KiB time=00:00:08.43 bitrate=5968.2kbits/s speed=1.87x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:7241KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.061607%
+frame=  300 fps= 61 q=-1.0 Lsize=    7245KiB time=00:00:09.93 bitrate=5975.3kbits/s speed=2.02x elapsed=0:00:04.91    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.72  size:149894
+[libx264 @ 0x555555607700] frame P:76    Avg QP:16.36  size: 45605
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.63  size: 16434
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 23.6% 34.7% 41.7%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.5%  2.7%  2.4%  P16..4: 21.7% 18.7% 12.1%  0.0%  0.0%    skip:40.9%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.3%  0.4%  0.2%  B16..8: 32.9% 10.6%  3.8%  direct: 2.1%  skip:49.8%  L0:46.4% L1:48.5% BI: 5.1%
+[libx264 @ 0x555555607700] 8x8 transform intra:41.0% inter:45.7%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 38.1% 45.4% 33.3% inter: 8.1% 6.7% 2.7%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 46% 41%  6%  8%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 13% 20% 50%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 31% 30% 17%  2%  4%  3%  6%  2%  5%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 52% 25% 19%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.4%  6.8% 16.8%  8.0%
+[libx264 @ 0x555555607700] ref B L0: 82.0% 15.1%  2.9%
+[libx264 @ 0x555555607700] ref B L1: 91.8%  8.2%
+[libx264 @ 0x555555607700] kb/s:5931.25
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-fable-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-fable-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/hwblsg6fyns94i01nyb19h0igf1c3b49-craftplan-0.1.0.drv'...
+building '/nix/store/iww9f1bb2nrydl98n4c6ixr6wsiv24gf-nix-shell-env.drv'...
+[stitch-grid] 4 cells @ 540x960 → /home/edvin/dev/craftplan/recordings/shorts-mode/optimus-prime-4x-grid-10s.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/67wfcpddqk46dwlczlkqcxnqlnpx9p7l-craftplan-0.1.0.drv'...
+building '/nix/store/bb34gw7x8fk6kxclvl3scvslbdrzfp5a-nix-shell-env.drv'...
+[mux] optimus-prime-4x-grid-10s.mp4 (10.00s) + demon-jvna.mp3 @ 3s
+17:24:04Z   GRID DONE: recordings/shorts-mode/optimus-prime-4x-grid-10s-demon.mp4
+17:24:04Z === yoda ===
+17:25:34Z   haiku: 362 solid + 0 carve
+17:28:49Z   opus: 3037 solid + 1805 carve
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/iql4zkq2k53hjf2r2z4hz36bbd8zpvb2-craftplan-0.1.0.drv'...
+building '/nix/store/yn6aidxxrp46y92zpgvas7h3rdx5z2fk-nix-shell-env.drv'...
+[recover] yoda-4x-sonnet: 1732 solid + 0 carve AIR -> /home/edvin/dev/craftplan/public/data/plans/yoda-4x-sonnet.json
+17:31:26Z   sonnet5: recovered
+17:31:26Z   rendering 4 quadrants...
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/v1qigs6a4iswcdf1wxwqm4jrx2q25rws-craftplan-0.1.0.drv'...
+building '/nix/store/jcm1flwch5lsbd9ddlswn79rqni02hwl-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:42429
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-haiku-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (38.4s)   [rec] frame 61/300 (76.6s)   [rec] frame 91/300 (114.5s)   [rec] frame 121/300 (151.7s)   [rec] frame 151/300 (187.9s)   [rec] frame 181/300 (222.8s)   [rec] frame 211/300 (258.8s)   [rec] frame 241/300 (295.2s)   [rec] frame 271/300 (332.4s)   [rec] frame 300/300 (367.8s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-haiku-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-212091/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-haiku-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.00    frame=   21 fps= 14 q=24.0 size=     512KiB time=00:00:00.63 bitrate=6623.2kbits/s speed=0.421x elapsed=0:00:01.50    frame=   54 fps= 27 q=24.0 size=    1280KiB time=00:00:01.73 bitrate=6049.7kbits/s speed=0.865x elapsed=0:00:02.00    frame=   92 fps= 37 q=24.0 size=    2304KiB time=00:00:03.00 bitrate=6291.6kbits/s speed= 1.2x elapsed=0:00:02.50    frame=  128 fps= 43 q=24.0 size=    3072KiB time=00:00:04.20 bitrate=5992.0kbits/s speed= 1.4x elapsed=0:00:03.00    frame=  167 fps= 48 q=24.0 size=    3840KiB time=00:00:05.50 bitrate=5719.6kbits/s speed=1.57x elapsed=0:00:03.50    frame=  206 fps= 51 q=24.0 size=    4608KiB time=00:00:06.80 bitrate=5551.3kbits/s speed= 1.7x elapsed=0:00:04.00    frame=  242 fps= 54 q=24.0 size=    5376KiB time=00:00:08.00 bitrate=5505.1kbits/s speed=1.77x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:6855KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.064677%
+frame=  300 fps= 60 q=-1.0 Lsize=    6859KiB time=00:00:09.93 bitrate=5656.9kbits/s speed=   2x elapsed=0:00:04.96    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:11.85  size:152890
+[libx264 @ 0x555555607700] frame P:76    Avg QP:14.57  size: 44231
+[libx264 @ 0x555555607700] frame B:222   Avg QP:20.35  size: 15097
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 25.5% 33.7% 40.8%
+[libx264 @ 0x555555607700] mb P  I16..4:  0.9%  2.0%  1.5%  P16..4: 19.4% 17.9% 12.7%  0.0%  0.0%    skip:45.7%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.1%  0.4%  0.1%  B16..8: 29.9%  9.4%  3.8%  direct: 2.2%  skip:54.1%  L0:46.9% L1:48.2% BI: 5.0%
+[libx264 @ 0x555555607700] 8x8 transform intra:45.1% inter:43.2%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 37.2% 43.2% 32.2% inter: 7.8% 6.4% 2.6%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 36% 49%  7%  8%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu:  7% 19% 57%  2%  3%  2%  4%  1%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 22% 34% 18%  3%  4%  3%  7%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 58% 27% 12%  3%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 68.7%  6.7% 16.1%  8.5%
+[libx264 @ 0x555555607700] ref B L0: 80.0% 16.5%  3.4%
+[libx264 @ 0x555555607700] ref B L1: 90.6%  9.4%
+[libx264 @ 0x555555607700] kb/s:5615.03
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-haiku-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-haiku-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/69bs4395l0ljh5pcyqblg2yr2m7512kw-craftplan-0.1.0.drv'...
+building '/nix/store/r73mbjhipr6y87hbhs0lrgbxq64vxl6y-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:37985
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-opus-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.4s)   [rec] frame 61/300 (78.2s)   [rec] frame 91/300 (117.0s)   [rec] frame 121/300 (155.3s)   [rec] frame 151/300 (192.6s)   [rec] frame 181/300 (229.1s)   [rec] frame 211/300 (265.9s)   [rec] frame 241/300 (303.3s)   [rec] frame 271/300 (341.2s)   [rec] frame 300/300 (377.7s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-opus-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-214186/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607840] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607840] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607840] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-opus-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    4 fps=4.0 q=24.0 size=       0KiB time=00:00:00.06 bitrate=   5.8kbits/s speed=0.0667x elapsed=0:00:01.00    frame=   38 fps= 25 q=24.0 size=    1024KiB time=00:00:01.20 bitrate=6990.8kbits/s speed= 0.8x elapsed=0:00:01.50    frame=   72 fps= 36 q=24.0 size=    1792KiB time=00:00:02.33 bitrate=6291.6kbits/s speed=1.17x elapsed=0:00:02.00    frame=  108 fps= 43 q=24.0 size=    2816KiB time=00:00:03.53 bitrate=6529.0kbits/s speed=1.41x elapsed=0:00:02.50    frame=  144 fps= 48 q=24.0 size=    3584KiB time=00:00:04.73 bitrate=6202.9kbits/s speed=1.58x elapsed=0:00:03.00    frame=  180 fps= 51 q=24.0 size=    4352KiB time=00:00:05.93 bitrate=6008.8kbits/s speed=1.69x elapsed=0:00:03.50    frame=  220 fps= 55 q=24.0 size=    5120KiB time=00:00:07.26 bitrate=5772.0kbits/s speed=1.82x elapsed=0:00:04.00    frame=  256 fps= 57 q=24.0 size=    6144KiB time=00:00:08.46 bitrate=5944.7kbits/s speed=1.88x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:7220KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.061625%
+frame=  300 fps= 62 q=-1.0 Lsize=    7224KiB time=00:00:09.93 bitrate=5957.8kbits/s speed=2.05x elapsed=0:00:04.84    
+[libx264 @ 0x555555607840] frame I:2     Avg QP:12.62  size:151258
+[libx264 @ 0x555555607840] frame P:76    Avg QP:15.84  size: 45664
+[libx264 @ 0x555555607840] frame B:222   Avg QP:21.39  size: 16304
+[libx264 @ 0x555555607840] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607840] mb I  I16..4: 23.8% 35.2% 41.0%
+[libx264 @ 0x555555607840] mb P  I16..4:  1.2%  2.4%  2.0%  P16..4: 20.2% 17.7% 12.4%  0.0%  0.0%    skip:44.2%
+[libx264 @ 0x555555607840] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 30.5%  9.9%  4.0%  direct: 2.3%  skip:52.5%  L0:46.5% L1:48.3% BI: 5.2%
+[libx264 @ 0x555555607840] 8x8 transform intra:43.2% inter:43.0%
+[libx264 @ 0x555555607840] coded y,uvDC,uvAC intra: 38.7% 47.1% 35.7% inter: 8.0% 6.9% 2.8%
+[libx264 @ 0x555555607840] i16 v,h,dc,p: 40% 45%  7%  9%
+[libx264 @ 0x555555607840] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 11% 20% 51%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607840] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 26% 32% 17%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607840] i8c dc,h,v,p: 54% 26% 16%  4%
+[libx264 @ 0x555555607840] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607840] ref P L0: 67.8%  7.0% 16.7%  8.5%
+[libx264 @ 0x555555607840] ref B L0: 81.2% 15.6%  3.2%
+[libx264 @ 0x555555607840] ref B L1: 91.1%  8.9%
+[libx264 @ 0x555555607840] kb/s:5913.90
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-opus-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-opus-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/rv06dfv4z4wqgssib91y2q6h1r8kkiix-craftplan-0.1.0.drv'...
+building '/nix/store/lppy6h8fpyw39k33zn92z8lh34968ixk-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:43709
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-sonnet-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.9s)   [rec] frame 61/300 (79.4s)   [rec] frame 91/300 (118.6s)   [rec] frame 121/300 (157.0s)   [rec] frame 151/300 (194.7s)   [rec] frame 181/300 (231.2s)   [rec] frame 211/300 (268.4s)   [rec] frame 241/300 (306.2s)   [rec] frame 271/300 (344.5s)   [rec] frame 300/300 (380.9s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-sonnet-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-216329/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-sonnet-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=    9 fps=9.0 q=24.0 size=     256KiB time=00:00:00.23 bitrate=8989.5kbits/s speed=0.233x elapsed=0:00:01.00    frame=   40 fps= 27 q=24.0 size=    1024KiB time=00:00:01.26 bitrate=6622.9kbits/s speed=0.844x elapsed=0:00:01.50    frame=   76 fps= 38 q=24.0 size=    2048KiB time=00:00:02.46 bitrate=6801.7kbits/s speed=1.23x elapsed=0:00:02.00    frame=  112 fps= 45 q=24.0 size=    3072KiB time=00:00:03.66 bitrate=6863.5kbits/s speed=1.47x elapsed=0:00:02.50    frame=  150 fps= 50 q=24.0 size=    3840KiB time=00:00:04.93 bitrate=6376.6kbits/s speed=1.64x elapsed=0:00:03.00    frame=  186 fps= 53 q=24.0 size=    4608KiB time=00:00:06.13 bitrate=6154.7kbits/s speed=1.75x elapsed=0:00:03.50    frame=  225 fps= 56 q=24.0 size=    5632KiB time=00:00:07.43 bitrate=6206.9kbits/s speed=1.86x elapsed=0:00:04.00    frame=  264 fps= 59 q=24.0 size=    6656KiB time=00:00:08.73 bitrate=6243.5kbits/s speed=1.94x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:7626KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.058339%
+frame=  300 fps= 62 q=-1.0 Lsize=    7631KiB time=00:00:09.93 bitrate=6293.2kbits/s speed=2.06x elapsed=0:00:04.81    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.00  size:157817
+[libx264 @ 0x555555607700] frame P:76    Avg QP:14.74  size: 49177
+[libx264 @ 0x555555607700] frame B:222   Avg QP:20.50  size: 16918
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 25.1% 34.4% 40.5%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.0%  2.3%  1.9%  P16..4: 18.3% 17.9% 13.2%  0.0%  0.0%    skip:45.4%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.1%  0.4%  0.1%  B16..8: 28.6% 10.3%  4.5%  direct: 2.5%  skip:53.4%  L0:46.4% L1:47.6% BI: 6.0%
+[libx264 @ 0x555555607700] 8x8 transform intra:44.9% inter:42.3%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 41.3% 47.6% 35.2% inter: 8.7% 7.3% 3.1%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 38% 45%  7% 10%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu:  9% 19% 53%  3%  3%  2%  4%  2%  5%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 24% 32% 16%  3%  4%  3%  7%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 56% 26% 14%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 67.5%  8.1% 16.3%  8.1%
+[libx264 @ 0x555555607700] ref B L0: 80.8% 15.9%  3.3%
+[libx264 @ 0x555555607700] ref B L1: 91.1%  8.9%
+[libx264 @ 0x555555607700] kb/s:6247.04
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-sonnet-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-sonnet-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/jg7bky2wwmkdi2h5y8ffqfh2kb7c9kcn-craftplan-0.1.0.drv'...
+building '/nix/store/q08mjzmg9jwsag8581b8nidp87vmzwgv-nix-shell-env.drv'...
+[rec] static: http://127.0.0.1:40505
+[rec] waiting for chromium...
+[rec] Chrome/147.0.7727.55
+[rec] waiting for __demoReady...
+[rec] ready. {"width":1080,"height":1920,"duration":10,"fps":30}
+[rec] 300 frames at 30fps, 1080x1920 → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-fable-10s.mp4
+[rec] frame 1/300 (1.2s)   [rec] frame 31/300 (39.7s)   [rec] frame 61/300 (79.2s)   [rec] frame 91/300 (118.4s)   [rec] frame 121/300 (156.7s)   [rec] frame 151/300 (194.7s)   [rec] frame 181/300 (231.8s)   [rec] frame 211/300 (269.8s)   [rec] frame 241/300 (308.0s)   [rec] frame 271/300 (346.8s)   [rec] frame 300/300 (384.2s)   
+[rec] capture done
+[rec] ffmpeg → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-fable-10s.mp4
+ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers
+  built with gcc 15.2.0 (GCC)
+  configuration: --disable-static --prefix=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1 --target_os=linux --arch=x86_64 --pkg-config=pkg-config --enable-gpl --enable-version3 --disable-nonfree --disable-static --enable-shared --enable-pic --disable-thumb --disable-small --enable-runtime-cpudetect --disable-gray --enable-swscale-alpha --enable-hardcoded-tables --enable-safe-bitstream-reader --enable-pthreads --disable-w32threads --disable-os2threads --enable-network --enable-pixelutils --datadir=/nix/store/ykdiwss85gcm7vqxn3psj71nrdwfvjrp-ffmpeg-8.0.1-data/share/ffmpeg --enable-ffmpeg --enable-ffplay --enable-ffprobe --bindir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-bin/bin --enable-avcodec --enable-avdevice --enable-avfilter --enable-avformat --enable-avutil --enable-swresample --enable-swscale --libdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-lib/lib --incdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-dev/include --enable-doc --enable-htmlpages --enable-manpages --mandir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-man/share/man --enable-podpages --enable-txtpages --docdir=/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-ffmpeg-8.0.1-doc/share/doc/ffmpeg --enable-alsa --enable-amf --enable-libaom --disable-libaribb24 --disable-libaribcaption --enable-libass --disable-avisynth --enable-libbluray --disable-libbs2b --enable-bzlib --disable-libcaca --disable-libcdio --disable-libcelt --disable-chromaprint --disable-libcodec2 --disable-cuda --enable-cuda-llvm --disable-cuda-nvcc --enable-cuvid --enable-libdav1d --disable-libdavs2 --disable-libdc1394 --enable-libdrm --disable-libdvdnav --disable-libdvdread --disable-libfdk-aac --enable-ffnvcodec --disable-libflite --enable-fontconfig --enable-libfontconfig --enable-libfreetype --disable-frei0r --enable-libfribidi --disable-libgme --enable-gmp --enable-gnutls --disable-libgsm --enable-libharfbuzz --enable-iconv --disable-libilbc --disable-libjack --disable-libjxl --disable-libkvazaar --disable-ladspa --disable-liblc3 --disable-liblcevc-dec --disable-lcms2 --enable-lzma --disable-metal --disable-libmfx --disable-libmodplug --enable-libmp3lame --disable-libmysofa --disable-libnpp --enable-nvdec --enable-nvenc --disable-openal --enable-liboapv --enable-opencl --disable-libopencore-amrnb --disable-libopencore-amrwb --disable-opengl --disable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-libopus --disable-libplacebo --enable-libpulse --disable-libqrencode --disable-libquirc --disable-librav1e --enable-librist --disable-librtmp --disable-librubberband --disable-libsmbclient --enable-sdl2 --disable-libshaderc --disable-libshine --disable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --disable-librsvg --enable-libsvtav1 --disable-libtensorflow --enable-libtheora --disable-libtwolame --disable-libuavs3d --enable-libv4l2 --enable-v4l2-m2m --enable-vaapi --enable-vdpau --disable-libvpl --enable-libvidstab --disable-libvmaf --disable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-vulkan --disable-libvvenc --enable-libwebp --disable-whisper --enable-libx264 --enable-libx265 --disable-libxavs --disable-libxavs2 --disable-libxcb --disable-libxcb-shape --disable-libxcb-shm --disable-libxcb-xfixes --disable-libxevd --disable-libxeve --disable-xlib --enable-libxml2 --enable-libxvid --enable-libzimg --enable-zlib --disable-libzmq --enable-libzvbi --disable-debug --enable-optimizations --disable-extra-warnings --disable-stripping
+  libavutil      60.  8.100 / 60.  8.100
+  libavcodec     62. 11.100 / 62. 11.100
+  libavformat    62.  3.100 / 62.  3.100
+  libavdevice    62.  1.100 / 62.  1.100
+  libavfilter    11.  4.100 / 11.  4.100
+  libswscale      9.  1.100 /  9.  1.100
+  libswresample   6.  1.100 /  6.  1.100
+Input #0, image2, from '/home/edvin/dev/craftplan/recordings/frames-218291/frame_%05d.png':
+  Duration: 00:00:10.00, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1080x1920, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
+Press [q] to stop, [?] for help
+[libx264 @ 0x555555607700] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 0x555555607700] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 0x555555607700] 264 - core 164 - H.264/MPEG-4 AVC codec - Copyleft 2003-2025 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=18 lookahead_threads=3 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=18.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to '/home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-fable-10s.mp4':
+  Metadata:
+    encoder         : Lavf62.3.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, progressive), 1080x1920, q=2-31, 30 fps, 15360 tbn
+    Metadata:
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.50    frame=   12 fps= 12 q=24.0 size=     256KiB time=00:00:00.33 bitrate=6292.6kbits/s speed=0.333x elapsed=0:00:01.00    frame=   42 fps= 28 q=24.0 size=    1024KiB time=00:00:01.33 bitrate=6291.7kbits/s speed=0.888x elapsed=0:00:01.50    frame=   80 fps= 40 q=24.0 size=    2048KiB time=00:00:02.60 bitrate=6452.9kbits/s speed= 1.3x elapsed=0:00:02.00    frame=  113 fps= 45 q=24.0 size=    3072KiB time=00:00:03.70 bitrate=6801.7kbits/s speed=1.48x elapsed=0:00:02.50    frame=  151 fps= 50 q=24.0 size=    3840KiB time=00:00:04.96 bitrate=6333.8kbits/s speed=1.65x elapsed=0:00:03.00    frame=  186 fps= 53 q=24.0 size=    4608KiB time=00:00:06.13 bitrate=6154.7kbits/s speed=1.75x elapsed=0:00:03.50    frame=  224 fps= 56 q=24.0 size=    5632KiB time=00:00:07.40 bitrate=6234.8kbits/s speed=1.85x elapsed=0:00:04.00    frame=  267 fps= 59 q=24.0 size=    6656KiB time=00:00:08.83 bitrate=6172.8kbits/s speed=1.96x elapsed=0:00:04.50    [out#0/mp4 @ 0x5555555fe100] video:7581KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.058690%
+frame=  300 fps= 63 q=-1.0 Lsize=    7585KiB time=00:00:09.93 bitrate=6255.6kbits/s speed=2.08x elapsed=0:00:04.78    
+[libx264 @ 0x555555607700] frame I:2     Avg QP:12.75  size:154834
+[libx264 @ 0x555555607700] frame P:76    Avg QP:15.87  size: 48142
+[libx264 @ 0x555555607700] frame B:222   Avg QP:21.54  size: 17089
+[libx264 @ 0x555555607700] consecutive B-frames:  1.3%  0.0%  0.0% 98.7%
+[libx264 @ 0x555555607700] mb I  I16..4: 24.4% 36.0% 39.6%
+[libx264 @ 0x555555607700] mb P  I16..4:  1.1%  2.4%  2.2%  P16..4: 19.6% 17.8% 12.6%  0.0%  0.0%    skip:44.2%
+[libx264 @ 0x555555607700] mb B  I16..4:  0.2%  0.4%  0.2%  B16..8: 30.2% 10.2%  4.1%  direct: 2.4%  skip:52.4%  L0:46.3% L1:47.9% BI: 5.8%
+[libx264 @ 0x555555607700] 8x8 transform intra:42.7% inter:43.5%
+[libx264 @ 0x555555607700] coded y,uvDC,uvAC intra: 41.5% 49.4% 38.1% inter: 8.6% 7.0% 2.7%
+[libx264 @ 0x555555607700] i16 v,h,dc,p: 38% 45%  7% 10%
+[libx264 @ 0x555555607700] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 12% 18% 51%  2%  3%  2%  4%  2%  4%
+[libx264 @ 0x555555607700] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 26% 31% 17%  3%  4%  3%  6%  2%  6%
+[libx264 @ 0x555555607700] i8c dc,h,v,p: 54% 26% 16%  4%
+[libx264 @ 0x555555607700] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 0x555555607700] ref P L0: 67.4%  8.2% 16.3%  8.1%
+[libx264 @ 0x555555607700] ref B L0: 82.2% 14.9%  2.9%
+[libx264 @ 0x555555607700] ref B L1: 91.7%  8.3%
+[libx264 @ 0x555555607700] kb/s:6209.73
+[rec] markers -> /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-fable-10s.markers.json
+[rec] done. /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-fable-10s.mp4
+[rec] latest -> /home/edvin/dev/craftplan/recordings/latest.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/qf1jsa0j1i4s9afailrxsxk3s31w19mx-craftplan-0.1.0.drv'...
+building '/nix/store/3dv25qq2yaj5m2piwmk25ydjq76sy9rx-nix-shell-env.drv'...
+[stitch-grid] 4 cells @ 540x960 → /home/edvin/dev/craftplan/recordings/shorts-mode/yoda-4x-grid-10s.mp4
+warning: Git tree '/home/edvin/dev/craftplan' is dirty
+evaluation warning: 'system' has been renamed to/replaced by 'stdenv.hostPlatform.system'
+building '/nix/store/030r01jxr0vh6hwwq45cwbq199bn3ahj-craftplan-0.1.0.drv'...
+building '/nix/store/ipfc3rjrgjyinks81kb1s340k3wp39pb-nix-shell-env.drv'...
+[mux] yoda-4x-grid-10s.mp4 (10.00s) + demon-jvna.mp3 @ 3s
+17:58:46Z   GRID DONE: recordings/shorts-mode/yoda-4x-grid-10s-demon.mp4
+17:58:46Z grid-batch end. completed: mario pikachu shrek optimus-prime yoda
