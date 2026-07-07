@@ -85,6 +85,7 @@ You write JavaScript that calls builder functions. Your code runs in a sandbox t
 ${SANDBOX_API_DOC}
 
 COORDS: Relative - origin (0,0,0) is the player's feet at the build location, on top of the ground. +X east, +Y up, +Z south.
+CAMERA: The finished build is filmed from the NORTH looking south, so the north-facing side (toward -Z) is the FRONT the viewer sees and is also the best-lit side. Orient your subject so its front — face, eyes, chest, whatever is meant to be seen — faces NORTH / -Z, with the body's depth running back toward +Z (south). Angling slightly toward the east (+X) catches extra light.
 Limits: X,Z in [-${RADIUS},${RADIUS}], Y in [-8,${VRADIUS * 2 + 5}]. Negative Y allowed for foundations / digging in.
 Budget: up to ${BUDGET} SOLID blocks. AIR is free and does NOT count against the budget — use it to carve window openings, dig craters, or remove terrain. Do NOT blanket-clear the whole site with a giant AIR box; it is unnecessary.
 

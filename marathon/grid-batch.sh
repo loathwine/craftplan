@@ -36,7 +36,15 @@ gen_cacheplan() { # key model suffix timeout -> 0 ok, 1 stop
 
 gen_sonnet5() { # key -> 0 ok, 1 stop
   local key="$1" stream="marathon/${key}-sonnet5.stream.jsonl" raw
-  cat "prompts/${key}-4x.prompt.txt" | timeout 900 claude -p --model claude-sonnet-5 \
+  # Regenerate the prompt from the current cache-plan template (now includes the
+  # CAMERA/north-facing line) into a .v2 file, so sonnet sees byte-identical text
+  # to what haiku/opus get via cache-plan. The original *.prompt.txt is left as
+  # the record of what the cached fable half saw (old prompt, no CAMERA line).
+  local pf="prompts/${key}-4x.v2.prompt.txt"
+  nix develop .#record --command node scripts/cache-plan.mjs \
+    --slug "${key}-4x-sonnet" --prompt "$(header_for "$key")" \
+    --dump-prompt "$pf" >>"$LOG" 2>&1
+  cat "$pf" | timeout 900 claude -p --model claude-sonnet-5 \
     --effort high --output-format stream-json --verbose > "$stream" 2>&1
   raw=$(nix develop .#record --command node marathon/kk-extract.mjs "$stream")
   if [ "${#raw}" -gt 200 ]; then
