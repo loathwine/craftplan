@@ -166,6 +166,16 @@ export function setupSky(scene, opts = {}) {
   scene.add(new THREE.AmbientLight(0xb0c4d8, o.ambientIntensity));
   scene.add(new THREE.HemisphereLight(o.hemiSky, o.hemiGround, o.hemiIntensity));
 
+  // Facing-QA mode: near-uniform lighting so a build's front is never hidden in
+  // shadow (the directional sun lights only N+E, which can mask a S/W-facing
+  // front). Disable shadows and flood with white ambient; keep a faint sun for
+  // minimal form. Not for finished renders — orientation diagnosis only.
+  if (o.qaFlat) {
+    sun.castShadow = false;
+    sun.intensity = 0.35;
+    scene.add(new THREE.AmbientLight(0xffffff, 0.95));
+  }
+
   let ocean = null;
   if (o.ocean) {
     const e = o.oceanExtent;

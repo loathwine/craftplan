@@ -547,7 +547,8 @@ export async function startRecorder() {
   setupRenderer(renderer);
 
   const moonlight = params.get('moonlight') === '1';
-  const skyHandle = setupSky(scene, { fogNear: 120, fogFar: 360, moonlight });
+  const qaFlat = params.get('qaFlat') === '1';
+  const skyHandle = setupSky(scene, { fogNear: 120, fogFar: 360, moonlight, qaFlat });
   // Stronger bloom for moonlight: the moon disc + any bright rim lighting
   // should bloom harder against the dark sky to sell the night atmosphere.
   const composer = setupComposer(renderer, scene, camera, W, H, moonlight
