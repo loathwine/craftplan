@@ -9856,6 +9856,12 @@
     },
     {
       "x": 0,
+      "y": 13,
+      "z": 23,
+      "block": 10
+    },
+    {
+      "x": 0,
       "y": 14,
       "z": 22,
       "block": 10
@@ -13834,5 +13840,7 @@
     }
   ],
   "createdAt": "2026-07-07T20:25:49.332Z",
-  "elapsedMs": 63301
+  "elapsedMs": 63301,
+  "rederivedAt": "2026-07-08",
+  "rederiveNote": "full build recovered from saved code with lifted limits"
 }

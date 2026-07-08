@@ -112,10 +112,17 @@ Output ONLY JavaScript. No markdown fences, no prose. Just code:`;
     process.exit(0);
   }
   console.log(`[plan] calling Claude (${MODEL}, effort=${EFFORT}) for "${PROMPT}" (budget ${BUDGET}, radius ${RADIUS}, timeout ${TIMEOUT_MS}ms)...`);
+  // "Limits are suggestions." The PROMPT states RADIUS/VRADIUS/BUDGET to guide
+  // composition, but ENFORCEMENT is a generous safety ceiling so we never DROP
+  // blocks the model actually placed. The old tight cap (maxBlocks=BUDGET, e.g.
+  // 4000) truncated big builds *by emit order* — a head built last simply
+  // vanished (king-kong/thanos-opus lost their upper bodies). RAW_OP_CAP in
+  // ai.mjs (400k) stays the true runaway guard.
+  const ENF = { maxX: 40, maxZ: 40, maxY: 64, minY: -24, maxBlocks: 120000 };
   let aiResult;
   try {
     aiResult = await planWithAI(prompt, {
-      model: MODEL, maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET, timeoutMs: TIMEOUT_MS, effort: EFFORT,
+      model: MODEL, ...ENF, timeoutMs: TIMEOUT_MS, effort: EFFORT,
     });
   } catch (e) {
     if (e.llmCode || e.llmStdout) {

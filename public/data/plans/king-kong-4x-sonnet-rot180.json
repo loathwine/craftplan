@@ -24007,8 +24007,166 @@
       "y": 29,
       "z": 1,
       "block": 7
+    },
+    {
+      "x": -19,
+      "y": 29,
+      "z": 0,
+      "block": 7
+    },
+    {
+      "x": -19,
+      "y": 31,
+      "z": 4,
+      "block": 7
+    },
+    {
+      "x": -19,
+      "y": 31,
+      "z": 3,
+      "block": 7
+    },
+    {
+      "x": -19,
+      "y": 31,
+      "z": 2,
+      "block": 7
+    },
+    {
+      "x": -19,
+      "y": 31,
+      "z": 1,
+      "block": 7
+    },
+    {
+      "x": -19,
+      "y": 31,
+      "z": 0,
+      "block": 7
+    },
+    {
+      "x": -19,
+      "y": 30,
+      "z": 2,
+      "block": 11
+    },
+    {
+      "x": -16,
+      "y": 30,
+      "z": 2,
+      "block": 3
+    },
+    {
+      "x": -22,
+      "y": 30,
+      "z": 2,
+      "block": 3
+    },
+    {
+      "x": 22,
+      "y": 26,
+      "z": -6,
+      "block": 7
+    },
+    {
+      "x": 21,
+      "y": 26,
+      "z": -6,
+      "block": 7
+    },
+    {
+      "x": 19,
+      "y": 26,
+      "z": -6,
+      "block": 7
+    },
+    {
+      "x": 18,
+      "y": 26,
+      "z": -6,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 25,
+      "z": -4,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 25,
+      "z": -5,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 25,
+      "z": -6,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 25,
+      "z": -7,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 25,
+      "z": -8,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "z": -4,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "z": -5,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "z": -6,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "z": -7,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 27,
+      "z": -8,
+      "block": 7
+    },
+    {
+      "x": 20,
+      "y": 26,
+      "z": -6,
+      "block": 11
+    },
+    {
+      "x": 23,
+      "y": 26,
+      "z": -6,
+      "block": 3
+    },
+    {
+      "x": 17,
+      "y": 26,
+      "z": -6,
+      "block": 3
     }
   ],
   "createdAt": "2026-07-05T22:28:34.456Z",
-  "note": "derived: build rotated 180 deg (x,z)->(-x,-z) so the front faces the lit hero angle; original sonnet plan untouched"
+  "note": "derived: build rotated 180 deg (x,z)->(-x,-z) so the front faces the lit hero angle; original sonnet plan untouched",
+  "rederivedAt": "2026-07-08",
+  "rederiveNote": "rot180 rebuilt from re-derived base"
 }

@@ -44,8 +44,12 @@ const end = dump.indexOf('// --- raw stdout ---');
 const raw = dump.slice(start, end > start ? end : undefined).trim();
 const code = extractCode(raw);
 
+// "Limits are suggestions" — enforce a generous safety ceiling, not the tight
+// prompt budget, so we never drop blocks the model placed (a head built last
+// used to be truncated by the old maxBlocks=BUDGET cap). RADIUS/VRADIUS/BUDGET
+// args are kept for the AIR-carve filter below, not for clipping the build.
 const relPlan = runSandbox(code, {
-  maxX: RADIUS, maxZ: RADIUS, maxY: VRADIUS * 2 + 5, minY: -8, maxBlocks: BUDGET,
+  maxX: 40, maxZ: 40, maxY: 64, minY: -24, maxBlocks: 120000,
 });
 // Same no-op-sky-AIR filter as cache-plan.mjs.
 const plan = relPlan.filter(b => b.block !== 0
