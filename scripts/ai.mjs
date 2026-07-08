@@ -143,6 +143,19 @@ export function makeSandbox(opts = {}) {
 export function extractCode(stdout) {
   const fence = stdout.match(/```(?:javascript|js)?\s*([\s\S]*?)```/);
   let code = fence ? fence[1].trim() : stdout.trim();
+  // No fence: models sometimes narrate a sentence before the code
+  // (e.g. "No stray file was created. Here's the Kirby build:\n\nconst ...").
+  // Feeding that prose to the vm is a SyntaxError, so when the text doesn't
+  // already start with code, drop leading lines up to the first line that
+  // begins a JS statement (declaration, control flow, comment, or a call like
+  // block(/cube(). If nothing looks like code, leave it be so it fails loudly.
+  if (!fence) {
+    const codeStart = /^\s*(?:\/\/|\/\*|export |const |let |var |function |async |for\s*\(|while\s*\(|if\s*\(|switch\s*\(|do\b|return\b|[A-Za-z_$][\w$.]*\s*\(|[{}[\]])/;
+    const lines = code.split('\n');
+    let i = 0;
+    while (i < lines.length && !codeStart.test(lines[i])) i++;
+    if (i > 0 && i < lines.length) code = lines.slice(i).join('\n').trim();
+  }
   // The sandbox is a plain vm context, not an ES module. Models sometimes
   // prefix `export const meta = ...` (bleeding in the workflow-script
   // convention) or `export function`, which is a SyntaxError here. Strip
