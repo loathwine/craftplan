@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CraftPlan — Model QA Inspector</title>
+<style>
+  :root { --bg:#12151b; --panel:#1c2029; --line:#2c313d; --fg:#e6e9ef; --mut:#8b93a4;
+          --ok:#28c76f; --rot:#f6a821; --bad:#e5484d; --accent:#5b8def; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+              font:13px/1.4 -apple-system,Segoe UI,Roboto,sans-serif; overflow:hidden; }
+  #app { display:grid; grid-template-columns:300px 1fr; height:100%; }
+  #side { background:var(--panel); border-right:1px solid var(--line); padding:12px;
+          overflow-y:auto; display:flex; flex-direction:column; gap:12px; }
+  #stage { position:relative; }
+  canvas { display:block; width:100%; height:100%; }
+  h1 { font-size:14px; margin:0 0 2px; letter-spacing:.02em; }
+  .sub { color:var(--mut); font-size:11px; }
+  .row { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  select, input[type=text] { width:100%; background:#0e1116; color:var(--fg);
+          border:1px solid var(--line); border-radius:6px; padding:6px 8px; font:inherit; }
+  button { background:#262b36; color:var(--fg); border:1px solid var(--line);
+           border-radius:6px; padding:6px 9px; font:inherit; cursor:pointer; }
+  button:hover { border-color:var(--accent); }
+  button.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .tabs button { flex:1; }
+  .tabs button:disabled { opacity:.3; cursor:not-allowed; }
+  .rotbtns button { flex:1; }
+  .rotbtns button.active { background:var(--rot); border-color:var(--rot); color:#111; }
+  .status button { flex:1; font-weight:600; }
+  #st-ok.active   { background:var(--ok);  border-color:var(--ok);  color:#062;   }
+  #st-rot.active  { background:var(--rot); border-color:var(--rot); color:#311;   }
+  #st-bad.active  { background:var(--bad); border-color:var(--bad); color:#fff;   }
+  .fieldset { border:1px solid var(--line); border-radius:8px; padding:9px; }
+  .fieldset > .lbl { color:var(--mut); font-size:10px; text-transform:uppercase;
+           letter-spacing:.08em; margin-bottom:6px; }
+  .hud { position:absolute; top:10px; left:12px; background:rgba(10,12,16,.72);
+         padding:8px 11px; border-radius:8px; font-size:12px; pointer-events:none; }
+  .hud b { color:#fff; } .hud .m { color:var(--mut); }
+  .badge { display:inline-block; padding:1px 6px; border-radius:10px; font-size:10px;
+           font-weight:700; margin-left:4px; }
+  .b-ok{background:var(--ok);color:#062;} .b-rot{background:var(--rot);color:#311;}
+  .b-bad{background:var(--bad);color:#fff;} .b-none{background:#333;color:var(--mut);}
+  #progress { font-size:11px; color:var(--mut); }
+  .nav button { flex:1; }
+  kbd { background:#0e1116; border:1px solid var(--line); border-radius:4px; padding:0 4px; font-size:10px; }
+  #toast { position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+           background:var(--accent); color:#fff; padding:6px 14px; border-radius:20px;
+           opacity:0; transition:opacity .3s; font-size:12px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="side">
+    <div>
+      <h1>Model QA Inspector</h1>
+      <div class="sub">Orbit: drag · zoom: scroll · snap build to 0/90/180/270</div>
+    </div>
+
+    <div class="fieldset">
+      <div class="lbl">Subject</div>
+      <select id="subject"></select>
+      <div class="row nav" style="margin-top:6px">
+        <button id="prevSub">◀ prev</button>
+        <button id="nextSub">next ▶</button>
+      </div>
+    </div>
+
+    <div class="fieldset">
+      <div class="lbl">Model</div>
+      <div class="row tabs" id="modelTabs"></div>
+    </div>
+
+    <div class="fieldset">
+      <div class="lbl">Rotate build to face camera</div>
+      <div class="row rotbtns" id="rotBtns">
+        <button data-rot="0">0°</button>
+        <button data-rot="90">90°</button>
+        <button data-rot="180">180°</button>
+        <button data-rot="270">270°</button>
+      </div>
+      <div class="row" style="margin-top:6px">
+        <button id="hero" style="flex:1">⌖ reset to hero view</button>
+      </div>
+    </div>
+
+    <div class="fieldset">
+      <div class="lbl">Verdict for this quadrant</div>
+      <div class="row status">
+        <button id="st-ok">✓ OK</button>
+        <button id="st-rot">↻ rotate</button>
+        <button id="st-bad">✗ broken</button>
+      </div>
+      <input id="note" type="text" placeholder="note (optional)" style="margin-top:6px">
+    </div>
+
+    <div class="fieldset">
+      <div class="lbl">Session</div>
+      <div id="progress"></div>
+      <div class="row" style="margin-top:6px">
+        <button id="export" style="flex:1">⬇ export decisions.json</button>
+      </div>
+      <div class="sub" style="margin-top:6px">
+        keys: <kbd>←</kbd><kbd>→</kbd> model · <kbd>↑</kbd><kbd>↓</kbd> subject ·
+        <kbd>1..4</kbd> rot · <kbd>o</kbd>/<kbd>r</kbd>/<kbd>b</kbd> verdict
+      </div>
+    </div>
+  </div>
+
+  <div id="stage">
+    <canvas id="c"></canvas>
+    <div class="hud" id="hud"></div>
+    <div id="toast"></div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { BLOCK_COLORS, colorVariation, TRANSPARENT_BLOCKS } from './js/Textures.js';
+
+const LS_KEY = 'craftplan-qa-decisions';
+const $ = id => document.getElementById(id);
+const decisions = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+
+// Rotation remaps about the plan origin (0,0,0) — identical to the production
+// fix transforms, so a chosen rotation applies verbatim to the plan later.
+const REMAP = {
+  0:   (x, z) => [x, z],
+  90:  (x, z) => [z, -x],
+  180: (x, z) => [-x, -z],
+  270: (x, z) => [-z, x],
+};
+
+let index, subjectIdx = 0, model = 'opus', rotation = 0, curPlanKey = null;
+
+// ---- three setup ----------------------------------------------------------
+const canvas = $('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xa6cee0);
+scene.fog = new THREE.Fog(0xa6cee0, 120, 400);
+
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 2000);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+// lighting ~ sky.js (sun az135 el42), flat enough that no face is pure black
+scene.add(new THREE.AmbientLight(0xffffff, 0.42));
+scene.add(new THREE.HemisphereLight(0xbedaf0, 0x3a4a2a, 0.6));
+const sun = new THREE.DirectionalLight(0xfff4d4, 0.95);
+{ const phi = THREE.MathUtils.degToRad(90 - 42), th = THREE.MathUtils.degToRad(135);
+  sun.position.setFromSphericalCoords(120, phi, th); }
+scene.add(sun);
+
+// ground + hero-side marker (front should face the camera at -Z)
+const ground = new THREE.Mesh(
+  new THREE.CircleGeometry(300, 48),
+  new THREE.MeshLambertMaterial({ color: 0x4c7a2f }));
+ground.rotation.x = -Math.PI / 2; ground.position.y = -0.01; scene.add(ground);
+
+function makeLabel(text, color) {
+  const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64;
+  const g = cv.getContext('2d'); g.fillStyle = 'rgba(0,0,0,0.55)'; g.fillRect(0,0,256,64);
+  g.fillStyle = color; g.font = 'bold 26px sans-serif'; g.textAlign = 'center';
+  g.fillText(text, 128, 42);
+  const tex = new THREE.CanvasTexture(cv);
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false }));
+  sp.scale.set(14, 3.5, 1); return sp;
+}
+const frontMarker = makeLabel('▲ CAMERA / FRONT', '#ffd54a');
+scene.add(frontMarker);
+
+let buildGroup = null;
+const box = new THREE.Box3();
+
+function clearBuild() { if (buildGroup) { scene.remove(buildGroup);
+  buildGroup.traverse(o => { o.geometry?.dispose?.(); o.material?.dispose?.(); }); buildGroup = null; } }
+
+function buildMesh(plan) {
+  clearBuild();
+  buildGroup = new THREE.Group();
+  const solids = plan.filter(b => b.block !== 0);
+  // remap by rotation, compute bounds for centering
+  const pts = solids.map(b => { const [x, z] = REMAP[rotation](b.x, b.z); return { x, y: b.y, z, block: b.block }; });
+  let minX=1e9,maxX=-1e9,minY=1e9,minZ=1e9,maxZ=-1e9,maxY=-1e9;
+  for (const p of pts){ minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);
+    maxY=Math.max(maxY,p.y);minZ=Math.min(minZ,p.z);maxZ=Math.max(maxZ,p.z); }
+  const cx=(minX+maxX)/2, cz=(minZ+maxZ)/2;
+  const opaque = pts.filter(p => !TRANSPARENT_BLOCKS.has(p.block));
+  const glass  = pts.filter(p =>  TRANSPARENT_BLOCKS.has(p.block));
+  const geo = new THREE.BoxGeometry(1, 1, 1);
+  const mk = (arr, mat) => {
+    if (!arr.length) return;
+    const im = new THREE.InstancedMesh(geo, mat, arr.length);
+    const m = new THREE.Matrix4(); const col = new THREE.Color();
+    arr.forEach((p, i) => {
+      m.setPosition(p.x - cx, p.y - minY + 0.5, p.z - cz);
+      im.setMatrixAt(i, m);
+      const c = (BLOCK_COLORS[p.block] || { side: [0.6,0.6,0.6] }).side;
+      const v = colorVariation(p.x, p.y, p.z);
+      col.setRGB(Math.min(1,c[0]*v), Math.min(1,c[1]*v), Math.min(1,c[2]*v), THREE.SRGBColorSpace);
+      im.setColorAt(i, col);
+    });
+    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
+    buildGroup.add(im);
+  };
+  mk(opaque, new THREE.MeshLambertMaterial());
+  mk(glass, new THREE.MeshLambertMaterial({ transparent: true, opacity: 0.55 }));
+  scene.add(buildGroup);
+  const h = maxY - minY + 1, span = Math.max(maxX-minX, maxZ-minZ, h) + 1;
+  box.set(new THREE.Vector3(-span/2, 0, -span/2), new THREE.Vector3(span/2, h, span/2));
+  // place the front marker just outside the build on the -Z (camera/hero) side
+  frontMarker.position.set(0, 2, -(maxZ-minZ)/2 - 6);
+  return { h, span };
+}
+
+function heroView(h, span) {
+  const dist = Math.max(span * 1.5, h * 1.4, 14);
+  camera.position.set(0, h * 0.55, -dist);      // due north (-Z), looking +Z
+  controls.target.set(0, h * 0.42, 0);
+  controls.update();
+}
+
+// ---- data + UI ------------------------------------------------------------
+async function loadPlan() {
+  const subj = index.subjects[subjectIdx];
+  const entry = subj.models[model];
+  renderModelTabs();
+  if (!entry || !entry.file) { clearBuild(); updateHud('(no plan for this model)'); return; }
+  curPlanKey = `${subj.key}/${model}`;
+  const res = await fetch(`data/plans/${entry.file}`);
+  const data = await res.json();
+  const { h, span } = buildMesh(data.plan);
+  heroView(h, span);
+  restoreVerdict();
+  updateHud(`${data.plan.filter(b=>b.block!==0).length} blocks`);
+}
+
+function updateHud(extra='') {
+  const subj = index.subjects[subjectIdx];
+  const d = decisions[curPlanKey];
+  const badge = !d ? '<span class="badge b-none">unreviewed</span>'
+    : d.status==='ok' ? '<span class="badge b-ok">OK</span>'
+    : d.status==='rotate' ? `<span class="badge b-rot">rotate ${d.rotationDeg}°</span>`
+    : '<span class="badge b-bad">broken</span>';
+  $('hud').innerHTML = `<b>${subj.key}</b> <span class="m">/</span> ${model.toUpperCase()} ${badge}
+     <br><span class="m">${extra} · rotation ${rotation}° · subject ${subjectIdx+1}/${index.subjects.length}</span>`;
+}
+
+function renderSubjects() {
+  const sel = $('subject'); sel.innerHTML = '';
+  index.subjects.forEach((s, i) => {
+    const o = document.createElement('option'); o.value = i;
+    const done = index.models.filter(m => s.models[m]?.file && decisions[`${s.key}/${m}`]).length;
+    const tot = index.models.filter(m => s.models[m]?.file).length;
+    o.textContent = `${s.key}  (${done}/${tot})`;
+    sel.appendChild(o);
+  });
+  sel.value = subjectIdx;
+}
+
+function renderModelTabs() {
+  const wrap = $('modelTabs'); wrap.innerHTML = '';
+  const subj = index.subjects[subjectIdx];
+  index.models.forEach(m => {
+    const b = document.createElement('button');
+    b.textContent = m.toUpperCase(); b.disabled = !subj.models[m]?.file;
+    b.className = m === model ? 'active' : '';
+    const d = decisions[`${subj.key}/${m}`];
+    if (d) b.textContent += d.status==='ok' ? ' ✓' : d.status==='rotate' ? ' ↻' : ' ✗';
+    b.onclick = () => { model = m; rotation = decisions[`${subj.key}/${m}`]?.rotationDeg || 0; syncRot(); loadPlan(); };
+    wrap.appendChild(b);
+  });
+}
+
+function syncRot() { document.querySelectorAll('#rotBtns button').forEach(b =>
+  b.classList.toggle('active', +b.dataset.rot === rotation)); }
+
+function restoreVerdict() {
+  const d = decisions[curPlanKey] || {};
+  $('note').value = d.note || '';
+  $('st-ok').classList.toggle('active', d.status==='ok');
+  $('st-rot').classList.toggle('active', d.status==='rotate');
+  $('st-bad').classList.toggle('active', d.status==='broken');
+  updateProgress();
+}
+
+function setVerdict(status) {
+  if (!curPlanKey) return;
+  decisions[curPlanKey] = { subject: index.subjects[subjectIdx].key, model, status,
+    rotationDeg: status==='rotate' ? rotation : (status==='ok' ? rotation : 0),
+    note: $('note').value.trim() };
+  localStorage.setItem(LS_KEY, JSON.stringify(decisions));
+  restoreVerdict(); renderModelTabs(); renderSubjects(); updateHud(); toast(`saved: ${status}`);
+}
+
+function updateProgress() {
+  let total = 0, done = 0;
+  index.subjects.forEach(s => index.models.forEach(m => {
+    if (s.models[m]?.file) { total++; if (decisions[`${s.key}/${m}`]) done++; } }));
+  const rot = Object.values(decisions).filter(d=>d.status==='rotate').length;
+  const bad = Object.values(decisions).filter(d=>d.status==='broken').length;
+  $('progress').innerHTML = `reviewed <b>${done}/${total}</b> · ${rot} to rotate · ${bad} broken`;
+}
+
+let toastT;
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.style.opacity=1;
+  clearTimeout(toastT); toastT=setTimeout(()=>t.style.opacity=0, 900); }
+
+// ---- events ---------------------------------------------------------------
+$('subject').onchange = e => { subjectIdx = +e.target.value; rotation = 0; syncRot(); loadPlan(); };
+$('prevSub').onclick = () => { subjectIdx = (subjectIdx - 1 + index.subjects.length) % index.subjects.length; rotation=0; syncRot(); renderSubjects(); loadPlan(); };
+$('nextSub').onclick = () => { subjectIdx = (subjectIdx + 1) % index.subjects.length; rotation=0; syncRot(); renderSubjects(); loadPlan(); };
+document.querySelectorAll('#rotBtns button').forEach(b => b.onclick = () => {
+  rotation = +b.dataset.rot; syncRot();
+  const subj = index.subjects[subjectIdx];
+  fetch(`data/plans/${subj.models[model].file}`).then(r=>r.json()).then(d=>{
+    const { h, span } = buildMesh(d.plan); heroView(h, span); updateHud(`${d.plan.filter(x=>x.block!==0).length} blocks`); });
+});
+$('hero').onclick = () => { const s = box.getSize(new THREE.Vector3()); heroView(s.y, Math.max(s.x, s.z)); };
+$('st-ok').onclick = () => setVerdict('ok');
+$('st-rot').onclick = () => setVerdict('rotate');
+$('st-bad').onclick = () => setVerdict('broken');
+$('note').onchange = () => { if (decisions[curPlanKey]) setVerdict(decisions[curPlanKey].status); };
+$('export').onclick = () => {
+  const payload = { generatedAt: new Date().toISOString(),
+    decisions: Object.entries(decisions).map(([k,v]) => ({ key:k, ...v })) };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'qa-decisions.json'; a.click();
+};
+
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  const subj = index.subjects[subjectIdx];
+  const avail = index.models.filter(m => subj.models[m]?.file);
+  if (e.key === 'ArrowRight') { const i=(avail.indexOf(model)+1)%avail.length; model=avail[i]; rotation=0; syncRot(); loadPlan(); }
+  else if (e.key === 'ArrowLeft') { const i=(avail.indexOf(model)-1+avail.length)%avail.length; model=avail[i]; rotation=0; syncRot(); loadPlan(); }
+  else if (e.key === 'ArrowDown') $('nextSub').click();
+  else if (e.key === 'ArrowUp') $('prevSub').click();
+  else if (['1','2','3','4'].includes(e.key)) { rotation=[0,90,180,270][+e.key-1]; document.querySelector(`#rotBtns button[data-rot="${rotation}"]`).click(); }
+  else if (e.key==='o') $('st-ok').click();
+  else if (e.key==='r') $('st-rot').click();
+  else if (e.key==='b') $('st-bad').click();
+});
+
+function resize() { const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (canvas.width !== w || canvas.height !== h) { renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix(); } }
+function tick() { resize(); controls.update(); renderer.render(scene, camera); requestAnimationFrame(tick); }
+
+(async function init() {
+  index = await (await fetch('data/plans/qa-index.json')).json();
+  renderSubjects(); syncRot(); await loadPlan(); tick();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1241 @@
+{
+  "generatedAt": "2026-07-08T13:30:30.834Z",
+  "models": [
+    "haiku",
+    "sonnet",
+    "opus",
+    "fable"
+  ],
+  "subjects": [
+    {
+      "key": "batman",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "batman-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "batman-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "batman-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "batman-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "cerberus",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "cerberus-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "cerberus-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "cerberus-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "cerberus-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "creeper",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "creeper-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "creeper-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "creeper-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "creeper-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "cyclops",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "rot180": "cyclops-4x-fable-rot180.json",
+          "file": "cyclops-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "cyclops-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "cyclops-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "cyclops-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "darth-vader",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "darth-vader-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "darth-vader-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "darth-vader-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "darth-vader-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "dragon",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "dragon-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "dragon-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "dragon-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "dragon-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "ender-dragon",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "ender-dragon-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "ender-dragon-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "ender-dragon-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "ender-dragon-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "giant",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "giant-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "giant-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "rot180": "giant-4x-opus-rot180.json",
+          "file": "giant-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "giant-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "giant-spider",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "giant-spider-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "giant-spider-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "giant-spider-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "giant-spider-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "godzilla",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "godzilla-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "godzilla-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "godzilla-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "godzilla-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "golem",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "golem-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "golem-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "golem-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "golem-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "griffin",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "griffin-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "griffin-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "griffin-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "griffin-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "grogu",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "grogu-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "grogu-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "grogu-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "grogu-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "hulk",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "hulk-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "hulk-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "hulk-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "hulk-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "hydra",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "hydra-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "hydra-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "hydra-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "hydra-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "iron-man",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "iron-man-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "iron-man-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "iron-man-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "iron-man-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "king-kong",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "rot180": "king-kong-4x-fable-rot180.json",
+          "file": "king-kong-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "rot180": "king-kong-4x-haiku-rot180.json",
+          "file": "king-kong-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "rot180": "king-kong-4x-opus-rot180.json",
+          "file": "king-kong-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "rot180": "king-kong-4x-sonnet-rot180.json",
+          "file": "king-kong-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "kirby",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "kirby-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "kirby-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "kirby-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "kirby-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "knight",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "knight-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "knight-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "knight-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "knight-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "kraken",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "kraken-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "kraken-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "kraken-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "kraken-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "mario",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "rot180": "mario-4x-fable-rot180.json",
+          "file": "mario-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "mario-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "mario-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "mario-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "minion",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "minion-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "minion-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "minion-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "minion-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "minotaur",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "minotaur-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "minotaur-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "minotaur-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "minotaur-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "octopus",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "octopus-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "octopus-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "octopus-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "octopus-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "optimus-prime",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "optimus-prime-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "optimus-prime-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "optimus-prime-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "optimus-prime-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "pacman",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "pacman-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "pacman-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "pacman-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "pacman-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "pegasus",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "pegasus-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "pegasus-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "pegasus-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "pegasus-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "phoenix",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "phoenix-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "phoenix-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "phoenix-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "phoenix-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "pikachu",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "rot180": "pikachu-4x-fable-rot180.json",
+          "file": "pikachu-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "pikachu-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "pikachu-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "pikachu-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "pirate-ship",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "pirate-ship-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "pirate-ship-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "pirate-ship-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "pirate-ship-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "pokeball",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "pokeball-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "pokeball-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "pokeball-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "pokeball-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "r2d2",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "r2d2-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "r2d2-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "r2d2-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "r2d2-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "sea-serpent",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "sea-serpent-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "sea-serpent-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "sea-serpent-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "sea-serpent-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "shark",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "shark-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "shark-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "shark-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "shark-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "shrek",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "shrek-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "shrek-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "shrek-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "shrek-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "sonic",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "sonic-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "sonic-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "sonic-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "sonic-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "spider-man",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "spider-man-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "spider-man-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "spider-man-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "spider-man-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "spongebob",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "spongebob-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "spongebob-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "spongebob-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "spongebob-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "stormtrooper",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "stormtrooper-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "stormtrooper-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "stormtrooper-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "stormtrooper-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "terminator",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "terminator-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "terminator-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "terminator-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "terminator-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "thanos",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "thanos-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "thanos-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "thanos-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "thanos-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "trex",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "trex-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "trex-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "trex-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "trex-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "troll",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "troll-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "troll-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "troll-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "troll-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "unicorn",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "unicorn-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "unicorn-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "unicorn-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "unicorn-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "werewolf",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "werewolf-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "werewolf-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "werewolf-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "werewolf-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "xenomorph",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "xenomorph-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "xenomorph-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "xenomorph-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "xenomorph-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "yeti",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "yeti-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "yeti-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "yeti-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "yeti-4x-sonnet.json"
+        }
+      }
+    },
+    {
+      "key": "yoda",
+      "models": {
+        "fable": {
+          "model": "fable",
+          "file": "yoda-4x-fable.json"
+        },
+        "haiku": {
+          "model": "haiku",
+          "file": "yoda-4x-haiku.json"
+        },
+        "opus": {
+          "model": "opus",
+          "file": "yoda-4x-opus.json"
+        },
+        "sonnet": {
+          "model": "sonnet",
+          "file": "yoda-4x-sonnet.json"
+        }
+      }
+    }
+  ],
+  "standalone": [
+    {
+      "key": "alien-temple",
+      "file": "alien-temple.json"
+    },
+    {
+      "key": "asgard-bifrost",
+      "file": "asgard-bifrost.json"
+    },
+    {
+      "key": "at-at-walker",
+      "file": "at-at-walker.json"
+    },
+    {
+      "key": "balrog",
+      "file": "balrog.json"
+    },
+    {
+      "key": "bowsers-castle",
+      "file": "bowsers-castle.json"
+    },
+    {
+      "key": "charizard",
+      "file": "charizard.json"
+    },
+    {
+      "key": "colosseum",
+      "file": "colosseum.json"
+    },
+    {
+      "key": "crashed-ufo",
+      "file": "crashed-ufo.json"
+    },
+    {
+      "key": "death-star",
+      "file": "death-star.json"
+    },
+    {
+      "key": "demogorgon",
+      "file": "demogorgon.json"
+    },
+    {
+      "key": "dracula-castle",
+      "file": "dracula-castle.json"
+    },
+    {
+      "key": "dragon-attacking",
+      "file": "dragon-attacking.json"
+    },
+    {
+      "key": "dragon-tower",
+      "file": "dragon-tower.json"
+    },
+    {
+      "key": "dragons-fighting",
+      "file": "dragons-fighting.json"
+    },
+    {
+      "key": "dutch-windmill",
+      "file": "dutch-windmill.json"
+    },
+    {
+      "key": "eiffel-tower",
+      "file": "eiffel-tower.json"
+    },
+    {
+      "key": "frieren",
+      "file": "frieren.json"
+    },
+    {
+      "key": "frozen-citadel",
+      "file": "frozen-citadel.json"
+    },
+    {
+      "key": "glass-pagoda",
+      "file": "glass-pagoda.json"
+    },
+    {
+      "key": "greek-parthenon",
+      "file": "greek-parthenon.json"
+    },
+    {
+      "key": "hogwarts",
+      "file": "hogwarts.json"
+    },
+    {
+      "key": "hogwarts-big",
+      "file": "hogwarts-big.json"
+    },
+    {
+      "key": "hogwarts-express",
+      "file": "hogwarts-express.json"
+    },
+    {
+      "key": "iron-throne",
+      "file": "iron-throne.json"
+    },
+    {
+      "key": "knight-statue",
+      "file": "knight-statue.json"
+    },
+    {
+      "key": "leaning-tower-pisa",
+      "file": "leaning-tower-pisa.json"
+    },
+    {
+      "key": "lighthouse-on-cliff",
+      "file": "lighthouse-on-cliff.json"
+    },
+    {
+      "key": "mahoraga",
+      "file": "mahoraga.json"
+    },
+    {
+      "key": "master-sword",
+      "file": "master-sword.json"
+    },
+    {
+      "key": "mech-robot",
+      "file": "mech-robot.json"
+    },
+    {
+      "key": "millennium-falcon",
+      "file": "millennium-falcon.json"
+    },
+    {
+      "key": "minas-tirith",
+      "file": "minas-tirith.json"
+    },
+    {
+      "key": "moai",
+      "file": "moai.json"
+    },
+    {
+      "key": "naruto-kurama",
+      "file": "naruto-kurama.json"
+    },
+    {
+      "key": "octopus",
+      "file": "octopus.json"
+    },
+    {
+      "key": "pikachu",
+      "file": "pikachu.json"
+    },
+    {
+      "key": "pirate-ship",
+      "file": "pirate-ship.json"
+    },
+    {
+      "key": "pyramid",
+      "file": "pyramid.json"
+    },
+    {
+      "key": "rocinante",
+      "file": "rocinante.json"
+    },
+    {
+      "key": "ruined-cathedral",
+      "file": "ruined-cathedral.json"
+    },
+    {
+      "key": "ruined-cathedral-fable",
+      "file": "ruined-cathedral-fable.json"
+    },
+    {
+      "key": "saturn-v-rocket",
+      "file": "saturn-v-rocket.json"
+    },
+    {
+      "key": "statue-of-liberty",
+      "file": "statue-of-liberty.json"
+    },
+    {
+      "key": "stonehenge",
+      "file": "stonehenge.json"
+    },
+    {
+      "key": "sunken-pirate-ship",
+      "file": "sunken-pirate-ship.json"
+    },
+    {
+      "key": "t-rex",
+      "file": "t-rex.json"
+    },
+    {
+      "key": "taj-mahal",
+      "file": "taj-mahal.json"
+    },
+    {
+      "key": "test-house",
+      "file": "test-house.json"
+    },
+    {
+      "key": "thousand-sunny",
+      "file": "thousand-sunny.json"
+    },
+    {
+      "key": "uss-enterprise",
+      "file": "uss-enterprise.json"
+    },
+    {
+      "key": "volcano",
+      "file": "volcano.json"
+    },
+    {
+      "key": "wizard-tower",
+      "file": "wizard-tower.json"
+    },
+    {
+      "key": "world-tree",
+      "file": "world-tree.json"
+    }
+  ]
+}
