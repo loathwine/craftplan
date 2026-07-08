@@ -1,0 +1,1115 @@
+{
+  "generatedFor": "combined QA-rotation + truncation re-render",
+  "excluded": [
+    "dragon",
+    "giant",
+    "king-kong",
+    "pokeball"
+  ],
+  "subjects": [
+    {
+      "subject": "batman",
+      "clips": {
+        "haiku": "batman-4x-haiku-10s.mp4",
+        "sonnet": "batman-4x-sonnet-rot180-10s.mp4",
+        "opus": "batman-4x-opus-rot180-10s.mp4",
+        "fable": "batman-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "sonnet:rot180",
+        "opus:rot180"
+      ]
+    },
+    {
+      "subject": "creeper",
+      "clips": {
+        "haiku": "creeper-4x-haiku-10s.mp4",
+        "sonnet": "creeper-4x-sonnet-10s.mp4",
+        "opus": "creeper-4x-opus-10s.mp4",
+        "fable": "creeper-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "cyclops",
+      "clips": {
+        "haiku": "cyclops-4x-haiku-10s.mp4",
+        "sonnet": "cyclops-4x-sonnet-10s.mp4",
+        "opus": "cyclops-4x-opus-10s.mp4",
+        "fable": "cyclops-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "opus:trunc",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "darth-vader",
+      "clips": {
+        "haiku": "darth-vader-4x-haiku-rot180-10s.mp4",
+        "sonnet": "darth-vader-4x-sonnet-10s.mp4",
+        "opus": "darth-vader-4x-opus-10s.mp4",
+        "fable": "darth-vader-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot180+t",
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "ender-dragon",
+      "clips": {
+        "haiku": "ender-dragon-4x-haiku-10s.mp4",
+        "sonnet": "ender-dragon-4x-sonnet-10s.mp4",
+        "opus": "ender-dragon-4x-opus-10s.mp4",
+        "fable": "ender-dragon-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc"
+      ]
+    },
+    {
+      "subject": "giant-spider",
+      "clips": {
+        "haiku": "giant-spider-4x-haiku-10s.mp4",
+        "sonnet": "giant-spider-4x-sonnet-10s.mp4",
+        "opus": "giant-spider-4x-opus-10s.mp4",
+        "fable": "giant-spider-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "godzilla",
+      "clips": {
+        "haiku": "godzilla-4x-haiku-rot180-10s.mp4",
+        "sonnet": "godzilla-4x-sonnet-10s.mp4",
+        "opus": "godzilla-4x-opus-10s.mp4",
+        "fable": "godzilla-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot180+t"
+      ]
+    },
+    {
+      "subject": "golem",
+      "clips": {
+        "haiku": "golem-4x-haiku-10s.mp4",
+        "sonnet": "golem-4x-sonnet-10s.mp4",
+        "opus": "golem-4x-opus-10s.mp4",
+        "fable": "golem-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc"
+      ]
+    },
+    {
+      "subject": "griffin",
+      "clips": {
+        "haiku": "griffin-4x-haiku-10s.mp4",
+        "sonnet": "griffin-4x-sonnet-10s.mp4",
+        "opus": "griffin-4x-opus-10s.mp4",
+        "fable": "griffin-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc"
+      ]
+    },
+    {
+      "subject": "hulk",
+      "clips": {
+        "haiku": "hulk-4x-haiku-rot180-10s.mp4",
+        "sonnet": "hulk-4x-sonnet-rot180-10s.mp4",
+        "opus": "hulk-4x-opus-10s.mp4",
+        "fable": "hulk-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot180",
+        "sonnet:rot180+t",
+        "opus:trunc",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "hydra",
+      "clips": {
+        "haiku": "hydra-4x-haiku-10s.mp4",
+        "sonnet": "hydra-4x-sonnet-10s.mp4",
+        "opus": "hydra-4x-opus-10s.mp4",
+        "fable": "hydra-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "iron-man",
+      "clips": {
+        "haiku": "iron-man-4x-haiku-rot180-10s.mp4",
+        "sonnet": "iron-man-4x-sonnet-rot180-10s.mp4",
+        "opus": "iron-man-4x-opus-10s.mp4",
+        "fable": "iron-man-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot180",
+        "sonnet:rot180",
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "kirby",
+      "clips": {
+        "haiku": "kirby-4x-haiku-10s.mp4",
+        "sonnet": "kirby-4x-sonnet-10s.mp4",
+        "opus": "kirby-4x-opus-10s.mp4",
+        "fable": "kirby-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "knight",
+      "clips": {
+        "haiku": "knight-4x-haiku-10s.mp4",
+        "sonnet": "knight-4x-sonnet-rot90-10s.mp4",
+        "opus": "knight-4x-opus-rot180-10s.mp4",
+        "fable": "knight-4x-fable-rot90-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "sonnet:rot90",
+        "opus:rot180+t",
+        "fable:rot90"
+      ]
+    },
+    {
+      "subject": "kraken",
+      "clips": {
+        "haiku": "kraken-4x-haiku-10s.mp4",
+        "sonnet": "kraken-4x-sonnet-rot180-10s.mp4",
+        "opus": "kraken-4x-opus-rot180-10s.mp4",
+        "fable": "kraken-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "sonnet:rot180",
+        "opus:rot180"
+      ]
+    },
+    {
+      "subject": "mario",
+      "clips": {
+        "haiku": "mario-4x-haiku-10s.mp4",
+        "sonnet": "mario-4x-sonnet-rot180-10s.mp4",
+        "opus": "mario-4x-opus-rot180-10s.mp4",
+        "fable": "mario-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "sonnet:rot180",
+        "opus:rot180",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "minion",
+      "clips": {
+        "haiku": "minion-4x-haiku-10s.mp4",
+        "sonnet": "minion-4x-sonnet-10s.mp4",
+        "opus": "minion-4x-opus-10s.mp4",
+        "fable": "minion-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "opus:trunc",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "minotaur",
+      "clips": {
+        "haiku": "minotaur-4x-haiku-10s.mp4",
+        "sonnet": "minotaur-4x-sonnet-10s.mp4",
+        "opus": "minotaur-4x-opus-rot180-10s.mp4",
+        "fable": "minotaur-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "opus:rot180"
+      ]
+    },
+    {
+      "subject": "octopus",
+      "clips": {
+        "haiku": "octopus-4x-haiku-10s.mp4",
+        "sonnet": "octopus-4x-sonnet-10s.mp4",
+        "opus": "octopus-4x-opus-10s.mp4",
+        "fable": "octopus-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "optimus-prime",
+      "clips": {
+        "haiku": "optimus-prime-4x-haiku-10s.mp4",
+        "sonnet": "optimus-prime-4x-sonnet-10s.mp4",
+        "opus": "optimus-prime-4x-opus-10s.mp4",
+        "fable": "optimus-prime-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "pacman",
+      "clips": {
+        "haiku": "pacman-4x-haiku-10s.mp4",
+        "sonnet": "pacman-4x-sonnet-rot270-10s.mp4",
+        "opus": "pacman-4x-opus-10s.mp4",
+        "fable": "pacman-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "sonnet:rot270",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "pegasus",
+      "clips": {
+        "haiku": "pegasus-4x-haiku-10s.mp4",
+        "sonnet": "pegasus-4x-sonnet-10s.mp4",
+        "opus": "pegasus-4x-opus-10s.mp4",
+        "fable": "pegasus-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "phoenix",
+      "clips": {
+        "haiku": "phoenix-4x-haiku-10s.mp4",
+        "sonnet": "phoenix-4x-sonnet-rot180-10s.mp4",
+        "opus": "phoenix-4x-opus-10s.mp4",
+        "fable": "phoenix-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "sonnet:rot180"
+      ]
+    },
+    {
+      "subject": "pikachu",
+      "clips": {
+        "haiku": "pikachu-4x-haiku-10s.mp4",
+        "sonnet": "pikachu-4x-sonnet-rot180-10s.mp4",
+        "opus": "pikachu-4x-opus-10s.mp4",
+        "fable": "pikachu-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "sonnet:rot180",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "sea-serpent",
+      "clips": {
+        "haiku": "sea-serpent-4x-haiku-10s.mp4",
+        "sonnet": "sea-serpent-4x-sonnet-10s.mp4",
+        "opus": "sea-serpent-4x-opus-10s.mp4",
+        "fable": "sea-serpent-4x-fable-rot90-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "fable:rot90"
+      ]
+    },
+    {
+      "subject": "shark",
+      "clips": {
+        "haiku": "shark-4x-haiku-rot270-10s.mp4",
+        "sonnet": "shark-4x-sonnet-rot180-10s.mp4",
+        "opus": "shark-4x-opus-rot90-10s.mp4",
+        "fable": "shark-4x-fable-rot90-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot270",
+        "sonnet:rot180",
+        "opus:rot90",
+        "fable:rot90"
+      ]
+    },
+    {
+      "subject": "shrek",
+      "clips": {
+        "haiku": "shrek-4x-haiku-10s.mp4",
+        "sonnet": "shrek-4x-sonnet-rot180-10s.mp4",
+        "opus": "shrek-4x-opus-rot180-10s.mp4",
+        "fable": "shrek-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "sonnet:rot180",
+        "opus:rot180+t",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "sonic",
+      "clips": {
+        "haiku": "sonic-4x-haiku-10s.mp4",
+        "sonnet": "sonic-4x-sonnet-10s.mp4",
+        "opus": "sonic-4x-opus-10s.mp4",
+        "fable": "sonic-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "spider-man",
+      "clips": {
+        "haiku": "spider-man-4x-haiku-10s.mp4",
+        "sonnet": "spider-man-4x-sonnet-10s.mp4",
+        "opus": "spider-man-4x-opus-rot180-10s.mp4",
+        "fable": "spider-man-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "opus:rot180+t"
+      ]
+    },
+    {
+      "subject": "stormtrooper",
+      "clips": {
+        "haiku": "stormtrooper-4x-haiku-10s.mp4",
+        "sonnet": "stormtrooper-4x-sonnet-10s.mp4",
+        "opus": "stormtrooper-4x-opus-10s.mp4",
+        "fable": "stormtrooper-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "opus:trunc",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "terminator",
+      "clips": {
+        "haiku": "terminator-4x-haiku-rot180-10s.mp4",
+        "sonnet": "terminator-4x-sonnet-10s.mp4",
+        "opus": "terminator-4x-opus-10s.mp4",
+        "fable": "terminator-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot180"
+      ]
+    },
+    {
+      "subject": "thanos",
+      "clips": {
+        "haiku": "thanos-4x-haiku-10s.mp4",
+        "sonnet": "thanos-4x-sonnet-10s.mp4",
+        "opus": "thanos-4x-opus-10s.mp4",
+        "fable": "thanos-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:trunc",
+        "opus:trunc"
+      ]
+    },
+    {
+      "subject": "trex",
+      "clips": {
+        "haiku": "trex-4x-haiku-rot180-10s.mp4",
+        "sonnet": "trex-4x-sonnet-rot180-10s.mp4",
+        "opus": "trex-4x-opus-10s.mp4",
+        "fable": "trex-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot180",
+        "sonnet:rot180"
+      ]
+    },
+    {
+      "subject": "troll",
+      "clips": {
+        "haiku": "troll-4x-haiku-10s.mp4",
+        "sonnet": "troll-4x-sonnet-10s.mp4",
+        "opus": "troll-4x-opus-10s.mp4",
+        "fable": "troll-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "unicorn",
+      "clips": {
+        "haiku": "unicorn-4x-haiku-rot270-10s.mp4",
+        "sonnet": "unicorn-4x-sonnet-rot270-10s.mp4",
+        "opus": "unicorn-4x-opus-10s.mp4",
+        "fable": "unicorn-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot270",
+        "sonnet:rot270"
+      ]
+    },
+    {
+      "subject": "werewolf",
+      "clips": {
+        "haiku": "werewolf-4x-haiku-rot270-10s.mp4",
+        "sonnet": "werewolf-4x-sonnet-rot270-10s.mp4",
+        "opus": "werewolf-4x-opus-rot270-10s.mp4",
+        "fable": "werewolf-4x-fable-rot90-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot270+t",
+        "sonnet:rot270",
+        "opus:rot270",
+        "fable:rot90"
+      ]
+    },
+    {
+      "subject": "yeti",
+      "clips": {
+        "haiku": "yeti-4x-haiku-10s.mp4",
+        "sonnet": "yeti-4x-sonnet-10s.mp4",
+        "opus": "yeti-4x-opus-10s.mp4",
+        "fable": "yeti-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "opus:trunc",
+        "fable:rot180"
+      ]
+    },
+    {
+      "subject": "yoda",
+      "clips": {
+        "haiku": "yoda-4x-haiku-10s.mp4",
+        "sonnet": "yoda-4x-sonnet-rot180-10s.mp4",
+        "opus": "yoda-4x-opus-rot180-10s.mp4",
+        "fable": "yoda-4x-fable-10s.mp4"
+      },
+      "changed": [
+        "sonnet:rot180",
+        "opus:rot180"
+      ]
+    }
+  ],
+  "renderQueue": [
+    {
+      "subject": "batman",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "batman-4x-haiku",
+      "out": "batman-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "batman",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "batman-4x-sonnet-rot180",
+      "out": "batman-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "batman",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "batman-4x-opus-rot180",
+      "out": "batman-4x-opus-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "creeper",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "creeper-4x-fable-rot180",
+      "out": "creeper-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "cyclops",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "cyclops-4x-opus",
+      "out": "cyclops-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "cyclops",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "cyclops-4x-fable-rot180",
+      "out": "cyclops-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "darth-vader",
+      "model": "haiku",
+      "deg": 180,
+      "renderSlug": "darth-vader-4x-haiku-rot180",
+      "out": "darth-vader-4x-haiku-rot180-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "darth-vader",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "darth-vader-4x-opus",
+      "out": "darth-vader-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "ender-dragon",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "ender-dragon-4x-haiku",
+      "out": "ender-dragon-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "giant-spider",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "giant-spider-4x-fable-rot180",
+      "out": "giant-spider-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "godzilla",
+      "model": "haiku",
+      "deg": 180,
+      "renderSlug": "godzilla-4x-haiku-rot180",
+      "out": "godzilla-4x-haiku-rot180-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "golem",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "golem-4x-haiku",
+      "out": "golem-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "griffin",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "griffin-4x-haiku",
+      "out": "griffin-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "hulk",
+      "model": "haiku",
+      "deg": 180,
+      "renderSlug": "hulk-4x-haiku-rot180",
+      "out": "hulk-4x-haiku-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "hulk",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "hulk-4x-sonnet-rot180",
+      "out": "hulk-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "hulk",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "hulk-4x-opus",
+      "out": "hulk-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "hulk",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "hulk-4x-fable-rot180",
+      "out": "hulk-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "hydra",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "hydra-4x-haiku",
+      "out": "hydra-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "hydra",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "hydra-4x-opus",
+      "out": "hydra-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "iron-man",
+      "model": "haiku",
+      "deg": 180,
+      "renderSlug": "iron-man-4x-haiku-rot180",
+      "out": "iron-man-4x-haiku-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "iron-man",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "iron-man-4x-sonnet-rot180",
+      "out": "iron-man-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "iron-man",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "iron-man-4x-opus",
+      "out": "iron-man-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "kirby",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "kirby-4x-fable-rot180",
+      "out": "kirby-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "knight",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "knight-4x-haiku",
+      "out": "knight-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "knight",
+      "model": "sonnet",
+      "deg": 90,
+      "renderSlug": "knight-4x-sonnet-rot90",
+      "out": "knight-4x-sonnet-rot90-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "knight",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "knight-4x-opus-rot180",
+      "out": "knight-4x-opus-rot180-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "knight",
+      "model": "fable",
+      "deg": 90,
+      "renderSlug": "knight-4x-fable-rot90",
+      "out": "knight-4x-fable-rot90-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "kraken",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "kraken-4x-sonnet-rot180",
+      "out": "kraken-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "kraken",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "kraken-4x-opus-rot180",
+      "out": "kraken-4x-opus-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "mario",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "mario-4x-sonnet-rot180",
+      "out": "mario-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "mario",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "mario-4x-opus-rot180",
+      "out": "mario-4x-opus-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "mario",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "mario-4x-fable-rot180",
+      "out": "mario-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "minion",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "minion-4x-opus",
+      "out": "minion-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "minion",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "minion-4x-fable-rot180",
+      "out": "minion-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "minotaur",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "minotaur-4x-opus-rot180",
+      "out": "minotaur-4x-opus-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "octopus",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "octopus-4x-haiku",
+      "out": "octopus-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "octopus",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "octopus-4x-opus",
+      "out": "octopus-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "optimus-prime",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "optimus-prime-4x-opus",
+      "out": "optimus-prime-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "pacman",
+      "model": "sonnet",
+      "deg": 270,
+      "renderSlug": "pacman-4x-sonnet-rot270",
+      "out": "pacman-4x-sonnet-rot270-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "pacman",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "pacman-4x-fable-rot180",
+      "out": "pacman-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "pegasus",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "pegasus-4x-haiku",
+      "out": "pegasus-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "pegasus",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "pegasus-4x-opus",
+      "out": "pegasus-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "phoenix",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "phoenix-4x-sonnet-rot180",
+      "out": "phoenix-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "pikachu",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "pikachu-4x-haiku",
+      "out": "pikachu-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "pikachu",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "pikachu-4x-sonnet-rot180",
+      "out": "pikachu-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "pikachu",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "pikachu-4x-fable-rot180",
+      "out": "pikachu-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "sea-serpent",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "sea-serpent-4x-haiku",
+      "out": "sea-serpent-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "sea-serpent",
+      "model": "fable",
+      "deg": 90,
+      "renderSlug": "sea-serpent-4x-fable-rot90",
+      "out": "sea-serpent-4x-fable-rot90-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "shark",
+      "model": "haiku",
+      "deg": 270,
+      "renderSlug": "shark-4x-haiku-rot270",
+      "out": "shark-4x-haiku-rot270-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "shark",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "shark-4x-sonnet-rot180",
+      "out": "shark-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "shark",
+      "model": "opus",
+      "deg": 90,
+      "renderSlug": "shark-4x-opus-rot90",
+      "out": "shark-4x-opus-rot90-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "shark",
+      "model": "fable",
+      "deg": 90,
+      "renderSlug": "shark-4x-fable-rot90",
+      "out": "shark-4x-fable-rot90-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "shrek",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "shrek-4x-sonnet-rot180",
+      "out": "shrek-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "shrek",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "shrek-4x-opus-rot180",
+      "out": "shrek-4x-opus-rot180-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "shrek",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "shrek-4x-fable-rot180",
+      "out": "shrek-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "sonic",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "sonic-4x-opus",
+      "out": "sonic-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "spider-man",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "spider-man-4x-haiku",
+      "out": "spider-man-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "spider-man",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "spider-man-4x-opus-rot180",
+      "out": "spider-man-4x-opus-rot180-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "stormtrooper",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "stormtrooper-4x-opus",
+      "out": "stormtrooper-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "stormtrooper",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "stormtrooper-4x-fable-rot180",
+      "out": "stormtrooper-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "terminator",
+      "model": "haiku",
+      "deg": 180,
+      "renderSlug": "terminator-4x-haiku-rot180",
+      "out": "terminator-4x-haiku-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "thanos",
+      "model": "haiku",
+      "deg": 0,
+      "renderSlug": "thanos-4x-haiku",
+      "out": "thanos-4x-haiku-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "thanos",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "thanos-4x-opus",
+      "out": "thanos-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "trex",
+      "model": "haiku",
+      "deg": 180,
+      "renderSlug": "trex-4x-haiku-rot180",
+      "out": "trex-4x-haiku-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "trex",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "trex-4x-sonnet-rot180",
+      "out": "trex-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "troll",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "troll-4x-fable-rot180",
+      "out": "troll-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "unicorn",
+      "model": "haiku",
+      "deg": 270,
+      "renderSlug": "unicorn-4x-haiku-rot270",
+      "out": "unicorn-4x-haiku-rot270-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "unicorn",
+      "model": "sonnet",
+      "deg": 270,
+      "renderSlug": "unicorn-4x-sonnet-rot270",
+      "out": "unicorn-4x-sonnet-rot270-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "werewolf",
+      "model": "haiku",
+      "deg": 270,
+      "renderSlug": "werewolf-4x-haiku-rot270",
+      "out": "werewolf-4x-haiku-rot270-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "werewolf",
+      "model": "sonnet",
+      "deg": 270,
+      "renderSlug": "werewolf-4x-sonnet-rot270",
+      "out": "werewolf-4x-sonnet-rot270-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "werewolf",
+      "model": "opus",
+      "deg": 270,
+      "renderSlug": "werewolf-4x-opus-rot270",
+      "out": "werewolf-4x-opus-rot270-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "werewolf",
+      "model": "fable",
+      "deg": 90,
+      "renderSlug": "werewolf-4x-fable-rot90",
+      "out": "werewolf-4x-fable-rot90-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "yeti",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "yeti-4x-opus",
+      "out": "yeti-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "yeti",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "yeti-4x-fable-rot180",
+      "out": "yeti-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "yoda",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "yoda-4x-sonnet-rot180",
+      "out": "yoda-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "yoda",
+      "model": "opus",
+      "deg": 180,
+      "renderSlug": "yoda-4x-opus-rot180",
+      "out": "yoda-4x-opus-rot180-10s.mp4",
+      "reason": "rotate"
+    }
+  ]
+}

@@ -14,3 +14,7 @@ tunnel.log
 recordings/
 .claude/
 secrets/
+marathon/rr-logs/
+marathon/rerender-done.json
+marathon/rerender-summary.json
+marathon/rerender-batch.log
