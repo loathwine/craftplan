@@ -1,0 +1,1266 @@
+{
+  "generatedAt": "2026-07-08T23:11:54.308Z",
+  "models": [
+    "haiku",
+    "sonnet",
+    "opus",
+    "fable"
+  ],
+  "modelLabels": {
+    "haiku": "Haiku 4.5",
+    "sonnet": "Sonnet 5",
+    "opus": "Opus 4.8",
+    "fable": "Fable 5"
+  },
+  "count": 48,
+  "subjects": [
+    {
+      "key": "batman",
+      "title": "Batman",
+      "models": {
+        "haiku": {
+          "file": "batman-4x-haiku.json",
+          "blocks": 9932,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "batman-4x-sonnet.json",
+          "blocks": 2097,
+          "rot": 180
+        },
+        "opus": {
+          "file": "batman-4x-opus.json",
+          "blocks": 3002,
+          "rot": 180
+        },
+        "fable": {
+          "file": "batman-4x-fable.json",
+          "blocks": 2862,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "cerberus",
+      "title": "Cerberus, the three-headed dog",
+      "models": {
+        "haiku": {
+          "file": "cerberus-4x-haiku.json",
+          "blocks": 2305,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "cerberus-4x-sonnet.json",
+          "blocks": 1656,
+          "rot": 0
+        },
+        "opus": {
+          "file": "cerberus-4x-opus.json",
+          "blocks": 3683,
+          "rot": 0
+        },
+        "fable": {
+          "file": "cerberus-4x-fable.json",
+          "blocks": 2813,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "creeper",
+      "title": "a Minecraft creeper",
+      "models": {
+        "haiku": {
+          "file": "creeper-4x-haiku.json",
+          "blocks": 100,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "creeper-4x-sonnet.json",
+          "blocks": 2512,
+          "rot": 0
+        },
+        "opus": {
+          "file": "creeper-4x-opus.json",
+          "blocks": 3487,
+          "rot": 0
+        },
+        "fable": {
+          "file": "creeper-4x-fable.json",
+          "blocks": 2959,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "cyclops",
+      "title": "a cyclops",
+      "models": {
+        "haiku": {
+          "file": "cyclops-4x-haiku.json",
+          "blocks": 3478,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "cyclops-4x-sonnet.json",
+          "blocks": 2281,
+          "rot": 0
+        },
+        "opus": {
+          "file": "cyclops-4x-opus.json",
+          "blocks": 4513,
+          "rot": 0
+        },
+        "fable": {
+          "file": "cyclops-4x-fable.json",
+          "blocks": 2942,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "darth-vader",
+      "title": "Darth Vader",
+      "models": {
+        "haiku": {
+          "file": "darth-vader-4x-haiku.json",
+          "blocks": 6409,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "darth-vader-4x-sonnet.json",
+          "blocks": 2476,
+          "rot": 0
+        },
+        "opus": {
+          "file": "darth-vader-4x-opus.json",
+          "blocks": 5289,
+          "rot": 0
+        },
+        "fable": {
+          "file": "darth-vader-4x-fable.json",
+          "blocks": 3005,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "dragon",
+      "title": "a fire-breathing dragon",
+      "models": {
+        "haiku": {
+          "file": "dragon-4x-haiku.json",
+          "blocks": 3851,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "dragon-4x-sonnet.json",
+          "blocks": 3515,
+          "rot": 0
+        },
+        "opus": {
+          "file": "dragon-4x-opus.json",
+          "blocks": 3258,
+          "rot": 0
+        },
+        "fable": {
+          "file": "dragon-4x-fable.json",
+          "blocks": 2616,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "ender-dragon",
+      "title": "the Ender Dragon",
+      "models": {
+        "haiku": {
+          "file": "ender-dragon-4x-haiku.json",
+          "blocks": 7665,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "ender-dragon-4x-sonnet.json",
+          "blocks": 1442,
+          "rot": 0
+        },
+        "opus": {
+          "file": "ender-dragon-4x-opus.json",
+          "blocks": 2235,
+          "rot": 0
+        },
+        "fable": {
+          "file": "ender-dragon-4x-fable.json",
+          "blocks": 3035,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "giant",
+      "title": "an axe-wielding giant",
+      "models": {
+        "haiku": {
+          "file": "giant-4x-haiku.json",
+          "blocks": 6693,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "giant-4x-sonnet.json",
+          "blocks": 4091,
+          "rot": 0
+        },
+        "opus": {
+          "file": "giant-4x-opus.json",
+          "blocks": 4483,
+          "rot": 180
+        },
+        "fable": {
+          "file": "giant-4x-fable.json",
+          "blocks": 3667,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "giant-spider",
+      "title": "a giant spider",
+      "models": {
+        "haiku": {
+          "file": "giant-spider-4x-haiku.json",
+          "blocks": 1311,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "giant-spider-4x-sonnet.json",
+          "blocks": 4030,
+          "rot": 0
+        },
+        "opus": {
+          "file": "giant-spider-4x-opus.json",
+          "blocks": 2744,
+          "rot": 0
+        },
+        "fable": {
+          "file": "giant-spider-4x-fable.json",
+          "blocks": 3052,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "godzilla",
+      "title": "Godzilla",
+      "models": {
+        "haiku": {
+          "file": "godzilla-4x-haiku.json",
+          "blocks": 6268,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "godzilla-4x-sonnet.json",
+          "blocks": 3253,
+          "rot": 0
+        },
+        "opus": {
+          "file": "godzilla-4x-opus.json",
+          "blocks": 3727,
+          "rot": 0
+        },
+        "fable": {
+          "file": "godzilla-4x-fable.json",
+          "blocks": 2818,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "golem",
+      "title": "a stone golem",
+      "models": {
+        "haiku": {
+          "file": "golem-4x-haiku.json",
+          "blocks": 3581,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "golem-4x-sonnet.json",
+          "blocks": 2705,
+          "rot": 0
+        },
+        "opus": {
+          "file": "golem-4x-opus.json",
+          "blocks": 3233,
+          "rot": 0
+        },
+        "fable": {
+          "file": "golem-4x-fable.json",
+          "blocks": 2260,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "griffin",
+      "title": "a griffin",
+      "models": {
+        "haiku": {
+          "file": "griffin-4x-haiku.json",
+          "blocks": 7239,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "griffin-4x-sonnet.json",
+          "blocks": 1314,
+          "rot": 0
+        },
+        "opus": {
+          "file": "griffin-4x-opus.json",
+          "blocks": 2432,
+          "rot": 0
+        },
+        "fable": {
+          "file": "griffin-4x-fable.json",
+          "blocks": 2725,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "grogu",
+      "title": "Grogu (Baby Yoda)",
+      "models": {
+        "haiku": {
+          "file": "grogu-4x-haiku.json",
+          "blocks": 2484,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "grogu-4x-sonnet.json",
+          "blocks": 1639,
+          "rot": 0
+        },
+        "opus": {
+          "file": "grogu-4x-opus.json",
+          "blocks": 2201,
+          "rot": 0
+        },
+        "fable": {
+          "file": "grogu-4x-fable.json",
+          "blocks": 2849,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "hulk",
+      "title": "the Incredible Hulk",
+      "models": {
+        "haiku": {
+          "file": "hulk-4x-haiku.json",
+          "blocks": 3995,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "hulk-4x-sonnet.json",
+          "blocks": 4095,
+          "rot": 180
+        },
+        "opus": {
+          "file": "hulk-4x-opus.json",
+          "blocks": 5007,
+          "rot": 0
+        },
+        "fable": {
+          "file": "hulk-4x-fable.json",
+          "blocks": 2619,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "hydra",
+      "title": "a three-headed hydra",
+      "models": {
+        "haiku": {
+          "file": "hydra-4x-haiku.json",
+          "blocks": 4772,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "hydra-4x-sonnet.json",
+          "blocks": 2435,
+          "rot": 0
+        },
+        "opus": {
+          "file": "hydra-4x-opus.json",
+          "blocks": 4641,
+          "rot": 0
+        },
+        "fable": {
+          "file": "hydra-4x-fable.json",
+          "blocks": 3037,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "iron-man",
+      "title": "Iron Man",
+      "models": {
+        "haiku": {
+          "file": "iron-man-4x-haiku.json",
+          "blocks": 959,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "iron-man-4x-sonnet.json",
+          "blocks": 2121,
+          "rot": 180
+        },
+        "opus": {
+          "file": "iron-man-4x-opus.json",
+          "blocks": 4508,
+          "rot": 0
+        },
+        "fable": {
+          "file": "iron-man-4x-fable.json",
+          "blocks": 2521,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "king-kong",
+      "title": "King Kong",
+      "models": {
+        "haiku": {
+          "file": "king-kong-4x-haiku.json",
+          "blocks": 7775,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "king-kong-4x-sonnet.json",
+          "blocks": 4026,
+          "rot": 180
+        },
+        "opus": {
+          "file": "king-kong-4x-opus.json",
+          "blocks": 5008,
+          "rot": 0
+        },
+        "fable": {
+          "file": "king-kong-4x-fable.json",
+          "blocks": 3180,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "kirby",
+      "title": "Kirby",
+      "models": {
+        "haiku": {
+          "file": "kirby-4x-haiku.json",
+          "blocks": 1156,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "kirby-4x-sonnet.json",
+          "blocks": 3413,
+          "rot": 0
+        },
+        "opus": {
+          "file": "kirby-4x-opus.json",
+          "blocks": 3775,
+          "rot": 0
+        },
+        "fable": {
+          "file": "kirby-4x-fable.json",
+          "blocks": 3637,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "knight",
+      "title": "a knight on horseback",
+      "models": {
+        "haiku": {
+          "file": "knight-4x-haiku.json",
+          "blocks": 9516,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "knight-4x-sonnet.json",
+          "blocks": 533,
+          "rot": 90
+        },
+        "opus": {
+          "file": "knight-4x-opus.json",
+          "blocks": 4946,
+          "rot": 180
+        },
+        "fable": {
+          "file": "knight-4x-fable.json",
+          "blocks": 2704,
+          "rot": 90
+        }
+      }
+    },
+    {
+      "key": "kraken",
+      "title": "a kraken",
+      "models": {
+        "haiku": {
+          "file": "kraken-4x-haiku.json",
+          "blocks": 3664,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "kraken-4x-sonnet.json",
+          "blocks": 3415,
+          "rot": 180
+        },
+        "opus": {
+          "file": "kraken-4x-opus.json",
+          "blocks": 3831,
+          "rot": 180
+        },
+        "fable": {
+          "file": "kraken-4x-fable.json",
+          "blocks": 3949,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "mario",
+      "title": "Super Mario",
+      "models": {
+        "haiku": {
+          "file": "mario-4x-haiku.json",
+          "blocks": 1277,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "mario-4x-sonnet.json",
+          "blocks": 2731,
+          "rot": 180
+        },
+        "opus": {
+          "file": "mario-4x-opus.json",
+          "blocks": 4046,
+          "rot": 180
+        },
+        "fable": {
+          "file": "mario-4x-fable.json",
+          "blocks": 3464,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "minion",
+      "title": "a Minion",
+      "models": {
+        "haiku": {
+          "file": "minion-4x-haiku.json",
+          "blocks": 880,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "minion-4x-sonnet.json",
+          "blocks": 1939,
+          "rot": 0
+        },
+        "opus": {
+          "file": "minion-4x-opus.json",
+          "blocks": 4119,
+          "rot": 0
+        },
+        "fable": {
+          "file": "minion-4x-fable.json",
+          "blocks": 3246,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "minotaur",
+      "title": "a minotaur",
+      "models": {
+        "haiku": {
+          "file": "minotaur-4x-haiku.json",
+          "blocks": 834,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "minotaur-4x-sonnet.json",
+          "blocks": 1968,
+          "rot": 0
+        },
+        "opus": {
+          "file": "minotaur-4x-opus.json",
+          "blocks": 3222,
+          "rot": 180
+        },
+        "fable": {
+          "file": "minotaur-4x-fable.json",
+          "blocks": 2955,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "octopus",
+      "title": "a giant octopus",
+      "models": {
+        "haiku": {
+          "file": "octopus-4x-haiku.json",
+          "blocks": 5117,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "octopus-4x-sonnet.json",
+          "blocks": 3238,
+          "rot": 0
+        },
+        "opus": {
+          "file": "octopus-4x-opus.json",
+          "blocks": 6732,
+          "rot": 0
+        },
+        "fable": {
+          "file": "octopus-4x-fable.json",
+          "blocks": 3086,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "optimus-prime",
+      "title": "Optimus Prime",
+      "models": {
+        "haiku": {
+          "file": "optimus-prime-4x-haiku.json",
+          "blocks": 2608,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "optimus-prime-4x-sonnet.json",
+          "blocks": 1973,
+          "rot": 0
+        },
+        "opus": {
+          "file": "optimus-prime-4x-opus.json",
+          "blocks": 4329,
+          "rot": 0
+        },
+        "fable": {
+          "file": "optimus-prime-4x-fable.json",
+          "blocks": 2812,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "pacman",
+      "title": "Pac-Man chased by a ghost",
+      "models": {
+        "haiku": {
+          "file": "pacman-4x-haiku.json",
+          "blocks": 1665,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "pacman-4x-sonnet.json",
+          "blocks": 2384,
+          "rot": 270
+        },
+        "opus": {
+          "file": "pacman-4x-opus.json",
+          "blocks": 2624,
+          "rot": 0
+        },
+        "fable": {
+          "file": "pacman-4x-fable.json",
+          "blocks": 3301,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "pegasus",
+      "title": "Pegasus",
+      "models": {
+        "haiku": {
+          "file": "pegasus-4x-haiku.json",
+          "blocks": 5386,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "pegasus-4x-sonnet.json",
+          "blocks": 2528,
+          "rot": 0
+        },
+        "opus": {
+          "file": "pegasus-4x-opus.json",
+          "blocks": 4502,
+          "rot": 0
+        },
+        "fable": {
+          "file": "pegasus-4x-fable.json",
+          "blocks": 3017,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "phoenix",
+      "title": "a phoenix rising from flames",
+      "models": {
+        "haiku": {
+          "file": "phoenix-4x-haiku.json",
+          "blocks": 583,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "phoenix-4x-sonnet.json",
+          "blocks": 2964,
+          "rot": 180
+        },
+        "opus": {
+          "file": "phoenix-4x-opus.json",
+          "blocks": 2160,
+          "rot": 0
+        },
+        "fable": {
+          "file": "phoenix-4x-fable.json",
+          "blocks": 2618,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "pikachu",
+      "title": "Pikachu",
+      "models": {
+        "haiku": {
+          "file": "pikachu-4x-haiku.json",
+          "blocks": 5988,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "pikachu-4x-sonnet.json",
+          "blocks": 2856,
+          "rot": 180
+        },
+        "opus": {
+          "file": "pikachu-4x-opus.json",
+          "blocks": 2605,
+          "rot": 0
+        },
+        "fable": {
+          "file": "pikachu-4x-fable.json",
+          "blocks": 2878,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "pirate-ship",
+      "title": "a pirate ship",
+      "models": {
+        "haiku": {
+          "file": "pirate-ship-4x-haiku.json",
+          "blocks": 3013,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "pirate-ship-4x-sonnet.json",
+          "blocks": 2801,
+          "rot": 0
+        },
+        "opus": {
+          "file": "pirate-ship-4x-opus.json",
+          "blocks": 3349,
+          "rot": 0
+        },
+        "fable": {
+          "file": "pirate-ship-4x-fable.json",
+          "blocks": 2954,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "pokeball",
+      "title": "a giant Poké Ball",
+      "models": {
+        "haiku": {
+          "file": "pokeball-4x-haiku.json",
+          "blocks": 7666,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "pokeball-4x-sonnet.json",
+          "blocks": 4316,
+          "rot": 0
+        },
+        "opus": {
+          "file": "pokeball-4x-opus.json",
+          "blocks": 3664,
+          "rot": 0
+        },
+        "fable": {
+          "file": "pokeball-4x-fable.json",
+          "blocks": 2544,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "r2d2",
+      "title": "R2-D2",
+      "models": {
+        "haiku": {
+          "file": "r2d2-4x-haiku.json",
+          "blocks": 192,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "r2d2-4x-sonnet.json",
+          "blocks": 1118,
+          "rot": 0
+        },
+        "opus": {
+          "file": "r2d2-4x-opus.json",
+          "blocks": 3465,
+          "rot": 0
+        },
+        "fable": {
+          "file": "r2d2-4x-fable.json",
+          "blocks": 3383,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "sea-serpent",
+      "title": "a sea serpent",
+      "models": {
+        "haiku": {
+          "file": "sea-serpent-4x-haiku.json",
+          "blocks": 1275,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "sea-serpent-4x-sonnet.json",
+          "blocks": 2633,
+          "rot": 0
+        },
+        "opus": {
+          "file": "sea-serpent-4x-opus.json",
+          "blocks": 2778,
+          "rot": 0
+        },
+        "fable": {
+          "file": "sea-serpent-4x-fable.json",
+          "blocks": 3380,
+          "rot": 90
+        }
+      }
+    },
+    {
+      "key": "shark",
+      "title": "a great white shark",
+      "models": {
+        "haiku": {
+          "file": "shark-4x-haiku.json",
+          "blocks": 2034,
+          "rot": 270
+        },
+        "sonnet": {
+          "file": "shark-4x-sonnet.json",
+          "blocks": 1973,
+          "rot": 180
+        },
+        "opus": {
+          "file": "shark-4x-opus.json",
+          "blocks": 2548,
+          "rot": 90
+        },
+        "fable": {
+          "file": "shark-4x-fable.json",
+          "blocks": 2904,
+          "rot": 90
+        }
+      }
+    },
+    {
+      "key": "shrek",
+      "title": "Shrek",
+      "models": {
+        "haiku": {
+          "file": "shrek-4x-haiku.json",
+          "blocks": 897,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "shrek-4x-sonnet.json",
+          "blocks": 2569,
+          "rot": 180
+        },
+        "opus": {
+          "file": "shrek-4x-opus.json",
+          "blocks": 4588,
+          "rot": 180
+        },
+        "fable": {
+          "file": "shrek-4x-fable.json",
+          "blocks": 3555,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "sonic",
+      "title": "Sonic the Hedgehog",
+      "models": {
+        "haiku": {
+          "file": "sonic-4x-haiku.json",
+          "blocks": 1023,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "sonic-4x-sonnet.json",
+          "blocks": 1421,
+          "rot": 0
+        },
+        "opus": {
+          "file": "sonic-4x-opus.json",
+          "blocks": 4669,
+          "rot": 0
+        },
+        "fable": {
+          "file": "sonic-4x-fable.json",
+          "blocks": 2315,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "spider-man",
+      "title": "Spider-Man",
+      "models": {
+        "haiku": {
+          "file": "spider-man-4x-haiku.json",
+          "blocks": 2259,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "spider-man-4x-sonnet.json",
+          "blocks": 2782,
+          "rot": 0
+        },
+        "opus": {
+          "file": "spider-man-4x-opus.json",
+          "blocks": 6225,
+          "rot": 180
+        },
+        "fable": {
+          "file": "spider-man-4x-fable.json",
+          "blocks": 2799,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "spongebob",
+      "title": "SpongeBob SquarePants",
+      "models": {
+        "haiku": {
+          "file": "spongebob-4x-haiku.json",
+          "blocks": 2540,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "spongebob-4x-sonnet.json",
+          "blocks": 2235,
+          "rot": 0
+        },
+        "opus": {
+          "file": "spongebob-4x-opus.json",
+          "blocks": 3053,
+          "rot": 0
+        },
+        "fable": {
+          "file": "spongebob-4x-fable.json",
+          "blocks": 2731,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "stormtrooper",
+      "title": "a Stormtrooper",
+      "models": {
+        "haiku": {
+          "file": "stormtrooper-4x-haiku.json",
+          "blocks": 221,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "stormtrooper-4x-sonnet.json",
+          "blocks": 1738,
+          "rot": 0
+        },
+        "opus": {
+          "file": "stormtrooper-4x-opus.json",
+          "blocks": 5336,
+          "rot": 0
+        },
+        "fable": {
+          "file": "stormtrooper-4x-fable.json",
+          "blocks": 2779,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "terminator",
+      "title": "the Terminator",
+      "models": {
+        "haiku": {
+          "file": "terminator-4x-haiku.json",
+          "blocks": 1475,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "terminator-4x-sonnet.json",
+          "blocks": 2152,
+          "rot": 0
+        },
+        "opus": {
+          "file": "terminator-4x-opus.json",
+          "blocks": 3708,
+          "rot": 0
+        },
+        "fable": {
+          "file": "terminator-4x-fable.json",
+          "blocks": 2006,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "thanos",
+      "title": "Thanos",
+      "models": {
+        "haiku": {
+          "file": "thanos-4x-haiku.json",
+          "blocks": 4822,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "thanos-4x-sonnet.json",
+          "blocks": 2269,
+          "rot": 0
+        },
+        "opus": {
+          "file": "thanos-4x-opus.json",
+          "blocks": 7729,
+          "rot": 0
+        },
+        "fable": {
+          "file": "thanos-4x-fable.json",
+          "blocks": 2903,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "trex",
+      "title": "a T-Rex",
+      "models": {
+        "haiku": {
+          "file": "trex-4x-haiku.json",
+          "blocks": 1593,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "trex-4x-sonnet.json",
+          "blocks": 1616,
+          "rot": 180
+        },
+        "opus": {
+          "file": "trex-4x-opus.json",
+          "blocks": 2951,
+          "rot": 0
+        },
+        "fable": {
+          "file": "trex-4x-fable.json",
+          "blocks": 2606,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "troll",
+      "title": "a troll under a bridge",
+      "models": {
+        "haiku": {
+          "file": "troll-4x-haiku.json",
+          "blocks": 1496,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "troll-4x-sonnet.json",
+          "blocks": 2920,
+          "rot": 0
+        },
+        "opus": {
+          "file": "troll-4x-opus.json",
+          "blocks": 3410,
+          "rot": 0
+        },
+        "fable": {
+          "file": "troll-4x-fable.json",
+          "blocks": 3382,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "unicorn",
+      "title": "a unicorn",
+      "models": {
+        "haiku": {
+          "file": "unicorn-4x-haiku.json",
+          "blocks": 345,
+          "rot": 270
+        },
+        "sonnet": {
+          "file": "unicorn-4x-sonnet.json",
+          "blocks": 1109,
+          "rot": 270
+        },
+        "opus": {
+          "file": "unicorn-4x-opus.json",
+          "blocks": 1579,
+          "rot": 0
+        },
+        "fable": {
+          "file": "unicorn-4x-fable.json",
+          "blocks": 3040,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "werewolf",
+      "title": "a werewolf howling at the moon",
+      "models": {
+        "haiku": {
+          "file": "werewolf-4x-haiku.json",
+          "blocks": 7123,
+          "rot": 270
+        },
+        "sonnet": {
+          "file": "werewolf-4x-sonnet.json",
+          "blocks": 2026,
+          "rot": 270
+        },
+        "opus": {
+          "file": "werewolf-4x-opus.json",
+          "blocks": 3021,
+          "rot": 270
+        },
+        "fable": {
+          "file": "werewolf-4x-fable.json",
+          "blocks": 3153,
+          "rot": 90
+        }
+      }
+    },
+    {
+      "key": "xenomorph",
+      "title": "the Alien xenomorph",
+      "models": {
+        "haiku": {
+          "file": "xenomorph-4x-haiku.json",
+          "blocks": 324,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "xenomorph-4x-sonnet.json",
+          "blocks": 1012,
+          "rot": 0
+        },
+        "opus": {
+          "file": "xenomorph-4x-opus.json",
+          "blocks": 2628,
+          "rot": 0
+        },
+        "fable": {
+          "file": "xenomorph-4x-fable.json",
+          "blocks": 3023,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "yeti",
+      "title": "a yeti",
+      "models": {
+        "haiku": {
+          "file": "yeti-4x-haiku.json",
+          "blocks": 3221,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "yeti-4x-sonnet.json",
+          "blocks": 2063,
+          "rot": 0
+        },
+        "opus": {
+          "file": "yeti-4x-opus.json",
+          "blocks": 4840,
+          "rot": 0
+        },
+        "fable": {
+          "file": "yeti-4x-fable.json",
+          "blocks": 3748,
+          "rot": 180
+        }
+      }
+    },
+    {
+      "key": "yoda",
+      "title": "Yoda",
+      "models": {
+        "haiku": {
+          "file": "yoda-4x-haiku.json",
+          "blocks": 362,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "yoda-4x-sonnet.json",
+          "blocks": 1747,
+          "rot": 180
+        },
+        "opus": {
+          "file": "yoda-4x-opus.json",
+          "blocks": 3037,
+          "rot": 180
+        },
+        "fable": {
+          "file": "yoda-4x-fable.json",
+          "blocks": 2921,
+          "rot": 0
+        }
+      }
+    }
+  ]
+}

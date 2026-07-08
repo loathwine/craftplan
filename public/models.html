@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0d1017">
+<title>CraftPlan — explore the AI builds</title>
+<style>
+  :root { --bg:#0d1017; --fg:#eef1f6; --mut:#9aa3b4; --accent:#5b8def; --line:#2a2f3a; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg); overflow:hidden;
+    font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    touch-action:none; }
+  #c { display:block; width:100%; height:100%; }
+  #stage { position:fixed; inset:0; }
+
+  /* top bar */
+  #top { position:fixed; top:0; left:0; right:0; padding:10px 12px;
+    display:flex; align-items:center; gap:10px; pointer-events:none;
+    background:linear-gradient(#0d1017cc,#0d101700); z-index:5; }
+  #title { pointer-events:none; min-width:0; }
+  #title h1 { margin:0; font-size:19px; font-weight:750; letter-spacing:.01em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 3px #000a; }
+  #title .sub { color:var(--mut); font-size:11.5px; text-shadow:0 1px 2px #000a; }
+  .spacer { flex:1; }
+  .btn { pointer-events:auto; background:#1a1f29cc; color:var(--fg); border:1px solid var(--line);
+    border-radius:9px; padding:8px 11px; font:inherit; font-size:13px; cursor:pointer;
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); user-select:none; }
+  .btn:hover { border-color:var(--accent); }
+  .btn.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.icon { padding:8px 10px; font-size:15px; line-height:1; }
+
+  /* subject picker sheet */
+  #pickWrap { position:fixed; inset:0; z-index:20; display:none; }
+  #pickWrap.open { display:block; }
+  #pickBg { position:absolute; inset:0; background:#000a; }
+  #pick { position:absolute; left:0; right:0; bottom:0; max-height:72%;
+    background:var(--bg); border-top:1px solid var(--line);
+    border-radius:16px 16px 0 0; padding:14px 12px calc(14px + env(safe-area-inset-bottom));
+    overflow-y:auto; }
+  #pick h2 { margin:2px 4px 10px; font-size:14px; color:var(--mut); font-weight:600; }
+  #grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; }
+  .card { background:#161b24; border:1px solid var(--line); border-radius:10px; padding:10px;
+    cursor:pointer; }
+  .card:hover { border-color:var(--accent); }
+  .card.cur { border-color:var(--accent); background:#1c2637; }
+  .card .k { font-size:14px; font-weight:650; }
+  .card .m { color:var(--mut); font-size:11px; margin-top:2px; }
+
+  /* bottom hint / focus back */
+  #bottom { position:fixed; left:0; right:0; bottom:0; z-index:5; pointer-events:none;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    display:flex; align-items:flex-end; gap:8px;
+    background:linear-gradient(#0d101700,#0d1017cc); }
+  #hint { color:var(--mut); font-size:11.5px; text-shadow:0 1px 2px #000; }
+  #hint b { color:var(--fg); }
+  #links { margin-left:auto; display:flex; gap:8px; }
+  #links a { pointer-events:auto; color:var(--mut); text-decoration:none; font-size:11.5px;
+    border:1px solid var(--line); border-radius:8px; padding:5px 8px; background:#1a1f29aa; }
+  #links a:hover { color:var(--fg); border-color:var(--accent); }
+  #back { pointer-events:auto; display:none; }
+  #back.show { display:inline-block; }
+
+  #loading { position:fixed; inset:0; display:grid; place-items:center; z-index:30;
+    background:var(--bg); color:var(--mut); font-size:14px; transition:opacity .4s; }
+  #loading.hide { opacity:0; pointer-events:none; }
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="c"></canvas></div>
+
+<div id="top">
+  <div id="title"><h1 id="tTitle">…</h1><div class="sub" id="tSub">same prompt · 4 AI models</div></div>
+  <div class="spacer"></div>
+  <button class="btn icon" id="prev" title="previous">◀</button>
+  <button class="btn" id="browse">Browse</button>
+  <button class="btn icon" id="next" title="next">▶</button>
+  <button class="btn" id="quality" title="graphics quality">✨ High</button>
+</div>
+
+<div id="bottom">
+  <button class="btn" id="back">‹ all 4</button>
+  <div id="hint"><b>Drag</b> to orbit · <b>pinch/scroll</b> to zoom · <b>tap a build</b> to focus</div>
+  <div id="links">
+    <a id="lYt" href="#" target="_blank" rel="noopener">▶ Video</a>
+    <a href="https://loathwine.github.io/craftplan/" target="_blank" rel="noopener">Try it</a>
+    <a href="https://github.com/loathwine/craftplan" target="_blank" rel="noopener">Code</a>
+  </div>
+</div>
+
+<div id="pickWrap"><div id="pickBg"></div>
+  <div id="pick"><h2>Pick a build — same prompt, 4 Claude models</h2><div id="grid"></div></div>
+</div>
+
+<div id="loading">loading builds…</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { setupSky, setupRenderer } from './js/sky.js';
+import { BLOCK_COLORS, colorVariation, TRANSPARENT_BLOCKS } from './js/Textures.js';
+
+const $ = id => document.getElementById(id);
+const REMAP = { 0:(x,z)=>[x,z], 90:(x,z)=>[z,-x], 180:(x,z)=>[-x,-z], 270:(x,z)=>[-z,x] };
+
+// ---- state ----------------------------------------------------------------
+let index, subjectIdx = 0, focusIdx = -1;
+let quality = (matchMedia('(pointer: coarse)').matches || innerWidth < 820) ? 'lite' : 'high';
+
+// ---- three setup -----------------------------------------------------------
+const canvas = $('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+setupRenderer(renderer, { exposure: 0.98 });
+
+const scene = new THREE.Scene();
+// Shorts lighting, but recentre the shadow frustum on the build row at origin
+// and push fog far back so the builds stay crisp.
+setupSky(scene, { shadowCenter: [0, 14, 0], shadowExtent: 120, shadowDistance: 260,
+  shadowMapSize: quality === 'high' ? 2048 : 1024,
+  fogNear: 400, fogFar: 3000 });
+
+const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 6000);
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 6;
+controls.maxDistance = 600;
+controls.maxPolarAngle = Math.PI * 0.52;   // don't dip under the ground
+
+// ground
+const ground = new THREE.Mesh(
+  new THREE.CircleGeometry(600, 64),
+  new THREE.MeshLambertMaterial({ color: 0x5a8a37 }));
+ground.rotation.x = -Math.PI / 2; ground.position.y = -0.01; ground.receiveShadow = true;
+scene.add(ground);
+
+// bloom composer (High only)
+let composer = null;
+function buildComposer() {
+  try {
+    composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.5, 0.7, 0.85);
+    composer.addPass(bloom);
+    composer.addPass(new OutputPass());
+  } catch (e) { composer = null; }
+}
+if (quality === 'high') buildComposer();
+
+// ---- label sprites ---------------------------------------------------------
+function makeLabel(name, sub) {
+  const cv = document.createElement('canvas'); cv.width = 512; cv.height = 160;
+  const g = cv.getContext('2d');
+  g.fillStyle = 'rgba(10,13,20,0.78)'; roundRect(g, 6, 6, 500, 148, 22); g.fill();
+  g.strokeStyle = 'rgba(120,150,220,0.55)'; g.lineWidth = 3; g.stroke();
+  g.textAlign = 'center';
+  g.fillStyle = '#fff'; g.font = '700 62px sans-serif'; g.fillText(name, 256, 74);
+  g.fillStyle = '#9db4e6'; g.font = '400 38px sans-serif'; g.fillText(sub, 256, 126);
+  const tex = new THREE.CanvasTexture(cv); tex.anisotropy = 4;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, depthWrite: false, transparent: true }));
+  sp.renderOrder = 999; sp.scale.set(16, 5, 1);
+  return sp;
+}
+function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+
+// ---- build meshes ----------------------------------------------------------
+const boxGeo = new THREE.BoxGeometry(1, 1, 1);
+let builds = [];        // { group, cx, w, d, h, label, model }
+let rowHalfWidth = 0;
+let layout = { pitch: 0, maxW: 0, maxH: 0, n: 0 };
+
+function clearBuilds() {
+  for (const b of builds) {
+    scene.remove(b.group);
+    b.group.traverse(o => { if (o.isInstancedMesh) { o.geometry.dispose(); o.material.dispose(); } });
+    scene.remove(b.label);
+    b.label.material.map.dispose(); b.label.material.dispose();
+  }
+  builds = [];
+}
+
+function meshFor(plan, rot) {
+  const solids = plan.filter(b => b.block !== 0);
+  const pts = solids.map(b => { const [x, z] = REMAP[rot](b.x, b.z); return { x, y: b.y, z, block: b.block }; });
+  let minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9,minZ=1e9,maxZ=-1e9;
+  for (const p of pts){ minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);
+    maxY=Math.max(maxY,p.y);minZ=Math.min(minZ,p.z);maxZ=Math.max(maxZ,p.z); }
+  const cx=(minX+maxX)/2, cz=(minZ+maxZ)/2;
+  const group = new THREE.Group();
+  const col = new THREE.Color(), m = new THREE.Matrix4();
+  const add = (arr, mat) => {
+    if (!arr.length) return;
+    const im = new THREE.InstancedMesh(boxGeo, mat, arr.length);
+    im.castShadow = true; im.receiveShadow = true;
+    arr.forEach((p, i) => {
+      m.setPosition(p.x - cx, p.y - minY + 0.5, p.z - cz);
+      im.setMatrixAt(i, m);
+      const c = (BLOCK_COLORS[p.block] || { side:[0.6,0.6,0.6] }).side;
+      const v = colorVariation(p.x, p.y, p.z);
+      col.setRGB(Math.min(1,c[0]*v), Math.min(1,c[1]*v), Math.min(1,c[2]*v), THREE.SRGBColorSpace);
+      im.setColorAt(i, col);
+    });
+    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
+    group.add(im);
+  };
+  add(pts.filter(p => !TRANSPARENT_BLOCKS.has(p.block)), new THREE.MeshLambertMaterial());
+  add(pts.filter(p =>  TRANSPARENT_BLOCKS.has(p.block)),
+      new THREE.MeshLambertMaterial({ transparent: true, opacity: 0.55 }));
+  return { group, w: maxX-minX+1, d: maxZ-minZ+1, h: maxY-minY+1 };
+}
+
+async function loadSubject(i) {
+  subjectIdx = (i + index.subjects.length) % index.subjects.length;
+  const subj = index.subjects[subjectIdx];
+  const plans = await Promise.all(index.models.map(async m => {
+    const e = subj.models[m];
+    const p = await (await fetch(`data/plans/${e.file}`)).json();
+    return { model: m, rot: e.rot, blocks: e.blocks, plan: p.plan };
+  }));
+  clearBuilds();
+  // measure, then lay out in a row with even pitch
+  const built = plans.map(pl => ({ ...pl, ...meshFor(pl.plan, pl.rot) }));
+  const pitch = Math.max(...built.map(b => Math.max(b.w, b.d))) + 12;
+  rowHalfWidth = pitch * (built.length - 1) / 2;
+  layout = { pitch, maxW: Math.max(...built.map(b => b.w)), maxH: Math.max(...built.map(b => b.h)), n: built.length };
+  built.forEach((b, k) => {
+    // +X renders to screen-left with the hero camera at -Z, so lay out in
+    // reverse to get Haiku→Sonnet→Opus→Fable reading left→right (as in the Short).
+    const x = rowHalfWidth - k * pitch;
+    b.group.position.x = x;
+    b.group.traverse(o => { if (o.isInstancedMesh) o.userData.buildIdx = k; });
+    scene.add(b.group);
+    const label = makeLabel(index.modelLabels[b.model], `${b.blocks.toLocaleString()} blocks`);
+    label.position.set(x, b.h + 3.5, 0);
+    scene.add(label);
+    builds.push({ group: b.group, cx: x, w: b.w, d: b.d, h: b.h, label, model: b.model });
+  });
+  // title + url
+  $('tTitle').textContent = `“${subj.title}”`;
+  $('tSub').textContent = 'same prompt · Haiku · Sonnet · Opus · Fable';
+  $('lYt').href = subj.youtube || 'https://youtu.be/GDJijs-ZlSk';   // per-subject link later; full demo for now
+  const url = new URL(location); url.searchParams.set('subject', subj.key);
+  url.searchParams.delete('model'); history.replaceState(null, '', url);
+  renderCards();
+  setFocus(-1, true);
+}
+
+// ---- camera framing --------------------------------------------------------
+const camAnim = { active:false, t:0, fromPos:new THREE.Vector3(), toPos:new THREE.Vector3(),
+  fromTgt:new THREE.Vector3(), toTgt:new THREE.Vector3() };
+function frameTo(pos, tgt, snap) {
+  if (snap) { camera.position.copy(pos); controls.target.copy(tgt); controls.update(); return; }
+  camAnim.fromPos.copy(camera.position); camAnim.toPos.copy(pos);
+  camAnim.fromTgt.copy(controls.target); camAnim.toTgt.copy(tgt);
+  camAnim.t = 0; camAnim.active = true;
+}
+// distance so a WxH box (centred) fits with margin, in the current aspect
+function fitDist(W, H, margin = 1.22) {
+  const vFov = camera.fov * Math.PI / 180;
+  const dV = (H / 2) / Math.tan(vFov / 2);
+  const dH = (W / 2) / (Math.tan(vFov / 2) * camera.aspect);
+  return Math.max(dV, dH) * margin + 8;
+}
+function setFocus(i, snap) {
+  focusIdx = i;
+  $('back').classList.toggle('show', i >= 0);
+  if (i < 0) {                                   // all four
+    const W = layout.pitch * (layout.n - 1) + layout.maxW;
+    const H = Math.max(layout.maxH, 8);
+    const dist = fitDist(W, H, 1.12);
+    frameTo(new THREE.Vector3(0, H * 0.42, -dist), new THREE.Vector3(0, H * 0.42, 0), snap);
+  } else {
+    const b = builds[i];
+    const dist = fitDist(Math.max(b.w, b.d) * 1.15, b.h * 1.1, 1.15);
+    frameTo(new THREE.Vector3(b.cx, b.h * 0.55, -dist), new THREE.Vector3(b.cx, b.h * 0.45, 0), snap);
+  }
+}
+
+// ---- picker / subject nav ---------------------------------------------------
+function renderCards() {
+  const g = $('grid'); g.innerHTML = '';
+  index.subjects.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'card' + (i === subjectIdx ? ' cur' : '');
+    d.innerHTML = `<div class="k">${s.title}</div><div class="m">${s.key}</div>`;
+    d.onclick = () => { closePick(); loadSubject(i); };
+    g.appendChild(d);
+  });
+}
+function openPick() { renderCards(); $('pickWrap').classList.add('open'); }
+function closePick() { $('pickWrap').classList.remove('open'); }
+$('browse').onclick = openPick; $('pickBg').onclick = closePick;
+$('prev').onclick = () => loadSubject(subjectIdx - 1);
+$('next').onclick = () => loadSubject(subjectIdx + 1);
+$('back').onclick = () => setFocus(-1);
+
+// ---- quality toggle ---------------------------------------------------------
+function applyQuality() {
+  const high = quality === 'high';
+  $('quality').textContent = high ? '✨ High' : '⚡ Lite';
+  $('quality').classList.toggle('on', high);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, high ? 2 : 1.25));
+  renderer.shadowMap.enabled = true;
+  // resize shadow map
+  const sun = scene.children.find(o => o.isDirectionalLight);
+  if (sun) { sun.shadow.mapSize.set(high ? 2048 : 1024, high ? 2048 : 1024);
+    if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; } }
+  if (high && !composer) buildComposer();
+  resize();
+}
+$('quality').onclick = () => { quality = quality === 'high' ? 'lite' : 'high'; applyQuality(); };
+
+// ---- tap to focus -----------------------------------------------------------
+const ray = new THREE.Raycaster(); const ndc = new THREE.Vector2();
+let downXY = null;
+canvas.addEventListener('pointerdown', e => { downXY = [e.clientX, e.clientY]; });
+canvas.addEventListener('pointerup', e => {
+  if (!downXY) return;
+  const moved = Math.hypot(e.clientX - downXY[0], e.clientY - downXY[1]);
+  downXY = null;
+  if (moved > 8) return;                          // was a drag, not a tap
+  ndc.x = (e.clientX / innerWidth) * 2 - 1;
+  ndc.y = -(e.clientY / innerHeight) * 2 + 1;
+  ray.setFromCamera(ndc, camera);
+  const meshes = []; builds.forEach(b => b.group.traverse(o => { if (o.isInstancedMesh) meshes.push(o); }));
+  const hit = ray.intersectObjects(meshes, false)[0];
+  if (hit) { const k = hit.object.userData.buildIdx; setFocus(k === focusIdx ? -1 : k); }
+});
+
+// ---- loop -------------------------------------------------------------------
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  if (composer) composer.setSize(w, h);
+}
+addEventListener('resize', resize);
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') $('prev').click();
+  else if (e.key === 'ArrowRight') $('next').click();
+  else if (e.key === 'Escape') { if ($('pickWrap').classList.contains('open')) closePick(); else setFocus(-1); }
+  else if (e.key >= '1' && e.key <= '4') setFocus(+e.key - 1);
+});
+
+function tick() {
+  requestAnimationFrame(tick);
+  if (camAnim.active) {
+    camAnim.t = Math.min(1, camAnim.t + 0.045);
+    const e = 1 - Math.pow(1 - camAnim.t, 3);      // ease-out cubic
+    camera.position.lerpVectors(camAnim.fromPos, camAnim.toPos, e);
+    controls.target.lerpVectors(camAnim.fromTgt, camAnim.toTgt, e);
+    if (camAnim.t >= 1) camAnim.active = false;
+  }
+  controls.update();
+  if (composer && quality === 'high') composer.render(); else renderer.render(scene, camera);
+}
+
+// ---- init -------------------------------------------------------------------
+(async function init() {
+  index = await (await fetch('data/plans/viewer-index.json')).json();
+  const params = new URLSearchParams(location.search);
+  const want = params.get('subject');
+  const startIdx = Math.max(0, index.subjects.findIndex(s => s.key === want));
+  applyQuality();
+  resize();
+  await loadSubject(startIdx < 0 ? 0 : startIdx);
+  const wantModel = params.get('model');
+  if (wantModel) { const mi = index.models.indexOf(wantModel); if (mi >= 0) setFocus(mi, true); }
+  $('loading').classList.add('hide');
+  tick();
+  window.__viewerReady = true;
+})().catch(err => { $('loading').textContent = 'failed to load: ' + err.message; });
+</script>
+</body>
+</html>
