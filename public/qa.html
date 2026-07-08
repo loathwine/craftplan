@@ -101,9 +101,10 @@
       <div class="row" style="margin-top:6px">
         <button id="export" style="flex:1">⬇ export decisions.json</button>
       </div>
-      <div class="sub" style="margin-top:6px">
-        keys: <kbd>←</kbd><kbd>→</kbd> model · <kbd>↑</kbd><kbd>↓</kbd> subject ·
-        <kbd>1..4</kbd> rot · <kbd>o</kbd>/<kbd>r</kbd>/<kbd>b</kbd> verdict
+      <div class="sub" style="margin-top:6px; line-height:1.9">
+        <kbd>Enter</kbd> approve + next · <kbd>←</kbd><kbd>→</kbd> rotate 90° ·
+        <kbd>Q</kbd><kbd>E</kbd> slow view-orbit · <kbd>↑</kbd><kbd>↓</kbd> subject ·
+        <kbd>1</kbd>–<kbd>4</kbd> model · <kbd>B</kbd> broken · <kbd>C</kbd> comment · <kbd>H</kbd> hero
       </div>
     </div>
   </div>
@@ -140,6 +141,7 @@ const REMAP = {
 };
 
 let index, subjectIdx = 0, model = 'opus', rotation = 0, curPlanKey = null;
+let curPlanData = null, qHeld = false, eHeld = false;
 
 // ---- three setup ----------------------------------------------------------
 const canvas = $('c');
@@ -239,11 +241,44 @@ async function loadPlan() {
   if (!entry || !entry.file) { clearBuild(); updateHud('(no plan for this model)'); return; }
   curPlanKey = `${subj.key}/${model}`;
   const res = await fetch(`data/plans/${entry.file}`);
-  const data = await res.json();
-  const { h, span } = buildMesh(data.plan);
+  curPlanData = await res.json();
+  const { h, span } = buildMesh(curPlanData.plan);
   heroView(h, span);
   restoreVerdict();
-  updateHud(`${data.plan.filter(b=>b.block!==0).length} blocks`);
+  updateHud(`${curPlanData.plan.filter(b=>b.block!==0).length} blocks`);
+}
+
+// Re-mesh at a new rotation from the cached plan (no re-fetch); keep the camera
+// where it is so facing is easy to judge as the build turns.
+function applyRotation(deg) {
+  if (!curPlanData) return;
+  rotation = ((deg % 360) + 360) % 360;
+  syncRot();
+  buildMesh(curPlanData.plan);
+  updateHud(`${curPlanData.plan.filter(b => b.block !== 0).length} blocks`);
+}
+
+// Approve current quadrant (OK if facing front at rot 0, else record the
+// rotation needed) and advance: next model, then next subject after the last.
+function approveAndNext() {
+  if (curPlanKey) setVerdict(rotation === 0 ? 'ok' : 'rotate');
+  gotoNextQuadrant();
+}
+function gotoNextQuadrant() {
+  const subj = index.subjects[subjectIdx];
+  const avail = index.models.filter(m => subj.models[m]?.file);
+  const i = avail.indexOf(model);
+  if (i < avail.length - 1) {
+    model = avail[i + 1];
+  } else {
+    subjectIdx = (subjectIdx + 1) % index.subjects.length;
+    renderSubjects();
+    const ns = index.subjects[subjectIdx];
+    model = index.models.find(m => ns.models[m]?.file);
+  }
+  rotation = decisions[`${index.subjects[subjectIdx].key}/${model}`]?.rotationDeg || 0;
+  syncRot();
+  loadPlan();
 }
 
 function updateHud(extra='') {
@@ -321,17 +356,15 @@ function toast(msg){ const t=$('toast'); t.textContent=msg; t.style.opacity=1;
 $('subject').onchange = e => { subjectIdx = +e.target.value; rotation = 0; syncRot(); loadPlan(); };
 $('prevSub').onclick = () => { subjectIdx = (subjectIdx - 1 + index.subjects.length) % index.subjects.length; rotation=0; syncRot(); renderSubjects(); loadPlan(); };
 $('nextSub').onclick = () => { subjectIdx = (subjectIdx + 1) % index.subjects.length; rotation=0; syncRot(); renderSubjects(); loadPlan(); };
-document.querySelectorAll('#rotBtns button').forEach(b => b.onclick = () => {
-  rotation = +b.dataset.rot; syncRot();
-  const subj = index.subjects[subjectIdx];
-  fetch(`data/plans/${subj.models[model].file}`).then(r=>r.json()).then(d=>{
-    const { h, span } = buildMesh(d.plan); heroView(h, span); updateHud(`${d.plan.filter(x=>x.block!==0).length} blocks`); });
-});
+document.querySelectorAll('#rotBtns button').forEach(b => b.onclick = () => applyRotation(+b.dataset.rot));
 $('hero').onclick = () => { const s = box.getSize(new THREE.Vector3()); heroView(s.y, Math.max(s.x, s.z)); };
 $('st-ok').onclick = () => setVerdict('ok');
 $('st-rot').onclick = () => setVerdict('rotate');
 $('st-bad').onclick = () => setVerdict('broken');
 $('note').onchange = () => { if (decisions[curPlanKey]) setVerdict(decisions[curPlanKey].status); };
+// Enter inside the note field: approve + advance too (so you can type a comment
+// then press Enter without reaching for the mouse).
+$('note').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('note').blur(); approveAndNext(); } });
 $('export').onclick = () => {
   const payload = { generatedAt: new Date().toISOString(),
     decisions: Object.entries(decisions).map(([k,v]) => ({ key:k, ...v })) };
@@ -341,23 +374,41 @@ $('export').onclick = () => {
 };
 
 addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT') return;
-  const subj = index.subjects[subjectIdx];
-  const avail = index.models.filter(m => subj.models[m]?.file);
-  if (e.key === 'ArrowRight') { const i=(avail.indexOf(model)+1)%avail.length; model=avail[i]; rotation=0; syncRot(); loadPlan(); }
-  else if (e.key === 'ArrowLeft') { const i=(avail.indexOf(model)-1+avail.length)%avail.length; model=avail[i]; rotation=0; syncRot(); loadPlan(); }
-  else if (e.key === 'ArrowDown') $('nextSub').click();
-  else if (e.key === 'ArrowUp') $('prevSub').click();
-  else if (['1','2','3','4'].includes(e.key)) { rotation=[0,90,180,270][+e.key-1]; document.querySelector(`#rotBtns button[data-rot="${rotation}"]`).click(); }
-  else if (e.key==='o') $('st-ok').click();
-  else if (e.key==='r') $('st-rot').click();
-  else if (e.key==='b') $('st-bad').click();
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  switch (e.key) {
+    case 'Enter':      e.preventDefault(); approveAndNext(); break;         // approve (OK/rotate) + next
+    case 'ArrowLeft':  applyRotation(rotation - 90); break;                 // rotate build CCW
+    case 'ArrowRight': applyRotation(rotation + 90); break;                 // rotate build CW
+    case 'ArrowUp':    $('prevSub').click(); break;                         // prev subject
+    case 'ArrowDown':  $('nextSub').click(); break;                         // next subject
+    case 'q': case 'Q': qHeld = true; break;                                // slow view-orbit (hold)
+    case 'e': case 'E': eHeld = true; break;
+    case 'b': case 'B': $('st-bad').click(); gotoNextQuadrant(); break;     // broken + next
+    case 'r': case 'R': $('st-rot').click(); break;                         // mark rotate (stay)
+    case 'c': case 'C': case '/': e.preventDefault(); $('note').focus(); break; // comment
+    case 'h': case 'H': $('hero').click(); break;                           // reset hero view
+    case '1': case '2': case '3': case '4': {                               // jump to model
+      const m = index.models[+e.key - 1], subj = index.subjects[subjectIdx];
+      if (subj.models[m]?.file) { model = m; rotation = decisions[`${subj.key}/${m}`]?.rotationDeg || 0; syncRot(); loadPlan(); }
+      break;
+    }
+  }
 });
+addEventListener('keyup', e => { if (e.key==='q'||e.key==='Q') qHeld=false; if (e.key==='e'||e.key==='E') eHeld=false; });
 
 function resize() { const w = canvas.clientWidth, h = canvas.clientHeight;
   if (canvas.width !== w || canvas.height !== h) { renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix(); } }
-function tick() { resize(); controls.update(); renderer.render(scene, camera); requestAnimationFrame(tick); }
+const UP = new THREE.Vector3(0, 1, 0);
+function tick() {
+  resize();
+  if (qHeld !== eHeld) {                    // slow view-orbit while Q or E held
+    const off = camera.position.clone().sub(controls.target);
+    off.applyAxisAngle(UP, (qHeld ? 1 : -1) * 0.02);
+    camera.position.copy(controls.target).add(off);
+  }
+  controls.update(); renderer.render(scene, camera); requestAnimationFrame(tick);
+}
 
 (async function init() {
   index = await (await fetch('data/plans/qa-index.json')).json();
