@@ -331,6 +331,24 @@ app.post('/api/import', (req, res) => {
   res.json({ ok: true, tasks: tasks.size, blocks: blockChanges.size });
 });
 
+// --- QA decisions (persisted server-side for the model QA inspector) ---
+// The QA tool (public/qa.html) POSTs its full decision map here on every
+// verdict, so a review can span multiple sessions/browsers with no manual
+// export — the agent reads qa-decisions.json directly.
+const QA_FILE = './qa-decisions.json';
+app.get('/api/qa', (_req, res) => {
+  try { res.json(JSON.parse(readFileSync(QA_FILE, 'utf8'))); }
+  catch { res.json({ decisions: {}, updatedAt: null }); }
+});
+app.post('/api/qa', (req, res) => {
+  const decisions = req.body?.decisions;
+  if (!decisions || typeof decisions !== 'object') {
+    return res.status(400).json({ error: 'expected { decisions }' });
+  }
+  writeFileSync(QA_FILE, JSON.stringify({ decisions, updatedAt: new Date().toISOString() }, null, 2));
+  res.json({ ok: true, count: Object.keys(decisions).length });
+});
+
 // --- JIRA Import ---
 app.post('/api/jira/import', async (req, res) => {
   const { url, email, token, jql } = req.body;

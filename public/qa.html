@@ -98,8 +98,9 @@
     <div class="fieldset">
       <div class="lbl">Session</div>
       <div id="progress"></div>
+      <div class="sub" style="margin-top:4px">✓ auto-saved to server as you go — resume anytime, no export needed</div>
       <div class="row" style="margin-top:6px">
-        <button id="export" style="flex:1">⬇ export decisions.json</button>
+        <button id="export" style="flex:1">⬇ export backup (optional)</button>
       </div>
       <div class="sub" style="margin-top:6px; line-height:1.9">
         <kbd>Enter</kbd> approve + next · <kbd>←</kbd><kbd>→</kbd> rotate 90° ·
@@ -129,7 +130,16 @@ import { BLOCK_COLORS, colorVariation, TRANSPARENT_BLOCKS } from './js/Textures.
 
 const LS_KEY = 'craftplan-qa-decisions';
 const $ = id => document.getElementById(id);
-const decisions = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+let decisions = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+
+// Persist every change both to localStorage (instant) and to the server
+// (so the review survives across sessions/browsers and the agent can read it
+// without a manual export). Server write is fire-and-forget.
+function saveDecisions() {
+  localStorage.setItem(LS_KEY, JSON.stringify(decisions));
+  fetch('/api/qa', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ decisions }) }).catch(() => {});
+}
 
 // Rotation remaps about the plan origin (0,0,0) — identical to the production
 // fix transforms, so a chosen rotation applies verbatim to the plan later.
@@ -335,8 +345,8 @@ function setVerdict(status) {
   decisions[curPlanKey] = { subject: index.subjects[subjectIdx].key, model, status,
     rotationDeg: status==='rotate' ? rotation : (status==='ok' ? rotation : 0),
     note: $('note').value.trim() };
-  localStorage.setItem(LS_KEY, JSON.stringify(decisions));
-  restoreVerdict(); renderModelTabs(); renderSubjects(); updateHud(); toast(`saved: ${status}`);
+  saveDecisions();
+  restoreVerdict(); renderModelTabs(); renderSubjects(); updateHud(); toast(`saved: ${status} ✓`);
 }
 
 function updateProgress() {
@@ -412,6 +422,17 @@ function tick() {
 
 (async function init() {
   index = await (await fetch('data/plans/qa-index.json')).json();
+  // Server is the source of truth for verdicts. If it has any, adopt them;
+  // otherwise seed it from whatever is in this browser's localStorage.
+  try {
+    const srv = await (await fetch('/api/qa')).json();
+    if (srv?.decisions && Object.keys(srv.decisions).length) {
+      decisions = srv.decisions;
+      localStorage.setItem(LS_KEY, JSON.stringify(decisions));
+    } else if (Object.keys(decisions).length) {
+      saveDecisions();
+    }
+  } catch {}
   renderSubjects(); syncRot(); await loadPlan(); tick();
 })();
 </script>

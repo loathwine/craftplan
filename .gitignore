@@ -2,6 +2,7 @@ node_modules
 result
 .direnv/
 data.json
+qa-decisions.json
 .craftplan.pid
 .craftplan-bot-*.pid
 craftplan.log
