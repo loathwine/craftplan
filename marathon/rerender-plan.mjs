@@ -28,7 +28,7 @@ const BAKE = argv.includes('--bake');
 const truncIx = argv.indexOf('--trunc');
 const TRUNC_PATH = truncIx >= 0 ? argv[truncIx + 1] : null;
 
-const EXCLUDE = new Set(['dragon', 'giant', 'king-kong', 'pokeball']); // uploaded/scheduled
+const EXCLUDE = new Set(['dragon', 'giant', 'pokeball']); // already uploaded (king-kong is NOT uploaded → include it)
 const MODELS = ['haiku', 'sonnet', 'opus', 'fable'];
 
 const REMAP = {

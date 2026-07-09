@@ -3,7 +3,6 @@
   "excluded": [
     "dragon",
     "giant",
-    "king-kong",
     "pokeball"
   ],
   "subjects": [
@@ -159,6 +158,21 @@
         "haiku:rot180",
         "sonnet:rot180",
         "opus:trunc"
+      ]
+    },
+    {
+      "subject": "king-kong",
+      "clips": {
+        "haiku": "king-kong-4x-haiku-rot180-10s.mp4",
+        "sonnet": "king-kong-4x-sonnet-rot180-10s.mp4",
+        "opus": "king-kong-4x-opus-10s.mp4",
+        "fable": "king-kong-4x-fable-rot180-10s.mp4"
+      },
+      "changed": [
+        "haiku:rot180+t",
+        "sonnet:rot180",
+        "opus:trunc",
+        "fable:rot180"
       ]
     },
     {
@@ -678,6 +692,38 @@
       "renderSlug": "iron-man-4x-opus",
       "out": "iron-man-4x-opus-10s.mp4",
       "reason": "trunc"
+    },
+    {
+      "subject": "king-kong",
+      "model": "haiku",
+      "deg": 180,
+      "renderSlug": "king-kong-4x-haiku-rot180",
+      "out": "king-kong-4x-haiku-rot180-10s.mp4",
+      "reason": "rotate+trunc"
+    },
+    {
+      "subject": "king-kong",
+      "model": "sonnet",
+      "deg": 180,
+      "renderSlug": "king-kong-4x-sonnet-rot180",
+      "out": "king-kong-4x-sonnet-rot180-10s.mp4",
+      "reason": "rotate"
+    },
+    {
+      "subject": "king-kong",
+      "model": "opus",
+      "deg": 0,
+      "renderSlug": "king-kong-4x-opus",
+      "out": "king-kong-4x-opus-10s.mp4",
+      "reason": "trunc"
+    },
+    {
+      "subject": "king-kong",
+      "model": "fable",
+      "deg": 180,
+      "renderSlug": "king-kong-4x-fable-rot180",
+      "out": "king-kong-4x-fable-rot180-10s.mp4",
+      "reason": "rotate"
     },
     {
       "subject": "kirby",

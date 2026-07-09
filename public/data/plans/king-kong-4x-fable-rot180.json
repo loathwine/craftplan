@@ -1,5 +1,5 @@
 {
-  "slug": "king-kong-4x-fable-rot180",
+  "slug": "king-kong-4x-fable",
   "prompt": "King Kong",
   "source": "ai:claude-fable-5",
   "origin": {
@@ -28529,5 +28529,7 @@
   ],
   "createdAt": "2026-07-04T11:03:05.145Z",
   "elapsedMs": 455164,
-  "note": "derived: build rotated 180 deg (x,z)->(-x,-z) so the front faces the lit hero angle; original fable plan untouched"
+  "rotatedFrom": "king-kong-4x-fable",
+  "rotationDeg": 180,
+  "rotateNote": "baked 180deg (QA-approved) from full re-derived base"
 }

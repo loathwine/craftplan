@@ -1,5 +1,5 @@
 {
-  "slug": "king-kong-4x-sonnet-rot180",
+  "slug": "king-kong-4x-sonnet",
   "prompt": null,
   "source": "recovered-from-failed-dump",
   "origin": {
@@ -24166,7 +24166,9 @@
     }
   ],
   "createdAt": "2026-07-05T22:28:34.456Z",
-  "note": "derived: build rotated 180 deg (x,z)->(-x,-z) so the front faces the lit hero angle; original sonnet plan untouched",
   "rederivedAt": "2026-07-08",
-  "rederiveNote": "rot180 rebuilt from re-derived base"
+  "rederiveNote": "full build recovered from saved code with lifted limits",
+  "rotatedFrom": "king-kong-4x-sonnet",
+  "rotationDeg": 180,
+  "rotateNote": "baked 180deg (QA-approved) from full re-derived base"
 }
