@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-08T23:11:54.308Z",
+  "generatedAt": "2026-07-11T20:43:35.947Z",
   "models": [
     "haiku",
     "sonnet",
@@ -43,6 +43,7 @@
     {
       "key": "cerberus",
       "title": "Cerberus, the three-headed dog",
+      "youtube": "https://youtube.com/shorts/oK05NltBLDE",
       "models": {
         "haiku": {
           "file": "cerberus-4x-haiku.json",
@@ -69,6 +70,7 @@
     {
       "key": "creeper",
       "title": "a Minecraft creeper",
+      "youtube": "https://youtube.com/shorts/YjnD_gx_t_c",
       "models": {
         "haiku": {
           "file": "creeper-4x-haiku.json",
@@ -147,6 +149,7 @@
     {
       "key": "dragon",
       "title": "a fire-breathing dragon",
+      "youtube": "https://youtube.com/shorts/ph3JhHrDHzc",
       "models": {
         "haiku": {
           "file": "dragon-4x-haiku.json",
@@ -199,6 +202,7 @@
     {
       "key": "giant",
       "title": "an axe-wielding giant",
+      "youtube": "https://youtube.com/shorts/YqHWKi6e8UE",
       "models": {
         "haiku": {
           "file": "giant-4x-haiku.json",
@@ -251,6 +255,7 @@
     {
       "key": "godzilla",
       "title": "Godzilla",
+      "youtube": "https://youtube.com/shorts/RsuhUE9SktE",
       "models": {
         "haiku": {
           "file": "godzilla-4x-haiku.json",
@@ -381,6 +386,7 @@
     {
       "key": "hydra",
       "title": "a three-headed hydra",
+      "youtube": "https://youtube.com/shorts/iDqROE2p2NE",
       "models": {
         "haiku": {
           "file": "hydra-4x-haiku.json",
@@ -433,6 +439,7 @@
     {
       "key": "king-kong",
       "title": "King Kong",
+      "youtube": "https://youtube.com/shorts/rSesRxBUyQM",
       "models": {
         "haiku": {
           "file": "king-kong-4x-haiku.json",
@@ -511,6 +518,7 @@
     {
       "key": "kraken",
       "title": "a kraken",
+      "youtube": "https://youtube.com/shorts/lBjh3FVmWfo",
       "models": {
         "haiku": {
           "file": "kraken-4x-haiku.json",
@@ -589,6 +597,7 @@
     {
       "key": "minotaur",
       "title": "a minotaur",
+      "youtube": "https://youtube.com/shorts/x0va-m6y5UI",
       "models": {
         "haiku": {
           "file": "minotaur-4x-haiku.json",
@@ -615,6 +624,7 @@
     {
       "key": "octopus",
       "title": "a giant octopus",
+      "youtube": "https://youtube.com/shorts/wefOleHZAXQ",
       "models": {
         "haiku": {
           "file": "octopus-4x-haiku.json",
@@ -797,6 +807,7 @@
     {
       "key": "pokeball",
       "title": "a giant Poké Ball",
+      "youtube": "https://youtube.com/shorts/umbjOokH0us",
       "models": {
         "haiku": {
           "file": "pokeball-4x-haiku.json",
@@ -849,6 +860,7 @@
     {
       "key": "sea-serpent",
       "title": "a sea serpent",
+      "youtube": "https://youtube.com/shorts/xKrHgbGxhtk",
       "models": {
         "haiku": {
           "file": "sea-serpent-4x-haiku.json",
@@ -875,6 +887,7 @@
     {
       "key": "shark",
       "title": "a great white shark",
+      "youtube": "https://youtube.com/shorts/s7_UoDFiSu4",
       "models": {
         "haiku": {
           "file": "shark-4x-haiku.json",
@@ -953,6 +966,7 @@
     {
       "key": "spider-man",
       "title": "Spider-Man",
+      "youtube": "https://youtube.com/shorts/pzhf90P1do4",
       "models": {
         "haiku": {
           "file": "spider-man-4x-haiku.json",
@@ -1031,6 +1045,7 @@
     {
       "key": "terminator",
       "title": "the Terminator",
+      "youtube": "https://youtube.com/shorts/Pl-rN-ffwnU",
       "models": {
         "haiku": {
           "file": "terminator-4x-haiku.json",
@@ -1161,6 +1176,7 @@
     {
       "key": "werewolf",
       "title": "a werewolf howling at the moon",
+      "youtube": "https://youtube.com/shorts/zIZL8YEFcfQ",
       "models": {
         "haiku": {
           "file": "werewolf-4x-haiku.json",

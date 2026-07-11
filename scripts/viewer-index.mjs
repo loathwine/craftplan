@@ -23,6 +23,18 @@ try { decisions = JSON.parse(readFileSync(resolve(ROOT, 'qa-decisions.json'), 'u
 const MODELS = ['haiku', 'sonnet', 'opus', 'fable'];
 const LABELS = { haiku: 'Haiku 4.5', sonnet: 'Sonnet 5', opus: 'Opus 4.8', fable: 'Fable 5' };
 
+// Published/scheduled YouTube Short per subject (viewer "▶ Video" link).
+// Love Fast reverse-order batch scheduled 2026-07-12..07-24, plus the 3 earlier
+// public benchmark shorts. Keep updating as more subjects are uploaded.
+const VIDEO_IDS = {
+  'king-kong': 'rSesRxBUyQM', 'shark': 's7_UoDFiSu4', 'terminator': 'Pl-rN-ffwnU',
+  'creeper': 'YjnD_gx_t_c', 'kraken': 'lBjh3FVmWfo', 'octopus': 'wefOleHZAXQ',
+  'godzilla': 'RsuhUE9SktE', 'hydra': 'iDqROE2p2NE', 'cerberus': 'oK05NltBLDE',
+  'minotaur': 'x0va-m6y5UI', 'spider-man': 'pzhf90P1do4', 'sea-serpent': 'xKrHgbGxhtk',
+  'werewolf': 'zIZL8YEFcfQ',
+  'dragon': 'ph3JhHrDHzc', 'giant': 'YqHWKi6e8UE', 'pokeball': 'umbjOokH0us',
+};
+
 const titleFor = (key) => {
   try {
     const t = readFileSync(resolve(ROOT, `prompts/${key}-4x.prompt.txt`), 'utf8');
@@ -46,7 +58,8 @@ for (const s of qaIndex.subjects) {
     const rot = d && d.status === 'rotate' ? (d.rotationDeg || 0) : 0;
     models[m] = { file, blocks: solids(file), rot };
   }
-  subjects.push({ key: s.key, title: titleFor(s.key), models });
+  const yt = VIDEO_IDS[s.key];
+  subjects.push({ key: s.key, title: titleFor(s.key), ...(yt ? { youtube: `https://youtube.com/shorts/${yt}` } : {}), models });
 }
 
 const out = {
