@@ -8,7 +8,7 @@
 #
 #   marathon/grid-batch.sh shark werewolf terminator ...
 set -u
-cd /home/edvin/dev/craftplan
+cd "$(dirname "$(readlink -f "$0")")/.."
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
 LOG=marathon/grid-batch.log
 SH=recordings/shorts-mode

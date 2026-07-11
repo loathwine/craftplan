@@ -291,7 +291,7 @@ Shot helpers:
   `dialog`, `camera`, `fadeIn(Color)`, `fadeOut(Color)`.
 
 Avatars (`MANUSCRIPT.avatars`):
-- `Edvin` (player) — blue body, baseball cap
+- `Player` (player) — blue body, baseball cap
 - `Claude` — emerald body, purple wizard hat
 - `Bot_NW/NE/SW/SE` — colorful background bots in the outro
 

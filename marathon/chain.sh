@@ -7,7 +7,7 @@
 # a persistent pipeline error). QA/commit still happens in the Claude session,
 # decoupled from generation.
 set -u
-cd /home/edvin/dev/craftplan
+cd "$(dirname "$(readlink -f "$0")")/.."
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
 LOG=marathon/log.txt
 note() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) chain: $*" | tee -a "$LOG"; }

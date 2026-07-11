@@ -18,3 +18,5 @@ marathon/rr-logs/
 marathon/rerender-done.json
 marathon/rerender-summary.json
 marathon/rerender-batch.log
+marathon/*.log
+marathon/log.txt

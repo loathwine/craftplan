@@ -38,7 +38,7 @@ NO pushes.** Local commits after each batch are authorized.
 - `marathon/window.json` — last five-hour-window probe ({resetsAt, overageStatus, probedAt}, epoch seconds)
 - `marathon/smokes/<key>.png` — t=5 smoke of each cached build
 - Generation runs as ONE long-lived transient unit `marathon-chain` via:
-  `systemd-run --user --unit=marathon-chain --working-directory=/home/edvin/dev/craftplan /home/edvin/dev/craftplan/marathon/chain.sh`
+  `systemd-run --user --unit=marathon-chain --working-directory=$HOME/dev/craftplan $HOME/dev/craftplan/marathon/chain.sh`
   `chain.sh` runs batch.mjs back-to-back, sleeping to resetsAt+120 after each
   drained window, and stops itself on queue-empty or 4 consecutive
   zero-progress batches. The Claude session is only needed for QA + commits.
@@ -86,7 +86,7 @@ the session), so generation must never depend on a wake. On each wake:
 
 ## Resume after crash/reboot
 
-Start claude in /home/edvin/dev/craftplan and say: "resume the fable
+Start claude in $HOME/dev/craftplan and say: "resume the fable
 marathon per marathon/RUNBOOK.md". Check `systemctl --user list-units
 'marathon-*'`, read queue.json/log.txt, continue the wake procedure.
 

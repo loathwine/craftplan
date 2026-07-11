@@ -11,7 +11,7 @@
 #
 #   marathon/grid-finish.sh gorilla elephant volcano ...
 set -u
-cd /home/edvin/dev/craftplan
+cd "$(dirname "$(readlink -f "$0")")/.."
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
 LOG=marathon/grid-finish.log
 SH=recordings/shorts-mode
