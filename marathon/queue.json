@@ -389,7 +389,10 @@
     {
       "key": "mammoth",
       "prompt": "a woolly mammoth",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3520,
+      "carveAir": 6096,
+      "genSeconds": 228
     },
     {
       "key": "sabertooth",
@@ -404,22 +407,34 @@
     {
       "key": "gorilla",
       "prompt": "a silverback gorilla",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3121,
+      "carveAir": 5887,
+      "genSeconds": 341
     },
     {
       "key": "elephant",
       "prompt": "an African elephant",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2601,
+      "carveAir": 5456,
+      "genSeconds": 302
     },
     {
       "key": "eagle",
       "prompt": "a bald eagle with wings spread",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2966,
+      "carveAir": 1235,
+      "genSeconds": 442
     },
     {
       "key": "cobra",
       "prompt": "a king cobra ready to strike",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3255,
+      "carveAir": 5137,
+      "genSeconds": 516
     },
     {
       "key": "peacock",
@@ -434,17 +449,26 @@
     {
       "key": "statue-liberty",
       "prompt": "the Statue of Liberty",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3271,
+      "carveAir": 5429,
+      "genSeconds": 312
     },
     {
       "key": "big-ben",
       "prompt": "Big Ben",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2879,
+      "carveAir": 3977,
+      "genSeconds": 395
     },
     {
       "key": "sphinx-giza",
       "prompt": "the Great Sphinx of Giza",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3928,
+      "carveAir": 6765,
+      "genSeconds": 339
     },
     {
       "key": "golden-gate",
@@ -454,12 +478,18 @@
     {
       "key": "sydney-opera",
       "prompt": "the Sydney Opera House",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3430,
+      "carveAir": 8141,
+      "genSeconds": 379
     },
     {
       "key": "taj-mahal",
       "prompt": "the Taj Mahal",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3635,
+      "carveAir": 5474,
+      "genSeconds": 344
     },
     {
       "key": "stonehenge",
@@ -479,22 +509,35 @@
     {
       "key": "lighthouse",
       "prompt": "a lighthouse on a cliff",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2786,
+      "carveAir": 5797,
+      "genSeconds": 444
     },
     {
       "key": "wizard-tower",
       "prompt": "a wizard's tower",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "attempts": 1,
+      "solid": 2834,
+      "carveAir": 3722,
+      "genSeconds": 329
     },
     {
       "key": "pagoda",
       "prompt": "a Japanese pagoda",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3172,
+      "carveAir": 3866,
+      "genSeconds": 304
     },
     {
       "key": "locomotive",
       "prompt": "a steam locomotive",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3690,
+      "carveAir": 4526,
+      "genSeconds": 302
     },
     {
       "key": "monster-truck",
@@ -514,12 +557,18 @@
     {
       "key": "fighter-jet",
       "prompt": "a fighter jet",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 1981,
+      "carveAir": 0,
+      "genSeconds": 229
     },
     {
       "key": "space-shuttle",
       "prompt": "the Space Shuttle on its launchpad",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3889,
+      "carveAir": 3820,
+      "genSeconds": 420
     },
     {
       "key": "submarine",
@@ -539,7 +588,10 @@
     {
       "key": "excalibur",
       "prompt": "Excalibur in the stone",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2186,
+      "carveAir": 4093,
+      "genSeconds": 187
     },
     {
       "key": "mjolnir",
@@ -549,7 +601,10 @@
     {
       "key": "treasure-chest",
       "prompt": "a treasure chest overflowing with gold",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2885,
+      "carveAir": 4251,
+      "genSeconds": 388
     },
     {
       "key": "jack-o-lantern",
@@ -569,7 +624,10 @@
     {
       "key": "knight-vs-dragon",
       "prompt": "a knight fighting a dragon",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2778,
+      "carveAir": 6687,
+      "genSeconds": 507
     },
     {
       "key": "wizard-duel",
@@ -579,7 +637,10 @@
     {
       "key": "volcano",
       "prompt": "an erupting volcano",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3383,
+      "carveAir": 5578,
+      "genSeconds": 271
     },
     {
       "key": "alien-cow",
