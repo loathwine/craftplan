@@ -384,7 +384,10 @@
     {
       "key": "blue-whale",
       "prompt": "a blue whale",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3453,
+      "carveAir": 7863,
+      "genSeconds": 393
     },
     {
       "key": "mammoth",
@@ -397,12 +400,18 @@
     {
       "key": "sabertooth",
       "prompt": "a sabertooth tiger",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3258,
+      "carveAir": 4537,
+      "genSeconds": 484
     },
     {
       "key": "grizzly",
       "prompt": "a grizzly bear standing on its hind legs",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2553,
+      "carveAir": 2710,
+      "genSeconds": 314
     },
     {
       "key": "gorilla",
@@ -439,12 +448,18 @@
     {
       "key": "peacock",
       "prompt": "a peacock with its tail fanned out",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 1953,
+      "carveAir": 4415,
+      "genSeconds": 333
     },
     {
       "key": "scorpion",
       "prompt": "a giant scorpion",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2902,
+      "carveAir": 8762,
+      "genSeconds": 362
     },
     {
       "key": "statue-liberty",
@@ -473,7 +488,10 @@
     {
       "key": "golden-gate",
       "prompt": "the Golden Gate Bridge",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3295,
+      "carveAir": 7127,
+      "genSeconds": 284
     },
     {
       "key": "sydney-opera",
@@ -494,17 +512,26 @@
     {
       "key": "stonehenge",
       "prompt": "Stonehenge",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2429,
+      "carveAir": 9517,
+      "genSeconds": 232
     },
     {
       "key": "moai",
       "prompt": "the Moai statues of Easter Island",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3240,
+      "carveAir": 7225,
+      "genSeconds": 221
     },
     {
       "key": "viking-longship",
       "prompt": "a Viking longship",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2519,
+      "carveAir": 6403,
+      "genSeconds": 350
     },
     {
       "key": "lighthouse",
@@ -542,17 +569,26 @@
     {
       "key": "monster-truck",
       "prompt": "a monster truck",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2836,
+      "carveAir": 6201,
+      "genSeconds": 299
     },
     {
       "key": "tank",
       "prompt": "a battle tank",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2870,
+      "carveAir": 4149,
+      "genSeconds": 274
     },
     {
       "key": "helicopter",
       "prompt": "an attack helicopter",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 1665,
+      "carveAir": 2884,
+      "genSeconds": 312
     },
     {
       "key": "fighter-jet",
@@ -573,17 +609,26 @@
     {
       "key": "submarine",
       "prompt": "a submarine",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2745,
+      "carveAir": 4822,
+      "genSeconds": 244
     },
     {
       "key": "ferris-wheel",
       "prompt": "a Ferris wheel",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 1502,
+      "carveAir": 4461,
+      "genSeconds": 158
     },
     {
       "key": "trebuchet",
       "prompt": "a medieval trebuchet",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2125,
+      "carveAir": 5720,
+      "genSeconds": 280
     },
     {
       "key": "excalibur",
@@ -596,7 +641,10 @@
     {
       "key": "mjolnir",
       "prompt": "Thor's hammer Mjölnir",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 3206,
+      "carveAir": 3591,
+      "genSeconds": 330
     },
     {
       "key": "treasure-chest",
@@ -609,17 +657,26 @@
     {
       "key": "jack-o-lantern",
       "prompt": "a jack-o'-lantern",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2180,
+      "carveAir": 5616,
+      "genSeconds": 262
     },
     {
       "key": "gingerbread",
       "prompt": "a gingerbread house",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2739,
+      "carveAir": 3838,
+      "genSeconds": 429
     },
     {
       "key": "santa-sleigh",
       "prompt": "Santa's sleigh pulled by reindeer",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2345,
+      "carveAir": 0,
+      "genSeconds": 360
     },
     {
       "key": "knight-vs-dragon",
@@ -632,7 +689,10 @@
     {
       "key": "wizard-duel",
       "prompt": "two wizards dueling with magic",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2735,
+      "carveAir": 5776,
+      "genSeconds": 422
     },
     {
       "key": "volcano",
@@ -645,12 +705,137 @@
     {
       "key": "alien-cow",
       "prompt": "a UFO abducting a cow",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2646,
+      "carveAir": 2725,
+      "genSeconds": 374
     },
     {
       "key": "trex-jeep",
       "prompt": "a T-Rex chasing a jeep",
-      "status": "blocked_no_fable"
+      "status": "smoked",
+      "solid": 2090,
+      "carveAir": 3113,
+      "genSeconds": 405
+    },
+    {
+      "key": "cthulhu",
+      "prompt": "Cthulhu",
+      "status": "smoked",
+      "solid": 3048,
+      "carveAir": 4269,
+      "genSeconds": 188
+    },
+    {
+      "key": "loch-ness",
+      "prompt": "the Loch Ness Monster",
+      "status": "smoked",
+      "solid": 2895,
+      "carveAir": 9050,
+      "genSeconds": 321
+    },
+    {
+      "key": "chimera",
+      "prompt": "a chimera",
+      "status": "smoked",
+      "solid": 2299,
+      "carveAir": 3049,
+      "genSeconds": 326
+    },
+    {
+      "key": "basilisk",
+      "prompt": "a basilisk",
+      "status": "smoked",
+      "solid": 2434,
+      "carveAir": 2355,
+      "genSeconds": 383
+    },
+    {
+      "key": "wendigo",
+      "prompt": "a wendigo",
+      "status": "smoked",
+      "attempts": 1,
+      "solid": 1609,
+      "carveAir": 2261,
+      "genSeconds": 464
+    },
+    {
+      "key": "superman",
+      "prompt": "Superman",
+      "status": "smoked",
+      "solid": 3151,
+      "carveAir": 5975,
+      "genSeconds": 365
+    },
+    {
+      "key": "groot",
+      "prompt": "Groot",
+      "status": "smoked",
+      "solid": 1756,
+      "carveAir": 3283,
+      "genSeconds": 315
+    },
+    {
+      "key": "wall-e",
+      "prompt": "Wall-E",
+      "status": "smoked",
+      "solid": 2590,
+      "carveAir": 4101,
+      "genSeconds": 321
+    },
+    {
+      "key": "venom",
+      "prompt": "Venom",
+      "status": "smoked",
+      "solid": 3040,
+      "carveAir": 4557,
+      "genSeconds": 322
+    },
+    {
+      "key": "deadpool",
+      "prompt": "Deadpool",
+      "status": "smoked",
+      "solid": 2791,
+      "carveAir": 7007,
+      "genSeconds": 366
+    },
+    {
+      "key": "christ-redeemer",
+      "prompt": "Christ the Redeemer",
+      "status": "smoked",
+      "solid": 3246,
+      "carveAir": 2866,
+      "genSeconds": 192
+    },
+    {
+      "key": "mount-rushmore",
+      "prompt": "Mount Rushmore",
+      "status": "smoked",
+      "solid": 3392,
+      "carveAir": 0,
+      "genSeconds": 599
+    },
+    {
+      "key": "neuschwanstein",
+      "prompt": "Neuschwanstein Castle",
+      "status": "smoked",
+      "solid": 3738,
+      "carveAir": 4835,
+      "genSeconds": 396
+    },
+    {
+      "key": "x-wing",
+      "prompt": "an X-wing starfighter",
+      "status": "smoked",
+      "solid": 2124,
+      "carveAir": 141,
+      "genSeconds": 308
+    },
+    {
+      "key": "infinity-gauntlet",
+      "prompt": "the Infinity Gauntlet",
+      "status": "queued",
+      "attempts": 1
     }
   ]
 }
