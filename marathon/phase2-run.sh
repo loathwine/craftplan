@@ -12,8 +12,11 @@ PLANS=public/data/plans
 say(){ echo "$(date -u +%H:%M:%SZ) [phase2] $*" | tee -a "$LOG"; }
 keys(){ local f k; for f in "$PLANS"/*-4x-fable.json; do k=$(basename "$f" -4x-fable.json); [ -f "$SH/${k}-4x-grid-10s.mp4" ] || echo "$k"; done; }
 nkeys(){ keys | grep -c .; }
+# Probe OPUS (all-models budget), not fable: phase 2 spends the all-models pool,
+# and fable is near its weekly cap so a fable probe returns the far weekly reset
+# (~44h) and would false-trip the >6h guard below.
 probe_reset(){ echo OK | timeout 90 nix develop .#record --command bash -c \
-  'claude -p --model claude-fable-5 --output-format stream-json --verbose 2>/dev/null' \
+  'claude -p --model claude-opus-4-8 --output-format stream-json --verbose 2>/dev/null' \
   | grep -oE '"resetsAt":[0-9]+' | grep -oE '[0-9]{10}' | tail -1; }
 
 say "start: $(nkeys) subject(s) need grids"

@@ -69,8 +69,12 @@ gen_sonnet5() { # key -> 0 ok, 1 stop
       return 0
     fi
   fi
-  say "  sonnet5: EMPTY/failed (${#raw} chars) — throttle, STOP"
-  return 1
+  # A sonnet stream failure here is almost always the prose/agentic-preamble or
+  # sandbox bug (see notes), NOT a real throttle — a genuine all-models cap trips
+  # the haiku/opus cache-plan break first. So skip this subject (return 2) and let
+  # the batch keep going, rather than killing the whole run.
+  say "  sonnet5: EMPTY/failed (${#raw} chars) — skipping subject (retry later)"
+  return 2
 }
 
 render_q() { # key model -> render only if mp4 missing
@@ -92,7 +96,7 @@ for key in "$@"; do
   [ $rc -eq 1 ] && break; [ $rc -eq 2 ] && continue
   gen_cacheplan "$key" claude-opus-4-8          opus  900; rc=$?
   [ $rc -eq 1 ] && break; [ $rc -eq 2 ] && continue
-  gen_sonnet5   "$key"                                    || break
+  gen_sonnet5   "$key"; rc=$?; [ $rc -eq 2 ] && continue
   say "  rendering 4 quadrants..."
   for m in haiku opus sonnet fable; do render_q "$key" "$m"; done
   # guard: all 4 quadrant mp4s must exist before stitching
