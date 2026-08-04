@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T20:43:35.947Z",
+  "generatedAt": "2026-08-04T21:18:29.884Z",
   "models": [
     "haiku",
     "sonnet",
@@ -12,8 +12,60 @@
     "opus": "Opus 4.8",
     "fable": "Fable 5"
   },
-  "count": 48,
+  "count": 104,
   "subjects": [
+    {
+      "key": "alien-cow",
+      "title": "a UFO abducting a cow",
+      "models": {
+        "haiku": {
+          "file": "alien-cow-4x-haiku.json",
+          "blocks": 645,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "alien-cow-4x-sonnet.json",
+          "blocks": 1658,
+          "rot": 0
+        },
+        "opus": {
+          "file": "alien-cow-4x-opus.json",
+          "blocks": 3083,
+          "rot": 0
+        },
+        "fable": {
+          "file": "alien-cow-4x-fable.json",
+          "blocks": 2646,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "basilisk",
+      "title": "a basilisk",
+      "models": {
+        "haiku": {
+          "file": "basilisk-4x-haiku.json",
+          "blocks": 1711,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "basilisk-4x-sonnet.json",
+          "blocks": 3232,
+          "rot": 0
+        },
+        "opus": {
+          "file": "basilisk-4x-opus.json",
+          "blocks": 3576,
+          "rot": 0
+        },
+        "fable": {
+          "file": "basilisk-4x-fable.json",
+          "blocks": 2434,
+          "rot": 0
+        }
+      }
+    },
     {
       "key": "batman",
       "title": "Batman",
@@ -36,6 +88,58 @@
         "fable": {
           "file": "batman-4x-fable.json",
           "blocks": 2862,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "big-ben",
+      "title": "Big Ben",
+      "models": {
+        "haiku": {
+          "file": "big-ben-4x-haiku.json",
+          "blocks": 5078,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "big-ben-4x-sonnet.json",
+          "blocks": 1450,
+          "rot": 0
+        },
+        "opus": {
+          "file": "big-ben-4x-opus.json",
+          "blocks": 2354,
+          "rot": 0
+        },
+        "fable": {
+          "file": "big-ben-4x-fable.json",
+          "blocks": 2879,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "blue-whale",
+      "title": "a blue whale",
+      "models": {
+        "haiku": {
+          "file": "blue-whale-4x-haiku.json",
+          "blocks": 15356,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "blue-whale-4x-sonnet.json",
+          "blocks": 2313,
+          "rot": 0
+        },
+        "opus": {
+          "file": "blue-whale-4x-opus.json",
+          "blocks": 3948,
+          "rot": 0
+        },
+        "fable": {
+          "file": "blue-whale-4x-fable.json",
+          "blocks": 3453,
           "rot": 0
         }
       }
@@ -68,6 +172,85 @@
       }
     },
     {
+      "key": "chimera",
+      "title": "a chimera",
+      "models": {
+        "haiku": {
+          "file": "chimera-4x-haiku.json",
+          "blocks": 3191,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "chimera-4x-sonnet.json",
+          "blocks": 1783,
+          "rot": 0
+        },
+        "opus": {
+          "file": "chimera-4x-opus.json",
+          "blocks": 3955,
+          "rot": 0
+        },
+        "fable": {
+          "file": "chimera-4x-fable.json",
+          "blocks": 2299,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "christ-redeemer",
+      "title": "Christ the Redeemer",
+      "youtube": "https://youtube.com/shorts/fYhdEXiP5vQ",
+      "models": {
+        "haiku": {
+          "file": "christ-redeemer-4x-haiku.json",
+          "blocks": 18655,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "christ-redeemer-4x-sonnet.json",
+          "blocks": 2013,
+          "rot": 0
+        },
+        "opus": {
+          "file": "christ-redeemer-4x-opus.json",
+          "blocks": 3940,
+          "rot": 0
+        },
+        "fable": {
+          "file": "christ-redeemer-4x-fable.json",
+          "blocks": 3246,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "cobra",
+      "title": "a king cobra ready to strike",
+      "models": {
+        "haiku": {
+          "file": "cobra-4x-haiku.json",
+          "blocks": 4511,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "cobra-4x-sonnet.json",
+          "blocks": 2146,
+          "rot": 0
+        },
+        "opus": {
+          "file": "cobra-4x-opus.json",
+          "blocks": 3589,
+          "rot": 0
+        },
+        "fable": {
+          "file": "cobra-4x-fable.json",
+          "blocks": 3255,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "creeper",
       "title": "a Minecraft creeper",
       "youtube": "https://youtube.com/shorts/YjnD_gx_t_c",
@@ -91,6 +274,33 @@
           "file": "creeper-4x-fable.json",
           "blocks": 2959,
           "rot": 180
+        }
+      }
+    },
+    {
+      "key": "cthulhu",
+      "title": "Cthulhu",
+      "youtube": "https://youtube.com/shorts/NEtU5uwQDwE",
+      "models": {
+        "haiku": {
+          "file": "cthulhu-4x-haiku.json",
+          "blocks": 6453,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "cthulhu-4x-sonnet.json",
+          "blocks": 4629,
+          "rot": 0
+        },
+        "opus": {
+          "file": "cthulhu-4x-opus.json",
+          "blocks": 6445,
+          "rot": 0
+        },
+        "fable": {
+          "file": "cthulhu-4x-fable.json",
+          "blocks": 3048,
+          "rot": 0
         }
       }
     },
@@ -123,6 +333,7 @@
     {
       "key": "darth-vader",
       "title": "Darth Vader",
+      "youtube": "https://youtube.com/shorts/mxVuQSI_DSs",
       "models": {
         "haiku": {
           "file": "darth-vader-4x-haiku.json",
@@ -142,6 +353,33 @@
         "fable": {
           "file": "darth-vader-4x-fable.json",
           "blocks": 3005,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "deadpool",
+      "title": "Deadpool",
+      "youtube": "https://youtube.com/shorts/bicO_ew4zaA",
+      "models": {
+        "haiku": {
+          "file": "deadpool-4x-haiku.json",
+          "blocks": 1191,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "deadpool-4x-sonnet.json",
+          "blocks": 502,
+          "rot": 0
+        },
+        "opus": {
+          "file": "deadpool-4x-opus.json",
+          "blocks": 2676,
+          "rot": 0
+        },
+        "fable": {
+          "file": "deadpool-4x-fable.json",
+          "blocks": 2791,
           "rot": 0
         }
       }
@@ -174,6 +412,58 @@
       }
     },
     {
+      "key": "eagle",
+      "title": "a bald eagle with wings spread",
+      "models": {
+        "haiku": {
+          "file": "eagle-4x-haiku.json",
+          "blocks": 716,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "eagle-4x-sonnet.json",
+          "blocks": 2544,
+          "rot": 0
+        },
+        "opus": {
+          "file": "eagle-4x-opus.json",
+          "blocks": 2622,
+          "rot": 0
+        },
+        "fable": {
+          "file": "eagle-4x-fable.json",
+          "blocks": 2966,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "elephant",
+      "title": "an African elephant",
+      "models": {
+        "haiku": {
+          "file": "elephant-4x-haiku.json",
+          "blocks": 2936,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "elephant-4x-sonnet.json",
+          "blocks": 2635,
+          "rot": 0
+        },
+        "opus": {
+          "file": "elephant-4x-opus.json",
+          "blocks": 3028,
+          "rot": 0
+        },
+        "fable": {
+          "file": "elephant-4x-fable.json",
+          "blocks": 2601,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "ender-dragon",
       "title": "the Ender Dragon",
       "models": {
@@ -195,6 +485,85 @@
         "fable": {
           "file": "ender-dragon-4x-fable.json",
           "blocks": 3035,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "excalibur",
+      "title": "Excalibur in the stone",
+      "youtube": "https://youtube.com/shorts/BMyTnzkHSvc",
+      "models": {
+        "haiku": {
+          "file": "excalibur-4x-haiku.json",
+          "blocks": 6598,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "excalibur-4x-sonnet.json",
+          "blocks": 1577,
+          "rot": 0
+        },
+        "opus": {
+          "file": "excalibur-4x-opus.json",
+          "blocks": 1148,
+          "rot": 0
+        },
+        "fable": {
+          "file": "excalibur-4x-fable.json",
+          "blocks": 2186,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "ferris-wheel",
+      "title": "a Ferris wheel",
+      "models": {
+        "haiku": {
+          "file": "ferris-wheel-4x-haiku.json",
+          "blocks": 10984,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "ferris-wheel-4x-sonnet.json",
+          "blocks": 1586,
+          "rot": 0
+        },
+        "opus": {
+          "file": "ferris-wheel-4x-opus.json",
+          "blocks": 2621,
+          "rot": 0
+        },
+        "fable": {
+          "file": "ferris-wheel-4x-fable.json",
+          "blocks": 1502,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "fighter-jet",
+      "title": "a fighter jet",
+      "models": {
+        "haiku": {
+          "file": "fighter-jet-4x-haiku.json",
+          "blocks": 610,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "fighter-jet-4x-sonnet.json",
+          "blocks": 1701,
+          "rot": 0
+        },
+        "opus": {
+          "file": "fighter-jet-4x-opus.json",
+          "blocks": 1593,
+          "rot": 0
+        },
+        "fable": {
+          "file": "fighter-jet-4x-fable.json",
+          "blocks": 1981,
           "rot": 0
         }
       }
@@ -253,6 +622,32 @@
       }
     },
     {
+      "key": "gingerbread",
+      "title": "a gingerbread house",
+      "models": {
+        "haiku": {
+          "file": "gingerbread-4x-haiku.json",
+          "blocks": 6287,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "gingerbread-4x-sonnet.json",
+          "blocks": 1350,
+          "rot": 0
+        },
+        "opus": {
+          "file": "gingerbread-4x-opus.json",
+          "blocks": 1946,
+          "rot": 0
+        },
+        "fable": {
+          "file": "gingerbread-4x-fable.json",
+          "blocks": 2739,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "godzilla",
       "title": "Godzilla",
       "youtube": "https://youtube.com/shorts/RsuhUE9SktE",
@@ -275,6 +670,33 @@
         "fable": {
           "file": "godzilla-4x-fable.json",
           "blocks": 2818,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "golden-gate",
+      "title": "the Golden Gate Bridge",
+      "youtube": "https://youtube.com/shorts/zY-JMrafJ-Q",
+      "models": {
+        "haiku": {
+          "file": "golden-gate-4x-haiku.json",
+          "blocks": 3790,
+          "rot": 270
+        },
+        "sonnet": {
+          "file": "golden-gate-4x-sonnet.json",
+          "blocks": 3928,
+          "rot": 0
+        },
+        "opus": {
+          "file": "golden-gate-4x-opus.json",
+          "blocks": 2607,
+          "rot": 0
+        },
+        "fable": {
+          "file": "golden-gate-4x-fable.json",
+          "blocks": 3295,
           "rot": 0
         }
       }
@@ -306,6 +728,32 @@
       }
     },
     {
+      "key": "gorilla",
+      "title": "a silverback gorilla",
+      "models": {
+        "haiku": {
+          "file": "gorilla-4x-haiku.json",
+          "blocks": 2018,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "gorilla-4x-sonnet.json",
+          "blocks": 1834,
+          "rot": 0
+        },
+        "opus": {
+          "file": "gorilla-4x-opus.json",
+          "blocks": 6206,
+          "rot": 0
+        },
+        "fable": {
+          "file": "gorilla-4x-fable.json",
+          "blocks": 3121,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "griffin",
       "title": "a griffin",
       "models": {
@@ -327,6 +775,32 @@
         "fable": {
           "file": "griffin-4x-fable.json",
           "blocks": 2725,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "grizzly",
+      "title": "a grizzly bear standing on its hind legs",
+      "models": {
+        "haiku": {
+          "file": "grizzly-4x-haiku.json",
+          "blocks": 4914,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "grizzly-4x-sonnet.json",
+          "blocks": 1331,
+          "rot": 0
+        },
+        "opus": {
+          "file": "grizzly-4x-opus.json",
+          "blocks": 3572,
+          "rot": 0
+        },
+        "fable": {
+          "file": "grizzly-4x-fable.json",
+          "blocks": 2553,
           "rot": 0
         }
       }
@@ -358,8 +832,62 @@
       }
     },
     {
+      "key": "groot",
+      "title": "Groot",
+      "youtube": "https://youtube.com/shorts/Pc1I3PxcSUw",
+      "models": {
+        "haiku": {
+          "file": "groot-4x-haiku.json",
+          "blocks": 7587,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "groot-4x-sonnet.json",
+          "blocks": 1267,
+          "rot": 0
+        },
+        "opus": {
+          "file": "groot-4x-opus.json",
+          "blocks": 1581,
+          "rot": 0
+        },
+        "fable": {
+          "file": "groot-4x-fable.json",
+          "blocks": 1756,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "helicopter",
+      "title": "an attack helicopter",
+      "models": {
+        "haiku": {
+          "file": "helicopter-4x-haiku.json",
+          "blocks": 654,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "helicopter-4x-sonnet.json",
+          "blocks": 641,
+          "rot": 0
+        },
+        "opus": {
+          "file": "helicopter-4x-opus.json",
+          "blocks": 1511,
+          "rot": 0
+        },
+        "fable": {
+          "file": "helicopter-4x-fable.json",
+          "blocks": 1665,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "hulk",
       "title": "the Incredible Hulk",
+      "youtube": "https://youtube.com/shorts/OjWh7zRmH_Y",
       "models": {
         "haiku": {
           "file": "hulk-4x-haiku.json",
@@ -413,6 +941,7 @@
     {
       "key": "iron-man",
       "title": "Iron Man",
+      "youtube": "https://youtube.com/shorts/HNBxbYUvX-g",
       "models": {
         "haiku": {
           "file": "iron-man-4x-haiku.json",
@@ -432,6 +961,32 @@
         "fable": {
           "file": "iron-man-4x-fable.json",
           "blocks": 2521,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "jack-o-lantern",
+      "title": "a jack-o'-lantern",
+      "models": {
+        "haiku": {
+          "file": "jack-o-lantern-4x-haiku.json",
+          "blocks": 880,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "jack-o-lantern-4x-sonnet.json",
+          "blocks": 2406,
+          "rot": 0
+        },
+        "opus": {
+          "file": "jack-o-lantern-4x-opus.json",
+          "blocks": 2593,
+          "rot": 0
+        },
+        "fable": {
+          "file": "jack-o-lantern-4x-fable.json",
+          "blocks": 2180,
           "rot": 0
         }
       }
@@ -516,6 +1071,32 @@
       }
     },
     {
+      "key": "knight-vs-dragon",
+      "title": "a knight fighting a dragon",
+      "models": {
+        "haiku": {
+          "file": "knight-vs-dragon-4x-haiku.json",
+          "blocks": 1306,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "knight-vs-dragon-4x-sonnet.json",
+          "blocks": 1567,
+          "rot": 0
+        },
+        "opus": {
+          "file": "knight-vs-dragon-4x-opus.json",
+          "blocks": 2523,
+          "rot": 0
+        },
+        "fable": {
+          "file": "knight-vs-dragon-4x-fable.json",
+          "blocks": 2778,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "kraken",
       "title": "a kraken",
       "youtube": "https://youtube.com/shorts/lBjh3FVmWfo",
@@ -543,8 +1124,113 @@
       }
     },
     {
+      "key": "lighthouse",
+      "title": "a lighthouse on a cliff",
+      "models": {
+        "haiku": {
+          "file": "lighthouse-4x-haiku.json",
+          "blocks": 4406,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "lighthouse-4x-sonnet.json",
+          "blocks": 3734,
+          "rot": 0
+        },
+        "opus": {
+          "file": "lighthouse-4x-opus.json",
+          "blocks": 2907,
+          "rot": 0
+        },
+        "fable": {
+          "file": "lighthouse-4x-fable.json",
+          "blocks": 2786,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "loch-ness",
+      "title": "the Loch Ness Monster",
+      "models": {
+        "haiku": {
+          "file": "loch-ness-4x-haiku.json",
+          "blocks": 1245,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "loch-ness-4x-sonnet.json",
+          "blocks": 2534,
+          "rot": 0
+        },
+        "opus": {
+          "file": "loch-ness-4x-opus.json",
+          "blocks": 2756,
+          "rot": 0
+        },
+        "fable": {
+          "file": "loch-ness-4x-fable.json",
+          "blocks": 2895,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "locomotive",
+      "title": "a steam locomotive",
+      "models": {
+        "haiku": {
+          "file": "locomotive-4x-haiku.json",
+          "blocks": 2659,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "locomotive-4x-sonnet.json",
+          "blocks": 1805,
+          "rot": 0
+        },
+        "opus": {
+          "file": "locomotive-4x-opus.json",
+          "blocks": 4524,
+          "rot": 0
+        },
+        "fable": {
+          "file": "locomotive-4x-fable.json",
+          "blocks": 3690,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "mammoth",
+      "title": "a woolly mammoth",
+      "models": {
+        "haiku": {
+          "file": "mammoth-4x-haiku.json",
+          "blocks": 7134,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "mammoth-4x-sonnet.json",
+          "blocks": 1459,
+          "rot": 0
+        },
+        "opus": {
+          "file": "mammoth-4x-opus.json",
+          "blocks": 3174,
+          "rot": 0
+        },
+        "fable": {
+          "file": "mammoth-4x-fable.json",
+          "blocks": 3520,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "mario",
       "title": "Super Mario",
+      "youtube": "https://youtube.com/shorts/iXtHYsFJoHI",
       "models": {
         "haiku": {
           "file": "mario-4x-haiku.json",
@@ -617,6 +1303,137 @@
         "fable": {
           "file": "minotaur-4x-fable.json",
           "blocks": 2955,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "mjolnir",
+      "title": "Thor's hammer Mjölnir",
+      "models": {
+        "haiku": {
+          "file": "mjolnir-4x-haiku.json",
+          "blocks": 548,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "mjolnir-4x-sonnet.json",
+          "blocks": 1129,
+          "rot": 0
+        },
+        "opus": {
+          "file": "mjolnir-4x-opus.json",
+          "blocks": 2781,
+          "rot": 0
+        },
+        "fable": {
+          "file": "mjolnir-4x-fable.json",
+          "blocks": 3206,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "moai",
+      "title": "the Moai statues of Easter Island",
+      "models": {
+        "haiku": {
+          "file": "moai-4x-haiku.json",
+          "blocks": 3980,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "moai-4x-sonnet.json",
+          "blocks": 2756,
+          "rot": 0
+        },
+        "opus": {
+          "file": "moai-4x-opus.json",
+          "blocks": 4073,
+          "rot": 0
+        },
+        "fable": {
+          "file": "moai-4x-fable.json",
+          "blocks": 3240,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "monster-truck",
+      "title": "a monster truck",
+      "models": {
+        "haiku": {
+          "file": "monster-truck-4x-haiku.json",
+          "blocks": 2312,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "monster-truck-4x-sonnet.json",
+          "blocks": 3564,
+          "rot": 0
+        },
+        "opus": {
+          "file": "monster-truck-4x-opus.json",
+          "blocks": 3498,
+          "rot": 0
+        },
+        "fable": {
+          "file": "monster-truck-4x-fable.json",
+          "blocks": 2836,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "mount-rushmore",
+      "title": "Mount Rushmore",
+      "youtube": "https://youtube.com/shorts/LKRawuLkV1o",
+      "models": {
+        "haiku": {
+          "file": "mount-rushmore-4x-haiku.json",
+          "blocks": 41463,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "mount-rushmore-4x-sonnet.json",
+          "blocks": 4327,
+          "rot": 0
+        },
+        "opus": {
+          "file": "mount-rushmore-4x-opus.json",
+          "blocks": 4604,
+          "rot": 0
+        },
+        "fable": {
+          "file": "mount-rushmore-4x-fable.json",
+          "blocks": 3392,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "neuschwanstein",
+      "title": "Neuschwanstein Castle",
+      "models": {
+        "haiku": {
+          "file": "neuschwanstein-4x-haiku.json",
+          "blocks": 8894,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "neuschwanstein-4x-sonnet.json",
+          "blocks": 3961,
+          "rot": 0
+        },
+        "opus": {
+          "file": "neuschwanstein-4x-opus.json",
+          "blocks": 3773,
+          "rot": 0
+        },
+        "fable": {
+          "file": "neuschwanstein-4x-fable.json",
+          "blocks": 3738,
           "rot": 0
         }
       }
@@ -701,6 +1518,58 @@
       }
     },
     {
+      "key": "pagoda",
+      "title": "a Japanese pagoda",
+      "models": {
+        "haiku": {
+          "file": "pagoda-4x-haiku.json",
+          "blocks": 3412,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "pagoda-4x-sonnet.json",
+          "blocks": 3088,
+          "rot": 0
+        },
+        "opus": {
+          "file": "pagoda-4x-opus.json",
+          "blocks": 3973,
+          "rot": 0
+        },
+        "fable": {
+          "file": "pagoda-4x-fable.json",
+          "blocks": 3172,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "peacock",
+      "title": "a peacock with its tail fanned out",
+      "models": {
+        "haiku": {
+          "file": "peacock-4x-haiku.json",
+          "blocks": 4720,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "peacock-4x-sonnet.json",
+          "blocks": 1620,
+          "rot": 0
+        },
+        "opus": {
+          "file": "peacock-4x-opus.json",
+          "blocks": 2082,
+          "rot": 0
+        },
+        "fable": {
+          "file": "peacock-4x-fable.json",
+          "blocks": 1953,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "pegasus",
       "title": "Pegasus",
       "models": {
@@ -729,6 +1598,7 @@
     {
       "key": "phoenix",
       "title": "a phoenix rising from flames",
+      "youtube": "https://youtube.com/shorts/E7kVk32kv_U",
       "models": {
         "haiku": {
           "file": "phoenix-4x-haiku.json",
@@ -755,6 +1625,7 @@
     {
       "key": "pikachu",
       "title": "Pikachu",
+      "youtube": "https://youtube.com/shorts/bKICSo2_XJ8",
       "models": {
         "haiku": {
           "file": "pikachu-4x-haiku.json",
@@ -834,6 +1705,7 @@
     {
       "key": "r2d2",
       "title": "R2-D2",
+      "youtube": "https://youtube.com/shorts/7m6IIcnx77Q",
       "models": {
         "haiku": {
           "file": "r2d2-4x-haiku.json",
@@ -853,6 +1725,84 @@
         "fable": {
           "file": "r2d2-4x-fable.json",
           "blocks": 3383,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "sabertooth",
+      "title": "a sabertooth tiger",
+      "models": {
+        "haiku": {
+          "file": "sabertooth-4x-haiku.json",
+          "blocks": 3107,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "sabertooth-4x-sonnet.json",
+          "blocks": 1605,
+          "rot": 0
+        },
+        "opus": {
+          "file": "sabertooth-4x-opus.json",
+          "blocks": 2217,
+          "rot": 0
+        },
+        "fable": {
+          "file": "sabertooth-4x-fable.json",
+          "blocks": 3258,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "santa-sleigh",
+      "title": "Santa's sleigh pulled by reindeer",
+      "models": {
+        "haiku": {
+          "file": "santa-sleigh-4x-haiku.json",
+          "blocks": 1665,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "santa-sleigh-4x-sonnet.json",
+          "blocks": 1688,
+          "rot": 0
+        },
+        "opus": {
+          "file": "santa-sleigh-4x-opus.json",
+          "blocks": 3596,
+          "rot": 0
+        },
+        "fable": {
+          "file": "santa-sleigh-4x-fable.json",
+          "blocks": 2345,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "scorpion",
+      "title": "a giant scorpion",
+      "models": {
+        "haiku": {
+          "file": "scorpion-4x-haiku.json",
+          "blocks": 2127,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "scorpion-4x-sonnet.json",
+          "blocks": 2526,
+          "rot": 0
+        },
+        "opus": {
+          "file": "scorpion-4x-opus.json",
+          "blocks": 2547,
+          "rot": 0
+        },
+        "fable": {
+          "file": "scorpion-4x-fable.json",
+          "blocks": 2902,
           "rot": 0
         }
       }
@@ -964,6 +1914,59 @@
       }
     },
     {
+      "key": "space-shuttle",
+      "title": "the Space Shuttle on its launchpad",
+      "youtube": "https://youtube.com/shorts/prO8MHZ1-Aw",
+      "models": {
+        "haiku": {
+          "file": "space-shuttle-4x-haiku.json",
+          "blocks": 12757,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "space-shuttle-4x-sonnet.json",
+          "blocks": 1876,
+          "rot": 0
+        },
+        "opus": {
+          "file": "space-shuttle-4x-opus.json",
+          "blocks": 4597,
+          "rot": 0
+        },
+        "fable": {
+          "file": "space-shuttle-4x-fable.json",
+          "blocks": 3889,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "sphinx-giza",
+      "title": "the Great Sphinx of Giza",
+      "models": {
+        "haiku": {
+          "file": "sphinx-giza-4x-haiku.json",
+          "blocks": 7211,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "sphinx-giza-4x-sonnet.json",
+          "blocks": 3631,
+          "rot": 0
+        },
+        "opus": {
+          "file": "sphinx-giza-4x-opus.json",
+          "blocks": 3649,
+          "rot": 0
+        },
+        "fable": {
+          "file": "sphinx-giza-4x-fable.json",
+          "blocks": 3928,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "spider-man",
       "title": "Spider-Man",
       "youtube": "https://youtube.com/shorts/pzhf90P1do4",
@@ -993,6 +1996,7 @@
     {
       "key": "spongebob",
       "title": "SpongeBob SquarePants",
+      "youtube": "https://youtube.com/shorts/3Lq1eFZesPQ",
       "models": {
         "haiku": {
           "file": "spongebob-4x-haiku.json",
@@ -1012,6 +2016,60 @@
         "fable": {
           "file": "spongebob-4x-fable.json",
           "blocks": 2731,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "statue-liberty",
+      "title": "the Statue of Liberty",
+      "youtube": "https://youtube.com/shorts/NJ6QbJiuxvI",
+      "models": {
+        "haiku": {
+          "file": "statue-liberty-4x-haiku.json",
+          "blocks": 5008,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "statue-liberty-4x-sonnet.json",
+          "blocks": 2426,
+          "rot": 0
+        },
+        "opus": {
+          "file": "statue-liberty-4x-opus.json",
+          "blocks": 4095,
+          "rot": 0
+        },
+        "fable": {
+          "file": "statue-liberty-4x-fable.json",
+          "blocks": 3271,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "stonehenge",
+      "title": "Stonehenge",
+      "youtube": "https://youtube.com/shorts/ikfvFKsg6RI",
+      "models": {
+        "haiku": {
+          "file": "stonehenge-4x-haiku.json",
+          "blocks": 491,
+          "rot": 180
+        },
+        "sonnet": {
+          "file": "stonehenge-4x-sonnet.json",
+          "blocks": 1600,
+          "rot": 0
+        },
+        "opus": {
+          "file": "stonehenge-4x-opus.json",
+          "blocks": 3617,
+          "rot": 0
+        },
+        "fable": {
+          "file": "stonehenge-4x-fable.json",
+          "blocks": 2429,
           "rot": 0
         }
       }
@@ -1039,6 +2097,138 @@
           "file": "stormtrooper-4x-fable.json",
           "blocks": 2779,
           "rot": 180
+        }
+      }
+    },
+    {
+      "key": "submarine",
+      "title": "a submarine",
+      "models": {
+        "haiku": {
+          "file": "submarine-4x-haiku.json",
+          "blocks": 1121,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "submarine-4x-sonnet.json",
+          "blocks": 1872,
+          "rot": 0
+        },
+        "opus": {
+          "file": "submarine-4x-opus.json",
+          "blocks": 3214,
+          "rot": 0
+        },
+        "fable": {
+          "file": "submarine-4x-fable.json",
+          "blocks": 2745,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "superman",
+      "title": "Superman",
+      "youtube": "https://youtube.com/shorts/ZAgH-sMTqFQ",
+      "models": {
+        "haiku": {
+          "file": "superman-4x-haiku.json",
+          "blocks": 3920,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "superman-4x-sonnet.json",
+          "blocks": 1965,
+          "rot": 0
+        },
+        "opus": {
+          "file": "superman-4x-opus.json",
+          "blocks": 4381,
+          "rot": 0
+        },
+        "fable": {
+          "file": "superman-4x-fable.json",
+          "blocks": 3151,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "sydney-opera",
+      "title": "the Sydney Opera House",
+      "models": {
+        "haiku": {
+          "file": "sydney-opera-4x-haiku.json",
+          "blocks": 9915,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "sydney-opera-4x-sonnet.json",
+          "blocks": 4585,
+          "rot": 0
+        },
+        "opus": {
+          "file": "sydney-opera-4x-opus.json",
+          "blocks": 6613,
+          "rot": 0
+        },
+        "fable": {
+          "file": "sydney-opera-4x-fable.json",
+          "blocks": 3430,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "taj-mahal",
+      "title": "the Taj Mahal",
+      "youtube": "https://youtube.com/shorts/2PRthFC0HLg",
+      "models": {
+        "haiku": {
+          "file": "taj-mahal-4x-haiku.json",
+          "blocks": 7644,
+          "rot": 90
+        },
+        "sonnet": {
+          "file": "taj-mahal-4x-sonnet.json",
+          "blocks": 4784,
+          "rot": 0
+        },
+        "opus": {
+          "file": "taj-mahal-4x-opus.json",
+          "blocks": 4540,
+          "rot": 0
+        },
+        "fable": {
+          "file": "taj-mahal-4x-fable.json",
+          "blocks": 3635,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "tank",
+      "title": "a battle tank",
+      "models": {
+        "haiku": {
+          "file": "tank-4x-haiku.json",
+          "blocks": 1442,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "tank-4x-sonnet.json",
+          "blocks": 1257,
+          "rot": 0
+        },
+        "opus": {
+          "file": "tank-4x-opus.json",
+          "blocks": 3364,
+          "rot": 0
+        },
+        "fable": {
+          "file": "tank-4x-fable.json",
+          "blocks": 2870,
+          "rot": 0
         }
       }
     },
@@ -1072,6 +2262,7 @@
     {
       "key": "thanos",
       "title": "Thanos",
+      "youtube": "https://youtube.com/shorts/b2dnKiGls4Y",
       "models": {
         "haiku": {
           "file": "thanos-4x-haiku.json",
@@ -1091,6 +2282,58 @@
         "fable": {
           "file": "thanos-4x-fable.json",
           "blocks": 2903,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "treasure-chest",
+      "title": "a treasure chest overflowing with gold",
+      "models": {
+        "haiku": {
+          "file": "treasure-chest-4x-haiku.json",
+          "blocks": 582,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "treasure-chest-4x-sonnet.json",
+          "blocks": 1171,
+          "rot": 0
+        },
+        "opus": {
+          "file": "treasure-chest-4x-opus.json",
+          "blocks": 3157,
+          "rot": 0
+        },
+        "fable": {
+          "file": "treasure-chest-4x-fable.json",
+          "blocks": 2885,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "trebuchet",
+      "title": "a medieval trebuchet",
+      "models": {
+        "haiku": {
+          "file": "trebuchet-4x-haiku.json",
+          "blocks": 3294,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "trebuchet-4x-sonnet.json",
+          "blocks": 844,
+          "rot": 0
+        },
+        "opus": {
+          "file": "trebuchet-4x-opus.json",
+          "blocks": 1798,
+          "rot": 0
+        },
+        "fable": {
+          "file": "trebuchet-4x-fable.json",
+          "blocks": 2125,
           "rot": 0
         }
       }
@@ -1117,6 +2360,32 @@
         "fable": {
           "file": "trex-4x-fable.json",
           "blocks": 2606,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "trex-jeep",
+      "title": "a T-Rex chasing a jeep",
+      "models": {
+        "haiku": {
+          "file": "trex-jeep-4x-haiku.json",
+          "blocks": 2296,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "trex-jeep-4x-sonnet.json",
+          "blocks": 3040,
+          "rot": 0
+        },
+        "opus": {
+          "file": "trex-jeep-4x-opus.json",
+          "blocks": 1928,
+          "rot": 0
+        },
+        "fable": {
+          "file": "trex-jeep-4x-fable.json",
+          "blocks": 2090,
           "rot": 0
         }
       }
@@ -1174,6 +2443,137 @@
       }
     },
     {
+      "key": "venom",
+      "title": "Venom",
+      "youtube": "https://youtube.com/shorts/DCDLzX6GhqY",
+      "models": {
+        "haiku": {
+          "file": "venom-4x-haiku.json",
+          "blocks": 2651,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "venom-4x-sonnet.json",
+          "blocks": 4180,
+          "rot": 0
+        },
+        "opus": {
+          "file": "venom-4x-opus.json",
+          "blocks": 3743,
+          "rot": 0
+        },
+        "fable": {
+          "file": "venom-4x-fable.json",
+          "blocks": 3040,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "viking-longship",
+      "title": "a Viking longship",
+      "models": {
+        "haiku": {
+          "file": "viking-longship-4x-haiku.json",
+          "blocks": 1338,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "viking-longship-4x-sonnet.json",
+          "blocks": 1296,
+          "rot": 0
+        },
+        "opus": {
+          "file": "viking-longship-4x-opus.json",
+          "blocks": 1684,
+          "rot": 0
+        },
+        "fable": {
+          "file": "viking-longship-4x-fable.json",
+          "blocks": 2519,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "volcano",
+      "title": "an erupting volcano",
+      "models": {
+        "haiku": {
+          "file": "volcano-4x-haiku.json",
+          "blocks": 12483,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "volcano-4x-sonnet.json",
+          "blocks": 5364,
+          "rot": 0
+        },
+        "opus": {
+          "file": "volcano-4x-opus.json",
+          "blocks": 4314,
+          "rot": 0
+        },
+        "fable": {
+          "file": "volcano-4x-fable.json",
+          "blocks": 3383,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "wall-e",
+      "title": "Wall-E",
+      "models": {
+        "haiku": {
+          "file": "wall-e-4x-haiku.json",
+          "blocks": 2233,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "wall-e-4x-sonnet.json",
+          "blocks": 1273,
+          "rot": 0
+        },
+        "opus": {
+          "file": "wall-e-4x-opus.json",
+          "blocks": 3140,
+          "rot": 0
+        },
+        "fable": {
+          "file": "wall-e-4x-fable.json",
+          "blocks": 2590,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "wendigo",
+      "title": "a wendigo",
+      "models": {
+        "haiku": {
+          "file": "wendigo-4x-haiku.json",
+          "blocks": 1087,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "wendigo-4x-sonnet.json",
+          "blocks": 1118,
+          "rot": 0
+        },
+        "opus": {
+          "file": "wendigo-4x-opus.json",
+          "blocks": 1979,
+          "rot": 0
+        },
+        "fable": {
+          "file": "wendigo-4x-fable.json",
+          "blocks": 1609,
+          "rot": 0
+        }
+      }
+    },
+    {
       "key": "werewolf",
       "title": "a werewolf howling at the moon",
       "youtube": "https://youtube.com/shorts/zIZL8YEFcfQ",
@@ -1197,6 +2597,85 @@
           "file": "werewolf-4x-fable.json",
           "blocks": 3153,
           "rot": 90
+        }
+      }
+    },
+    {
+      "key": "wizard-duel",
+      "title": "two wizards dueling with magic",
+      "models": {
+        "haiku": {
+          "file": "wizard-duel-4x-haiku.json",
+          "blocks": 1661,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "wizard-duel-4x-sonnet.json",
+          "blocks": 1322,
+          "rot": 0
+        },
+        "opus": {
+          "file": "wizard-duel-4x-opus.json",
+          "blocks": 3742,
+          "rot": 0
+        },
+        "fable": {
+          "file": "wizard-duel-4x-fable.json",
+          "blocks": 2735,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "wizard-tower",
+      "title": "a wizard's tower",
+      "models": {
+        "haiku": {
+          "file": "wizard-tower-4x-haiku.json",
+          "blocks": 2617,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "wizard-tower-4x-sonnet.json",
+          "blocks": 1946,
+          "rot": 0
+        },
+        "opus": {
+          "file": "wizard-tower-4x-opus.json",
+          "blocks": 3964,
+          "rot": 0
+        },
+        "fable": {
+          "file": "wizard-tower-4x-fable.json",
+          "blocks": 2834,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "x-wing",
+      "title": "an X-wing starfighter",
+      "youtube": "https://youtube.com/shorts/qduYwrj-GG0",
+      "models": {
+        "haiku": {
+          "file": "x-wing-4x-haiku.json",
+          "blocks": 2123,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "x-wing-4x-sonnet.json",
+          "blocks": 2908,
+          "rot": 0
+        },
+        "opus": {
+          "file": "x-wing-4x-opus.json",
+          "blocks": 2653,
+          "rot": 0
+        },
+        "fable": {
+          "file": "x-wing-4x-fable.json",
+          "blocks": 2124,
+          "rot": 0
         }
       }
     },
@@ -1255,6 +2734,7 @@
     {
       "key": "yoda",
       "title": "Yoda",
+      "youtube": "https://youtube.com/shorts/zIy9aDuUsQc",
       "models": {
         "haiku": {
           "file": "yoda-4x-haiku.json",

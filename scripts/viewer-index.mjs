@@ -33,6 +33,15 @@ const VIDEO_IDS = {
   'minotaur': 'x0va-m6y5UI', 'spider-man': 'pzhf90P1do4', 'sea-serpent': 'xKrHgbGxhtk',
   'werewolf': 'zIZL8YEFcfQ',
   'dragon': 'ph3JhHrDHzc', 'giant': 'YqHWKi6e8UE', 'pokeball': 'umbjOokH0us',
+  // No One Here Gets In Alive batch (scheduled 2026-08-05..08-28)
+  'darth-vader': 'mxVuQSI_DSs', 'iron-man': 'HNBxbYUvX-g', 'statue-liberty': 'NJ6QbJiuxvI',
+  'hulk': 'OjWh7zRmH_Y', 'taj-mahal': '2PRthFC0HLg', 'thanos': 'b2dnKiGls4Y',
+  'space-shuttle': 'prO8MHZ1-Aw', 'mario': 'iXtHYsFJoHI', 'christ-redeemer': 'fYhdEXiP5vQ',
+  'pikachu': 'bKICSo2_XJ8', 'stonehenge': 'ikfvFKsg6RI', 'deadpool': 'bicO_ew4zaA',
+  'yoda': 'zIy9aDuUsQc', 'superman': 'ZAgH-sMTqFQ', 'mount-rushmore': 'LKRawuLkV1o',
+  'r2d2': '7m6IIcnx77Q', 'x-wing': 'qduYwrj-GG0', 'venom': 'DCDLzX6GhqY',
+  'golden-gate': 'zY-JMrafJ-Q', 'groot': 'Pc1I3PxcSUw', 'excalibur': 'BMyTnzkHSvc',
+  'spongebob': '3Lq1eFZesPQ', 'phoenix': 'E7kVk32kv_U', 'cthulhu': 'NEtU5uwQDwE',
 };
 
 const titleFor = (key) => {
