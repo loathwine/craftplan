@@ -42,6 +42,18 @@ const VIDEO_IDS = {
   'r2d2': '7m6IIcnx77Q', 'x-wing': 'qduYwrj-GG0', 'venom': 'DCDLzX6GhqY',
   'golden-gate': 'zY-JMrafJ-Q', 'groot': 'Pc1I3PxcSUw', 'excalibur': 'BMyTnzkHSvc',
   'spongebob': '3Lq1eFZesPQ', 'phoenix': 'E7kVk32kv_U', 'cthulhu': 'NEtU5uwQDwE',
+  // In The Morning batch (scheduled 2026-08-29..09-28)
+  'batman': 'Xbn36bXcMcs', 'shrek': 'QWHdAcb6Hto', 'sonic': 'IFbth_GZ1e8',
+  'kirby': 'f8xeCFkHd4g', 'minion': 'L6-un9lFbeM', 'optimus-prime': 'wMZZzqxA8OY',
+  'stormtrooper': '_U0gl_D_0Ps', 'pacman': 'QSEKqtHj70o', 'grogu': 'y1JoXh65weI',
+  'wall-e': 'sO4CuTAul_M', 'trex': 'lfpp2wE9pYM', 'ender-dragon': '3S1icVaCmto',
+  'xenomorph': 'yQTBR_yG-W4', 'yeti': 'USZEbCLq3Ok', 'griffin': 'UlgR905ruIU',
+  'pegasus': 'FMyhX31_thc', 'unicorn': '9BGWhlFZRY4', 'giant-spider': 'D5PKSIG4qME',
+  'cyclops': 'sPPQZD0dMnA', 'troll': 'Tyk61S_gIqQ', 'golem': '2e1Ao336LD0',
+  'gorilla': 'isK9tFBDPds', 'elephant': 'T4fPGn--XLQ', 'mammoth': '3_QEc97NbxI',
+  'big-ben': '-SXyY91y9S0', 'lighthouse': 'pCNXHzSKALA', 'sphinx-giza': 'adHRFFgT1FY',
+  'sydney-opera': 'XWqWL8UIHU8', 'pirate-ship': 'obwGnwMXQ0s', 'fighter-jet': 'rsQzV41mhX4',
+  'volcano': 'dmMJMLdnyTs',
 };
 
 const titleFor = (key) => {

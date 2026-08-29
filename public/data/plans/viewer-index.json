@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T21:18:29.884Z",
+  "generatedAt": "2026-08-29T09:57:07.523Z",
   "models": [
     "haiku",
     "sonnet",
@@ -69,6 +69,7 @@
     {
       "key": "batman",
       "title": "Batman",
+      "youtube": "https://youtube.com/shorts/Xbn36bXcMcs",
       "models": {
         "haiku": {
           "file": "batman-4x-haiku.json",
@@ -95,6 +96,7 @@
     {
       "key": "big-ben",
       "title": "Big Ben",
+      "youtube": "https://youtube.com/shorts/-SXyY91y9S0",
       "models": {
         "haiku": {
           "file": "big-ben-4x-haiku.json",
@@ -307,6 +309,7 @@
     {
       "key": "cyclops",
       "title": "a cyclops",
+      "youtube": "https://youtube.com/shorts/sPPQZD0dMnA",
       "models": {
         "haiku": {
           "file": "cyclops-4x-haiku.json",
@@ -440,6 +443,7 @@
     {
       "key": "elephant",
       "title": "an African elephant",
+      "youtube": "https://youtube.com/shorts/T4fPGn--XLQ",
       "models": {
         "haiku": {
           "file": "elephant-4x-haiku.json",
@@ -466,6 +470,7 @@
     {
       "key": "ender-dragon",
       "title": "the Ender Dragon",
+      "youtube": "https://youtube.com/shorts/3S1icVaCmto",
       "models": {
         "haiku": {
           "file": "ender-dragon-4x-haiku.json",
@@ -545,6 +550,7 @@
     {
       "key": "fighter-jet",
       "title": "a fighter jet",
+      "youtube": "https://youtube.com/shorts/rsQzV41mhX4",
       "models": {
         "haiku": {
           "file": "fighter-jet-4x-haiku.json",
@@ -598,6 +604,7 @@
     {
       "key": "giant-spider",
       "title": "a giant spider",
+      "youtube": "https://youtube.com/shorts/D5PKSIG4qME",
       "models": {
         "haiku": {
           "file": "giant-spider-4x-haiku.json",
@@ -704,6 +711,7 @@
     {
       "key": "golem",
       "title": "a stone golem",
+      "youtube": "https://youtube.com/shorts/2e1Ao336LD0",
       "models": {
         "haiku": {
           "file": "golem-4x-haiku.json",
@@ -730,6 +738,7 @@
     {
       "key": "gorilla",
       "title": "a silverback gorilla",
+      "youtube": "https://youtube.com/shorts/isK9tFBDPds",
       "models": {
         "haiku": {
           "file": "gorilla-4x-haiku.json",
@@ -756,6 +765,7 @@
     {
       "key": "griffin",
       "title": "a griffin",
+      "youtube": "https://youtube.com/shorts/UlgR905ruIU",
       "models": {
         "haiku": {
           "file": "griffin-4x-haiku.json",
@@ -808,6 +818,7 @@
     {
       "key": "grogu",
       "title": "Grogu (Baby Yoda)",
+      "youtube": "https://youtube.com/shorts/y1JoXh65weI",
       "models": {
         "haiku": {
           "file": "grogu-4x-haiku.json",
@@ -1021,6 +1032,7 @@
     {
       "key": "kirby",
       "title": "Kirby",
+      "youtube": "https://youtube.com/shorts/f8xeCFkHd4g",
       "models": {
         "haiku": {
           "file": "kirby-4x-haiku.json",
@@ -1126,6 +1138,7 @@
     {
       "key": "lighthouse",
       "title": "a lighthouse on a cliff",
+      "youtube": "https://youtube.com/shorts/pCNXHzSKALA",
       "models": {
         "haiku": {
           "file": "lighthouse-4x-haiku.json",
@@ -1204,6 +1217,7 @@
     {
       "key": "mammoth",
       "title": "a woolly mammoth",
+      "youtube": "https://youtube.com/shorts/3_QEc97NbxI",
       "models": {
         "haiku": {
           "file": "mammoth-4x-haiku.json",
@@ -1257,6 +1271,7 @@
     {
       "key": "minion",
       "title": "a Minion",
+      "youtube": "https://youtube.com/shorts/L6-un9lFbeM",
       "models": {
         "haiku": {
           "file": "minion-4x-haiku.json",
@@ -1468,6 +1483,7 @@
     {
       "key": "optimus-prime",
       "title": "Optimus Prime",
+      "youtube": "https://youtube.com/shorts/wMZZzqxA8OY",
       "models": {
         "haiku": {
           "file": "optimus-prime-4x-haiku.json",
@@ -1494,6 +1510,7 @@
     {
       "key": "pacman",
       "title": "Pac-Man chased by a ghost",
+      "youtube": "https://youtube.com/shorts/QSEKqtHj70o",
       "models": {
         "haiku": {
           "file": "pacman-4x-haiku.json",
@@ -1572,6 +1589,7 @@
     {
       "key": "pegasus",
       "title": "Pegasus",
+      "youtube": "https://youtube.com/shorts/FMyhX31_thc",
       "models": {
         "haiku": {
           "file": "pegasus-4x-haiku.json",
@@ -1591,7 +1609,7 @@
         "fable": {
           "file": "pegasus-4x-fable.json",
           "blocks": 3017,
-          "rot": 0
+          "rot": 90
         }
       }
     },
@@ -1652,6 +1670,7 @@
     {
       "key": "pirate-ship",
       "title": "a pirate ship",
+      "youtube": "https://youtube.com/shorts/obwGnwMXQ0s",
       "models": {
         "haiku": {
           "file": "pirate-ship-4x-haiku.json",
@@ -1864,6 +1883,7 @@
     {
       "key": "shrek",
       "title": "Shrek",
+      "youtube": "https://youtube.com/shorts/QWHdAcb6Hto",
       "models": {
         "haiku": {
           "file": "shrek-4x-haiku.json",
@@ -1890,6 +1910,7 @@
     {
       "key": "sonic",
       "title": "Sonic the Hedgehog",
+      "youtube": "https://youtube.com/shorts/IFbth_GZ1e8",
       "models": {
         "haiku": {
           "file": "sonic-4x-haiku.json",
@@ -1943,6 +1964,7 @@
     {
       "key": "sphinx-giza",
       "title": "the Great Sphinx of Giza",
+      "youtube": "https://youtube.com/shorts/adHRFFgT1FY",
       "models": {
         "haiku": {
           "file": "sphinx-giza-4x-haiku.json",
@@ -2077,6 +2099,7 @@
     {
       "key": "stormtrooper",
       "title": "a Stormtrooper",
+      "youtube": "https://youtube.com/shorts/_U0gl_D_0Ps",
       "models": {
         "haiku": {
           "file": "stormtrooper-4x-haiku.json",
@@ -2156,11 +2179,12 @@
     {
       "key": "sydney-opera",
       "title": "the Sydney Opera House",
+      "youtube": "https://youtube.com/shorts/XWqWL8UIHU8",
       "models": {
         "haiku": {
           "file": "sydney-opera-4x-haiku.json",
           "blocks": 9915,
-          "rot": 0
+          "rot": 180
         },
         "sonnet": {
           "file": "sydney-opera-4x-sonnet.json",
@@ -2341,6 +2365,7 @@
     {
       "key": "trex",
       "title": "a T-Rex",
+      "youtube": "https://youtube.com/shorts/lfpp2wE9pYM",
       "models": {
         "haiku": {
           "file": "trex-4x-haiku.json",
@@ -2393,6 +2418,7 @@
     {
       "key": "troll",
       "title": "a troll under a bridge",
+      "youtube": "https://youtube.com/shorts/Tyk61S_gIqQ",
       "models": {
         "haiku": {
           "file": "troll-4x-haiku.json",
@@ -2419,6 +2445,7 @@
     {
       "key": "unicorn",
       "title": "a unicorn",
+      "youtube": "https://youtube.com/shorts/9BGWhlFZRY4",
       "models": {
         "haiku": {
           "file": "unicorn-4x-haiku.json",
@@ -2498,6 +2525,7 @@
     {
       "key": "volcano",
       "title": "an erupting volcano",
+      "youtube": "https://youtube.com/shorts/dmMJMLdnyTs",
       "models": {
         "haiku": {
           "file": "volcano-4x-haiku.json",
@@ -2524,6 +2552,7 @@
     {
       "key": "wall-e",
       "title": "Wall-E",
+      "youtube": "https://youtube.com/shorts/sO4CuTAul_M",
       "models": {
         "haiku": {
           "file": "wall-e-4x-haiku.json",
@@ -2682,6 +2711,7 @@
     {
       "key": "xenomorph",
       "title": "the Alien xenomorph",
+      "youtube": "https://youtube.com/shorts/yQTBR_yG-W4",
       "models": {
         "haiku": {
           "file": "xenomorph-4x-haiku.json",
@@ -2708,6 +2738,7 @@
     {
       "key": "yeti",
       "title": "a yeti",
+      "youtube": "https://youtube.com/shorts/USZEbCLq3Ok",
       "models": {
         "haiku": {
           "file": "yeti-4x-haiku.json",

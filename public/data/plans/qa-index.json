@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T21:18:21.807Z",
+  "generatedAt": "2026-08-29T09:56:59.479Z",
   "models": [
     "haiku",
     "sonnet",
@@ -1755,6 +1755,7 @@
         },
         "haiku": {
           "model": "haiku",
+          "rot180": "sydney-opera-4x-haiku-rot180.json",
           "file": "sydney-opera-4x-haiku.json"
         },
         "opus": {
