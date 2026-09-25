@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T09:57:07.523Z",
+  "generatedAt": "2026-09-25T22:40:18.700Z",
   "models": [
     "haiku",
     "sonnet",
@@ -17,6 +17,7 @@
     {
       "key": "alien-cow",
       "title": "a UFO abducting a cow",
+      "youtube": "https://youtube.com/shorts/GDDsWAaXAWU",
       "models": {
         "haiku": {
           "file": "alien-cow-4x-haiku.json",
@@ -229,6 +230,7 @@
     {
       "key": "cobra",
       "title": "a king cobra ready to strike",
+      "youtube": "https://youtube.com/shorts/cRf42iukEhg",
       "models": {
         "haiku": {
           "file": "cobra-4x-haiku.json",
@@ -417,6 +419,7 @@
     {
       "key": "eagle",
       "title": "a bald eagle with wings spread",
+      "youtube": "https://youtube.com/shorts/oFNeBtvi86g",
       "models": {
         "haiku": {
           "file": "eagle-4x-haiku.json",
@@ -872,6 +875,7 @@
     {
       "key": "helicopter",
       "title": "an attack helicopter",
+      "youtube": "https://youtube.com/shorts/wmwyj3TOCTo",
       "models": {
         "haiku": {
           "file": "helicopter-4x-haiku.json",
@@ -1085,6 +1089,7 @@
     {
       "key": "knight-vs-dragon",
       "title": "a knight fighting a dragon",
+      "youtube": "https://youtube.com/shorts/7mb-neZnW5Y",
       "models": {
         "haiku": {
           "file": "knight-vs-dragon-4x-haiku.json",
@@ -1165,6 +1170,7 @@
     {
       "key": "loch-ness",
       "title": "the Loch Ness Monster",
+      "youtube": "https://youtube.com/shorts/IQt437gaQZ8",
       "models": {
         "haiku": {
           "file": "loch-ness-4x-haiku.json",
@@ -1191,6 +1197,7 @@
     {
       "key": "locomotive",
       "title": "a steam locomotive",
+      "youtube": "https://youtube.com/shorts/K0xjXuaHfKE",
       "models": {
         "haiku": {
           "file": "locomotive-4x-haiku.json",
@@ -1325,6 +1332,7 @@
     {
       "key": "mjolnir",
       "title": "Thor's hammer Mjölnir",
+      "youtube": "https://youtube.com/shorts/kXAVZKtzXs0",
       "models": {
         "haiku": {
           "file": "mjolnir-4x-haiku.json",
@@ -1351,6 +1359,7 @@
     {
       "key": "moai",
       "title": "the Moai statues of Easter Island",
+      "youtube": "https://youtube.com/shorts/P_uruVsEdQY",
       "models": {
         "haiku": {
           "file": "moai-4x-haiku.json",
@@ -1430,6 +1439,7 @@
     {
       "key": "neuschwanstein",
       "title": "Neuschwanstein Castle",
+      "youtube": "https://youtube.com/shorts/UoaVQVcKjXc",
       "models": {
         "haiku": {
           "file": "neuschwanstein-4x-haiku.json",
@@ -1537,6 +1547,7 @@
     {
       "key": "pagoda",
       "title": "a Japanese pagoda",
+      "youtube": "https://youtube.com/shorts/XA-x0_8HiB4",
       "models": {
         "haiku": {
           "file": "pagoda-4x-haiku.json",
@@ -1803,6 +1814,7 @@
     {
       "key": "scorpion",
       "title": "a giant scorpion",
+      "youtube": "https://youtube.com/shorts/2uOshsPGdSs",
       "models": {
         "haiku": {
           "file": "scorpion-4x-haiku.json",
@@ -2313,6 +2325,7 @@
     {
       "key": "treasure-chest",
       "title": "a treasure chest overflowing with gold",
+      "youtube": "https://youtube.com/shorts/AlY05sJMdzc",
       "models": {
         "haiku": {
           "file": "treasure-chest-4x-haiku.json",
@@ -2392,16 +2405,17 @@
     {
       "key": "trex-jeep",
       "title": "a T-Rex chasing a jeep",
+      "youtube": "https://youtube.com/shorts/U5uDGx4j6Qc",
       "models": {
         "haiku": {
           "file": "trex-jeep-4x-haiku.json",
           "blocks": 2296,
-          "rot": 0
+          "rot": 270
         },
         "sonnet": {
           "file": "trex-jeep-4x-sonnet.json",
           "blocks": 3040,
-          "rot": 0
+          "rot": 270
         },
         "opus": {
           "file": "trex-jeep-4x-opus.json",
@@ -2411,7 +2425,7 @@
         "fable": {
           "file": "trex-jeep-4x-fable.json",
           "blocks": 2090,
-          "rot": 0
+          "rot": 180
         }
       }
     },
@@ -2499,6 +2513,7 @@
     {
       "key": "viking-longship",
       "title": "a Viking longship",
+      "youtube": "https://youtube.com/shorts/RnYH-cMMqFo",
       "models": {
         "haiku": {
           "file": "viking-longship-4x-haiku.json",
@@ -2658,6 +2673,7 @@
     {
       "key": "wizard-tower",
       "title": "a wizard's tower",
+      "youtube": "https://youtube.com/shorts/oUW_IXrHxLM",
       "models": {
         "haiku": {
           "file": "wizard-tower-4x-haiku.json",

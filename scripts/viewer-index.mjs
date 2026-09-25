@@ -54,6 +54,13 @@ const VIDEO_IDS = {
   'big-ben': '-SXyY91y9S0', 'lighthouse': 'pCNXHzSKALA', 'sphinx-giza': 'adHRFFgT1FY',
   'sydney-opera': 'XWqWL8UIHU8', 'pirate-ship': 'obwGnwMXQ0s', 'fighter-jet': 'rsQzV41mhX4',
   'volcano': 'dmMJMLdnyTs',
+  // Halfway In batch (scheduled 2026-09-29..10-14)
+  'alien-cow': 'GDDsWAaXAWU', 'knight-vs-dragon': '7mb-neZnW5Y', 'locomotive': 'K0xjXuaHfKE',
+  'loch-ness': 'IQt437gaQZ8', 'wizard-tower': 'oUW_IXrHxLM', 'scorpion': '2uOshsPGdSs',
+  'trex-jeep': 'U5uDGx4j6Qc', 'pagoda': 'XA-x0_8HiB4', 'helicopter': 'wmwyj3TOCTo',
+  'cobra': 'cRf42iukEhg', 'neuschwanstein': 'UoaVQVcKjXc', 'treasure-chest': 'AlY05sJMdzc',
+  'viking-longship': 'RnYH-cMMqFo', 'eagle': 'oFNeBtvi86g', 'moai': 'P_uruVsEdQY',
+  'mjolnir': 'kXAVZKtzXs0',
 };
 
 const titleFor = (key) => {

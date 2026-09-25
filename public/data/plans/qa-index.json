@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29T09:56:59.479Z",
+  "generatedAt": "2026-09-25T22:40:10.659Z",
   "models": [
     "haiku",
     "sonnet",
@@ -1923,6 +1923,7 @@
       "models": {
         "fable": {
           "model": "fable",
+          "rot180": "trex-jeep-4x-fable-rot180.json",
           "file": "trex-jeep-4x-fable.json"
         },
         "haiku": {
@@ -2368,6 +2369,10 @@
       "file": "master-sword.json"
     },
     {
+      "key": "material-test",
+      "file": "material-test.json"
+    },
+    {
       "key": "mech-robot",
       "file": "mech-robot.json"
     },
@@ -2400,16 +2405,16 @@
       "file": "pikachu.json"
     },
     {
+      "key": "pikachu-pal-opus",
+      "file": "pikachu-pal-opus.json"
+    },
+    {
       "key": "pirate-ship",
       "file": "pirate-ship.json"
     },
     {
       "key": "pyramid",
       "file": "pyramid.json"
-    },
-    {
-      "key": "qa-index.full.bak",
-      "file": "qa-index.full.bak.json"
     },
     {
       "key": "rocinante",
@@ -2444,6 +2449,10 @@
       "file": "shark-4x-opus-rot90.json"
     },
     {
+      "key": "sonic-pal-opus",
+      "file": "sonic-pal-opus.json"
+    },
+    {
       "key": "statue-of-liberty",
       "file": "statue-of-liberty.json"
     },
@@ -2472,8 +2481,20 @@
       "file": "test-house.json"
     },
     {
+      "key": "thanos-pal-opus",
+      "file": "thanos-pal-opus.json"
+    },
+    {
       "key": "thousand-sunny",
       "file": "thousand-sunny.json"
+    },
+    {
+      "key": "trex-jeep-4x-haiku-rot270",
+      "file": "trex-jeep-4x-haiku-rot270.json"
+    },
+    {
+      "key": "trex-jeep-4x-sonnet-rot270",
+      "file": "trex-jeep-4x-sonnet-rot270.json"
     },
     {
       "key": "unicorn-4x-haiku-rot270",
