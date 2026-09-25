@@ -78,8 +78,8 @@ async function authorize() {
   const creds = JSON.parse(readFileSync(CLIENT_PATH, 'utf-8'));
   const { client_id, client_secret } = creds.installed || creds.web;
   // Desktop-app OAuth uses a loopback redirect. Force the explicit port
-  // we listen on; the GCP OAuth client must allow http://127.0.0.1:9876.
-  const redirectUri = 'http://127.0.0.1:9876';
+  // we listen on; the GCP OAuth client may use any loopback port (Desktop client); default 9877 since Blender MCP holds 9876.
+  const redirectUri = `http://127.0.0.1:${process.env.YT_OAUTH_PORT || 9877}`;
   const oauth2 = new google.auth.OAuth2(client_id, client_secret, redirectUri);
 
   if (existsSync(TOKEN_PATH)) {
@@ -90,7 +90,7 @@ async function authorize() {
   // Interactive consent: open the URL, capture the code on the loopback.
   const authUrl = oauth2.generateAuthUrl({ access_type: 'offline', scope: SCOPES, prompt: 'consent' });
   console.log('[yt] Open this URL in a browser and grant access:\n', authUrl);
-  const port = 9876;
+  const port = +(process.env.YT_OAUTH_PORT || 9877);
   const code = await new Promise((res, rej) => {
     const server = http.createServer((req, r) => {
       const u = new URL(req.url, redirectUri);

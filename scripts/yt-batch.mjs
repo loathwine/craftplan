@@ -101,7 +101,7 @@ if (DRY) { console.log('[yt-batch] --dry-run: not uploading'); process.exit(0); 
 if (!existsSync(CLIENT_PATH)) fail(`OAuth client missing: ${CLIENT_PATH}`);
 const creds = JSON.parse(readFileSync(CLIENT_PATH, 'utf-8'));
 const { client_id, client_secret } = creds.installed || creds.web;
-const oauth2 = new google.auth.OAuth2(client_id, client_secret, 'http://127.0.0.1:9876');
+const oauth2 = new google.auth.OAuth2(client_id, client_secret, `http://127.0.0.1:${process.env.YT_OAUTH_PORT || 9877}`);
 
 if (existsSync(TOKEN_PATH)) {
   oauth2.setCredentials(JSON.parse(readFileSync(TOKEN_PATH, 'utf-8')));
@@ -112,11 +112,11 @@ if (existsSync(TOKEN_PATH)) {
   console.log('[yt-batch] Open this URL and grant access:\n', authUrl);
   const code = await new Promise((res, rej) => {
     const server = http.createServer((req, r) => {
-      const c = new URL(req.url, 'http://127.0.0.1:9876').searchParams.get('code');
+      const c = new URL(req.url, `http://127.0.0.1:${process.env.YT_OAUTH_PORT || 9877}`).searchParams.get('code');
       r.end('You can close this tab.');
       if (c) { server.close(); res(c); }
     });
-    server.listen(9876);
+    server.listen(+(process.env.YT_OAUTH_PORT || 9877));
     setTimeout(() => { server.close(); rej(new Error('OAuth timed out')); }, 300000);
   });
   const { tokens } = await oauth2.getToken(code);

@@ -10,7 +10,7 @@ import { google } from 'googleapis';
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SECRETS = resolve(REPO, 'secrets');
 const oauth2 = new google.auth.OAuth2(
-  ...(() => { const c = JSON.parse(readFileSync(resolve(SECRETS, 'yt-client.json'), 'utf8')); const { client_id, client_secret } = c.installed || c.web; return [client_id, client_secret, 'http://127.0.0.1:9876']; })());
+  ...(() => { const c = JSON.parse(readFileSync(resolve(SECRETS, 'yt-client.json'), 'utf8')); const { client_id, client_secret } = c.installed || c.web; return [client_id, client_secret, `http://127.0.0.1:${process.env.YT_OAUTH_PORT || 9877}`]; })());
 oauth2.setCredentials(JSON.parse(readFileSync(resolve(SECRETS, 'yt-token.json'), 'utf8')));
 const youtube = google.youtube({ version: 'v3', auth: oauth2 });
 
