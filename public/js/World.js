@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { Block, BLOCK_COLORS, BLOCK_MATERIALS, colorVariation, isTransparent, isOpaque, isEmissive } from './Textures.js';
 import { hash2, biomeAt, terrainHeight, surfaceBlock, shouldHaveTree } from './terrain.js';
 import { makeSkyEnvMap } from './sky.js';
+import { WaterReflection } from './waterReflection.js';
 
 export const CHUNK_SIZE = 16;
 export const WORLD_HEIGHT = 128;
@@ -105,9 +106,19 @@ export class World {
     // `matProps` = (roughness, metalness, emissive) drives MeshStandardMaterial
     // so one material + one draw call covers every special block in a section.
     this.specialMaterial = makeSpecialMaterial({});
+    // Planar reflection across the dominant water level (see waterReflection.js).
+    this._refl = new WaterReflection({ scale: opts.reflectionScale ?? 0.5 });
+    this._secWater = new Map();   // section key -> Map(surfaceY -> top-face count)
+    this._waterDirty = false;
+    this._waterMeshes = new Set();
+    this._version = 0;            // bumps on every section rebuild (reflection cache key)
     this.specialTransparentMaterial = makeSpecialMaterial({
       transparent: true, opacity: 0.62, depthWrite: false, side: THREE.DoubleSide,
-    });
+    }, { water: true, refl: this._refl });
+    // Animation clock for water ripples. The recorder sets it from manuscript
+    // time (deterministic frames); otherwise it follows the wall clock.
+    this._time = null;
+    this.specialTransparentMaterial.userData.world = this;
     this._envReady = false;
     this.chunkGroup = new THREE.Group();
     scene.add(this.chunkGroup);
@@ -224,6 +235,9 @@ export class World {
     this._maybeRelight(x, y, z, x, y, z, emissiveTouched, dirty);
     this._rebuildDirty(dirty);
   }
+
+  // Deterministic animation time (seconds) for water ripples etc.
+  setTime(t) { this._time = t; }
 
   getTerrainHeight(x, z) {
     return terrainHeight(Math.floor(x), Math.floor(z));
@@ -375,11 +389,23 @@ export class World {
     for (const m of [this.specialMaterial, this.specialTransparentMaterial]) { m.envMap = tex; m.needsUpdate = true; }
   }
 
+  // Reflection plane = the water surface height with the most top faces.
+  _updateWaterPlane() {
+    this._waterDirty = false;
+    const tot = new Map();
+    for (const m of this._secWater.values()) for (const [y, n] of m) tot.set(y, (tot.get(y) || 0) + n);
+    let best = null, bn = 0;
+    for (const [y, n] of tot) if (n > bn) { bn = n; best = y; }
+    this._refl.height = best;
+  }
+
   // --- Mesh builder (one 16³ section) ---
   _buildSection(cx, cz, sy) {
     const key = this._secKey(cx, cz, sy);
     const old = this.meshes.get(key);
-    if (old) { for (const m of old) { this.chunkGroup.remove(m); m.geometry.dispose(); } this.meshes.delete(key); }
+    if (old) { for (const m of old) { this.chunkGroup.remove(m); m.geometry.dispose(); this._waterMeshes.delete(m); } this.meshes.delete(key); }
+    this._version++;
+    if (this._secWater.delete(key)) this._waterDirty = true;
 
     const col = this.data[cz * this.chunkCount + cx];
     const y0 = sy * SECTION_H, y1 = y0 + SECTION_H;
@@ -390,6 +416,7 @@ export class World {
 
     for (const k in SCRATCH) SCRATCH[k].reset();
     const litOn = this._anyLight;
+    let waterTops = null;          // surfaceY -> count, for the reflection plane
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
 
     for (let y = y0; y < y1; y++) {
@@ -422,6 +449,7 @@ export class World {
             if (neighbor === block) continue;
             if (nOpq && (isOpq || isTrans)) continue;
 
+            if (block === Block.WATER && f === 0) (waterTops ||= new Map()).set(y + 1, (waterTops.get(y + 1) || 0) + 1);
             target.ensureQuad();
             const fc = bc[face.type];
             const vb = target.v;
@@ -476,6 +504,8 @@ export class World {
       }
     }
 
+    if (waterTops) { this._secWater.set(key, waterTops); this._waterDirty = true; }
+
     const built = [];
     const PASSES = [
       ['opaque',             this.material,                   false, false],
@@ -500,7 +530,16 @@ export class World {
       // only receive so we don't get black silhouettes through glass.
       mesh.castShadow = !trans;
       mesh.receiveShadow = true;
-      if (special) mesh.onBeforeRender = (renderer, scene) => this._ensureEnvironment(renderer, scene);
+      if (special) mesh.onBeforeRender = (renderer, scene, camera) => {
+        this._ensureEnvironment(renderer, scene);
+        const ut = mat.userData.uTime;
+        if (ut) ut.value = this._time ?? performance.now() / 1000;
+        if (mat === this.specialTransparentMaterial) {
+          if (this._waterDirty) this._updateWaterPlane();
+          this._refl.update(renderer, scene, camera, this._version, this._waterMeshes);
+        }
+      };
+      if (mat === this.specialTransparentMaterial) this._waterMeshes.add(mesh);
       built.push(mesh);
       this.chunkGroup.add(mesh);
     }
@@ -533,9 +572,64 @@ function makeLitLambert(opts) {
   return m;
 }
 
-function makeSpecialMaterial(extra) {
+function makeSpecialMaterial(extra, { water = false, refl = null } = {}) {
   const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, ...extra });
+  const uTime = { value: 0 };
+  if (water) {
+    // Keep the ripple clock current: manuscript time if the owner World set
+    // one, else wall clock.
+    m.userData.uTime = uTime;
+  }
   m.onBeforeCompile = (sh) => {
+    if (water) {
+      sh.uniforms.uTime = uTime;
+      Object.assign(sh.uniforms, refl.uniforms);
+      sh.vertexShader = sh.vertexShader
+        .replace('#include <common>', '#include <common>\nvarying vec3 vWPos;\nvarying vec3 vWNrm;')
+        .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvWPos = (modelMatrix * vec4(transformed, 1.0)).xyz;\nvWNrm = normalize(mat3(modelMatrix) * objectNormal);');
+      sh.fragmentShader = sh.fragmentShader
+        .replace('#include <common>', `#include <common>
+uniform float uTime;
+uniform sampler2D tReflection;
+uniform mat4 uReflMat;
+uniform float uWaterY;
+uniform float uReflOn;
+varying vec3 vWPos;
+varying vec3 vWNrm;
+// Sum of directional sine waves -> analytic slope (dh/dx, dh/dz).
+vec2 waterSlope(vec2 p, float t) {
+  vec2 s = vec2(0.0);
+  const vec4 W[4] = vec4[4](
+    vec4( 0.80,  0.60, 0.90, 1.10),   // dir.x, dir.y, frequency, speed
+    vec4(-0.55,  0.83, 1.70, 1.60),
+    vec4( 0.20, -0.98, 2.90, 2.10),
+    vec4(-0.93, -0.36, 4.30, 2.70));
+  for (int i = 0; i < 4; i++) {
+    vec2 d = W[i].xy; float f = W[i].z, sp = W[i].w;
+    float a = 0.06 / f;
+    s += d * (a * f * cos(dot(d, p) * f + t * sp));
+  }
+  return s;
+}`)
+        // Water top faces only (glossy + facing up): perturb the view-space normal.
+        .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+if (vMatProps.x < 0.1 && vWNrm.y > 0.5) {
+  vec2 sl = waterSlope(vWPos.xz, uTime);
+  vec3 wn = normalize(vec3(-sl.x, 1.0, -sl.y));
+  normal = normalize((viewMatrix * vec4(wn, 0.0)).xyz);
+}`)
+        // Planar reflection on the dominant water surface, fresnel-blended.
+        .replace('#include <opaque_fragment>', `if (uReflOn > 0.5 && vWNrm.y > 0.5 && abs(vWPos.y - uWaterY) < 0.05) {
+  vec2 sl = waterSlope(vWPos.xz, uTime);
+  vec4 rc = uReflMat * vec4(vWPos, 1.0);
+  vec3 refl = texture2D(tReflection, rc.xy / rc.w + sl * 0.045).rgb;
+  float cosT = clamp(dot(normal, normalize(vViewPosition)), 0.0, 1.0);
+  float F = clamp(0.35 + 0.65 * pow(1.0 - cosT, 5.0), 0.0, 1.0);
+  outgoingLight = mix(outgoingLight, refl, F);
+  diffuseColor.a = mix(diffuseColor.a, 1.0, F);
+}
+#include <opaque_fragment>`);
+    }
     // metals have no diffuse -> they only pick up block light via (1-metalness)
     patchBlockLight(sh, 'diffuseColor.rgb * (1.0 - metalnessFactor)');
     sh.vertexShader = sh.vertexShader
@@ -550,6 +644,6 @@ function makeSpecialMaterial(extra) {
       .replace('#include <color_fragment>', '#include <color_fragment>\ndiffuseColor.rgb *= 1.0 - 0.85 * clamp(vMatProps.z, 0.0, 1.0);')
       .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance = vColor.rgb * vMatProps.z;');
   };
-  m.customProgramCacheKey = () => 'voxel-special' + (extra.transparent ? '-t' : '');
+  m.customProgramCacheKey = () => 'voxel-special' + (extra.transparent ? '-t' : '') + (water ? '-w' : '');
   return m;
 }

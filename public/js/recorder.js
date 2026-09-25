@@ -656,6 +656,7 @@ export async function startRecorder() {
     const dt = Math.max(0, Math.min(0.1, t - lastFrameT));
     lastFrameT = t;
     weather.update(dt, camera);
+    world.setTime(t);                 // deterministic water ripples
     if (skyHandle.ocean && skyHandle.ocean.material.uniforms?.uTime) {
       skyHandle.ocean.material.uniforms.uTime.value += dt;
     }
