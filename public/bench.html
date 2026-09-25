@@ -12,7 +12,7 @@
 <body><pre id="out">running</pre>
 <script type="module">
 import * as THREE from 'three';
-import { World } from './js/World.js';
+const { World } = await import(new URLSearchParams(location.search).get('engine') || './js/World.js');   // ?engine=<module> to A/B an alternate engine
 const q = new URLSearchParams(location.search);
 const planSlug = q.get('plan') || 'batman-4x-opus';
 const res = {};

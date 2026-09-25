@@ -53,6 +53,19 @@ for (let b = 1; b < 256; b++) {
   EMIT[b] = isEmissive(b) ? 1 : 0;
 }
 
+// Block light (Minecraft-style, coloured): emissive blocks seed per-channel
+// levels 0..LMAX that drop by 1 per step through non-opaque cells. Baked per
+// vertex; the material adds diffuse * blockLight, so glow lights its
+// surroundings. No emissive blocks nearby -> zero light, zero cost.
+const LMAX = 14;
+const LIGHT_GAIN = 0.6;
+const LIGHT_SRC = new Array(256).fill(null);
+for (let b = 1; b < 256; b++) if (EMIT[b]) {
+  const c = BLOCK_COLORS[b].side;
+  LIGHT_SRC[b] = c.map(v => Math.round(LMAX * Math.min(1, Math.sqrt(v))));
+}
+const LIGHT_CURVE = new Float32Array(LMAX + 1).map((_, l) => (l / LMAX) ** 2);
+
 // Growable typed-array mesh buffer, reused across builds (no per-face allocs).
 class MeshBuf {
   constructor() { this.v = 0; this.i = 0; this._alloc(4096); }
@@ -62,6 +75,7 @@ class MeshBuf {
     this.nrm = this.nrm ? grow(this.nrm, nv * 3) : new Float32Array(nv * 3);
     this.col = this.col ? grow(this.col, nv * 3) : new Float32Array(nv * 3);
     this.mat = this.mat ? grow(this.mat, nv * 3) : new Float32Array(nv * 3);
+    this.lit = this.lit ? grow(this.lit, nv * 3) : new Uint8Array(nv * 3);
     this.idx = this.idx ? grow(this.idx, nv * 3 / 2) : new Uint32Array(nv * 3 / 2);
     this.cap = nv;
   }
@@ -79,8 +93,12 @@ export class World {
     // blocks, index lx + lz*16 + y*256. Edits write straight into these.
     this.data = new Array(this.chunkCount * this.chunkCount);
     this.meshes = new Map();          // section key (int) -> [Mesh]
-    this.material = new THREE.MeshLambertMaterial({ vertexColors: true });
-    this.transparentMaterial = new THREE.MeshLambertMaterial({
+    // Block light, 3 bytes (r,g,b level) per cell; allocated per column only
+    // once light reaches it. _anyLight gates the per-vertex sampling.
+    this.light = new Array(this.chunkCount * this.chunkCount).fill(null);
+    this._anyLight = false;
+    this.material = makeLitLambert({ vertexColors: true });
+    this.transparentMaterial = makeLitLambert({
       vertexColors: true, transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide,
     });
     // Special-material passes (metal / glossy / emissive / water). Per-vertex
@@ -198,9 +216,12 @@ export class World {
 
   setBlock(x, y, z, block) {
     if (!this._inWorld(x, y, z)) return;
-    this._col(x, z)[this._idx(x, y, z)] = block;
+    const col = this._col(x, z), i = this._idx(x, y, z);
+    const emissiveTouched = EMIT[col[i]] === 1 || EMIT[block] === 1;
+    col[i] = block;
     const dirty = new Set();
     this._markDirty(x, y, z, dirty);
+    this._maybeRelight(x, y, z, x, y, z, emissiveTouched, dirty);
     this._rebuildDirty(dirty);
   }
 
@@ -216,14 +237,126 @@ export class World {
 
   applyBlockChanges(changes) {
     const dirty = new Set();
+    let emissiveTouched = false, n = 0;
+    let bx0 = Infinity, by0 = Infinity, bz0 = Infinity, bx1 = -Infinity, by1 = -Infinity, bz1 = -Infinity;
     for (const key in changes) {
       const c1 = key.indexOf(','), c2 = key.indexOf(',', c1 + 1);
       const x = +key.slice(0, c1), y = +key.slice(c1 + 1, c2), z = +key.slice(c2 + 1);
       if (!this._inWorld(x, y, z)) continue;
-      this._col(x, z)[this._idx(x, y, z)] = changes[key];
+      const col = this._col(x, z), i = this._idx(x, y, z), b = changes[key];
+      if (EMIT[col[i]] === 1 || EMIT[b] === 1) emissiveTouched = true;
+      col[i] = b;
       this._markDirty(x, y, z, dirty);
+      if (x < bx0) bx0 = x; if (y < by0) by0 = y; if (z < bz0) bz0 = z;
+      if (x > bx1) bx1 = x; if (y > by1) by1 = y; if (z > bz1) bz1 = z;
+      n++;
     }
+    if (n) this._maybeRelight(bx0, by0, bz0, bx1, by1, bz1, emissiveTouched, dirty);
     this._rebuildDirty(dirty);
+  }
+
+  // --- Block light ---------------------------------------------------------
+  _lightCol(cx, cz, create) {
+    const k = cz * this.chunkCount + cx;
+    let a = this.light[k];
+    if (!a && create) { a = this.light[k] = new Uint8Array(3 * CHUNK_SIZE * CHUNK_SIZE * WORLD_HEIGHT); this._anyLight = true; }
+    return a;
+  }
+
+  _lightAt(x, y, z, ch) {
+    if (x < 0 || z < 0 || x >= this.worldSize || z >= this.worldSize || y < 0 || y >= WORLD_HEIGHT) return 0;
+    const a = this.light[(z >> 4) * this.chunkCount + (x >> 4)];
+    return a ? a[((x & 15) + ((z & 15) << 4) + (y << 8)) * 3 + ch] : 0;
+  }
+
+  // A light change at a cell affects faces sampling it: its section, plus the
+  // neighbouring section when the cell sits on a section boundary.
+  _markLightDirty(x, y, z, dirty) {
+    const xs = [x >> 4], zs = [z >> 4], ys = [(y / SECTION_H) | 0];
+    const C = this.chunkCount;
+    if ((x & 15) === 0 && xs[0] > 0) xs.push(xs[0] - 1); else if ((x & 15) === 15 && xs[0] < C - 1) xs.push(xs[0] + 1);
+    if ((z & 15) === 0 && zs[0] > 0) zs.push(zs[0] - 1); else if ((z & 15) === 15 && zs[0] < C - 1) zs.push(zs[0] + 1);
+    const ly = y % SECTION_H;
+    if (ly === 0 && ys[0] > 0) ys.push(ys[0] - 1); else if (ly === SECTION_H - 1 && ys[0] < SECTIONS - 1) ys.push(ys[0] + 1);
+    for (const a of xs) for (const b of zs) for (const c of ys) dirty.add(this._secKey(a, b, c));
+  }
+
+  _maybeRelight(x0, y0, z0, x1, y1, z1, emissiveTouched, dirty) {
+    if (!emissiveTouched && !this._anyLight) return;          // common case: no light anywhere
+    const W = this.worldSize, L = LMAX;
+    // Region whose light can change: changed bbox + light reach.
+    const rx0 = Math.max(0, x0 - L), rx1 = Math.min(W - 1, x1 + L);
+    const ry0 = Math.max(0, y0 - L), ry1 = Math.min(WORLD_HEIGHT - 1, y1 + L);
+    const rz0 = Math.max(0, z0 - L), rz1 = Math.min(W - 1, z1 + L);
+    if (!emissiveTouched) {
+      // Non-emissive edit: only matters if light exists in the region (a wall
+      // placed/removed changes where light can travel).
+      let lit = false;
+      for (let cz = rz0 >> 4; cz <= rz1 >> 4 && !lit; cz++) for (let cx = rx0 >> 4; cx <= rx1 >> 4; cx++) if (this.light[cz * this.chunkCount + cx]) { lit = true; break; }
+      if (!lit) return;
+    }
+    this._relight(rx0, ry0, rz0, rx1, ry1, rz1, dirty);
+  }
+
+  _relight(rx0, ry0, rz0, rx1, ry1, rz1, dirty) {
+    const W = this.worldSize, L = LMAX, C = this.chunkCount;
+    // 1) clear the region (marking sections that had light)
+    for (let cz = rz0 >> 4; cz <= rz1 >> 4; cz++) for (let cx = rx0 >> 4; cx <= rx1 >> 4; cx++) {
+      const a = this.light[cz * C + cx]; if (!a) continue;
+      const xa = Math.max(rx0, cx * 16), xb = Math.min(rx1, cx * 16 + 15);
+      const za = Math.max(rz0, cz * 16), zb = Math.min(rz1, cz * 16 + 15);
+      for (let y = ry0; y <= ry1; y++) for (let z = za; z <= zb; z++) for (let x = xa; x <= xb; x++) {
+        const o = ((x & 15) + ((z & 15) << 4) + (y << 8)) * 3;
+        if (a[o] | a[o + 1] | a[o + 2]) { a[o] = a[o + 1] = a[o + 2] = 0; this._markLightDirty(x, y, z, dirty); }
+      }
+    }
+    // 2) seed from every source that can reach the region
+    const sx0 = Math.max(0, rx0 - L), sx1 = Math.min(W - 1, rx1 + L);
+    const sy0 = Math.max(0, ry0 - L), sy1 = Math.min(WORLD_HEIGHT - 1, ry1 + L);
+    const sz0 = Math.max(0, rz0 - L), sz1 = Math.min(W - 1, rz1 + L);
+    const seeds = [];
+    for (let cz = sz0 >> 4; cz <= sz1 >> 4; cz++) for (let cx = sx0 >> 4; cx <= sx1 >> 4; cx++) {
+      const col = this.data[cz * C + cx];
+      const xa = Math.max(sx0, cx * 16), xb = Math.min(sx1, cx * 16 + 15);
+      const za = Math.max(sz0, cz * 16), zb = Math.min(sz1, cz * 16 + 15);
+      for (let y = sy0; y <= sy1; y++) for (let z = za; z <= zb; z++) for (let x = xa; x <= xb; x++) {
+        const b = col[(x & 15) + ((z & 15) << 4) + (y << 8)];
+        if (LIGHT_SRC[b]) seeds.push(x, y, z, b);
+      }
+    }
+    if (!seeds.length) return;
+    // 3) BFS per channel (max-propagation). Queue packs x|z<<10|y<<20.
+    const DIRS = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+    let q = new Int32Array(4096), ql = new Uint8Array(4096);
+    for (let ch = 0; ch < 3; ch++) {
+      let head = 0, tail = 0;
+      const push = (x, y, z, l) => {
+        if (tail >= q.length) { const nq = new Int32Array(q.length * 2); nq.set(q); q = nq; const nl = new Uint8Array(ql.length * 2); nl.set(ql); ql = nl; }
+        q[tail] = x | (z << 10) | (y << 20); ql[tail] = l; tail++;
+      };
+      for (let s = 0; s < seeds.length; s += 4) {
+        const lvl = LIGHT_SRC[seeds[s + 3]][ch];
+        if (lvl <= 0) continue;
+        const x = seeds[s], y = seeds[s + 1], z = seeds[s + 2];
+        const a = this._lightCol(x >> 4, z >> 4, true), o = ((x & 15) + ((z & 15) << 4) + (y << 8)) * 3 + ch;
+        if (a[o] < lvl) { a[o] = lvl; this._markLightDirty(x, y, z, dirty); }
+        push(x, y, z, lvl);
+      }
+      while (head < tail) {
+        const pk = q[head], l = ql[head]; head++;
+        if (l <= 1) continue;
+        const x = pk & 1023, z = (pk >> 10) & 1023, y = pk >> 20;
+        for (let d = 0; d < 6; d++) {
+          const nx = x + DIRS[d][0], ny = y + DIRS[d][1], nz = z + DIRS[d][2];
+          if (nx < 0 || nz < 0 || nx >= W || nz >= W || ny < 0 || ny >= WORLD_HEIGHT) continue;
+          if (OPAQUE[this.data[(nz >> 4) * C + (nx >> 4)][(nx & 15) + ((nz & 15) << 4) + (ny << 8)]]) continue;
+          const a = this._lightCol(nx >> 4, nz >> 4, true), o = ((nx & 15) + ((nz & 15) << 4) + (ny << 8)) * 3 + ch;
+          if (a[o] >= l - 1) continue;
+          a[o] = l - 1; this._markLightDirty(nx, ny, nz, dirty);
+          push(nx, ny, nz, l - 1);
+        }
+      }
+    }
   }
 
   getChunkMeshes() {
@@ -256,6 +389,7 @@ export class World {
     if (!any) return;
 
     for (const k in SCRATCH) SCRATCH[k].reset();
+    const litOn = this._anyLight;
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
 
     for (let y = y0; y < y1; y++) {
@@ -314,6 +448,23 @@ export class World {
                 r *= ao; g *= ao; b *= ao;
               }
               target.col[p] = r < 1 ? r : 1; target.col[p + 1] = g < 1 ? g : 1; target.col[p + 2] = b < 1 ? b : 1;
+              if (litOn) {
+                // Smooth block light: average the non-opaque cells in front of
+                // this corner (face cell + the AO tangent/diagonal cells).
+                const ao4 = face.aoOffsets[i];
+                let lr = 0, lg = 0, lb = 0, nc = 0;
+                for (let k = -1; k < 3; k++) {
+                  const o = k < 0 ? d : ao4[k];
+                  const qx = wx + o[0], qy = y + o[1], qz = wz + o[2];
+                  if (k >= 0 && this._solidAt(qx, qy, qz)) continue;
+                  lr += LIGHT_CURVE[this._lightAt(qx, qy, qz, 0)];
+                  lg += LIGHT_CURVE[this._lightAt(qx, qy, qz, 1)];
+                  lb += LIGHT_CURVE[this._lightAt(qx, qy, qz, 2)];
+                  nc++;
+                }
+                const inv = nc ? 255 / nc : 0;
+                target.lit[p] = lr * inv; target.lit[p + 1] = lg * inv; target.lit[p + 2] = lb * inv;
+              } else { target.lit[p] = 0; target.lit[p + 1] = 0; target.lit[p + 2] = 0; }
               if (mp) { target.mat[p] = mp.roughness; target.mat[p + 1] = mp.metalness; target.mat[p + 2] = mp.emissive; }
             }
             const ii = target.i;
@@ -339,6 +490,7 @@ export class World {
       geo.setAttribute('position', new THREE.BufferAttribute(buf.pos.slice(0, buf.v * 3), 3));
       geo.setAttribute('normal', new THREE.BufferAttribute(buf.nrm.slice(0, buf.v * 3), 3));
       geo.setAttribute('color', new THREE.BufferAttribute(buf.col.slice(0, buf.v * 3), 3));
+      geo.setAttribute('blockLight', new THREE.BufferAttribute(buf.lit.slice(0, buf.v * 3), 3, true));
       if (special) geo.setAttribute('matProps', new THREE.BufferAttribute(buf.mat.slice(0, buf.v * 3), 3));
       geo.setIndex(new THREE.BufferAttribute(buf.idx.slice(0, buf.i), 1));
       geo.computeBoundingSphere();
@@ -359,9 +511,33 @@ export class World {
 // MeshStandardMaterial whose roughness / metalness / emissive come from the
 // per-vertex `matProps` attribute instead of uniforms. Emissive glow is the
 // vertex colour scaled by matProps.z, so glow tints match the block colour.
+// Shader patch shared by every chunk material: per-vertex `blockLight` (baked
+// voxel light) added as extra diffuse illumination. Zero where there's no
+// emissive block nearby, so unlit scenes render exactly as before.
+const BLOCK_LIGHT_VS = [
+  '#include <common>', '#include <common>\nattribute vec3 blockLight;\nvarying vec3 vBlockLight;',
+  '#include <begin_vertex>', '#include <begin_vertex>\nvBlockLight = blockLight;',
+];
+function patchBlockLight(sh, diffuseExpr) {
+  sh.vertexShader = sh.vertexShader
+    .replace(BLOCK_LIGHT_VS[0], BLOCK_LIGHT_VS[1]).replace(BLOCK_LIGHT_VS[2], BLOCK_LIGHT_VS[3]);
+  sh.fragmentShader = sh.fragmentShader
+    .replace('#include <common>', '#include <common>\nvarying vec3 vBlockLight;')
+    .replace('#include <opaque_fragment>', `outgoingLight += ${diffuseExpr} * vBlockLight * ${LIGHT_GAIN.toFixed(2)};\n#include <opaque_fragment>`);
+}
+
+function makeLitLambert(opts) {
+  const m = new THREE.MeshLambertMaterial(opts);
+  m.onBeforeCompile = (sh) => patchBlockLight(sh, 'diffuseColor.rgb');
+  m.customProgramCacheKey = () => 'voxel-lambert' + (opts.transparent ? '-t' : '');
+  return m;
+}
+
 function makeSpecialMaterial(extra) {
   const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, ...extra });
   m.onBeforeCompile = (sh) => {
+    // metals have no diffuse -> they only pick up block light via (1-metalness)
+    patchBlockLight(sh, 'diffuseColor.rgb * (1.0 - metalnessFactor)');
     sh.vertexShader = sh.vertexShader
       .replace('#include <common>', '#include <common>\nattribute vec3 matProps;\nvarying vec3 vMatProps;')
       .replace('#include <begin_vertex>', '#include <begin_vertex>\nvMatProps = matProps;');

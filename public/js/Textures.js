@@ -115,10 +115,10 @@ export const BLOCK_MATERIALS = {
   [Block.OBSIDIAN]:  { roughness: 0.12, metalness: 0.0, emissive: 0 },
   [Block.MARBLE]:    { roughness: 0.22, metalness: 0.0, emissive: 0 },
   [Block.WATER]:     { roughness: 0.05, metalness: 0.0, emissive: 0 },
-  [Block.LAVA]:      { roughness: 0.9,  metalness: 0.0, emissive: 2.2 },
-  [Block.GLOWSTONE]: { roughness: 0.8,  metalness: 0.0, emissive: 1.0 },
-  [Block.NEON_RED]:  { roughness: 0.6,  metalness: 0.0, emissive: 3.2 },
-  [Block.NEON_BLUE]: { roughness: 0.6,  metalness: 0.0, emissive: 2.6 },
+  [Block.LAVA]:      { roughness: 1.0,  metalness: 0.0, emissive: 1.4 },
+  [Block.GLOWSTONE]: { roughness: 1.0,  metalness: 0.0, emissive: 1.0 },
+  [Block.NEON_RED]:  { roughness: 1.0,  metalness: 0.0, emissive: 3.2 },
+  [Block.NEON_BLUE]: { roughness: 1.0,  metalness: 0.0, emissive: 2.6 },
 };
 export const hasSpecialMaterial = (b) => b in BLOCK_MATERIALS;
 export const isEmissive = (b) => (BLOCK_MATERIALS[b]?.emissive ?? 0) > 0;
