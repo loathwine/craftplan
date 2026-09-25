@@ -2,8 +2,12 @@
 // Used by both the bot (chat builds) and the server (per-task structures).
 import vm from 'vm';
 import { spawn } from 'child_process';
+import { Block } from '../public/js/Textures.js';
 
-const VALID_BLOCKS = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13]);
+// Single source of truth: every block defined in Textures.js except BEDROCK
+// (world floor, not placeable).
+const BUILD_BLOCKS = Object.fromEntries(Object.entries(Block).filter(([k]) => k !== 'BEDROCK'));
+const VALID_BLOCKS = new Set(Object.values(BUILD_BLOCKS));
 const DEFAULT_MAX_BLOCKS = 5000;
 // Raw collection cap: runaway-loop protection only. The *budget* (maxBlocks)
 // is applied to SOLID blocks after dedup in runSandbox — if it were applied
@@ -24,14 +28,21 @@ export const SANDBOX_API_DOC = `AVAILABLE FUNCTIONS:
   line(x1, y1, z1, x2, y2, z2, id)             line of blocks
   disk(cx, cy, cz, radius, id)                 filled flat disk at Y=cy
 
-BLOCK CONSTANTS:
-  AIR (0) — placing AIR DELETES the block at that position. Use to clear trees, dig caves, carve windows.
-  GRASS (1), DIRT (2), STONE (3 gray), OAK_LOG (4 brown)
-  LEAVES (5 green), SAND (6 yellow), PLANKS (7 tan)
-  COBBLE (8), BRICK (10 red), GLASS (11 blue), SNOW (12 white), ICE (13 cyan)
+BLOCK CONSTANTS (use the names):
+  AIR — placing AIR DELETES the block at that position. Use to clear trees, dig caves, carve windows.
+  Natural: GRASS, DIRT, STONE (gray), COBBLE, OAK_LOG (brown bark), LEAVES (green), SAND (pale tan),
+           PLANKS (light wood), BRICK (red-brown), SNOW (white), ICE (pale cyan, translucent), GLASS (clear)
+  Colors (matte, saturated): WHITE, LIGHT_GRAY, GRAY, BLACK, RED, ORANGE, YELLOW, LIME, GREEN,
+           CYAN, LIGHT_BLUE, BLUE, PURPLE, MAGENTA, PINK, BROWN
+  Metals (shiny, reflective): GOLD, IRON (silver/steel), COPPER
+  Polished: OBSIDIAN (glossy black), MARBLE (polished white)
+  Liquid: WATER (translucent, glossy blue)
+  Glowing (emit light — use sparingly for eyes, fire, lamps, magic): LAVA (orange), GLOWSTONE (warm
+           white), NEON_RED, NEON_BLUE
 
-Color guide: metal/blade → STONE or COBBLE, wood → OAK_LOG or PLANKS,
-foliage → LEAVES, red/fire → BRICK, water/sky → GLASS, white/snow → SNOW.
+Color guide: pick the closest real color — yellow → YELLOW, blue suit → BLUE, black armor → BLACK,
+purple → PURPLE. Metal/armor/blades → IRON or GOLD, water → WATER, fire/lava → LAVA/ORANGE,
+glowing eyes/energy → NEON_RED / NEON_BLUE / GLOWSTONE.
 
 Math is available. You can define local helper functions.`;
 
@@ -50,8 +61,7 @@ export function makeSandbox(opts = {}) {
   };
 
   const api = {
-    AIR: 0, GRASS: 1, DIRT: 2, STONE: 3, OAK_LOG: 4, LEAVES: 5,
-    SAND: 6, PLANKS: 7, COBBLE: 8, BRICK: 10, GLASS: 11, SNOW: 12, ICE: 13,
+    ...BUILD_BLOCKS,
 
     block: addBlock,
 

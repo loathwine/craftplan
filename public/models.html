@@ -107,7 +107,8 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { setupSky, setupRenderer } from './js/sky.js';
+import { setupSky, setupRenderer, makeSkyEnvMap } from './js/sky.js';
+import { addBlockInstances } from './js/blockInstances.js';
 import { BLOCK_COLORS, colorVariation, TRANSPARENT_BLOCKS } from './js/Textures.js';
 
 const $ = id => document.getElementById(id);
@@ -129,6 +130,7 @@ const scene = new THREE.Scene();
 setupSky(scene, { shadowCenter: [0, 14, 0], shadowExtent: 120, shadowDistance: 260,
   shadowMapSize: quality === 'high' ? 2048 : 1024,
   fogNear: 400, fogFar: 3000 });
+scene.environment = makeSkyEnvMap(renderer, scene);   // metals/gloss reflect the sky
 
 const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 6000);
 const controls = new OrbitControls(camera, canvas);
@@ -200,25 +202,7 @@ function meshFor(plan, rot) {
     maxY=Math.max(maxY,p.y);minZ=Math.min(minZ,p.z);maxZ=Math.max(maxZ,p.z); }
   const cx=(minX+maxX)/2, cz=(minZ+maxZ)/2;
   const group = new THREE.Group();
-  const col = new THREE.Color(), m = new THREE.Matrix4();
-  const add = (arr, mat) => {
-    if (!arr.length) return;
-    const im = new THREE.InstancedMesh(boxGeo, mat, arr.length);
-    im.castShadow = true; im.receiveShadow = true;
-    arr.forEach((p, i) => {
-      m.setPosition(p.x - cx, p.y - minY + 0.5, p.z - cz);
-      im.setMatrixAt(i, m);
-      const c = (BLOCK_COLORS[p.block] || { side:[0.6,0.6,0.6] }).side;
-      const v = colorVariation(p.x, p.y, p.z);
-      col.setRGB(Math.min(1,c[0]*v), Math.min(1,c[1]*v), Math.min(1,c[2]*v), THREE.SRGBColorSpace);
-      im.setColorAt(i, col);
-    });
-    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
-    group.add(im);
-  };
-  add(pts.filter(p => !TRANSPARENT_BLOCKS.has(p.block)), new THREE.MeshLambertMaterial());
-  add(pts.filter(p =>  TRANSPARENT_BLOCKS.has(p.block)),
-      new THREE.MeshLambertMaterial({ transparent: true, opacity: 0.55 }));
+  addBlockInstances(group, pts, [-cx, -minY + 0.5, -cz]);
   return { group, w: maxX-minX+1, d: maxZ-minZ+1, h: maxY-minY+1 };
 }
 

@@ -127,6 +127,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { BLOCK_COLORS, colorVariation, TRANSPARENT_BLOCKS } from './js/Textures.js';
+import { addBlockInstances } from './js/blockInstances.js';
+import { makeSkyEnvMap } from './js/sky.js';
 
 const LS_KEY = 'craftplan-qa-decisions';
 const $ = id => document.getElementById(id);
@@ -159,6 +161,7 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 const scene = new THREE.Scene();
+scene.environment = makeSkyEnvMap(renderer, scene);   // metals/gloss reflect
 scene.background = new THREE.Color(0xa6cee0);
 scene.fog = new THREE.Fog(0xa6cee0, 120, 400);
 
@@ -208,26 +211,7 @@ function buildMesh(plan) {
   for (const p of pts){ minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);
     maxY=Math.max(maxY,p.y);minZ=Math.min(minZ,p.z);maxZ=Math.max(maxZ,p.z); }
   const cx=(minX+maxX)/2, cz=(minZ+maxZ)/2;
-  const opaque = pts.filter(p => !TRANSPARENT_BLOCKS.has(p.block));
-  const glass  = pts.filter(p =>  TRANSPARENT_BLOCKS.has(p.block));
-  const geo = new THREE.BoxGeometry(1, 1, 1);
-  const mk = (arr, mat) => {
-    if (!arr.length) return;
-    const im = new THREE.InstancedMesh(geo, mat, arr.length);
-    const m = new THREE.Matrix4(); const col = new THREE.Color();
-    arr.forEach((p, i) => {
-      m.setPosition(p.x - cx, p.y - minY + 0.5, p.z - cz);
-      im.setMatrixAt(i, m);
-      const c = (BLOCK_COLORS[p.block] || { side: [0.6,0.6,0.6] }).side;
-      const v = colorVariation(p.x, p.y, p.z);
-      col.setRGB(Math.min(1,c[0]*v), Math.min(1,c[1]*v), Math.min(1,c[2]*v), THREE.SRGBColorSpace);
-      im.setColorAt(i, col);
-    });
-    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
-    buildGroup.add(im);
-  };
-  mk(opaque, new THREE.MeshLambertMaterial());
-  mk(glass, new THREE.MeshLambertMaterial({ transparent: true, opacity: 0.55 }));
+  addBlockInstances(buildGroup, pts, [-cx, -minY + 0.5, -cz]);
   scene.add(buildGroup);
   const h = maxY - minY + 1, span = Math.max(maxX-minX, maxZ-minZ, h) + 1;
   box.set(new THREE.Vector3(-span/2, 0, -span/2), new THREE.Vector3(span/2, h, span/2));

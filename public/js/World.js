@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-import { Block, BLOCK_COLORS, colorVariation, isTransparent, isOpaque } from './Textures.js';
+import { Block, BLOCK_COLORS, BLOCK_MATERIALS, colorVariation, isTransparent, isOpaque, isEmissive } from './Textures.js';
 import { hash2, biomeAt, terrainHeight, surfaceBlock, shouldHaveTree } from './terrain.js';
+import { makeSkyEnvMap } from './sky.js';
 
 export const CHUNK_SIZE = 16;
 export const WORLD_HEIGHT = 128;
@@ -50,6 +51,14 @@ export class World {
     this.transparentMaterial = new THREE.MeshLambertMaterial({
       vertexColors: true, transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide,
     });
+    // Special-material passes (metal / glossy / emissive / water). Per-vertex
+    // `matProps` = (roughness, metalness, emissive) drives MeshStandardMaterial
+    // so one material + one draw call covers every special block in a chunk.
+    this.specialMaterial = makeSpecialMaterial({});
+    this.specialTransparentMaterial = makeSpecialMaterial({
+      transparent: true, opacity: 0.62, depthWrite: false, side: THREE.DoubleSide,
+    });
+    this._envReady = false;
     this.chunkGroup = new THREE.Group();
     scene.add(this.chunkGroup);
     this._generate();
@@ -189,6 +198,17 @@ export class World {
     return out;
   }
 
+  // Reflection environment for metals/gloss, built once (lazily, on the first
+  // frame a special-material chunk is drawn — that's the first moment we have
+  // a renderer). It's a PMREM of the scene's own gradient sky + sun, so gold
+  // reflects *this* sky rather than a generic studio.
+  _ensureEnvironment(renderer, scene) {
+    if (this._envReady) return;
+    this._envReady = true;
+    const tex = makeSkyEnvMap(renderer, scene);
+    for (const m of [this.specialMaterial, this.specialTransparentMaterial]) { m.envMap = tex; m.needsUpdate = true; }
+  }
+
   // --- Mesh builder ---
   _buildMesh(cx, cz) {
     const key = `${cx},${cz}`;
@@ -199,10 +219,8 @@ export class World {
     }
 
     // Two passes: opaque + transparent
-    const buf = {
-      opaque:      { positions: [], normals: [], colors: [], indices: [], vtx: 0 },
-      transparent: { positions: [], normals: [], colors: [], indices: [], vtx: 0 },
-    };
+    const mk = () => ({ positions: [], normals: [], colors: [], mat: [], indices: [], vtx: 0 });
+    const buf = { opaque: mk(), transparent: mk(), special: mk(), specialTransparent: mk() };
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
 
     for (let y = 0; y < WORLD_HEIGHT; y++) {
@@ -215,7 +233,10 @@ export class World {
           if (!bc) continue;
           const cv = colorVariation(wx, y, wz);
           const isTrans = isTransparent(block);
-          const target = isTrans ? buf.transparent : buf.opaque;
+          const mp = BLOCK_MATERIALS[block];
+          const target = mp
+            ? (isTrans ? buf.specialTransparent : buf.special)
+            : (isTrans ? buf.transparent : buf.opaque);
 
           for (const face of FACES) {
             const nx = wx + face.dir[0], ny = y + face.dir[1], nz = wz + face.dir[2];
@@ -228,7 +249,8 @@ export class World {
 
             // Transparent blocks (glass, leaves) skip AO so they don't get
             // ugly dark patches where they touch solids.
-            const skipAO = isTrans;
+            // Emissive blocks are light sources — AO darkening would dim the glow.
+            const skipAO = isTrans || isEmissive(block);
             const fc = bc[face.type];
             for (let i = 0; i < 4; i++) {
               const c = face.corners[i];
@@ -259,6 +281,7 @@ export class World {
               }
 
               target.colors.push(Math.min(1, r), Math.min(1, g), Math.min(1, b));
+              if (mp) target.mat.push(mp.roughness, mp.metalness, mp.emissive);
             }
             target.indices.push(target.vtx, target.vtx + 1, target.vtx + 2, target.vtx, target.vtx + 2, target.vtx + 3);
             target.vtx += 4;
@@ -268,24 +291,56 @@ export class World {
     }
 
     const built = [];
-    for (const [pass, data] of [['opaque', buf.opaque], ['transparent', buf.transparent]]) {
+    const PASSES = [
+      ['opaque',             this.material,                   false],
+      ['transparent',        this.transparentMaterial,        true ],
+      ['special',            this.specialMaterial,            false],
+      ['specialTransparent', this.specialTransparentMaterial, true ],
+    ];
+    for (const [pass, mat, trans] of PASSES) {
+      const data = buf[pass];
       if (data.positions.length === 0) continue;
       const geo = new THREE.BufferGeometry();
       geo.setAttribute('position', new THREE.Float32BufferAttribute(data.positions, 3));
       geo.setAttribute('normal', new THREE.Float32BufferAttribute(data.normals, 3));
       geo.setAttribute('color', new THREE.Float32BufferAttribute(data.colors, 3));
+      if (data.mat.length) geo.setAttribute('matProps', new THREE.Float32BufferAttribute(data.mat, 3));
       geo.setIndex(data.indices);
       geo.computeBoundingSphere();
-      const mat = pass === 'transparent' ? this.transparentMaterial : this.material;
       const mesh = new THREE.Mesh(geo, mat);
-      mesh.renderOrder = pass === 'transparent' ? 1 : 0;
-      // Opaque chunks cast + receive shadows; transparent (glass, leaves)
+      mesh.renderOrder = trans ? 1 : 0;
+      // Opaque chunks cast + receive shadows; transparent (glass, water)
       // only receive so we don't get black silhouettes through glass.
-      mesh.castShadow = pass !== 'transparent';
+      mesh.castShadow = !trans;
       mesh.receiveShadow = true;
+      if (mat === this.specialMaterial || mat === this.specialTransparentMaterial) {
+        mesh.onBeforeRender = (renderer, scene) => this._ensureEnvironment(renderer, scene);
+      }
       built.push(mesh);
       this.chunkGroup.add(mesh);
     }
     this.meshes.set(key, built);
   }
+}
+
+// MeshStandardMaterial whose roughness / metalness / emissive come from the
+// per-vertex `matProps` attribute instead of uniforms. Emissive glow is the
+// vertex colour scaled by matProps.z, so glow tints match the block colour.
+function makeSpecialMaterial(extra) {
+  const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, ...extra });
+  m.onBeforeCompile = (sh) => {
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nattribute vec3 matProps;\nvarying vec3 vMatProps;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvMatProps = matProps;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vMatProps;')
+      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = vMatProps.x;')
+      .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\nmetalnessFactor = vMatProps.y;')
+      // Emissive blocks: damp the lit diffuse term so the colour comes from the
+      // glow (otherwise sunlit diffuse + glow tonemaps toward white/pastel).
+      .replace('#include <color_fragment>', '#include <color_fragment>\ndiffuseColor.rgb *= 1.0 - 0.85 * clamp(vMatProps.z, 0.0, 1.0);')
+      .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance = vColor.rgb * vMatProps.z;');
+  };
+  m.customProgramCacheKey = () => 'voxel-special' + (extra.transparent ? '-t' : '');
+  return m;
 }

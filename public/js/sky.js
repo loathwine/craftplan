@@ -138,6 +138,11 @@ export function setupSky(scene, opts = {}) {
   scene.add(sky);
 
   scene.background = new THREE.Color(o.horizonColor);
+  // Exposed for World's reflection environment (metals/gloss reflect this sky).
+  scene.userData.skyEnv = {
+    zenith: new THREE.Color(o.zenithColor), horizon: new THREE.Color(o.horizonColor),
+    ground: new THREE.Color(o.hemiGround), sunColor: new THREE.Color(o.sunColor), sunDir: sunDir.clone(),
+  };
   scene.fog = new THREE.Fog(o.fogColor, o.fogNear, o.fogFar);
 
   const center = new THREE.Vector3(...o.shadowCenter);
@@ -250,4 +255,38 @@ export function setupRenderer(renderer, opts = {}) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = opts.exposure ?? 0.95;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+}
+
+// Reflection environment for metal / glossy blocks: a PMREM of the scene's own
+// gradient sky + sun (recorded by setupSky in scene.userData.skyEnv; falls back
+// to the default day sky). Horizon is pulled toward neutral white so gold still
+// reads gold instead of tinting green from a cyan horizon.
+export function makeSkyEnvMap(renderer, scene) {
+  const e = scene?.userData?.skyEnv || {
+    zenith: new THREE.Color(DEFAULTS.zenithColor), horizon: new THREE.Color(DEFAULTS.horizonColor),
+    ground: new THREE.Color(DEFAULTS.hemiGround), sunColor: new THREE.Color(DEFAULTS.sunColor),
+    sunDir: new THREE.Vector3(0.5, 0.7, 0.5).normalize(),
+  };
+  const envScene = new THREE.Scene();
+  const envMat = new THREE.ShaderMaterial({
+    side: THREE.BackSide, depthWrite: false,
+    uniforms: {
+      uZenith: { value: e.zenith }, uHorizon: { value: e.horizon }, uGround: { value: e.ground },
+      uSun: { value: e.sunColor }, uSunDir: { value: e.sunDir },
+    },
+    vertexShader: `varying vec3 vDir; void main(){ vDir = normalize(position);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    fragmentShader: `uniform vec3 uZenith, uHorizon, uGround, uSun, uSunDir; varying vec3 vDir;
+      void main(){ float h = vDir.y;
+        vec3 hz = mix(uHorizon, vec3(1.0), 0.45);
+        vec3 c = h > 0.0 ? mix(hz, uZenith, pow(h, 0.8)) : mix(hz * 0.55, uGround * 1.4, pow(-h, 0.4));
+        float s = max(dot(normalize(vDir), normalize(uSunDir)), 0.0);
+        c += uSun * (pow(s, 400.0) * 8.0 + pow(s, 12.0) * 0.35);
+        gl_FragColor = vec4(c, 1.0); }`,
+  });
+  envScene.add(new THREE.Mesh(new THREE.SphereGeometry(100, 32, 16), envMat));
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const rt = pmrem.fromScene(envScene, 0.02);
+  pmrem.dispose();
+  return rt.texture;
 }
