@@ -2,6 +2,8 @@
 // should start 08-29 (today). 16 videos already uploaded (batman..pegasus) —
 // shift each publishAt back 1 day via videos.update (non-destructive). Then
 // write a sub-manifest for the remaining 15 (unicorn..volcano) to upload.
+// NOTE: videos.update replaces the whole status part — any field omitted resets
+// to default (embeddable/publicStatsViewable -> false), so always send them.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -31,7 +33,7 @@ for (let i = 0; i < DONE.length; i++) {
   try {
     await youtube.videos.update({
       part: ['status'],
-      requestBody: { id: DONE[i], status: { privacyStatus: 'private', publishAt, selfDeclaredMadeForKids: false } },
+      requestBody: { id: DONE[i], status: { privacyStatus: 'private', publishAt, selfDeclaredMadeForKids: false, embeddable: true, publicStatsViewable: true, license: 'youtube' } },
     });
     console.log(`  ✓ ${DONE[i]}  ${q.videos[i].file.split('/').pop().replace('-4x-grid-10s-morning.mp4','').padEnd(14)} -> ${publishAt}`);
   } catch (e) { console.error(`  ✗ ${DONE[i]}: ${e.message}`); }
