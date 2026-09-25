@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- Engine micro-benchmark: world gen, bulk build apply, single-block edit.
+     Headless:  chromium --headless=new --dump-dom http://localhost:3000/bench.html?plan=batman-4x-opus
+     Results are written into <pre id="out"> as JSON. -->
+<html><head><meta charset="utf-8"><title>bench</title>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+}}
+</script></head>
+<body><pre id="out">running</pre>
+<script type="module">
+import * as THREE from 'three';
+import { World } from './js/World.js';
+const q = new URLSearchParams(location.search);
+const planSlug = q.get('plan') || 'batman-4x-opus';
+const res = {};
+const t = () => performance.now();
+
+const scene = new THREE.Scene();
+let t0 = t();
+const world = new World(scene);
+res.worldGenMs = +(t() - t0).toFixed(1);
+res.chunkMeshes = world.getChunkMeshes().length;
+res.triangles = world.getChunkMeshes().reduce((a, m) => a + m.geometry.index.count / 3, 0);
+
+const plan = (await (await fetch(`data/plans/${planSlug}.json`)).json());
+const o = plan.origin;
+const changes = {};
+for (const b of plan.plan) changes[`${o.x + b.x},${o.y + b.y},${o.z + b.z}`] = b.block;
+res.planOps = Object.keys(changes).length;
+t0 = t();
+world.applyBlockChanges(changes);
+res.applyPlanMs = +(t() - t0).toFixed(1);
+
+// single edits (the live game / build-animation hot path)
+const N = 60; t0 = t();
+for (let i = 0; i < N; i++) world.setBlock(o.x + (i % 8), o.y + 30, o.z + (i >> 3), 3);
+res.setBlockAvgMs = +((t() - t0) / N).toFixed(2);
+
+// getBlock throughput
+t0 = t(); let s = 0;
+for (let i = 0; i < 2e6; i++) s += world.getBlock((i * 7) & 255, (i >> 8) & 63, (i * 13) & 255);
+res.getBlockNsPerCall = +(((t() - t0) * 1e6) / 2e6).toFixed(1);
+
+document.getElementById('out').textContent = JSON.stringify(res);
+</script></body></html>

@@ -39,21 +39,53 @@ const FACES = RAW_FACES.map(f => {
 // Multipliers per AO bucket (0 = no occlusion, 3 = fully boxed in).
 const AO_LEVELS = [1.0, 0.82, 0.65, 0.48];
 
+// Section = 16×16×16 slice of a chunk column. Meshes are per section so a block
+// edit rebuilds ~4k cells instead of a 32k-cell column.
+const SECTION_H = 16;
+const SECTIONS = WORLD_HEIGHT / SECTION_H;
+
+// Per-block-id lookup tables (hot path: avoid Set/object lookups per face).
+const OPAQUE = new Uint8Array(256), TRANS = new Uint8Array(256), EMIT = new Uint8Array(256);
+for (let b = 1; b < 256; b++) {
+  if (!BLOCK_COLORS[b]) continue;
+  OPAQUE[b] = isOpaque(b) ? 1 : 0;
+  TRANS[b] = isTransparent(b) ? 1 : 0;
+  EMIT[b] = isEmissive(b) ? 1 : 0;
+}
+
+// Growable typed-array mesh buffer, reused across builds (no per-face allocs).
+class MeshBuf {
+  constructor() { this.v = 0; this.i = 0; this._alloc(4096); }
+  _alloc(nv) {
+    const grow = (old, n) => { const a = new old.constructor(n); a.set(old.subarray(0, Math.min(old.length, n))); return a; };
+    this.pos = this.pos ? grow(this.pos, nv * 3) : new Float32Array(nv * 3);
+    this.nrm = this.nrm ? grow(this.nrm, nv * 3) : new Float32Array(nv * 3);
+    this.col = this.col ? grow(this.col, nv * 3) : new Float32Array(nv * 3);
+    this.mat = this.mat ? grow(this.mat, nv * 3) : new Float32Array(nv * 3);
+    this.idx = this.idx ? grow(this.idx, nv * 3 / 2) : new Uint32Array(nv * 3 / 2);
+    this.cap = nv;
+  }
+  reset() { this.v = 0; this.i = 0; }
+  ensureQuad() { if (this.v + 4 > this.cap) this._alloc(this.cap * 2); }
+}
+const SCRATCH = { opaque: new MeshBuf(), transparent: new MeshBuf(), special: new MeshBuf(), specialTransparent: new MeshBuf() };
+
 export class World {
   constructor(scene, opts = {}) {
     this.scene = scene;
-    this.chunks = new Map();
-    this.meshes = new Map();
-    this.blockChanges = new Map();
     this.chunkCount = opts.chunks ?? DEFAULT_CHUNKS;
     this.worldSize = this.chunkCount * CHUNK_SIZE;
+    // Flat array of chunk columns, index cz*C + cx. Each is 16×16×WORLD_HEIGHT
+    // blocks, index lx + lz*16 + y*256. Edits write straight into these.
+    this.data = new Array(this.chunkCount * this.chunkCount);
+    this.meshes = new Map();          // section key (int) -> [Mesh]
     this.material = new THREE.MeshLambertMaterial({ vertexColors: true });
     this.transparentMaterial = new THREE.MeshLambertMaterial({
       vertexColors: true, transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide,
     });
     // Special-material passes (metal / glossy / emissive / water). Per-vertex
     // `matProps` = (roughness, metalness, emissive) drives MeshStandardMaterial
-    // so one material + one draw call covers every special block in a chunk.
+    // so one material + one draw call covers every special block in a section.
     this.specialMaterial = makeSpecialMaterial({});
     this.specialTransparentMaterial = makeSpecialMaterial({
       transparent: true, opacity: 0.62, depthWrite: false, side: THREE.DoubleSide,
@@ -66,20 +98,10 @@ export class World {
 
   _generate() {
     const C = this.chunkCount;
-    // Pass 1: terrain
-    for (let cx = 0; cx < C; cx++)
-      for (let cz = 0; cz < C; cz++)
-        this._genTerrain(cx, cz);
-
-    // Pass 2: trees (can write to any chunk)
-    for (let cx = 0; cx < C; cx++)
-      for (let cz = 0; cz < C; cz++)
-        this._genTrees(cx, cz);
-
-    // Pass 3: meshes
-    for (let cx = 0; cx < C; cx++)
-      for (let cz = 0; cz < C; cz++)
-        this._buildMesh(cx, cz);
+    for (let cx = 0; cx < C; cx++) for (let cz = 0; cz < C; cz++) this._genTerrain(cx, cz);
+    for (let cx = 0; cx < C; cx++) for (let cz = 0; cz < C; cz++) this._genTrees(cx, cz);
+    for (let cx = 0; cx < C; cx++) for (let cz = 0; cz < C; cz++)
+      for (let sy = 0; sy < SECTIONS; sy++) this._buildSection(cx, cz, sy);
   }
 
   _genTerrain(cx, cz) {
@@ -101,18 +123,20 @@ export class World {
         }
       }
     }
-    this.chunks.set(`${cx},${cz}`, data);
+    this.data[cz * this.chunkCount + cx] = data;
   }
 
+  _inWorld(x, y, z) {
+    return x >= 0 && z >= 0 && x < this.worldSize && z < this.worldSize && y >= 0 && y < WORLD_HEIGHT;
+  }
+  _idx(x, y, z) { return (x & 15) + ((z & 15) << 4) + (y << 8); }
+  _col(x, z) { return this.data[(z >> 4) * this.chunkCount + (x >> 4)]; }
+
+  // Terrain decoration: only fills AIR (trees never overwrite ground).
   _writeBlock(x, y, z, block) {
-    if (y < 0 || y >= WORLD_HEIGHT) return;
-    const cx = Math.floor(x / CHUNK_SIZE), cz = Math.floor(z / CHUNK_SIZE);
-    const chunk = this.chunks.get(`${cx},${cz}`);
-    if (!chunk) return;
-    const lx = ((x % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-    const lz = ((z % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-    const idx = lx + lz * CHUNK_SIZE + y * CHUNK_SIZE * CHUNK_SIZE;
-    if (chunk[idx] === Block.AIR) chunk[idx] = block;
+    if (!this._inWorld(x, y, z)) return;
+    const col = this._col(x, z), i = this._idx(x, y, z);
+    if (col[i] === Block.AIR) col[i] = block;
   }
 
   _genTrees(cx, cz) {
@@ -123,10 +147,7 @@ export class World {
         if (!shouldHaveTree(wx, wz)) continue;
         const h = terrainHeight(wx, wz);
         const trunkH = 4 + Math.floor(hash2(wx * 7, wz * 11) * 2);
-
-        for (let y = h + 1; y <= h + trunkH; y++)
-          this._writeBlock(wx, y, wz, Block.OAK_LOG);
-
+        for (let y = h + 1; y <= h + trunkH; y++) this._writeBlock(wx, y, wz, Block.OAK_LOG);
         const topY = h + trunkH;
         for (let dy = -1; dy <= 2; dy++) {
           const r = dy <= 0 ? 2 : 1;
@@ -143,27 +164,44 @@ export class World {
   }
 
   getBlock(x, y, z) {
-    const key = `${x},${y},${z}`;
-    if (this.blockChanges.has(key)) return this.blockChanges.get(key);
-    if (y < 0 || y >= WORLD_HEIGHT) return Block.AIR;
-    const cx = Math.floor(x / CHUNK_SIZE), cz = Math.floor(z / CHUNK_SIZE);
-    const chunk = this.chunks.get(`${cx},${cz}`);
-    if (!chunk) return Block.AIR;
-    const lx = ((x % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-    const lz = ((z % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-    return chunk[lx + lz * CHUNK_SIZE + y * CHUNK_SIZE * CHUNK_SIZE];
+    if (x < 0 || z < 0 || x >= this.worldSize || z >= this.worldSize || y < 0 || y >= WORLD_HEIGHT) return Block.AIR;
+    return this.data[(z >> 4) * this.chunkCount + (x >> 4)][(x & 15) + ((z & 15) << 4) + (y << 8)];
+  }
+
+  // Occlusion query for meshing: below the world counts as solid, so the
+  // bedrock underside (never visible) isn't meshed. Everything else = getBlock.
+  _solidAt(x, y, z) {
+    if (y < 0) return 1;
+    return OPAQUE[this.getBlock(x, y, z)];
+  }
+
+  _secKey(cx, cz, sy) { return (cz * this.chunkCount + cx) * SECTIONS + sy; }
+
+  // Mark every section whose faces/AO can change when (x,y,z) changes: the
+  // block's own section plus any section within 1 block (face + AO reach).
+  _markDirty(x, y, z, dirty) {
+    const C = this.chunkCount;
+    for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) for (let dy = -1; dy <= 1; dy++) {
+      const nx = x + dx, ny = y + dy, nz = z + dz;
+      if (nx < 0 || nz < 0 || nx >= this.worldSize || nz >= this.worldSize || ny < 0 || ny >= WORLD_HEIGHT) continue;
+      dirty.add(this._secKey(nx >> 4, nz >> 4, (ny / SECTION_H) | 0));
+    }
+  }
+
+  _rebuildDirty(dirty) {
+    const C = this.chunkCount;
+    for (const k of dirty) {
+      const sy = k % SECTIONS, col = (k - sy) / SECTIONS;
+      this._buildSection(col % C, (col / C) | 0, sy);
+    }
   }
 
   setBlock(x, y, z, block) {
-    this.blockChanges.set(`${x},${y},${z}`, block);
-    const cx = Math.floor(x / CHUNK_SIZE), cz = Math.floor(z / CHUNK_SIZE);
-    this._buildMesh(cx, cz);
-    const lx = ((x % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-    const lz = ((z % CHUNK_SIZE) + CHUNK_SIZE) % CHUNK_SIZE;
-    if (lx === 0 && cx > 0) this._buildMesh(cx - 1, cz);
-    if (lx === CHUNK_SIZE - 1 && cx < this.chunkCount - 1) this._buildMesh(cx + 1, cz);
-    if (lz === 0 && cz > 0) this._buildMesh(cx, cz - 1);
-    if (lz === CHUNK_SIZE - 1 && cz < this.chunkCount - 1) this._buildMesh(cx, cz + 1);
+    if (!this._inWorld(x, y, z)) return;
+    this._col(x, z)[this._idx(x, y, z)] = block;
+    const dirty = new Set();
+    this._markDirty(x, y, z, dirty);
+    this._rebuildDirty(dirty);
   }
 
   getTerrainHeight(x, z) {
@@ -172,24 +210,20 @@ export class World {
 
   getHighestBlock(x, z) {
     const bx = Math.floor(x), bz = Math.floor(z);
-    for (let y = WORLD_HEIGHT - 1; y >= 0; y--) {
-      if (this.getBlock(bx, y, bz) !== Block.AIR) return y;
-    }
+    for (let y = WORLD_HEIGHT - 1; y >= 0; y--) if (this.getBlock(bx, y, bz) !== Block.AIR) return y;
     return 0;
   }
 
   applyBlockChanges(changes) {
-    const rebuild = new Set();
-    for (const [key, block] of Object.entries(changes)) {
-      this.blockChanges.set(key, block);
-      const [x,, z] = key.split(',').map(Number);
-      const cx = Math.floor(x / CHUNK_SIZE), cz = Math.floor(z / CHUNK_SIZE);
-      rebuild.add(`${cx},${cz}`);
+    const dirty = new Set();
+    for (const key in changes) {
+      const c1 = key.indexOf(','), c2 = key.indexOf(',', c1 + 1);
+      const x = +key.slice(0, c1), y = +key.slice(c1 + 1, c2), z = +key.slice(c2 + 1);
+      if (!this._inWorld(x, y, z)) continue;
+      this._col(x, z)[this._idx(x, y, z)] = changes[key];
+      this._markDirty(x, y, z, dirty);
     }
-    for (const k of rebuild) {
-      const [cx, cz] = k.split(',').map(Number);
-      this._buildMesh(cx, cz);
-    }
+    this._rebuildDirty(dirty);
   }
 
   getChunkMeshes() {
@@ -199,9 +233,8 @@ export class World {
   }
 
   // Reflection environment for metals/gloss, built once (lazily, on the first
-  // frame a special-material chunk is drawn — that's the first moment we have
-  // a renderer). It's a PMREM of the scene's own gradient sky + sun, so gold
-  // reflects *this* sky rather than a generic studio.
+  // frame a special-material mesh is drawn — the first moment we have a
+  // renderer). PMREM of the scene's own sky, so gold reflects *this* sky.
   _ensureEnvironment(renderer, scene) {
     if (this._envReady) return;
     this._envReady = true;
@@ -209,53 +242,60 @@ export class World {
     for (const m of [this.specialMaterial, this.specialTransparentMaterial]) { m.envMap = tex; m.needsUpdate = true; }
   }
 
-  // --- Mesh builder ---
-  _buildMesh(cx, cz) {
-    const key = `${cx},${cz}`;
-    // Clean up any previous meshes for this chunk
+  // --- Mesh builder (one 16³ section) ---
+  _buildSection(cx, cz, sy) {
+    const key = this._secKey(cx, cz, sy);
     const old = this.meshes.get(key);
-    if (old) {
-      for (const m of old) { this.chunkGroup.remove(m); m.geometry.dispose(); }
-    }
+    if (old) { for (const m of old) { this.chunkGroup.remove(m); m.geometry.dispose(); } this.meshes.delete(key); }
 
-    // Two passes: opaque + transparent
-    const mk = () => ({ positions: [], normals: [], colors: [], mat: [], indices: [], vtx: 0 });
-    const buf = { opaque: mk(), transparent: mk(), special: mk(), specialTransparent: mk() };
+    const col = this.data[cz * this.chunkCount + cx];
+    const y0 = sy * SECTION_H, y1 = y0 + SECTION_H;
+    // Fast reject: empty section (common above the terrain).
+    let any = false;
+    for (let i = y0 << 8, e = y1 << 8; i < e; i++) if (col[i] !== 0) { any = true; break; }
+    if (!any) return;
+
+    for (const k in SCRATCH) SCRATCH[k].reset();
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
 
-    for (let y = 0; y < WORLD_HEIGHT; y++) {
+    for (let y = y0; y < y1; y++) {
       for (let lz = 0; lz < CHUNK_SIZE; lz++) {
         for (let lx = 0; lx < CHUNK_SIZE; lx++) {
-          const wx = x0 + lx, wz = z0 + lz;
-          const block = this.getBlock(wx, y, wz);
-          if (block === Block.AIR) continue;
+          const block = col[lx + (lz << 4) + (y << 8)];
+          if (block === 0) continue;
           const bc = BLOCK_COLORS[block];
           if (!bc) continue;
+          const wx = x0 + lx, wz = z0 + lz;
           const cv = colorVariation(wx, y, wz);
-          const isTrans = isTransparent(block);
+          const isTrans = TRANS[block] === 1, isOpq = OPAQUE[block] === 1;
           const mp = BLOCK_MATERIALS[block];
           const target = mp
-            ? (isTrans ? buf.specialTransparent : buf.special)
-            : (isTrans ? buf.transparent : buf.opaque);
+            ? (isTrans ? SCRATCH.specialTransparent : SCRATCH.special)
+            : (isTrans ? SCRATCH.transparent : SCRATCH.opaque);
+          // Transparent blocks skip AO (no dark patches where glass meets
+          // solids); emissive blocks skip it (AO would dim the glow).
+          const skipAO = isTrans || EMIT[block] === 1;
 
-          for (const face of FACES) {
-            const nx = wx + face.dir[0], ny = y + face.dir[1], nz = wz + face.dir[2];
-            const neighbor = this.getBlock(nx, ny, nz);
-            // Cull: skip face if neighbor would occlude it
-            if (neighbor === block) continue;                        // same-block merge
-            if (isOpaque(block) && isOpaque(neighbor)) continue;     // opaque hides opaque
-            // For a transparent block, hide the face if neighbor is opaque (we look at the back of glass through the other 5 sides)
-            if (isTrans && isOpaque(neighbor)) continue;
+          for (let f = 0; f < 6; f++) {
+            const face = FACES[f], d = face.dir;
+            const ny = y + d[1];
+            // Culling (same rules as before): same-block merge; opaque hides
+            // opaque; opaque neighbour hides a transparent block's face.
+            // Below the world counts as opaque (bedrock underside never shows).
+            let neighbor, nOpq;
+            if (ny < 0) { neighbor = -1; nOpq = 1; }
+            else { neighbor = this.getBlock(wx + d[0], ny, wz + d[2]); nOpq = OPAQUE[neighbor]; }
+            if (neighbor === block) continue;
+            if (nOpq && (isOpq || isTrans)) continue;
 
-            // Transparent blocks (glass, leaves) skip AO so they don't get
-            // ugly dark patches where they touch solids.
-            // Emissive blocks are light sources — AO darkening would dim the glow.
-            const skipAO = isTrans || isEmissive(block);
+            target.ensureQuad();
             const fc = bc[face.type];
+            const vb = target.v;
             for (let i = 0; i < 4; i++) {
               const c = face.corners[i];
-              target.positions.push(wx + c[0], y + c[1], wz + c[2]);
-              target.normals.push(face.dir[0], face.dir[1], face.dir[2]);
+              const p = (vb + i) * 3;
+              target.pos[p] = wx + c[0]; target.pos[p + 1] = y + c[1]; target.pos[p + 2] = wz + c[2];
+              target.nrm[p] = d[0]; target.nrm[p + 1] = d[1]; target.nrm[p + 2] = d[2];
 
               let r = fc[0] * cv, g = fc[1] * cv, b = fc[2] * cv;
               if (block === Block.GRASS && face.type === 'side' && (i === 1 || i === 2)) {
@@ -264,27 +304,22 @@ export class World {
                 g = g * 0.45 + gt[1] * cv * 0.55;
                 b = b * 0.45 + gt[2] * cv * 0.55;
               }
-
               if (!skipAO) {
-                const [s1, s2, cd] = face.aoOffsets[i];
-                const s1Solid = isOpaque(this.getBlock(wx + s1[0], y + s1[1], wz + s1[2]));
-                const s2Solid = isOpaque(this.getBlock(wx + s2[0], y + s2[1], wz + s2[2]));
-                let occ;
-                if (s1Solid && s2Solid) {
-                  occ = 3;
-                } else {
-                  const cdSolid = isOpaque(this.getBlock(wx + cd[0], y + cd[1], wz + cd[2]));
-                  occ = (s1Solid ? 1 : 0) + (s2Solid ? 1 : 0) + (cdSolid ? 1 : 0);
-                }
+                const ao4 = face.aoOffsets[i], s1 = ao4[0], s2 = ao4[1], cd = ao4[2];
+                const s1Solid = this._solidAt(wx + s1[0], y + s1[1], wz + s1[2]);
+                const s2Solid = this._solidAt(wx + s2[0], y + s2[1], wz + s2[2]);
+                const occ = (s1Solid && s2Solid) ? 3
+                  : s1Solid + s2Solid + this._solidAt(wx + cd[0], y + cd[1], wz + cd[2]);
                 const ao = AO_LEVELS[occ];
                 r *= ao; g *= ao; b *= ao;
               }
-
-              target.colors.push(Math.min(1, r), Math.min(1, g), Math.min(1, b));
-              if (mp) target.mat.push(mp.roughness, mp.metalness, mp.emissive);
+              target.col[p] = r < 1 ? r : 1; target.col[p + 1] = g < 1 ? g : 1; target.col[p + 2] = b < 1 ? b : 1;
+              if (mp) { target.mat[p] = mp.roughness; target.mat[p + 1] = mp.metalness; target.mat[p + 2] = mp.emissive; }
             }
-            target.indices.push(target.vtx, target.vtx + 1, target.vtx + 2, target.vtx, target.vtx + 2, target.vtx + 3);
-            target.vtx += 4;
+            const ii = target.i;
+            target.idx[ii] = vb; target.idx[ii + 1] = vb + 1; target.idx[ii + 2] = vb + 2;
+            target.idx[ii + 3] = vb; target.idx[ii + 4] = vb + 2; target.idx[ii + 5] = vb + 3;
+            target.i += 6; target.v += 4;
           }
         }
       }
@@ -292,34 +327,32 @@ export class World {
 
     const built = [];
     const PASSES = [
-      ['opaque',             this.material,                   false],
-      ['transparent',        this.transparentMaterial,        true ],
-      ['special',            this.specialMaterial,            false],
-      ['specialTransparent', this.specialTransparentMaterial, true ],
+      ['opaque',             this.material,                   false, false],
+      ['transparent',        this.transparentMaterial,        true,  false],
+      ['special',            this.specialMaterial,            false, true ],
+      ['specialTransparent', this.specialTransparentMaterial, true,  true ],
     ];
-    for (const [pass, mat, trans] of PASSES) {
-      const data = buf[pass];
-      if (data.positions.length === 0) continue;
+    for (const [pass, mat, trans, special] of PASSES) {
+      const buf = SCRATCH[pass];
+      if (buf.v === 0) continue;
       const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(data.positions, 3));
-      geo.setAttribute('normal', new THREE.Float32BufferAttribute(data.normals, 3));
-      geo.setAttribute('color', new THREE.Float32BufferAttribute(data.colors, 3));
-      if (data.mat.length) geo.setAttribute('matProps', new THREE.Float32BufferAttribute(data.mat, 3));
-      geo.setIndex(data.indices);
+      geo.setAttribute('position', new THREE.BufferAttribute(buf.pos.slice(0, buf.v * 3), 3));
+      geo.setAttribute('normal', new THREE.BufferAttribute(buf.nrm.slice(0, buf.v * 3), 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(buf.col.slice(0, buf.v * 3), 3));
+      if (special) geo.setAttribute('matProps', new THREE.BufferAttribute(buf.mat.slice(0, buf.v * 3), 3));
+      geo.setIndex(new THREE.BufferAttribute(buf.idx.slice(0, buf.i), 1));
       geo.computeBoundingSphere();
       const mesh = new THREE.Mesh(geo, mat);
       mesh.renderOrder = trans ? 1 : 0;
-      // Opaque chunks cast + receive shadows; transparent (glass, water)
+      // Opaque sections cast + receive shadows; transparent (glass, water)
       // only receive so we don't get black silhouettes through glass.
       mesh.castShadow = !trans;
       mesh.receiveShadow = true;
-      if (mat === this.specialMaterial || mat === this.specialTransparentMaterial) {
-        mesh.onBeforeRender = (renderer, scene) => this._ensureEnvironment(renderer, scene);
-      }
+      if (special) mesh.onBeforeRender = (renderer, scene) => this._ensureEnvironment(renderer, scene);
       built.push(mesh);
       this.chunkGroup.add(mesh);
     }
-    this.meshes.set(key, built);
+    if (built.length) this.meshes.set(key, built);
   }
 }
 
