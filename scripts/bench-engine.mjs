@@ -27,9 +27,12 @@ const PORT = await new Promise(r => server.listen(0, () => r(server.address().po
 
 const CDP_PORT = 9700 + Math.floor(Math.random() * 200);
 const profileDir = mkdtempSync(join(tmpdir(), 'craftplan-record-smoke-'));
+// BENCH_GPU=1: real GPU (Vulkan/EGL) instead of SwiftShader software GL.
+const GL_FLAGS = process.env.BENCH_GPU
+  ? ['--enable-gpu', '--ignore-gpu-blocklist', '--use-angle=vulkan', '--enable-features=Vulkan', '--disable-vulkan-surface']
+  : ['--disable-gpu', '--enable-unsafe-swiftshader', '--use-gl=angle', '--use-angle=swiftshader'];
 const chrome = spawn('chromium', [
-  '--headless=new', '--no-sandbox', '--disable-gpu', '--hide-scrollbars',
-  '--enable-unsafe-swiftshader', '--use-gl=angle', '--use-angle=swiftshader',
+  '--headless=new', '--no-sandbox', '--hide-scrollbars', ...GL_FLAGS,
   '--window-size=1920,1080',
   `--remote-debugging-port=${CDP_PORT}`,
   `--user-data-dir=${profileDir}`,

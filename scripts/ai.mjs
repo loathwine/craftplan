@@ -39,6 +39,10 @@ BLOCK CONSTANTS (use the names):
   Liquid: WATER (translucent, glossy blue)
   Glowing (emit light — use sparingly for eyes, fire, lamps, magic): LAVA (orange), GLOWSTONE (warm
            white), NEON_RED, NEON_BLUE
+  Effects (invisible, emit light + animated particles — place in open air):
+           FIRE (flames + smoke rising from that cell: torches, campfires, dragon breath, burning ruins),
+           ELECTRIC (crackling lightning bolts + sparks: Pikachu, Tesla coils, magic, storms)
+  Note: LAVA animates (flowing crust + embers); NEON blocks throw occasional sparks.
 
 Color guide: pick the closest real color — yellow → YELLOW, blue suit → BLUE, black armor → BLACK,
 purple → PURPLE. Metal/armor/blades → IRON or GOLD, water → WATER, fire/lava → LAVA/ORANGE,

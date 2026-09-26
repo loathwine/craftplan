@@ -4,7 +4,7 @@
 // a MeshStandardMaterial per block type (metal / gloss / emissive / water).
 // Pair with `scene.environment = makeSkyEnvMap(renderer, scene)` so metals reflect.
 import * as THREE from 'three';
-import { BLOCK_COLORS, BLOCK_MATERIALS, TRANSPARENT_BLOCKS, colorVariation } from './Textures.js';
+import { BLOCK_COLORS, BLOCK_MATERIALS, TRANSPARENT_BLOCKS, INVISIBLE_BLOCKS, colorVariation } from './Textures.js';
 
 const BOX = new THREE.BoxGeometry(1, 1, 1);
 const FALLBACK = { side: [0.6, 0.6, 0.6] };
@@ -17,6 +17,7 @@ export function addBlockInstances(group, pts, offset = [0, 0, 0]) {
     return buckets.get(key).pts;
   };
   for (const p of pts) {
+    if (INVISIBLE_BLOCKS.has(p.block)) continue;   // FIRE / ELECTRIC: effect-only
     const mp = BLOCK_MATERIALS[p.block];
     const trans = TRANSPARENT_BLOCKS.has(p.block);
     if (mp) {

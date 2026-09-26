@@ -1,0 +1,60 @@
+<!doctype html>
+<!-- Real-time frame-cost benchmark: full render pipeline (sky, shadows, SSAO,
+     bloom, water reflection) orbiting a build. ?plan=<slug>&frames=120&w=1280&h=720
+     &moonlight=1&ssao=0. Writes JSON {avgMs,p95Ms,...} into <pre id=out>. -->
+<html><head><meta charset="utf-8"><title>fps</title>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+}}
+</script></head>
+<body style="margin:0;background:#000"><pre id="out" style="position:fixed;color:#fff">running</pre>
+<script type="module">
+import * as THREE from 'three';
+import { World } from './js/World.js';
+import { setupSky, setupRenderer } from './js/sky.js';
+import { setupComposer } from './js/composer.js';
+const q = new URLSearchParams(location.search);
+const W = +(q.get('w') || 1280), H = +(q.get('h') || 720), FRAMES = +(q.get('frames') || 120);
+const moonlight = q.get('moonlight') === '1';
+const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+renderer.setSize(W, H); document.body.appendChild(renderer.domElement);
+setupRenderer(renderer);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, W / H, 0.5, 5000);
+setupSky(scene, { fogNear: 120, fogFar: 360, moonlight });
+const composer = setupComposer(renderer, scene, camera, W, H, { ssaoEnabled: q.get('ssao') !== '0' });
+const world = new World(scene);
+const plan = await (await fetch(`data/plans/${q.get('plan') || 'water-test'}.json`)).json();
+const o = plan.origin, ch = {};
+for (const b of plan.plan) ch[`${o.x + b.x},${o.y + b.y},${o.z + b.z}`] = b.block;
+world.applyBlockChanges(ch);
+const gl = renderer.getContext();
+const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+const gpuName = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+// renderer.info auto-resets per render() call; the composer does several, so
+// accumulate manually over one frame.
+renderer.info.autoReset = false;
+const times = [];
+let calls = 0, tris = 0;
+for (let i = 0; i < FRAMES + 10; i++) {
+  const a = i * 0.02;
+  camera.position.set(o.x + Math.sin(a) * 40, o.y + 22, o.z + Math.cos(a) * 40);
+  camera.lookAt(o.x, o.y + 4, o.z);
+  world.setTime(i / 30);
+  renderer.info.reset();
+  const t0 = performance.now();
+  composer.render();
+  gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));   // hard GPU sync
+  if (i >= 10) times.push(performance.now() - t0);
+  calls = renderer.info.render.calls; tris = renderer.info.render.triangles;
+}
+times.sort((x, y) => x - y);
+const avg = times.reduce((s, v) => s + v, 0) / times.length;
+document.getElementById('out').textContent = JSON.stringify({
+  w: W, h: H, frames: times.length, avgMs: +avg.toFixed(1), p50Ms: +times[times.length >> 1].toFixed(1),
+  p95Ms: +times[Math.floor(times.length * 0.95)].toFixed(1), fps: +(1000 / avg).toFixed(1),
+  drawCalls: calls, tris, gpu: gpuName,
+});
+</script></body></html>

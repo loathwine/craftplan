@@ -42,6 +42,9 @@ export const Block = {
   GLOWSTONE:  37,
   NEON_RED:   38,
   NEON_BLUE:  39,
+  // --- Effect blocks: no geometry, only light + particles ---
+  FIRE:       40,
+  ELECTRIC:   41,
 };
 
 // Uniform-colour block: top a touch brighter, bottom darker (matches the
@@ -100,6 +103,8 @@ export const BLOCK_COLORS = {
   [Block.GLOWSTONE]:  flatHex(0xffd27a),
   [Block.NEON_RED]:   flatHex(0xff2238),
   [Block.NEON_BLUE]:  flatHex(0x22c4ff),
+  [Block.FIRE]:       flatHex(0xff8a2a),
+  [Block.ELECTRIC]:   flatHex(0x9fe8ff),
 };
 
 // Physically-based properties for blocks that need more than a matte colour.
@@ -119,6 +124,20 @@ export const BLOCK_MATERIALS = {
   [Block.GLOWSTONE]: { roughness: 1.0,  metalness: 0.0, emissive: 1.0 },
   [Block.NEON_RED]:  { roughness: 1.0,  metalness: 0.0, emissive: 3.2 },
   [Block.NEON_BLUE]: { roughness: 1.0,  metalness: 0.0, emissive: 2.6 },
+};
+// Effect blocks: never meshed, don't occlude, but emit light (+ particles).
+export const INVISIBLE_BLOCKS = new Set([Block.FIRE, Block.ELECTRIC]);
+BLOCK_MATERIALS[Block.FIRE] = { roughness: 1, metalness: 0, emissive: 1.2 };
+BLOCK_MATERIALS[Block.ELECTRIC] = { roughness: 1, metalness: 0, emissive: 1.2 };
+// Particle emitters per block: kind -> count per emitting cell.
+//   flame/smoke: rise from the cell; ember: rare sparks off lava tops;
+//   spark: short electric flicks around the cell; arc: jagged lightning bolts.
+export const BLOCK_EMITTERS = {
+  [Block.FIRE]:      { flame: 14, smoke: 3 },
+  [Block.LAVA]:      { ember: 0.35 },
+  [Block.NEON_BLUE]: { spark: 0.5 },
+  [Block.NEON_RED]:  { spark: 0.5 },
+  [Block.ELECTRIC]:  { spark: 8, arc: 1 },
 };
 export const hasSpecialMaterial = (b) => b in BLOCK_MATERIALS;
 export const isEmissive = (b) => (BLOCK_MATERIALS[b]?.emissive ?? 0) > 0;
@@ -145,7 +164,7 @@ export const TASK_SIZES = {
 // Block types that should render with transparency.
 export const TRANSPARENT_BLOCKS = new Set([Block.GLASS, Block.ICE, Block.WATER]);
 export const isTransparent = (b) => TRANSPARENT_BLOCKS.has(b);
-export const isOpaque = (b) => b !== Block.AIR && !TRANSPARENT_BLOCKS.has(b);
+export const isOpaque = (b) => b !== Block.AIR && !TRANSPARENT_BLOCKS.has(b) && !INVISIBLE_BLOCKS.has(b);
 
 // Deterministic per-block color variation (±7%)
 export function colorVariation(x, y, z) {

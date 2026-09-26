@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { Block, BLOCK_COLORS, BLOCK_MATERIALS, colorVariation, isTransparent, isOpaque, isEmissive } from './Textures.js';
+import { Block, BLOCK_COLORS, BLOCK_MATERIALS, BLOCK_EMITTERS, INVISIBLE_BLOCKS, colorVariation, isTransparent, isOpaque, isEmissive } from './Textures.js';
+import { VoxelParticles } from './particles.js';
 import { hash2, biomeAt, terrainHeight, surfaceBlock, shouldHaveTree } from './terrain.js';
 import { makeSkyEnvMap } from './sky.js';
 import { WaterReflection } from './waterReflection.js';
@@ -46,12 +47,14 @@ const SECTION_H = 16;
 const SECTIONS = WORLD_HEIGHT / SECTION_H;
 
 // Per-block-id lookup tables (hot path: avoid Set/object lookups per face).
-const OPAQUE = new Uint8Array(256), TRANS = new Uint8Array(256), EMIT = new Uint8Array(256);
+const OPAQUE = new Uint8Array(256), TRANS = new Uint8Array(256), EMIT = new Uint8Array(256), NOMESH = new Uint8Array(256), EMITTER = new Uint8Array(256);
 for (let b = 1; b < 256; b++) {
   if (!BLOCK_COLORS[b]) continue;
   OPAQUE[b] = isOpaque(b) ? 1 : 0;
   TRANS[b] = isTransparent(b) ? 1 : 0;
   EMIT[b] = isEmissive(b) ? 1 : 0;
+  NOMESH[b] = INVISIBLE_BLOCKS.has(b) ? 1 : 0;
+  EMITTER[b] = BLOCK_EMITTERS[b] ? 1 : 0;
 }
 
 // Block light (Minecraft-style, coloured): emissive blocks seed per-channel
@@ -63,8 +66,11 @@ const LIGHT_GAIN = 0.6;
 const LIGHT_SRC = new Array(256).fill(null);
 for (let b = 1; b < 256; b++) if (EMIT[b]) {
   const c = BLOCK_COLORS[b].side;
-  LIGHT_SRC[b] = c.map(v => Math.round(LMAX * Math.min(1, Math.sqrt(v))));
+  const k = b === Block.LAVA ? 0.8 : 1;   // lava pools are big: dim each cell a bit
+  LIGHT_SRC[b] = c.map(v => Math.round(LMAX * k * Math.min(1, Math.sqrt(v))));
 }
+// Material animation id carried in matProps.w (1 = molten lava surface).
+const ANIM = new Float32Array(256); ANIM[Block.LAVA] = 1;
 const LIGHT_CURVE = new Float32Array(LMAX + 1).map((_, l) => (l / LMAX) ** 2);
 
 // Growable typed-array mesh buffer, reused across builds (no per-face allocs).
@@ -75,7 +81,7 @@ class MeshBuf {
     this.pos = this.pos ? grow(this.pos, nv * 3) : new Float32Array(nv * 3);
     this.nrm = this.nrm ? grow(this.nrm, nv * 3) : new Float32Array(nv * 3);
     this.col = this.col ? grow(this.col, nv * 3) : new Float32Array(nv * 3);
-    this.mat = this.mat ? grow(this.mat, nv * 3) : new Float32Array(nv * 3);
+    this.mat = this.mat ? grow(this.mat, nv * 4) : new Float32Array(nv * 4);
     this.lit = this.lit ? grow(this.lit, nv * 3) : new Uint8Array(nv * 3);
     this.idx = this.idx ? grow(this.idx, nv * 3 / 2) : new Uint32Array(nv * 3 / 2);
     this.cap = nv;
@@ -112,6 +118,8 @@ export class World {
     this._waterDirty = false;
     this._waterMeshes = new Set();
     this._version = 0;            // bumps on every section rebuild (reflection cache key)
+    this._secEmit = new Map();    // section key -> [x,y,z,block,...] emitter cells
+    this._emitDirty = false;
     this.specialTransparentMaterial = makeSpecialMaterial({
       transparent: true, opacity: 0.62, depthWrite: false, side: THREE.DoubleSide,
     }, { water: true, refl: this._refl });
@@ -122,7 +130,15 @@ export class World {
     this._envReady = false;
     this.chunkGroup = new THREE.Group();
     scene.add(this.chunkGroup);
+    this.particles = new VoxelParticles(scene);
+    const prevTick = this.particles.glow.onBeforeRender;
+    this._flushEmitters();
+    this.particles.glow.onBeforeRender = (renderer, ...rest) => {
+      this.particles.time = this._time ?? performance.now() / 1000;
+      prevTick(renderer, ...rest);
+    };
     this._generate();
+    this._flushEmitters();
   }
 
   _generate() {
@@ -217,12 +233,23 @@ export class World {
     }
   }
 
+  // Push emitter changes to the particle system (once per edit batch, before
+  // the next render — uploading from inside onBeforeRender is a frame late).
+  _flushEmitters() {
+    if (!this._emitDirty || !this.particles) return;
+    this._emitDirty = false;
+    const all = [];
+    for (const a of this._secEmit.values()) for (let i = 0; i < a.length; i++) all.push(a[i]);
+    this.particles.setEmitters(all);
+  }
+
   _rebuildDirty(dirty) {
     const C = this.chunkCount;
     for (const k of dirty) {
       const sy = k % SECTIONS, col = (k - sy) / SECTIONS;
       this._buildSection(col % C, (col / C) | 0, sy);
     }
+    this._flushEmitters();
   }
 
   setBlock(x, y, z, block) {
@@ -237,7 +264,7 @@ export class World {
   }
 
   // Deterministic animation time (seconds) for water ripples etc.
-  setTime(t) { this._time = t; }
+  setTime(t) { this._time = t; this.particles?.update(t); }
 
   getTerrainHeight(x, z) {
     return terrainHeight(Math.floor(x), Math.floor(z));
@@ -406,6 +433,7 @@ export class World {
     if (old) { for (const m of old) { this.chunkGroup.remove(m); m.geometry.dispose(); this._waterMeshes.delete(m); } this.meshes.delete(key); }
     this._version++;
     if (this._secWater.delete(key)) this._waterDirty = true;
+    if (this._secEmit.delete(key)) this._emitDirty = true;
 
     const col = this.data[cz * this.chunkCount + cx];
     const y0 = sy * SECTION_H, y1 = y0 + SECTION_H;
@@ -417,6 +445,7 @@ export class World {
     for (const k in SCRATCH) SCRATCH[k].reset();
     const litOn = this._anyLight;
     let waterTops = null;          // surfaceY -> count, for the reflection plane
+    let emitters = null;           // particle emitter cells in this section
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
 
     for (let y = y0; y < y1; y++) {
@@ -427,6 +456,9 @@ export class World {
           const bc = BLOCK_COLORS[block];
           if (!bc) continue;
           const wx = x0 + lx, wz = z0 + lz;
+          if (EMITTER[block] && (block !== Block.LAVA || !OPAQUE[this.getBlock(wx, y + 1, wz)]))
+            (emitters ||= []).push(wx, y, wz, block);
+          if (NOMESH[block]) continue;
           const cv = colorVariation(wx, y, wz);
           const isTrans = TRANS[block] === 1, isOpq = OPAQUE[block] === 1;
           const mp = BLOCK_MATERIALS[block];
@@ -493,7 +525,7 @@ export class World {
                 const inv = nc ? 255 / nc : 0;
                 target.lit[p] = lr * inv; target.lit[p + 1] = lg * inv; target.lit[p + 2] = lb * inv;
               } else { target.lit[p] = 0; target.lit[p + 1] = 0; target.lit[p + 2] = 0; }
-              if (mp) { target.mat[p] = mp.roughness; target.mat[p + 1] = mp.metalness; target.mat[p + 2] = mp.emissive; }
+              if (mp) { const q = (vb + i) * 4; target.mat[q] = mp.roughness; target.mat[q + 1] = mp.metalness; target.mat[q + 2] = mp.emissive; target.mat[q + 3] = ANIM[block]; }
             }
             const ii = target.i;
             target.idx[ii] = vb; target.idx[ii + 1] = vb + 1; target.idx[ii + 2] = vb + 2;
@@ -505,6 +537,7 @@ export class World {
     }
 
     if (waterTops) { this._secWater.set(key, waterTops); this._waterDirty = true; }
+    if (emitters) { this._secEmit.set(key, emitters); this._emitDirty = true; }
 
     const built = [];
     const PASSES = [
@@ -521,7 +554,7 @@ export class World {
       geo.setAttribute('normal', new THREE.BufferAttribute(buf.nrm.slice(0, buf.v * 3), 3));
       geo.setAttribute('color', new THREE.BufferAttribute(buf.col.slice(0, buf.v * 3), 3));
       geo.setAttribute('blockLight', new THREE.BufferAttribute(buf.lit.slice(0, buf.v * 3), 3, true));
-      if (special) geo.setAttribute('matProps', new THREE.BufferAttribute(buf.mat.slice(0, buf.v * 3), 3));
+      if (special) geo.setAttribute('matProps', new THREE.BufferAttribute(buf.mat.slice(0, buf.v * 4), 4));
       geo.setIndex(new THREE.BufferAttribute(buf.idx.slice(0, buf.i), 1));
       geo.computeBoundingSphere();
       const mesh = new THREE.Mesh(geo, mat);
@@ -575,11 +608,9 @@ function makeLitLambert(opts) {
 function makeSpecialMaterial(extra, { water = false, refl = null } = {}) {
   const m = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, ...extra });
   const uTime = { value: 0 };
-  if (water) {
-    // Keep the ripple clock current: manuscript time if the owner World set
-    // one, else wall clock.
-    m.userData.uTime = uTime;
-  }
+  // Animation clock (water ripples, molten lava): World keeps it current from
+  // manuscript time when set, else wall clock.
+  m.userData.uTime = uTime;
   m.onBeforeCompile = (sh) => {
     if (water) {
       sh.uniforms.uTime = uTime;
@@ -633,16 +664,45 @@ if (vMatProps.x < 0.1 && vWNrm.y > 0.5) {
     // metals have no diffuse -> they only pick up block light via (1-metalness)
     patchBlockLight(sh, 'diffuseColor.rgb * (1.0 - metalnessFactor)');
     sh.vertexShader = sh.vertexShader
-      .replace('#include <common>', '#include <common>\nattribute vec3 matProps;\nvarying vec3 vMatProps;')
+      .replace('#include <common>', '#include <common>\nattribute vec4 matProps;\nvarying vec4 vMatProps;')
       .replace('#include <begin_vertex>', '#include <begin_vertex>\nvMatProps = matProps;');
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nvarying vec3 vMatProps;')
+      .replace('#include <common>', '#include <common>\nvarying vec4 vMatProps;')
       .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = vMatProps.x;')
       .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\nmetalnessFactor = vMatProps.y;')
       // Emissive blocks: damp the lit diffuse term so the colour comes from the
       // glow (otherwise sunlit diffuse + glow tonemaps toward white/pastel).
       .replace('#include <color_fragment>', '#include <color_fragment>\ndiffuseColor.rgb *= 1.0 - 0.85 * clamp(vMatProps.z, 0.0, 1.0);')
       .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance = vColor.rgb * vMatProps.z;');
+    if (!water) {
+      sh.uniforms.uTime = uTime;
+      sh.vertexShader = sh.vertexShader
+        .replace('#include <common>', '#include <common>\nvarying vec3 vLPos;')
+        .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvLPos = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+      sh.fragmentShader = sh.fragmentShader
+        .replace('#include <common>', `#include <common>
+uniform float uTime;
+varying vec3 vLPos;
+float lh(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float lnoise(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(lh(i), lh(i + vec2(1, 0)), f.x), mix(lh(i + vec2(0, 1)), lh(i + 1.0), f.x), f.y); }
+float lfbm(vec2 p) { float v = 0.0, a = 0.5; for (int i = 0; i < 4; i++) { v += a * lnoise(p); p = p * 2.03 + 17.0; a *= 0.5; } return v; }`)
+        // Molten lava: slowly drifting crust (dark rock) over bright flowing
+        // cracks; texture is quantised to 8 px/block so it stays voxel-y.
+        .replace('#include <lights_physical_fragment>', `if (vMatProps.w > 0.5) {
+  vec3 q = floor(vLPos * 8.0) / 8.0;
+  vec2 uv = q.xz + vec2(q.y * 0.37, q.y * 0.61);
+  vec2 flow = vec2(uTime * 0.12, uTime * 0.07);
+  float n = lfbm(uv * 0.9 + flow + lfbm(uv * 0.45 - flow * 0.5) * 1.6);
+  n = clamp((n - 0.28) / 0.42, 0.0, 1.0);            // stretch fbm's narrow range
+  float crust = smoothstep(0.52, 0.72, n);
+  float pulse = 0.85 + 0.15 * sin(uTime * 2.1 + n * 9.0);
+  vec3 hot = mix(vec3(1.0, 0.42, 0.07) * 1.45, vec3(0.95, 0.10, 0.01) * 1.05, smoothstep(0.08, 0.5, n)) * pulse;
+  totalEmissiveRadiance = mix(hot, vec3(0.06, 0.012, 0.004), crust);
+  diffuseColor.rgb = mix(diffuseColor.rgb * 0.2, vec3(0.05, 0.035, 0.03), crust);
+}
+#include <lights_physical_fragment>`);
+    }
   };
   m.customProgramCacheKey = () => 'voxel-special' + (extra.transparent ? '-t' : '') + (water ? '-w' : '');
   return m;
