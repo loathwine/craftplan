@@ -133,7 +133,7 @@ BLOCK_MATERIALS[Block.ELECTRIC] = { roughness: 1, metalness: 0, emissive: 1.2 };
 //   flame/smoke: rise from the cell; ember: rare sparks off lava tops;
 //   spark: short electric flicks around the cell; arc: jagged lightning bolts.
 export const BLOCK_EMITTERS = {
-  [Block.FIRE]:      { flame: 14, smoke: 3 },
+  [Block.FIRE]:      { flame: 6, smoke: 2 },
   [Block.LAVA]:      { ember: 0.35 },
   [Block.NEON_BLUE]: { spark: 0.5 },
   [Block.NEON_RED]:  { spark: 0.5 },

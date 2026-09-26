@@ -34,7 +34,7 @@ void main() {
     float sway = sin(uTime * 7.0 + seed * 40.0) * 0.07 * age;
     p += vec3(r1 * 0.8 * (1.0 - age) + sway, 0.05 + age * (1.6 + 0.8 * seed), r2 * 0.8 * (1.0 - age));
     size = mix(1.1, 0.25, age);
-    col = mix(vec3(2.2, 1.15, 0.28), vec3(1.5, 0.3, 0.04), smoothstep(0.05, 0.7, age));
+    col = mix(vec3(1.5, 0.75, 0.16), vec3(1.1, 0.2, 0.025), smoothstep(0.05, 0.7, age));
     a = smoothstep(0.0, 0.08, age) * (1.0 - age);
   } else if (kind < 1.5) {                        // ember
     float life = 2.2 + 1.2 * seed;
