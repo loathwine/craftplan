@@ -556,7 +556,7 @@ export async function startRecorder() {
     : {});
   const weather = setupWeather(scene, MANUSCRIPT.weather);
 
-  const world = new World(scene, { chunks: MANUSCRIPT.chunks });
+  const world = new World(scene, { chunks: MANUSCRIPT.chunks, fluids: params.get('fluids') === '1' });
   const _tm = new TaskManager(scene, world);
 
   // Apply pre-timeline setup (clear forest at build sites etc.)
@@ -656,7 +656,6 @@ export async function startRecorder() {
     const dt = Math.max(0, Math.min(0.1, t - lastFrameT));
     lastFrameT = t;
     weather.update(dt, camera);
-    world.setTime(t);                 // deterministic water ripples
     if (skyHandle.ocean && skyHandle.ocean.material.uniforms?.uTime) {
       skyHandle.ocean.material.uniforms.uTime.value += dt;
     }
@@ -672,6 +671,8 @@ export async function startRecorder() {
       }
       if (n > 0) world.applyBlockChanges(batch);
     }
+    // After this frame's blocks land: fluids, water ripples, particles.
+    world.setTime(t);
 
     // Camera
     const cam = shot.cameraFn(localT);

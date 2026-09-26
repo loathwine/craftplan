@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Block, BLOCK_COLORS, BLOCK_MATERIALS, BLOCK_EMITTERS, INVISIBLE_BLOCKS, colorVariation, isTransparent, isOpaque, isEmissive } from './Textures.js';
 import { VoxelParticles } from './particles.js';
+import { FluidSim, FALLING } from './fluids.js';
 import { hash2, biomeAt, terrainHeight, surfaceBlock, shouldHaveTree } from './terrain.js';
 import { makeSkyEnvMap } from './sky.js';
 import { WaterReflection } from './waterReflection.js';
@@ -119,6 +120,9 @@ export class World {
     this._waterMeshes = new Set();
     this._version = 0;            // bumps on every section rebuild (reflection cache key)
     this._secEmit = new Map();    // section key -> [x,y,z,block,...] emitter cells
+    // Fluid flow (opt-in): per-column fluid levels (0 = source) + the sim.
+    this.fluid = new Array(this.chunkCount * this.chunkCount).fill(null);
+    this.fluids = opts.fluids ? new FluidSim(this) : null;
     this._emitDirty = false;
     this.specialTransparentMaterial = makeSpecialMaterial({
       transparent: true, opacity: 0.62, depthWrite: false, side: THREE.DoubleSide,
@@ -134,6 +138,7 @@ export class World {
     const prevTick = this.particles.glow.onBeforeRender;
     this._flushEmitters();
     this.particles.glow.onBeforeRender = (renderer, ...rest) => {
+      if (this._time === null && this.fluids) { const now = performance.now() / 1000; this.fluids.advanceTo(now, { start: now }); }
       this.particles.time = this._time ?? performance.now() / 1000;
       prevTick(renderer, ...rest);
     };
@@ -257,6 +262,8 @@ export class World {
     const col = this._col(x, z), i = this._idx(x, y, z);
     const emissiveTouched = EMIT[col[i]] === 1 || EMIT[block] === 1;
     col[i] = block;
+    if (this.fluid[(z >> 4) * this.chunkCount + (x >> 4)]) this._setFluidLevel(x, y, z, 0);   // placed fluid = source
+    this.fluids?.touch(x, y, z);
     const dirty = new Set();
     this._markDirty(x, y, z, dirty);
     this._maybeRelight(x, y, z, x, y, z, emissiveTouched, dirty);
@@ -264,7 +271,39 @@ export class World {
   }
 
   // Deterministic animation time (seconds) for water ripples etc.
-  setTime(t) { this._time = t; this.particles?.update(t); }
+  setTime(t) { this._time = t; this.fluids?.advanceTo(t); this.particles?.update(t); }
+
+  getFluidLevel(x, y, z) {
+    if (!this._inWorld(x, y, z)) return 0;
+    const a = this.fluid[(z >> 4) * this.chunkCount + (x >> 4)];
+    return a ? a[this._idx(x, y, z)] : 0;
+  }
+
+  _setFluidLevel(x, y, z, lvl) {
+    const k = (z >> 4) * this.chunkCount + (x >> 4);
+    let a = this.fluid[k];
+    if (!a) { if (!lvl) return; a = this.fluid[k] = new Uint8Array(CHUNK_SIZE * CHUNK_SIZE * WORLD_HEIGHT); }
+    a[this._idx(x, y, z)] = lvl;
+  }
+
+  // Called by FluidSim with [x,y,z,block,level] writes for one tick.
+  _applyFluidWrites(writes) {
+    const dirty = new Set();
+    let emissiveTouched = false;
+    let bx0 = Infinity, by0 = Infinity, bz0 = Infinity, bx1 = -Infinity, by1 = -Infinity, bz1 = -Infinity;
+    for (const [x, y, z, b, lvl] of writes) {
+      const col = this._col(x, z), i = this._idx(x, y, z);
+      if (EMIT[col[i]] === 1 || EMIT[b] === 1) emissiveTouched = true;
+      col[i] = b;
+      this._setFluidLevel(x, y, z, b === Block.WATER || b === Block.LAVA ? lvl : 0);
+      this._markDirty(x, y, z, dirty);
+      this.fluids.touch(x, y, z);
+      if (x < bx0) bx0 = x; if (y < by0) by0 = y; if (z < bz0) bz0 = z;
+      if (x > bx1) bx1 = x; if (y > by1) by1 = y; if (z > bz1) bz1 = z;
+    }
+    this._maybeRelight(bx0, by0, bz0, bx1, by1, bz1, emissiveTouched, dirty);
+    this._rebuildDirty(dirty);
+  }
 
   getTerrainHeight(x, z) {
     return terrainHeight(Math.floor(x), Math.floor(z));
@@ -287,6 +326,8 @@ export class World {
       const col = this._col(x, z), i = this._idx(x, y, z), b = changes[key];
       if (EMIT[col[i]] === 1 || EMIT[b] === 1) emissiveTouched = true;
       col[i] = b;
+      if (this.fluid[(z >> 4) * this.chunkCount + (x >> 4)]) this._setFluidLevel(x, y, z, 0);
+      this.fluids?.touch(x, y, z);
       this._markDirty(x, y, z, dirty);
       if (x < bx0) bx0 = x; if (y < by0) by0 = y; if (z < bz0) bz0 = z;
       if (x > bx1) bx1 = x; if (y > by1) by1 = y; if (z > bz1) bz1 = z;
@@ -446,6 +487,7 @@ export class World {
     const litOn = this._anyLight;
     let waterTops = null;          // surfaceY -> count, for the reflection plane
     let emitters = null;           // particle emitter cells in this section
+    const fluidCol = this.fluid[cz * this.chunkCount + cx];
     const x0 = cx * CHUNK_SIZE, z0 = cz * CHUNK_SIZE;
 
     for (let y = y0; y < y1; y++) {
@@ -465,6 +507,12 @@ export class World {
           const target = mp
             ? (isTrans ? SCRATCH.specialTransparent : SCRATCH.special)
             : (isTrans ? SCRATCH.transparent : SCRATCH.opaque);
+          // Flowing fluid renders lowered (sources / falling / fluid-below-fluid stay full).
+          let fh = 1;
+          if (fluidCol && (block === Block.WATER || block === Block.LAVA)) {
+            const fl = fluidCol[lx + (lz << 4) + (y << 8)];
+            if (fl && fl !== FALLING && this.getBlock(wx, y + 1, wz) !== block) fh = Math.max(0.15, 1 - fl / 8);
+          }
           // Transparent blocks skip AO (no dark patches where glass meets
           // solids); emissive blocks skip it (AO would dim the glow).
           const skipAO = isTrans || EMIT[block] === 1;
@@ -481,14 +529,14 @@ export class World {
             if (neighbor === block) continue;
             if (nOpq && (isOpq || isTrans)) continue;
 
-            if (block === Block.WATER && f === 0) (waterTops ||= new Map()).set(y + 1, (waterTops.get(y + 1) || 0) + 1);
+            if (block === Block.WATER && f === 0 && fh === 1) (waterTops ||= new Map()).set(y + 1, (waterTops.get(y + 1) || 0) + 1);
             target.ensureQuad();
             const fc = bc[face.type];
             const vb = target.v;
             for (let i = 0; i < 4; i++) {
               const c = face.corners[i];
               const p = (vb + i) * 3;
-              target.pos[p] = wx + c[0]; target.pos[p + 1] = y + c[1]; target.pos[p + 2] = wz + c[2];
+              target.pos[p] = wx + c[0]; target.pos[p + 1] = y + (c[1] === 1 ? fh : 0); target.pos[p + 2] = wz + c[2];
               target.nrm[p] = d[0]; target.nrm[p + 1] = d[1]; target.nrm[p + 2] = d[2];
 
               let r = fc[0] * cv, g = fc[1] * cv, b = fc[2] * cv;
