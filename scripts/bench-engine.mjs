@@ -39,6 +39,12 @@ const chrome = spawn('chromium', [
   `http://127.0.0.1:${PORT}/${PAGE}`,
 ], { stdio: ['ignore', 'pipe', 'pipe'], detached: true });
 
+// Always take the browser down with us (a killed/timed-out run used to leave a
+// headless Chromium holding the GPU, which made later runs lose their context).
+const killChrome = () => { try { process.kill(-chrome.pid, 'SIGKILL'); } catch {} };
+process.on('exit', killChrome);
+for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(sig, () => { killChrome(); process.exit(1); });
+
 const fetchJSON = async (url, tries = 50) => {
   for (let i = 0; i < tries; i++) {
     try {

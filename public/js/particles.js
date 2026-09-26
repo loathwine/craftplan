@@ -69,7 +69,10 @@ void main() {
   }
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
-  gl_PointSize = a > 0.0 ? size * uScale / -mv.z : 0.0;
+  // Clamp screen size: a particle right in front of the lens would otherwise
+  // fill the screen (hundreds of those = GPU watchdog / context loss).
+  float dist = -mv.z;
+  gl_PointSize = (a > 0.0 && dist > 1.0) ? min(size * uScale / dist, 96.0) : 0.0;
   vColor = col; vAlpha = a; vKind = kind;
 }`;
 
@@ -110,7 +113,7 @@ export class VoxelParticles {
     this.smoke = makePoints(false);
     // Lightning: dense trail of soft HDR points (thick glowing bolts; GL lines are 1px).
     this.arcs = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({
-      size: 0.35, sizeAttenuation: true, map: discTexture(), color: new THREE.Color(2.2, 4.0, 6.0),
+      size: 0.35, sizeAttenuation: true, map: discTexture(),   // PointsMaterial: GPU caps size color: new THREE.Color(2.2, 4.0, 6.0),
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     }));
     this.arcs.frustumCulled = false;

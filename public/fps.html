@@ -20,6 +20,10 @@ const W = +(q.get('w') || 1280), H = +(q.get('h') || 720), FRAMES = +(q.get('fra
 const moonlight = q.get('moonlight') === '1';
 const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
 renderer.setSize(W, H); document.body.appendChild(renderer.domElement);
+let lost = false;
+renderer.domElement.addEventListener('webglcontextlost', () => { lost = true; });
+window.addEventListener('error', (e) => { document.getElementById('out').textContent = JSON.stringify({ error: String(e.message) }); });
+window.addEventListener('unhandledrejection', (e) => { document.getElementById('out').textContent = JSON.stringify({ error: String(e.reason) }); });
 setupRenderer(renderer);
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(50, W / H, 0.5, 5000);
@@ -53,7 +57,7 @@ for (let i = 0; i < FRAMES + 10; i++) {
 times.sort((x, y) => x - y);
 const avg = times.reduce((s, v) => s + v, 0) / times.length;
 document.getElementById('out').textContent = JSON.stringify({
-  w: W, h: H, frames: times.length, avgMs: +avg.toFixed(1), p50Ms: +times[times.length >> 1].toFixed(1),
+  w: W, h: H, frames: times.length, contextLost: lost, avgMs: +avg.toFixed(1), p50Ms: +times[times.length >> 1].toFixed(1),
   p95Ms: +times[Math.floor(times.length * 0.95)].toFixed(1), fps: +(1000 / avg).toFixed(1),
   drawCalls: calls, tris, gpu: gpuName,
 });
