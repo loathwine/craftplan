@@ -557,6 +557,12 @@ export async function startRecorder() {
   const weather = setupWeather(scene, MANUSCRIPT.weather);
 
   const world = new World(scene, { chunks: MANUSCRIPT.chunks, fluids: params.get('fluids') === '1' });
+  // Rain soaks the world: ?wet=0..1 overrides; otherwise from the weather preset.
+  {
+    const wk = MANUSCRIPT.weather?.kind ?? MANUSCRIPT.weather;
+    const wet = params.has('wet') ? +params.get('wet') : wk === 'storm' ? 1 : wk === 'rain' ? 0.7 : 0;
+    if (wet > 0) world.setWetness(wet);
+  }
   const _tm = new TaskManager(scene, world);
 
   // Apply pre-timeline setup (clear forest at build sites etc.)

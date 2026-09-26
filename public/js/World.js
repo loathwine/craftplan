@@ -105,10 +105,12 @@ export class World {
     // once light reaches it. _anyLight gates the per-vertex sampling.
     this.light = new Array(this.chunkCount * this.chunkCount).fill(null);
     this._anyLight = false;
-    this.material = makeLitLambert({ vertexColors: true });
+    // Wetness 0..1 (rain): darkens surfaces + puddle sheen on up-facing tops.
+    this._wet = { uWet: { value: 0 }, uSkyTop: { value: new THREE.Color(0x3a7fc8) }, uSkyHz: { value: new THREE.Color(0xb4dcef) } };
+    this.material = makeLitLambert({ vertexColors: true }, this._wet);
     this.transparentMaterial = makeLitLambert({
       vertexColors: true, transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide,
-    });
+    }, this._wet);
     // Special-material passes (metal / glossy / emissive / water). Per-vertex
     // `matProps` = (roughness, metalness, emissive) drives MeshStandardMaterial
     // so one material + one draw call covers every special block in a section.
@@ -271,6 +273,14 @@ export class World {
   }
 
   // Deterministic animation time (seconds) for water ripples etc.
+  // 0 = dry, 1 = soaked. Sky colours for the puddle reflection come from the
+  // scene's sky (setupSky) when available.
+  setWetness(w) {
+    this._wet.uWet.value = Math.max(0, Math.min(1, w));
+    const e = this.scene.userData.skyEnv;
+    if (e) { this._wet.uSkyTop.value.copy(e.zenith); this._wet.uSkyHz.value.copy(e.horizon); }
+  }
+
   setTime(t) { this._time = t; this.fluids?.advanceTo(t); this.particles?.update(t); }
 
   getFluidLevel(x, y, z) {
@@ -646,9 +656,40 @@ function patchBlockLight(sh, diffuseExpr) {
     .replace('#include <opaque_fragment>', `outgoingLight += ${diffuseExpr} * vBlockLight * ${LIGHT_GAIN.toFixed(2)};\n#include <opaque_fragment>`);
 }
 
-function makeLitLambert(opts) {
+function makeLitLambert(opts, wet) {
   const m = new THREE.MeshLambertMaterial(opts);
-  m.onBeforeCompile = (sh) => patchBlockLight(sh, 'diffuseColor.rgb');
+  m.onBeforeCompile = (sh) => {
+    patchBlockLight(sh, 'diffuseColor.rgb');
+    Object.assign(sh.uniforms, wet);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vWetPos;')
+      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvWetPos = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+uniform float uWet;
+uniform vec3 uSkyTop, uSkyHz;
+varying vec3 vWetPos;
+float wh(vec2 p) { return fract(sin(dot(p, vec2(41.3, 289.1))) * 43758.5453); }
+float wn(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(wh(i), wh(i + vec2(1, 0)), f.x), mix(wh(i + vec2(0, 1)), wh(i + 1.0), f.x), f.y); }`)
+      // wet albedo is darker (water fills surface pores)
+      .replace('#include <color_fragment>', '#include <color_fragment>\ndiffuseColor.rgb *= 1.0 - 0.38 * uWet;')
+      .replace('#include <opaque_fragment>', `if (uWet > 0.001) {
+  vec3 upV = normalize((viewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz);
+  float up = clamp(dot(normal, upV), 0.0, 1.0);
+  vec3 v = normalize(vViewPosition);
+  float cosT = clamp(dot(normal, v), 0.0, 1.0);
+  float F = 0.03 + 0.97 * pow(1.0 - cosT, 5.0);
+  // puddles: low-frequency noise pools on flat tops; everything else just damp
+  float pud = smoothstep(0.56, 0.68, wn(vWetPos.xz * 0.45) * 0.7 + wn(vWetPos.xz * 1.6) * 0.3);
+  vec3 rv = reflect(-v, normal);
+  float ry = clamp(dot(rv, upV), 0.0, 1.0);
+  vec3 sky = mix(mix(uSkyHz, uSkyTop, sqrt(ry)), vec3(0.62, 0.66, 0.70), 0.55);   // overcast: greyer than the clear-sky env
+  float k = uWet * up * mix(0.18, 0.85, pud) * mix(F, 0.3 + 0.7 * F, pud);
+  outgoingLight = mix(outgoingLight, sky * 0.8, k);
+}
+#include <opaque_fragment>`);
+  };
   m.customProgramCacheKey = () => 'voxel-lambert' + (opts.transparent ? '-t' : '');
   return m;
 }
