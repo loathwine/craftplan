@@ -38,6 +38,8 @@ const DURATION = parseFloat(argv.duration || '10');
 const OUT = resolve(argv.out || 'grid.mp4');
 const HEADER = argv.header || '';
 const W = 1080, H = 1920;
+// Shrink long prompts to fit one line (~0.53·fontsize per glyph in this font).
+const headerFs = Math.min(54, Math.floor((W - 50) / (Math.max(1, HEADER.length) * 0.53)));
 const [cw, ch] = CLIPS.length === 4 ? [W / 2, H / 2] : [W, H / 2];
 
 const inputs = CLIPS.flatMap(c => ['-t', String(DURATION), '-i', c.file]);
@@ -54,7 +56,7 @@ let graph = `${cells};${CLIPS.map((_, i) => `[c${i}]`).join('')}xstack=inputs=${
 graph += `;[grid]drawbox=x=0:y=${ch - 2}:w=${W}:h=4:color=black@0.85:t=fill` +
   (CLIPS.length === 4 ? `,drawbox=x=${cw - 2}:y=0:w=4:h=${H}:color=black@0.85:t=fill` : '') + `[sep]`;
 graph += HEADER
-  ? `;[sep]drawtext=text='${HEADER.replace(/'/g, '')}':fontsize=54:fontcolor=yellow:borderw=5:bordercolor=black:x=(w-text_w)/2:y=${H / 2 - 34}[v]`
+  ? `;[sep]drawtext=text='${HEADER.replace(/'/g, '')}':fontsize=${headerFs}:fontcolor=yellow:borderw=5:bordercolor=black:x=(w-text_w)/2:y=${H / 2 - 34}[v]`
   : `;[sep]null[v]`;
 
 const args = [

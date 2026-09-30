@@ -43,6 +43,9 @@ BLOCK CONSTANTS (use the names):
            FIRE (flames + smoke rising from that cell: torches, campfires, dragon breath, burning ruins),
            ELECTRIC (crackling lightning bolts + sparks: Pikachu, Tesla coils, magic, storms)
   Note: LAVA animates (flowing crust + embers); NEON blocks throw occasional sparks.
+  Effects are VERY bright and each cell already spawns a long bolt / tall flame. Use ELECTRIC in
+  3–12 cells total and FIRE in at most ~40 cells; never fill lines or volumes with them, or the
+  glow swallows the build and the subject becomes unreadable.
 
 Color guide: pick the closest real color — yellow → YELLOW, blue suit → BLUE, black armor → BLACK,
 purple → PURPLE. Metal/armor/blades → IRON or GOLD, water → WATER, fire/lava → LAVA/ORANGE,
