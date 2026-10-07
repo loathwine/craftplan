@@ -130,6 +130,7 @@ const youtube = google.youtube({ version: 'v3', auth: oauth2 });
 for (const v of plan) {
   const file = resolve(REPO, v.file);
   if (!existsSync(file)) { console.error(`[yt-batch] SKIP (missing): ${v.file}`); continue; }
+  if (v.videoId) { console.log(`[yt-batch] SKIP (already uploaded as ${v.videoId}): ${v.title}`); continue; }
   // musicCredit (per-video) is inserted between the body and the hashtag
   // line — required for CC-BY tracks (e.g. Kevin MacLeod / Incompetech).
   let body = v.description || defaultDescription;
@@ -152,8 +153,14 @@ for (const v of plan) {
       media: { body: createReadStream(file) },
     });
     console.log(`[yt-batch]   ✓ https://youtube.com/shorts/${res.data.id}`);
+    // Record the id in the manifest so a re-run (e.g. after hitting the daily
+    // upload quota) skips it instead of uploading a duplicate.
+    const q = JSON.parse(readFileSync(MANIFEST, 'utf-8'));
+    const entry = q.videos.find(x => x.file === v.file && !x.videoId);
+    if (entry) { entry.videoId = res.data.id; writeFileSync(MANIFEST, JSON.stringify(q, null, 2)); }
   } catch (e) {
     console.error(`[yt-batch]   ✗ ${e.message}`);
+    if (/quota/i.test(e.message)) { console.error('[yt-batch] daily quota exhausted — re-run tomorrow; uploaded ones are skipped.'); break; }
   }
 }
 console.log('[yt-batch] done.');
