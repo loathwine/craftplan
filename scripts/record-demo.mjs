@@ -280,6 +280,9 @@ if (!NO_MP4) {
     OUT,
   ], { stdio: ['ignore', 'inherit', 'inherit'] });
   await new Promise((r, rej) => ff.on('exit', (c) => c === 0 ? r() : rej(new Error(`ffmpeg exited ${c}`))));
+  // The PNGs are ~150 MB per 10s clip and useless once encoded (re-render to
+  // regenerate). Keep them with --keep or an explicit --frames-dir.
+  if (!KEEP && !argv['frames-dir']) rmSync(FRAMES_DIR, { recursive: true, force: true });
 }
 
 // Write the markers sidecar (same basename, .markers.json suffix)
