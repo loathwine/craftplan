@@ -313,9 +313,10 @@ screen):
 1. console.cloud.google.com → new project.
 2. Enable **YouTube Data API v3**.
 3. Credentials → OAuth client ID → **Desktop app** → download JSON.
-4. Save as `secrets/yt-client.json` (gitignored).
-5. First run opens a browser for consent; refresh token caches to
-   `secrets/yt-token.json`.
+4. Save as `~/.config/youtube/client.json` (mode 600; shared with the
+   `yt` CLI from the dotfiles youtube skill, override with `YT_CONFIG_DIR`).
+5. First run (or `yt auth`) opens a browser for consent; the refresh token
+   caches to `~/.config/youtube/token.json`.
 
 Usage:
 ```bash

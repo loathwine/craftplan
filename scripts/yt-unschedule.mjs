@@ -3,19 +3,17 @@
 // object, so every field we care about is re-sent.
 //   node scripts/yt-unschedule.mjs [--dry-run] <videoId> [<videoId> ...]
 import { readFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { google } from 'googleapis';
+import { CLIENT_PATH, TOKEN_PATH } from './yt-config.mjs';
 
-const SECRETS = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'secrets');
 const DRY = process.argv.includes('--dry-run');
 const ids = process.argv.slice(2).filter(a => !a.startsWith('--'));
 if (!ids.length) { console.error('usage: yt-unschedule.mjs [--dry-run] <videoId>...'); process.exit(1); }
 
-const creds = JSON.parse(readFileSync(resolve(SECRETS, 'yt-client.json'), 'utf-8'));
+const creds = JSON.parse(readFileSync(CLIENT_PATH, 'utf-8'));
 const { client_id, client_secret } = creds.installed || creds.web;
 const oauth2 = new google.auth.OAuth2(client_id, client_secret);
-oauth2.setCredentials(JSON.parse(readFileSync(resolve(SECRETS, 'yt-token.json'), 'utf-8')));
+oauth2.setCredentials(JSON.parse(readFileSync(TOKEN_PATH, 'utf-8')));
 const youtube = google.youtube({ version: 'v3', auth: oauth2 });
 
 const show = async () => {

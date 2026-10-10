@@ -5,23 +5,21 @@
 //   nix develop --command node scripts/yt-stats.mjs --count 30
 //   nix develop --command node scripts/yt-stats.mjs --json       # JSON instead of table
 //
-// Uses the cached OAuth token at secrets/yt-token.json (the one yt-batch.mjs
+// Uses the cached OAuth token at ~/.config/youtube/token.json (the one yt-batch.mjs
 // already authorized). Basic stats only — viewCount, likeCount, commentCount —
 // the YouTube *Data* API. For retention / avg view %, you'd need the YouTube
 // *Analytics* API which requires a separate scope (yt-analytics.readonly) and
 // a re-consent flow.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import http from 'node:http';
 import { google } from 'googleapis';
+import { CLIENT_PATH, TOKEN_PATH, saveToken } from './yt-config.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(__dirname, '..');
-const SECRETS = resolve(REPO, 'secrets');
-const CLIENT_PATH = resolve(SECRETS, 'yt-client.json');
-const TOKEN_PATH  = resolve(SECRETS, 'yt-token.json');
 
 const argv = (() => {
   const a = {};
@@ -66,9 +64,7 @@ async function runConsentFlow() {
   });
   const { tokens } = await oauth2.getToken(code);
   oauth2.setCredentials(tokens);
-  const dir = dirname(TOKEN_PATH);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(TOKEN_PATH, JSON.stringify(tokens, null, 2));
+  saveToken(tokens);
 }
 
 if (existsSync(TOKEN_PATH)) {

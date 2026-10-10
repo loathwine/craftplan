@@ -9,9 +9,9 @@
 // 2. APIs & Services → Library → enable "YouTube Data API v3".
 // 3. APIs & Services → Credentials → Create Credentials → OAuth client ID
 //    → Application type "Desktop app". Download the JSON.
-// 4. Save it as  secrets/yt-client.json  in this repo (gitignored).
+// 4. Save it as  ~/.config/youtube/client.json  (shared with the `yt` CLI).
 // 5. First run opens a browser for consent; the refresh token is cached to
-//    secrets/yt-token.json so subsequent runs are non-interactive.
+//    ~/.config/youtube/token.json so subsequent runs are non-interactive.
 //
 // ── Usage ──
 //   node scripts/yt-upload.mjs \
@@ -29,18 +29,16 @@
 // run via:  nix develop --command npx googleapis ... (or add to package.json
 // and refresh npmDepsHash). See DEMO.md "Scheduled uploads".
 
-import { readFileSync, existsSync, writeFileSync, mkdirSync, createReadStream } from 'node:fs';
+import { readFileSync, existsSync, createReadStream } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import http from 'node:http';
 import { spawn } from 'node:child_process';
 import { google } from 'googleapis';
+import { CLIENT_PATH, TOKEN_PATH, saveToken } from './yt-config.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(__dirname, '..');
-const SECRETS = resolve(REPO, 'secrets');
-const CLIENT_PATH = resolve(SECRETS, 'yt-client.json');
-const TOKEN_PATH = resolve(SECRETS, 'yt-token.json');
 const SCOPES = ['https://www.googleapis.com/auth/youtube.upload',
                 'https://www.googleapis.com/auth/youtube'];
 
@@ -103,8 +101,7 @@ async function authorize() {
   });
   const { tokens } = await oauth2.getToken(code);
   oauth2.setCredentials(tokens);
-  mkdirSync(SECRETS, { recursive: true });
-  writeFileSync(TOKEN_PATH, JSON.stringify(tokens, null, 2));
+  saveToken(tokens);
   console.log(`[yt] token cached → ${TOKEN_PATH}`);
   return oauth2;
 }

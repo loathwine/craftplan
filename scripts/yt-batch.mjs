@@ -16,17 +16,15 @@
 //     CC-BY tracks that require attribution, e.g. Kevin MacLeod/Incompetech),
 //   publishAt (optional ISO string, overrides the auto-generated slot).
 
-import { readFileSync, existsSync, writeFileSync, mkdirSync, createReadStream } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, createReadStream } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import http from 'node:http';
 import { google } from 'googleapis';
+import { CLIENT_PATH, TOKEN_PATH, saveToken } from './yt-config.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(__dirname, '..');
-const SECRETS = resolve(REPO, 'secrets');
-const CLIENT_PATH = resolve(SECRETS, 'yt-client.json');
-const TOKEN_PATH = resolve(SECRETS, 'yt-token.json');
 const SCOPES = ['https://www.googleapis.com/auth/youtube.upload',
                 'https://www.googleapis.com/auth/youtube'];
 
@@ -121,8 +119,7 @@ if (existsSync(TOKEN_PATH)) {
   });
   const { tokens } = await oauth2.getToken(code);
   oauth2.setCredentials(tokens);
-  mkdirSync(SECRETS, { recursive: true });
-  writeFileSync(TOKEN_PATH, JSON.stringify(tokens, null, 2));
+  saveToken(tokens);
 }
 const youtube = google.youtube({ version: 'v3', auth: oauth2 });
 
