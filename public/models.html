@@ -22,6 +22,9 @@
   #title h1 { margin:0; font-size:19px; font-weight:750; letter-spacing:.01em;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 3px #000a; }
   #title .sub { color:var(--mut); font-size:11.5px; text-shadow:0 1px 2px #000a; }
+  /* phones: title gets its own row so long prompts are readable; buttons below */
+  @media (max-width:560px) { #top { flex-wrap:wrap; row-gap:6px; } #title { flex-basis:100%; }
+    #title h1 { white-space:normal; font-size:17px; } }
   .spacer { flex:1; }
   .btn { pointer-events:auto; background:#1a1f29cc; color:var(--fg); border:1px solid var(--line);
     border-radius:9px; padding:8px 11px; font:inherit; font-size:13px; cursor:pointer;
@@ -75,6 +78,7 @@
   <button class="btn icon" id="prev" title="previous">◀</button>
   <button class="btn" id="browse">Browse</button>
   <button class="btn icon" id="next" title="next">▶</button>
+  <button class="btn icon" id="night" title="moonlight (night) / day">🌙</button>
   <button class="btn" id="quality" title="graphics quality">✨ High</button>
 </div>
 
@@ -125,12 +129,26 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 setupRenderer(renderer, { exposure: 0.98 });
 
 const scene = new THREE.Scene();
-// Shorts lighting, but recentre the shadow frustum on the build row at origin
-// and push fog far back so the builds stay crisp.
-setupSky(scene, { shadowCenter: [0, 14, 0], shadowExtent: 120, shadowDistance: 260,
-  shadowMapSize: quality === 'high' ? 2048 : 1024,
-  fogNear: 400, fogFar: 3000 });
-scene.environment = makeSkyEnvMap(renderer, scene);   // metals/gloss reflect the sky
+// Shorts lighting (day, or the moonlight the newer Shorts are rendered in), but
+// recentre the shadow frustum on the build row at origin and push fog far back
+// so the builds stay crisp. Rebuilt in place when day/night is toggled.
+let night = false, skyObjs = [], nightPref = null;   // nightPref: user/URL override
+function applySky(n) {
+  night = n;
+  for (const o of skyObjs) { scene.remove(o); o.dispose?.(); }
+  const before = new Set(scene.children);
+  setupSky(scene, { shadowCenter: [0, 14, 0], shadowExtent: 120, shadowDistance: 260,
+    shadowMapSize: quality === 'high' ? 2048 : 1024,
+    fogNear: 400, fogFar: 3000, moonlight: n });
+  skyObjs = scene.children.filter(c => !before.has(c));
+  scene.environment?.dispose();
+  scene.environment = makeSkyEnvMap(renderer, scene);   // metals/gloss reflect the sky
+  if (bloomPass) Object.assign(bloomPass, n
+    ? { strength: 0.95, radius: 0.7, threshold: 0.55 }   // as the moonlight Shorts
+    : { strength: 0.5, radius: 0.7, threshold: 0.85 });
+  $('night').textContent = n ? '☀️' : '🌙';
+  $('night').classList.toggle('on', n);
+}
 
 const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 6000);
 const controls = new OrbitControls(camera, canvas);
@@ -148,17 +166,19 @@ ground.rotation.x = -Math.PI / 2; ground.position.y = -0.01; ground.receiveShado
 scene.add(ground);
 
 // bloom composer (High only)
-let composer = null;
+let composer = null, bloomPass = null;
 function buildComposer() {
   try {
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.5, 0.7, 0.85);
-    composer.addPass(bloom);
+    bloomPass = night ? new UnrealBloomPass(new THREE.Vector2(1, 1), 0.95, 0.7, 0.55)
+                      : new UnrealBloomPass(new THREE.Vector2(1, 1), 0.5, 0.7, 0.85);
+    composer.addPass(bloomPass);
     composer.addPass(new OutputPass());
-  } catch (e) { composer = null; }
+  } catch (e) { composer = null; bloomPass = null; }
 }
 if (quality === 'high') buildComposer();
+applySky(false);
 
 // ---- label sprites ---------------------------------------------------------
 function makeLabel(name, sub) {
@@ -227,14 +247,16 @@ async function loadSubject(i) {
     b.group.position.x = x;
     b.group.traverse(o => { if (o.isInstancedMesh) o.userData.buildIdx = k; });
     scene.add(b.group);
-    const label = makeLabel(index.modelLabels[b.model], `${b.blocks.toLocaleString()} blocks`);
+    const label = makeLabel((subj.labels || index.modelLabels)[b.model], `${b.blocks.toLocaleString()} blocks`);
     label.position.set(x, b.h + 3.5, 0);
     scene.add(label);
     builds.push({ group: b.group, cx: x, w: b.w, d: b.d, h: b.h, label, model: b.model });
   });
   // title + url
   $('tTitle').textContent = `“${subj.title}”`;
-  $('tSub').textContent = 'same prompt · Haiku · Sonnet · Opus · Fable';
+  $('tSub').textContent = 'same prompt · ' + index.models.map(m => (subj.labels || index.modelLabels)[m]).join(' · ');
+  const n = nightPref ?? !!subj.night;
+  if (n !== night) applySky(n);
   $('lYt').href = subj.youtube || 'https://youtu.be/GDJijs-ZlSk';   // per-subject link later; full demo for now
   const url = new URL(location); url.searchParams.set('subject', subj.key);
   url.searchParams.delete('model'); history.replaceState(null, '', url);
@@ -305,6 +327,7 @@ function applyQuality() {
   if (high && !composer) buildComposer();
   resize();
 }
+$('night').onclick = () => { nightPref = !night; applySky(nightPref); };
 $('quality').onclick = () => { quality = quality === 'high' ? 'lite' : 'high'; applyQuality(); };
 
 // ---- tap to focus -----------------------------------------------------------
@@ -358,6 +381,7 @@ function tick() {
   const params = new URLSearchParams(location.search);
   const want = params.get('subject');
   const startIdx = Math.max(0, index.subjects.findIndex(s => s.key === want));
+  if (params.has('night')) nightPref = params.get('night') === '1';
   applyQuality();
   resize();
   await loadSubject(startIdx < 0 ? 0 : startIdx);

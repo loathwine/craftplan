@@ -3,25 +3,38 @@
 // the base plan file, the QA-approved rotation angle (applied client-side via
 // the same REMAP the QA tool used), and the solid block count.
 //
+// Two generations of grids:
+//   - "4x" grids (Haiku 4.5 / Sonnet 5 / Opus 4.8 / Fable 5, daylight). Frozen:
+//     their entries are carried over from the existing viewer-index.json as-is
+//     (only the video link is refreshed).
+//   - latest-lineup moonlight grids (Haiku 5.5 / Sonnet 5.5 / Opus 5.5 /
+//     Fable 5.1): discovered from the plans dir as <k>-haiku55.json +
+//     <k>-sonnet55.json + <k>-opus.json + <k>-fable.json. They carry their own
+//     `labels` and `night: true`, and are listed first (newest).
+//
 // Committed + self-contained so the viewer works on static hosting (GitHub
 // Pages) with no server / no qa-decisions.json present at runtime.
 //
 //   nix develop --command node scripts/viewer-index.mjs
 
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const PLANS = resolve(ROOT, 'public/data/plans');
+const INDEX = resolve(PLANS, 'viewer-index.json');
 
-const qaIndex = JSON.parse(readFileSync(resolve(PLANS, 'qa-index.json'), 'utf8'));
 let decisions = {};
 try { decisions = JSON.parse(readFileSync(resolve(ROOT, 'qa-decisions.json'), 'utf8')).decisions || {}; } catch {}
 
 const MODELS = ['haiku', 'sonnet', 'opus', 'fable'];
 const LABELS = { haiku: 'Haiku 4.5', sonnet: 'Sonnet 5', opus: 'Opus 4.8', fable: 'Fable 5' };
+const LATEST = {
+  suffix: { haiku: 'haiku55', sonnet: 'sonnet55', opus: 'opus', fable: 'fable' },
+  labels: { haiku: 'Haiku 5.5', sonnet: 'Sonnet 5.5', opus: 'Opus 5.5', fable: 'Fable 5.1' },
+};
 
 // Published/scheduled YouTube Short per subject (viewer "▶ Video" link).
 // Love Fast reverse-order batch scheduled 2026-07-12..07-24, plus the 3 earlier
@@ -61,35 +74,57 @@ const VIDEO_IDS = {
   'cobra': 'cRf42iukEhg', 'neuschwanstein': 'UoaVQVcKjXc', 'treasure-chest': 'AlY05sJMdzc',
   'viking-longship': 'RnYH-cMMqFo', 'eagle': 'oFNeBtvi86g', 'moai': 'P_uruVsEdQY',
   'mjolnir': 'kXAVZKtzXs0',
+  // Latest lineup: Pikachu one-off (2026-10-07) + Bots in the Lobby (2026-10-08..10-22)
+  'pikachu-n': 'pWXK3Qrxi3I',
+  'zeus': '24reZHaVd7s', 'dragon-fire': 'nGI7vDHEuxo', 'rocket-launch': 'oLrb8Yzbo7k',
+  'lava-golem': '3kYQ2nQvMUE', 'ghost-rider': 'ulDfJpau27A', 'thor': 'IMwO2_wU1Uc',
+  'viking-funeral': 'NUu-3qdVnvM', 'cyber-samurai': 'WIjc3K9Xg2s', 'dragon-hoard': 'tI5DCM9F_Vw',
+  'eye-of-sauron': 'TO0bgxUaTWc', 'bowser': 'dchLTPfL-tI', 'forge': 'LY-Oz4Ez8HI',
+  'lighthouse-n': 'P4HJ_B3lkBY', 'wizard-fireball': 'F76K55E7ICI', 'jungle-temple': '9J_6ZcuSYfU',
 };
 
 const titleFor = (key) => {
-  try {
-    const t = readFileSync(resolve(ROOT, `prompts/${key}-4x.prompt.txt`), 'utf8');
-    const m = t.match(/Design:\s*"([^"]+)"/);
-    if (m) return m[1];
-  } catch {}
+  for (const f of [`${key}.prompt.txt`, `${key}-4x.prompt.txt`]) {
+    try {
+      const m = readFileSync(resolve(ROOT, 'prompts', f), 'utf8').match(/Design:\s*"([^"]+)"/);
+      if (m) return m[1];
+    } catch {}
+  }
   return key;
 };
 const solids = (file) => {
   try { return JSON.parse(readFileSync(resolve(PLANS, file), 'utf8')).plan.filter(b => b.block !== 0).length; }
   catch { return 0; }
 };
+const ytFor = (key) => VIDEO_IDS[key] ? { youtube: `https://youtube.com/shorts/${VIDEO_IDS[key]}` } : {};
 
-const subjects = [];
-for (const s of qaIndex.subjects) {
-  if (!MODELS.every(m => s.models?.[m]?.file)) continue; // grid subjects only
+// Latest-lineup grids, discovered from the plans dir (newest plan first).
+const files = new Set(readdirSync(PLANS));
+const latest = [...files]
+  .filter(f => f.endsWith('-haiku55.json'))
+  .map(f => f.slice(0, -'-haiku55.json'.length))
+  .filter(k => MODELS.every(m => files.has(`${k}-${LATEST.suffix[m]}.json`)));
+const mtime = (k) => { try { return JSON.parse(readFileSync(resolve(PLANS, `${k}-haiku55.json`), 'utf8')).createdAt || ''; } catch { return ''; } };
+latest.sort((a, b) => mtime(b).localeCompare(mtime(a)) || a.localeCompare(b));
+
+const fresh = latest.map(key => {
   const models = {};
   for (const m of MODELS) {
-    const file = s.models[m].file;
-    const d = decisions[`${s.key}/${m}`];
-    const rot = d && d.status === 'rotate' ? (d.rotationDeg || 0) : 0;
-    models[m] = { file, blocks: solids(file), rot };
+    const file = `${key}-${LATEST.suffix[m]}.json`;
+    const d = decisions[`${key}/${m}`];
+    models[m] = { file, blocks: solids(file), rot: d && d.status === 'rotate' ? (d.rotationDeg || 0) : 0 };
   }
-  const yt = VIDEO_IDS[s.key];
-  subjects.push({ key: s.key, title: titleFor(s.key), ...(yt ? { youtube: `https://youtube.com/shorts/${yt}` } : {}), models });
-}
+  return { key, title: titleFor(key), ...ytFor(key), labels: LATEST.labels, night: true, models };
+});
 
+// Frozen 4x grids from the existing index.
+const prev = JSON.parse(readFileSync(INDEX, 'utf8'));
+const freshKeys = new Set(latest);
+const frozen = prev.subjects
+  .filter(s => !freshKeys.has(s.key) && !s.night)
+  .map(({ youtube, ...s }) => ({ ...s, ...ytFor(s.key) }));
+
+const subjects = [...fresh, ...frozen];
 const out = {
   generatedAt: new Date().toISOString(),
   models: MODELS,
@@ -97,6 +132,5 @@ const out = {
   count: subjects.length,
   subjects,
 };
-writeFileSync(resolve(PLANS, 'viewer-index.json'), JSON.stringify(out, null, 2));
-const rotN = subjects.reduce((a, s) => a + MODELS.filter(m => s.models[m].rot).length, 0);
-console.log(`viewer-index.json: ${subjects.length} subjects, ${subjects.length * 4} builds, ${rotN} with QA rotation`);
+writeFileSync(INDEX, JSON.stringify(out, null, 2));
+console.log(`viewer-index.json: ${fresh.length} latest-lineup + ${frozen.length} 4x subjects (${subjects.filter(s => s.youtube).length} with video links)`);
