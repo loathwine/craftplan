@@ -2,7 +2,9 @@
 // REVERSE order (oldest upload = song's last 10s, newest = first 10s), then
 // emit the yt-batch manifest. Daily 17:00Z from 10-23; haunted-house and
 // jack-o-lantern-n (held n6 grids) land on 10-30 / 10-31.
-//   nix develop .#record --command node marathon/halloween-batch.mjs --song "recordings/audio/<song>.wav" [--name "<Song title>"]
+//   nix develop .#record --command node marathon/halloween-batch.mjs --song "recordings/audio/<song>.wav" [--name "<Song title>"] [--first <s>]
+// --first: song offset of the NEWEST Short's window (default: song end - 14*10s,
+// i.e. the oldest Short ends on the song's last second).
 import { writeFileSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve, dirname, basename, extname } from 'node:path';
@@ -37,13 +39,9 @@ const SUBJECTS = [
   { key: 'bonfire-night',     grid: 'n7', emoji: '🎆', short: 'bonfire',           prompt: 'a Bonfire Night bonfire with fireworks',           tags: ['bonfirenight','fireworks','guyfawkes'], htag: 'fireworks' },
 ];
 
-// Full title if it fits YouTube's 100 chars; else drop the emoji; else the
-// compact "v" form. The quoted prompt is always kept verbatim.
-const titleFor = (s) => [
-  `Haiku 5.5 vs Sonnet 5.5 vs Opus 5.5 vs Fable 5.1: "${s.prompt}" ${s.emoji}`,
-  `Haiku 5.5 vs Sonnet 5.5 vs Opus 5.5 vs Fable 5.1: "${s.prompt}"`,
-  `Haiku 5.5 v Sonnet 5.5 v Opus 5.5 v Fable 5.1: "${s.prompt}"`,
-].find(t => [...t].length <= 100);
+// Prompt first: only ~40 chars show in the Shorts feed. Versions live in the
+// description + tags.
+const titleFor = (s) => [`"${s.prompt}" ${s.emoji} Haiku vs Sonnet vs Opus vs Fable`].find(t => [...t].length <= 100);
 
 const BASE_TAGS = ['shorts','ai','claude','anthropic','minecraft','benchmark','aibenchmark','haiku','sonnet','opus','fable',
   'haiku 5.5','sonnet 5.5','opus 5.5','fable 5.1','voxel'];
@@ -51,7 +49,6 @@ const descFor = (s) => `Same prompt, byte for byte — "${s.prompt}" — given t
 
 Built in a voxel sandbox where Claude (the AI) is a player. Type "@Claude build X" in chat and it writes the build code itself — no mods, no prefabs.
 
-Music: "${SONG_NAME}" (original, made with Suno).
 Explore all 4 builds in 3D: ${VIEWER}${s.key}
 Full 2-minute demo: https://youtu.be/GDJijs-ZlSk
 Code: https://github.com/loathwine/craftplan`;
@@ -59,14 +56,15 @@ Code: https://github.com/loathwine/craftplan`;
 if (!existsSync(SONG)) { console.error('missing song:', SONG); process.exit(1); }
 const probe = spawnSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', SONG], { encoding: 'utf8' });
 const SONG_LEN = parseFloat(probe.stdout);
-if (!(SONG_LEN >= SUBJECTS.length * CLIP)) { console.error(`song is ${SONG_LEN}s, need >= ${SUBJECTS.length * CLIP}s`); process.exit(1); }
+const FIRST = arg('first') !== undefined ? +arg('first') : SONG_LEN - SUBJECTS.length * CLIP;
+if (!(FIRST >= 0 && FIRST + SUBJECTS.length * CLIP <= SONG_LEN)) { console.error(`song is ${SONG_LEN}s; windows from ${FIRST}s don't fit`); process.exit(1); }
 
 const videos = [];
 let failed = 0;
 SUBJECTS.forEach((s, i) => {
   const silent = resolve(SH, `${s.key}-${s.grid}-grid-10s.mp4`);
   const out = resolve(SH, `${s.key}-${s.grid}-grid-10s-halloween.mp4`);
-  const start = Math.max(0, +(SONG_LEN - (i + 1) * CLIP).toFixed(2));
+  const start = +(FIRST + (SUBJECTS.length - 1 - i) * CLIP).toFixed(2);
   const publishAt = new Date(new Date(START_DATE).getTime() + i * 86400000).toISOString().replace('.000Z', 'Z');
   const title = titleFor(s);
   if (!title) { console.error(`  TITLE TOO LONG: ${s.key}`); failed++; return; }
@@ -86,7 +84,7 @@ SUBJECTS.forEach((s, i) => {
 });
 
 const manifest = {
-  '// note': `"${SONG_NAME}" (user's Suno song) split into 10s windows in REVERSE: oldest upload = song end, newest = song start. Song ${SONG_LEN}s -> ${SUBJECTS.length} shorts, daily from ${START_DATE}.`,
+  '// note': `"${SONG_NAME}" (user's Suno song) split into 10s windows in REVERSE: oldest upload = song end, newest = song start. Song ${SONG_LEN}s, windows ${FIRST}..${FIRST + SUBJECTS.length * CLIP}s -> ${SUBJECTS.length} shorts, daily from ${START_DATE}.`,
   startDate: START_DATE,
   videos,
 };

@@ -13,6 +13,9 @@
 // bottom-right.
 
 import { spawnSync } from 'node:child_process';
+import { writeFileSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { resolve } from 'node:path';
 
 const argv = (() => {
@@ -55,8 +58,11 @@ let graph = `${cells};${CLIPS.map((_, i) => `[c${i}]`).join('')}xstack=inputs=${
 // Thin separator lines so the quadrants read as a deliberate grid.
 graph += `;[grid]drawbox=x=0:y=${ch - 2}:w=${W}:h=4:color=black@0.85:t=fill` +
   (CLIPS.length === 4 ? `,drawbox=x=${cw - 2}:y=0:w=4:h=${H}:color=black@0.85:t=fill` : '') + `[sep]`;
+// Header via textfile= so apostrophes survive (drawtext's text='' can't hold them).
+const headerFile = join(mkdtempSync(join(tmpdir(), 'stitch-')), 'header.txt');
+if (HEADER) writeFileSync(headerFile, HEADER);
 graph += HEADER
-  ? `;[sep]drawtext=text='${HEADER.replace(/'/g, '')}':fontsize=${headerFs}:fontcolor=yellow:borderw=5:bordercolor=black:x=(w-text_w)/2:y=${H / 2 - 34}[v]`
+  ? `;[sep]drawtext=textfile='${headerFile}':fontsize=${headerFs}:fontcolor=yellow:borderw=5:bordercolor=black:x=(w-text_w)/2:y=${H / 2 - 34}[v]`
   : `;[sep]null[v]`;
 
 const args = [
