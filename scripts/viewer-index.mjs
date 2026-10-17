@@ -81,6 +81,12 @@ const VIDEO_IDS = {
   'viking-funeral': 'NUu-3qdVnvM', 'cyber-samurai': 'WIjc3K9Xg2s', 'dragon-hoard': 'tI5DCM9F_Vw',
   'eye-of-sauron': 'TO0bgxUaTWc', 'bowser': 'dchLTPfL-tI', 'forge': 'LY-Oz4Ez8HI',
   'lighthouse-n': 'P4HJ_B3lkBY', 'wizard-fireball': 'F76K55E7ICI', 'jungle-temple': '9J_6ZcuSYfU',
+  // Halloween run (Ghosts in the Machine, 2026-10-23..11-05)
+  'witch-cauldron': 'Jx6jxV3g-KE', 'scarecrow': '_HIiMGuD8EQ', 'ghost-ship': 'EGyURmnbIcM',
+  'mummy': '50eOaseFnYM', 'frankenstein': 'ssN3qPpUnq4', 'graveyard-zombie': 'Cp0UGLa6Dvo',
+  'headless-horseman': 'U8tenuxIIIc', 'haunted-house': 'cWbMu1WnG2g', 'jack-o-lantern-n': 'O7VumNX3q-c',
+  'sugar-skull': 'N-H-t_AhTTo', 'grim-reaper': '48Kv9LeiM6Y', 'dracula-castle': 'd6JNm8NtY7A',
+  'witch-broom': 'AuI5rTdULgA', 'bonfire-night': 'nQjQ8CTLBXQ',
 };
 
 const titleFor = (key) => {

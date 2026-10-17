@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T11:37:33.253Z",
+  "generatedAt": "2026-10-17T22:00:54.792Z",
   "models": [
     "haiku",
     "sonnet",
@@ -12,8 +12,416 @@
     "opus": "Opus 4.8",
     "fable": "Fable 5"
   },
-  "count": 122,
+  "count": 134,
   "subjects": [
+    {
+      "key": "bonfire-night",
+      "title": "a Bonfire Night bonfire with fireworks",
+      "youtube": "https://youtube.com/shorts/nQjQ8CTLBXQ",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "bonfire-night-haiku55.json",
+          "blocks": 3265,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "bonfire-night-sonnet55.json",
+          "blocks": 2565,
+          "rot": 0
+        },
+        "opus": {
+          "file": "bonfire-night-opus.json",
+          "blocks": 2592,
+          "rot": 0
+        },
+        "fable": {
+          "file": "bonfire-night-fable.json",
+          "blocks": 2536,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "witch-broom",
+      "title": "a witch flying on a broomstick",
+      "youtube": "https://youtube.com/shorts/AuI5rTdULgA",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "witch-broom-haiku55.json",
+          "blocks": 872,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "witch-broom-sonnet55.json",
+          "blocks": 2608,
+          "rot": 0
+        },
+        "opus": {
+          "file": "witch-broom-opus.json",
+          "blocks": 2282,
+          "rot": 0
+        },
+        "fable": {
+          "file": "witch-broom-fable.json",
+          "blocks": 1420,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "dracula-castle",
+      "title": "Dracula's castle on a cliff",
+      "youtube": "https://youtube.com/shorts/d6JNm8NtY7A",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "dracula-castle-haiku55.json",
+          "blocks": 2766,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "dracula-castle-sonnet55.json",
+          "blocks": 3279,
+          "rot": 0
+        },
+        "opus": {
+          "file": "dracula-castle-opus.json",
+          "blocks": 3265,
+          "rot": 0
+        },
+        "fable": {
+          "file": "dracula-castle-fable.json",
+          "blocks": 3720,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "grim-reaper",
+      "title": "the Grim Reaper with his scythe",
+      "youtube": "https://youtube.com/shorts/48Kv9LeiM6Y",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "grim-reaper-haiku55.json",
+          "blocks": 1327,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "grim-reaper-sonnet55.json",
+          "blocks": 3427,
+          "rot": 0
+        },
+        "opus": {
+          "file": "grim-reaper-opus.json",
+          "blocks": 2516,
+          "rot": 0
+        },
+        "fable": {
+          "file": "grim-reaper-fable.json",
+          "blocks": 3212,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "sugar-skull",
+      "title": "a Day of the Dead sugar skull",
+      "youtube": "https://youtube.com/shorts/N-H-t_AhTTo",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "sugar-skull-haiku55.json",
+          "blocks": 2651,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "sugar-skull-sonnet55.json",
+          "blocks": 2497,
+          "rot": 0
+        },
+        "opus": {
+          "file": "sugar-skull-opus.json",
+          "blocks": 2640,
+          "rot": 0
+        },
+        "fable": {
+          "file": "sugar-skull-fable.json",
+          "blocks": 1840,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "headless-horseman",
+      "title": "the Headless Horseman holding a flaming pumpkin",
+      "youtube": "https://youtube.com/shorts/U8tenuxIIIc",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "headless-horseman-haiku55.json",
+          "blocks": 589,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "headless-horseman-sonnet55.json",
+          "blocks": 3177,
+          "rot": 0
+        },
+        "opus": {
+          "file": "headless-horseman-opus.json",
+          "blocks": 3378,
+          "rot": 0
+        },
+        "fable": {
+          "file": "headless-horseman-fable.json",
+          "blocks": 3466,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "graveyard-zombie",
+      "title": "a zombie rising from a graveyard",
+      "youtube": "https://youtube.com/shorts/Cp0UGLa6Dvo",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "graveyard-zombie-haiku55.json",
+          "blocks": 1940,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "graveyard-zombie-sonnet55.json",
+          "blocks": 3428,
+          "rot": 0
+        },
+        "opus": {
+          "file": "graveyard-zombie-opus.json",
+          "blocks": 3351,
+          "rot": 0
+        },
+        "fable": {
+          "file": "graveyard-zombie-fable.json",
+          "blocks": 2896,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "frankenstein",
+      "title": "Frankenstein's monster coming to life in the lab",
+      "youtube": "https://youtube.com/shorts/ssN3qPpUnq4",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "frankenstein-haiku55.json",
+          "blocks": 2732,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "frankenstein-sonnet55.json",
+          "blocks": 3990,
+          "rot": 0
+        },
+        "opus": {
+          "file": "frankenstein-opus.json",
+          "blocks": 3526,
+          "rot": 0
+        },
+        "fable": {
+          "file": "frankenstein-fable.json",
+          "blocks": 4016,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "mummy",
+      "title": "a mummy bursting out of its sarcophagus",
+      "youtube": "https://youtube.com/shorts/50eOaseFnYM",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "mummy-haiku55.json",
+          "blocks": 1956,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "mummy-sonnet55.json",
+          "blocks": 3730,
+          "rot": 0
+        },
+        "opus": {
+          "file": "mummy-opus.json",
+          "blocks": 3296,
+          "rot": 0
+        },
+        "fable": {
+          "file": "mummy-fable.json",
+          "blocks": 3311,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "ghost-ship",
+      "title": "a ghost pirate ship",
+      "youtube": "https://youtube.com/shorts/EGyURmnbIcM",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "ghost-ship-haiku55.json",
+          "blocks": 1747,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "ghost-ship-sonnet55.json",
+          "blocks": 3421,
+          "rot": 0
+        },
+        "opus": {
+          "file": "ghost-ship-opus.json",
+          "blocks": 2801,
+          "rot": 0
+        },
+        "fable": {
+          "file": "ghost-ship-fable.json",
+          "blocks": 3110,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "scarecrow",
+      "title": "a creepy scarecrow in a pumpkin patch",
+      "youtube": "https://youtube.com/shorts/_HIiMGuD8EQ",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "scarecrow-haiku55.json",
+          "blocks": 1844,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "scarecrow-sonnet55.json",
+          "blocks": 3568,
+          "rot": 0
+        },
+        "opus": {
+          "file": "scarecrow-opus.json",
+          "blocks": 2988,
+          "rot": 0
+        },
+        "fable": {
+          "file": "scarecrow-fable.json",
+          "blocks": 3114,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "witch-cauldron",
+      "title": "a witch brewing a glowing potion in her cauldron",
+      "youtube": "https://youtube.com/shorts/Jx6jxV3g-KE",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "witch-cauldron-haiku55.json",
+          "blocks": 1286,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "witch-cauldron-sonnet55.json",
+          "blocks": 3170,
+          "rot": 0
+        },
+        "opus": {
+          "file": "witch-cauldron-opus.json",
+          "blocks": 2494,
+          "rot": 0
+        },
+        "fable": {
+          "file": "witch-cauldron-fable.json",
+          "blocks": 2557,
+          "rot": 0
+        }
+      }
+    },
     {
       "key": "bowser",
       "title": "Bowser",
@@ -289,6 +697,7 @@
     {
       "key": "haunted-house",
       "title": "a haunted house on Halloween night",
+      "youtube": "https://youtube.com/shorts/cWbMu1WnG2g",
       "labels": {
         "haiku": "Haiku 5.5",
         "sonnet": "Sonnet 5.5",
@@ -424,6 +833,7 @@
     {
       "key": "jack-o-lantern-n",
       "title": "a glowing jack-o'-lantern",
+      "youtube": "https://youtube.com/shorts/O7VumNX3q-c",
       "labels": {
         "haiku": "Haiku 5.5",
         "sonnet": "Sonnet 5.5",
