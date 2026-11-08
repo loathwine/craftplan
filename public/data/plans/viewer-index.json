@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T22:00:54.792Z",
+  "generatedAt": "2026-11-08T10:13:08.223Z",
   "models": [
     "haiku",
     "sonnet",
@@ -12,8 +12,517 @@
     "opus": "Opus 4.8",
     "fable": "Fable 5"
   },
-  "count": 134,
+  "count": 149,
   "subjects": [
+    {
+      "key": "time-machine",
+      "title": "H.G. Wells' time machine",
+      "youtube": "https://youtube.com/shorts/XplVS9BVp0Q",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "time-machine-haiku55.json",
+          "blocks": 2556,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "time-machine-sonnet55.json",
+          "blocks": 4166,
+          "rot": 0
+        },
+        "opus": {
+          "file": "time-machine-opus.json",
+          "blocks": 2430,
+          "rot": 0
+        },
+        "fable": {
+          "file": "time-machine-fable.json",
+          "blocks": 2286,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "flying-city",
+      "title": "a steampunk flying city",
+      "youtube": "https://youtube.com/shorts/8SD0nXniK9s",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "flying-city-haiku55.json",
+          "blocks": 3226,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "flying-city-sonnet55.json",
+          "blocks": 3358,
+          "rot": 0
+        },
+        "opus": {
+          "file": "flying-city-opus.json",
+          "blocks": 3396,
+          "rot": 0
+        },
+        "fable": {
+          "file": "flying-city-fable.json",
+          "blocks": 3462,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "pocket-watch",
+      "title": "a giant open pocket watch with ticking gears",
+      "youtube": "https://youtube.com/shorts/hF0zF97pvRg",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "pocket-watch-haiku55.json",
+          "blocks": 2138,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "pocket-watch-sonnet55.json",
+          "blocks": 3590,
+          "rot": 0
+        },
+        "opus": {
+          "file": "pocket-watch-opus.json",
+          "blocks": 3950,
+          "rot": 0
+        },
+        "fable": {
+          "file": "pocket-watch-fable.json",
+          "blocks": 4180,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "clockwork-spider",
+      "title": "a giant clockwork spider",
+      "youtube": "https://youtube.com/shorts/xjcMyh1ngmc",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "clockwork-spider-haiku55.json",
+          "blocks": 2507,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "clockwork-spider-sonnet55.json",
+          "blocks": 3610,
+          "rot": 0
+        },
+        "opus": {
+          "file": "clockwork-spider-opus.json",
+          "blocks": 2700,
+          "rot": 0
+        },
+        "fable": {
+          "file": "clockwork-spider-fable.json",
+          "blocks": 2855,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "gyrocopter",
+      "title": "a steampunk gyrocopter",
+      "youtube": "https://youtube.com/shorts/gu_H9I1FVXs",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "gyrocopter-haiku55.json",
+          "blocks": 1459,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "gyrocopter-sonnet55.json",
+          "blocks": 3529,
+          "rot": 0
+        },
+        "opus": {
+          "file": "gyrocopter-opus.json",
+          "blocks": 2462,
+          "rot": 0
+        },
+        "fable": {
+          "file": "gyrocopter-fable.json",
+          "blocks": 2385,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "automaton",
+      "title": "a steampunk automaton robot",
+      "youtube": "https://youtube.com/shorts/gtrFNF7uWT8",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "automaton-haiku55.json",
+          "blocks": 2276,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "automaton-sonnet55.json",
+          "blocks": 3500,
+          "rot": 0
+        },
+        "opus": {
+          "file": "automaton-opus.json",
+          "blocks": 3299,
+          "rot": 0
+        },
+        "fable": {
+          "file": "automaton-fable.json",
+          "blocks": 4308,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "steam-factory",
+      "title": "a Victorian factory with smoking chimneys",
+      "youtube": "https://youtube.com/shorts/Z5A6OWON7lE",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "steam-factory-haiku55.json",
+          "blocks": 3004,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "steam-factory-sonnet55.json",
+          "blocks": 3386,
+          "rot": 0
+        },
+        "opus": {
+          "file": "steam-factory-opus.json",
+          "blocks": 3798,
+          "rot": 0
+        },
+        "fable": {
+          "file": "steam-factory-fable.json",
+          "blocks": 6869,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "orrery",
+      "title": "a giant brass orrery of the solar system",
+      "youtube": "https://youtube.com/shorts/LHlGeoAeyIM",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "orrery-haiku55.json",
+          "blocks": 3336,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "orrery-sonnet55.json",
+          "blocks": 3740,
+          "rot": 0
+        },
+        "opus": {
+          "file": "orrery-opus.json",
+          "blocks": 3005,
+          "rot": 0
+        },
+        "fable": {
+          "file": "orrery-fable.json",
+          "blocks": 3794,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "ornithopter",
+      "title": "Da Vinci's flying machine",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "ornithopter-haiku55.json",
+          "blocks": 1760,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "ornithopter-sonnet55.json",
+          "blocks": 2847,
+          "rot": 0
+        },
+        "opus": {
+          "file": "ornithopter-opus.json",
+          "blocks": 3177,
+          "rot": 0
+        },
+        "fable": {
+          "file": "ornithopter-fable.json",
+          "blocks": 1401,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "steam-walker",
+      "title": "a steam-powered walking machine",
+      "youtube": "https://youtube.com/shorts/hm_vcs_YU5o",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "steam-walker-haiku55.json",
+          "blocks": 2893,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "steam-walker-sonnet55.json",
+          "blocks": 3950,
+          "rot": 0
+        },
+        "opus": {
+          "file": "steam-walker-opus.json",
+          "blocks": 3163,
+          "rot": 0
+        },
+        "fable": {
+          "file": "steam-walker-fable.json",
+          "blocks": 2735,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "mech-owl",
+      "title": "a giant mechanical owl",
+      "youtube": "https://youtube.com/shorts/0LIKVEh7EBc",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "mech-owl-haiku55.json",
+          "blocks": 3268,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "mech-owl-sonnet55.json",
+          "blocks": 3407,
+          "rot": 0
+        },
+        "opus": {
+          "file": "mech-owl-opus.json",
+          "blocks": 3366,
+          "rot": 0
+        },
+        "fable": {
+          "file": "mech-owl-fable.json",
+          "blocks": 2233,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "clock-tower",
+      "title": "a steampunk clock tower",
+      "youtube": "https://youtube.com/shorts/jmATGB7VDKQ",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "clock-tower-haiku55.json",
+          "blocks": 3434,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "clock-tower-sonnet55.json",
+          "blocks": 3573,
+          "rot": 0
+        },
+        "opus": {
+          "file": "clock-tower-opus.json",
+          "blocks": 3644,
+          "rot": 0
+        },
+        "fable": {
+          "file": "clock-tower-fable.json",
+          "blocks": 3775,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "tesla-tower",
+      "title": "a steampunk Tesla coil tower crackling with lightning",
+      "youtube": "https://youtube.com/shorts/VsCsw9ww9fU",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "tesla-tower-haiku55.json",
+          "blocks": 2630,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "tesla-tower-sonnet55.json",
+          "blocks": 3454,
+          "rot": 0
+        },
+        "opus": {
+          "file": "tesla-tower-opus.json",
+          "blocks": 3726,
+          "rot": 0
+        },
+        "fable": {
+          "file": "tesla-tower-fable.json",
+          "blocks": 3152,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "clockwork-dragon",
+      "title": "a clockwork dragon made of brass gears",
+      "youtube": "https://youtube.com/shorts/Dhj08L_ao54",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "clockwork-dragon-haiku55.json",
+          "blocks": 2999,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "clockwork-dragon-sonnet55.json",
+          "blocks": 3990,
+          "rot": 0
+        },
+        "opus": {
+          "file": "clockwork-dragon-opus.json",
+          "blocks": 3383,
+          "rot": 0
+        },
+        "fable": {
+          "file": "clockwork-dragon-fable.json",
+          "blocks": 3417,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "airship",
+      "title": "a steampunk airship",
+      "youtube": "https://youtube.com/shorts/kf65nnl4tJU",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.1"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "airship-haiku55.json",
+          "blocks": 2130,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "airship-sonnet55.json",
+          "blocks": 2789,
+          "rot": 0
+        },
+        "opus": {
+          "file": "airship-opus.json",
+          "blocks": 3235,
+          "rot": 0
+        },
+        "fable": {
+          "file": "airship-fable.json",
+          "blocks": 2409,
+          "rot": 0
+        }
+      }
+    },
     {
       "key": "bonfire-night",
       "title": "a Bonfire Night bonfire with fireworks",

@@ -1,4 +1,4 @@
-// GPU particle effects for voxel emitters (fire, lava embers, electric sparks)
+// GPU particle effects for voxel emitters (fire, lava embers, electric sparks, steam)
 // plus CPU lightning arcs. Every particle's state is a pure function of
 // (uTime, seed): no per-frame simulation, deterministic for the recorder, and
 // the only CPU work is rebuilding the attribute buffers when emitters change.
@@ -7,7 +7,7 @@
 import * as THREE from 'three';
 import { BLOCK_COLORS, BLOCK_EMITTERS } from './Textures.js';
 
-const KIND = { flame: 0, ember: 1, spark: 2, smoke: 3 };
+const KIND = { flame: 0, ember: 1, spark: 2, smoke: 3, steam: 4 };
 const MAX_PARTICLES = 60000;
 
 const hash = (n) => { const s = Math.sin(n * 12.9898) * 43758.5453; return s - Math.floor(s); };
@@ -58,7 +58,7 @@ void main() {
     size = 0.32;
     col = tint * 6.0 + vec3(1.5);
     a = age < 1.0 ? 1.0 : 0.0;
-  } else {                                        // smoke (separate, normal-blended)
+  } else if (kind < 3.5) {                        // smoke (separate, normal-blended)
     float life = 3.2 + 1.0 * seed;
     float ph = uTime / life + seed * 4.0, cyc = floor(ph), age = fract(ph);
     float r1 = h1(seed * 71.0 + cyc) - 0.5, r2 = h1(seed * 43.0 + cyc) - 0.5;
@@ -66,6 +66,17 @@ void main() {
     size = mix(0.7, 2.6, age);
     col = vec3(0.16, 0.15, 0.15);
     a = 0.4 * smoothstep(0.0, 0.2, age) * (1.0 - age);
+  } else {                                        // steam: white puffs that shoot up, billow + fade
+    float life = 2.2 + 1.0 * seed;
+    float ph = uTime / life + seed * 6.0, cyc = floor(ph), age = fract(ph);
+    float r1 = h1(seed * 61.0 + cyc) - 0.5, r2 = h1(seed * 37.0 + cyc * 1.3) - 0.5;
+    float rise = 1.0 - (1.0 - age) * (1.0 - age);  // fast out of the vent, then slows
+    p += vec3(r1 * 0.5 + r1 * 2.2 * age + sin(uTime * 0.9 + seed * 11.0) * 0.5 * age,
+              0.4 + rise * (4.5 + 2.0 * seed),
+              r2 * 0.5 + r2 * 2.2 * age);
+    size = mix(1.0, 4.8, sqrt(age));
+    col = tint * mix(0.6, 0.5, age);
+    a = 0.42 * smoothstep(0.0, 0.12, age) * (1.0 - age) * (1.0 - 0.4 * age);
   }
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
@@ -153,7 +164,7 @@ export class VoxelParticles {
         if (kindName === 'arc') { arcSrc.push(x + 0.5, y + 0.5, z + 0.5); continue; }
         let n = em[kindName];
         if (n < 1) n = hash(cellSeed * 97.1 + KIND[kindName]) < n ? 1 : 0;
-        const dst = kindName === 'smoke' ? smoke : glow;
+        const dst = kindName === 'smoke' || kindName === 'steam' ? smoke : glow;
         for (let k = 0; k < n; k++) dst.push(x, y, z, tint[0], tint[1], tint[2], hash(cellSeed * 13.7 + k * 1.618 + KIND[kindName]), KIND[kindName]);
       }
     }

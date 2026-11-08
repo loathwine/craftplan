@@ -45,6 +45,7 @@ export const Block = {
   // --- Effect blocks: no geometry, only light + particles ---
   FIRE:       40,
   ELECTRIC:   41,
+  STEAM:      42,
 };
 
 // Uniform-colour block: top a touch brighter, bottom darker (matches the
@@ -105,6 +106,7 @@ export const BLOCK_COLORS = {
   [Block.NEON_BLUE]:  flatHex(0x22c4ff),
   [Block.FIRE]:       flatHex(0xff8a2a),
   [Block.ELECTRIC]:   flatHex(0x9fe8ff),
+  [Block.STEAM]:      flatHex(0xeef2f5),
 };
 
 // Physically-based properties for blocks that need more than a matte colour.
@@ -126,18 +128,20 @@ export const BLOCK_MATERIALS = {
   [Block.NEON_BLUE]: { roughness: 1.0,  metalness: 0.0, emissive: 2.6 },
 };
 // Effect blocks: never meshed, don't occlude, but emit light (+ particles).
-export const INVISIBLE_BLOCKS = new Set([Block.FIRE, Block.ELECTRIC]);
+export const INVISIBLE_BLOCKS = new Set([Block.FIRE, Block.ELECTRIC, Block.STEAM]);
 BLOCK_MATERIALS[Block.FIRE] = { roughness: 1, metalness: 0, emissive: 1.2 };
 BLOCK_MATERIALS[Block.ELECTRIC] = { roughness: 1, metalness: 0, emissive: 1.2 };
 // Particle emitters per block: kind -> count per emitting cell.
 //   flame/smoke: rise from the cell; ember: rare sparks off lava tops;
-//   spark: short electric flicks around the cell; arc: jagged lightning bolts.
+//   spark: short electric flicks around the cell; arc: jagged lightning bolts;
+//   steam: fast white puffs that billow and fade (no light).
 export const BLOCK_EMITTERS = {
   [Block.FIRE]:      { flame: 6, smoke: 2 },
   [Block.LAVA]:      { ember: 0.35 },
   [Block.NEON_BLUE]: { spark: 0.5 },
   [Block.NEON_RED]:  { spark: 0.5 },
   [Block.ELECTRIC]:  { spark: 8, arc: 1 },
+  [Block.STEAM]:     { steam: 10 },
 };
 export const hasSpecialMaterial = (b) => b in BLOCK_MATERIALS;
 export const isEmissive = (b) => (BLOCK_MATERIALS[b]?.emissive ?? 0) > 0;

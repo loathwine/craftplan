@@ -87,6 +87,12 @@ const VIDEO_IDS = {
   'headless-horseman': 'U8tenuxIIIc', 'haunted-house': 'cWbMu1WnG2g', 'jack-o-lantern-n': 'O7VumNX3q-c',
   'sugar-skull': 'N-H-t_AhTTo', 'grim-reaper': '48Kv9LeiM6Y', 'dracula-castle': 'd6JNm8NtY7A',
   'witch-broom': 'AuI5rTdULgA', 'bonfire-night': 'nQjQ8CTLBXQ',
+  // Steampunk "Clockwork Mind" batch, 11-08..11-21 (n8; ornithopter = unreleased spare).
+  'airship': 'kf65nnl4tJU', 'clockwork-dragon': 'Dhj08L_ao54', 'tesla-tower': 'VsCsw9ww9fU',
+  'automaton': 'gtrFNF7uWT8', 'clock-tower': 'jmATGB7VDKQ', 'mech-owl': '0LIKVEh7EBc',
+  'steam-factory': 'Z5A6OWON7lE', 'clockwork-spider': 'xjcMyh1ngmc', 'orrery': 'LHlGeoAeyIM',
+  'steam-walker': 'hm_vcs_YU5o', 'pocket-watch': 'hF0zF97pvRg', 'gyrocopter': 'gu_H9I1FVXs',
+  'flying-city': '8SD0nXniK9s', 'time-machine': 'XplVS9BVp0Q',
 };
 
 const titleFor = (key) => {

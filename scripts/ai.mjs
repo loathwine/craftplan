@@ -39,12 +39,14 @@ BLOCK CONSTANTS (use the names):
   Liquid: WATER (translucent, glossy blue)
   Glowing (emit light — use sparingly for eyes, fire, lamps, magic): LAVA (orange), GLOWSTONE (warm
            white), NEON_RED, NEON_BLUE
-  Effects (invisible, emit light + animated particles — place in open air):
+  Effects (invisible, animated particles — place in open air; FIRE and ELECTRIC also emit light):
            FIRE (flames + smoke rising from that cell: torches, campfires, dragon breath, burning ruins),
-           ELECTRIC (crackling lightning bolts + sparks: Pikachu, Tesla coils, magic, storms)
+           ELECTRIC (crackling lightning bolts + sparks: Pikachu, Tesla coils, magic, storms),
+           STEAM (white vapor puffing up from that cell: smokestacks, chimneys, engine vents,
+           pistons, kettles, geysers, hot springs)
   Note: LAVA animates (flowing crust + embers); NEON blocks throw occasional sparks.
   Effects are VERY bright and each cell already spawns a long bolt / tall flame. Use ELECTRIC in
-  3–12 cells total and FIRE in at most ~40 cells; never fill lines or volumes with them, or the
+  3–12 cells total, STEAM in at most ~20 cells and FIRE in at most ~40 cells; never fill lines or volumes with them, or the
   glow swallows the build and the subject becomes unreadable.
 
 Color guide: pick the closest real color — yellow → YELLOW, blue suit → BLUE, black armor → BLACK,
