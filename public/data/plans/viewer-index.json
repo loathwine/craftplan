@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T20:23:49.931Z",
+  "generatedAt": "2026-11-22T23:41:32.805Z",
   "models": [
     "haiku",
     "sonnet",
@@ -12,8 +12,212 @@
     "opus": "Opus 4.8",
     "fable": "Fable 5"
   },
-  "count": 164,
+  "count": 170,
   "subjects": [
+    {
+      "key": "snowmobile",
+      "title": "a snowmobile jumping over a snowdrift",
+      "youtube": "https://youtube.com/shorts/NV0cl4oIJk0",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "snowmobile-haiku55.json",
+          "blocks": 4388,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "snowmobile-sonnet55.json",
+          "blocks": 3853,
+          "rot": 0
+        },
+        "opus": {
+          "file": "snowmobile-opus.json",
+          "blocks": 3655,
+          "rot": 0
+        },
+        "fable": {
+          "file": "snowmobile-fable.json",
+          "blocks": 3891,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "snow-monkey",
+      "title": "a Japanese snow monkey in a hot spring",
+      "youtube": "https://youtube.com/shorts/uVUlU7rG2kc",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "snow-monkey-haiku55.json",
+          "blocks": 2972,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "snow-monkey-sonnet55.json",
+          "blocks": 2733,
+          "rot": 0
+        },
+        "opus": {
+          "file": "snow-monkey-opus.json",
+          "blocks": 3531,
+          "rot": 0
+        },
+        "fable": {
+          "file": "snow-monkey-fable.json",
+          "blocks": 3290,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "woolly-rhino",
+      "title": "a woolly rhinoceros",
+      "youtube": "https://youtube.com/shorts/bb18KD9Grn4",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "woolly-rhino-haiku55.json",
+          "blocks": 3688,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "woolly-rhino-sonnet55.json",
+          "blocks": 3990,
+          "rot": 0
+        },
+        "opus": {
+          "file": "woolly-rhino-opus.json",
+          "blocks": 3018,
+          "rot": 0
+        },
+        "fable": {
+          "file": "woolly-rhino-fable.json",
+          "blocks": 2904,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "hockey-player",
+      "title": "an ice hockey player taking a slapshot",
+      "youtube": "https://youtube.com/shorts/v6PRpbXdQ_w",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "hockey-player-haiku55.json",
+          "blocks": 2746,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "hockey-player-sonnet55.json",
+          "blocks": 3490,
+          "rot": 0
+        },
+        "opus": {
+          "file": "hockey-player-opus.json",
+          "blocks": 3429,
+          "rot": 0
+        },
+        "fable": {
+          "file": "hockey-player-fable.json",
+          "blocks": 2803,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "aurora-cabin",
+      "title": "a log cabin under the northern lights",
+      "youtube": "https://youtube.com/shorts/yesNoQd6KBs",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "aurora-cabin-haiku55.json",
+          "blocks": 4320,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "aurora-cabin-sonnet55.json",
+          "blocks": 3923,
+          "rot": 0
+        },
+        "opus": {
+          "file": "aurora-cabin-opus.json",
+          "blocks": 3787,
+          "rot": 0
+        },
+        "fable": {
+          "file": "aurora-cabin-fable.json",
+          "blocks": 3689,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "icebreaker",
+      "title": "a red icebreaker ship smashing through sea ice",
+      "youtube": "https://youtube.com/shorts/B-k6toYdrnA",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "icebreaker-haiku55.json",
+          "blocks": 1896,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "icebreaker-sonnet55.json",
+          "blocks": 3609,
+          "rot": 0
+        },
+        "opus": {
+          "file": "icebreaker-opus.json",
+          "blocks": 3990,
+          "rot": 0
+        },
+        "fable": {
+          "file": "icebreaker-fable.json",
+          "blocks": 3379,
+          "rot": 0
+        }
+      }
+    },
     {
       "key": "frost-phoenix",
       "title": "a frost phoenix",

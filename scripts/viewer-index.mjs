@@ -93,12 +93,14 @@ const VIDEO_IDS = {
   'steam-factory': 'Z5A6OWON7lE', 'clockwork-spider': 'xjcMyh1ngmc', 'orrery': 'LHlGeoAeyIM',
   'steam-walker': 'hm_vcs_YU5o', 'pocket-watch': 'hF0zF97pvRg', 'gyrocopter': 'gu_H9I1FVXs',
   'flying-city': '8SD0nXniK9s', 'time-machine': 'XplVS9BVp0Q',
-  // Winter "First Frost" run (11-22..12-06; 12-07..12-12 extension pending)
+  // Winter "First Frost" run (11-22..12-12)
   'ice-dragon': 'xrNXyMJ_LaY', 'howling-wolf': 'kE5AkIAa0f0', 'stave-church': 'pYZ_YunkJ6M',
   'frost-giant': 'zY3TOK_Fotg', 'emperor-penguin': '1X7-EdnCFho', 'snowplow-train': 'llhDszpV7Lc',
   'jack-frost': 'MDjEQDFa_0c', 'frozen-ship': 'cfpFRPZJQBw', 'reindeer': 'kvP7VzJTwk4',
   'monastery': 'mzbIkHAxLWk', 'viking-winter': '7jv9T-E1_cc', 'ski-jumper': 'LbmwLH850NY',
   'moose': 'w7aA2CDrTrA', 'st-basils': 'hfR0q2aN_GI', 'frost-phoenix': 'hXdW8QotDj0',
+  'icebreaker': 'B-k6toYdrnA', 'aurora-cabin': 'yesNoQd6KBs', 'hockey-player': 'v6PRpbXdQ_w',
+  'woolly-rhino': 'bb18KD9Grn4', 'snow-monkey': 'uVUlU7rG2kc', 'snowmobile': 'NV0cl4oIJk0',
 };
 
 const titleFor = (key) => {
