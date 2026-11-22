@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T10:32:19.072Z",
+  "generatedAt": "2026-11-22T20:23:49.931Z",
   "models": [
     "haiku",
     "sonnet",
@@ -12,8 +12,518 @@
     "opus": "Opus 4.8",
     "fable": "Fable 5"
   },
-  "count": 149,
+  "count": 164,
   "subjects": [
+    {
+      "key": "frost-phoenix",
+      "title": "a frost phoenix",
+      "youtube": "https://youtube.com/shorts/hXdW8QotDj0",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "frost-phoenix-haiku55.json",
+          "blocks": 2760,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "frost-phoenix-sonnet55.json",
+          "blocks": 3213,
+          "rot": 0
+        },
+        "opus": {
+          "file": "frost-phoenix-opus.json",
+          "blocks": 2989,
+          "rot": 0
+        },
+        "fable": {
+          "file": "frost-phoenix-fable.json",
+          "blocks": 3278,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "moose",
+      "title": "a moose",
+      "youtube": "https://youtube.com/shorts/w7aA2CDrTrA",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "moose-haiku55.json",
+          "blocks": 2695,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "moose-sonnet55.json",
+          "blocks": 2846,
+          "rot": 0
+        },
+        "opus": {
+          "file": "moose-opus.json",
+          "blocks": 3542,
+          "rot": 0
+        },
+        "fable": {
+          "file": "moose-fable.json",
+          "blocks": 2845,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "st-basils",
+      "title": "St. Basil's Cathedral in the snow",
+      "youtube": "https://youtube.com/shorts/hfR0q2aN_GI",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "st-basils-haiku55.json",
+          "blocks": 3383,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "st-basils-sonnet55.json",
+          "blocks": 3980,
+          "rot": 0
+        },
+        "opus": {
+          "file": "st-basils-opus.json",
+          "blocks": 3932,
+          "rot": 0
+        },
+        "fable": {
+          "file": "st-basils-fable.json",
+          "blocks": 3636,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "monastery",
+      "title": "a Tibetan monastery on a snowy peak",
+      "youtube": "https://youtube.com/shorts/mzbIkHAxLWk",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "monastery-haiku55.json",
+          "blocks": 3902,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "monastery-sonnet55.json",
+          "blocks": 3990,
+          "rot": 0
+        },
+        "opus": {
+          "file": "monastery-opus.json",
+          "blocks": 4193,
+          "rot": 0
+        },
+        "fable": {
+          "file": "monastery-fable.json",
+          "blocks": 3348,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "viking-winter",
+      "title": "a Viking warrior in a snowstorm",
+      "youtube": "https://youtube.com/shorts/7jv9T-E1_cc",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "viking-winter-haiku55.json",
+          "blocks": 2858,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "viking-winter-sonnet55.json",
+          "blocks": 3836,
+          "rot": 0
+        },
+        "opus": {
+          "file": "viking-winter-opus.json",
+          "blocks": 3496,
+          "rot": 0
+        },
+        "fable": {
+          "file": "viking-winter-fable.json",
+          "blocks": 3940,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "ski-jumper",
+      "title": "a ski jumper flying off a ski jump",
+      "youtube": "https://youtube.com/shorts/LbmwLH850NY",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "ski-jumper-haiku55.json",
+          "blocks": 3526,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "ski-jumper-sonnet55.json",
+          "blocks": 4282,
+          "rot": 0
+        },
+        "opus": {
+          "file": "ski-jumper-opus.json",
+          "blocks": 3803,
+          "rot": 0
+        },
+        "fable": {
+          "file": "ski-jumper-fable.json",
+          "blocks": 3456,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "snowplow-train",
+      "title": "a steam train with a snowplow",
+      "youtube": "https://youtube.com/shorts/llhDszpV7Lc",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "snowplow-train-haiku55.json",
+          "blocks": 3121,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "snowplow-train-sonnet55.json",
+          "blocks": 3645,
+          "rot": 0
+        },
+        "opus": {
+          "file": "snowplow-train-opus.json",
+          "blocks": 3778,
+          "rot": 0
+        },
+        "fable": {
+          "file": "snowplow-train-fable.json",
+          "blocks": 3612,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "reindeer",
+      "title": "a reindeer with giant antlers",
+      "youtube": "https://youtube.com/shorts/kvP7VzJTwk4",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "reindeer-haiku55.json",
+          "blocks": 3140,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "reindeer-sonnet55.json",
+          "blocks": 3107,
+          "rot": 0
+        },
+        "opus": {
+          "file": "reindeer-opus.json",
+          "blocks": 3253,
+          "rot": 0
+        },
+        "fable": {
+          "file": "reindeer-fable.json",
+          "blocks": 3687,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "jack-frost",
+      "title": "Jack Frost",
+      "youtube": "https://youtube.com/shorts/MDjEQDFa_0c",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "jack-frost-haiku55.json",
+          "blocks": 2825,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "jack-frost-sonnet55.json",
+          "blocks": 3626,
+          "rot": 0
+        },
+        "opus": {
+          "file": "jack-frost-opus.json",
+          "blocks": 3423,
+          "rot": 0
+        },
+        "fable": {
+          "file": "jack-frost-fable.json",
+          "blocks": 3321,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "frozen-ship",
+      "title": "a ship trapped in Arctic pack ice",
+      "youtube": "https://youtube.com/shorts/cfpFRPZJQBw",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "frozen-ship-haiku55.json",
+          "blocks": 3546,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "frozen-ship-sonnet55.json",
+          "blocks": 3950,
+          "rot": 0
+        },
+        "opus": {
+          "file": "frozen-ship-opus.json",
+          "blocks": 4370,
+          "rot": 0
+        },
+        "fable": {
+          "file": "frozen-ship-fable.json",
+          "blocks": 3131,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "emperor-penguin",
+      "title": "an emperor penguin",
+      "youtube": "https://youtube.com/shorts/1X7-EdnCFho",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "emperor-penguin-haiku55.json",
+          "blocks": 2326,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "emperor-penguin-sonnet55.json",
+          "blocks": 4126,
+          "rot": 0
+        },
+        "opus": {
+          "file": "emperor-penguin-opus.json",
+          "blocks": 2739,
+          "rot": 0
+        },
+        "fable": {
+          "file": "emperor-penguin-fable.json",
+          "blocks": 2928,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "howling-wolf",
+      "title": "a wolf howling at the moon",
+      "youtube": "https://youtube.com/shorts/kE5AkIAa0f0",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "howling-wolf-haiku55.json",
+          "blocks": 2823,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "howling-wolf-sonnet55.json",
+          "blocks": 3523,
+          "rot": 0
+        },
+        "opus": {
+          "file": "howling-wolf-opus.json",
+          "blocks": 3990,
+          "rot": 0
+        },
+        "fable": {
+          "file": "howling-wolf-fable.json",
+          "blocks": 3498,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "stave-church",
+      "title": "a Norwegian stave church in the snow",
+      "youtube": "https://youtube.com/shorts/pYZ_YunkJ6M",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "stave-church-haiku55.json",
+          "blocks": 2870,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "stave-church-sonnet55.json",
+          "blocks": 3960,
+          "rot": 0
+        },
+        "opus": {
+          "file": "stave-church-opus.json",
+          "blocks": 3928,
+          "rot": 0
+        },
+        "fable": {
+          "file": "stave-church-fable.json",
+          "blocks": 3630,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "frost-giant",
+      "title": "a frost giant wielding an ice axe",
+      "youtube": "https://youtube.com/shorts/zY3TOK_Fotg",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "frost-giant-haiku55.json",
+          "blocks": 6002,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "frost-giant-sonnet55.json",
+          "blocks": 3978,
+          "rot": 0
+        },
+        "opus": {
+          "file": "frost-giant-opus.json",
+          "blocks": 3605,
+          "rot": 0
+        },
+        "fable": {
+          "file": "frost-giant-fable.json",
+          "blocks": 2535,
+          "rot": 0
+        }
+      }
+    },
+    {
+      "key": "ice-dragon",
+      "title": "an ice dragon",
+      "youtube": "https://youtube.com/shorts/xrNXyMJ_LaY",
+      "labels": {
+        "haiku": "Haiku 5.5",
+        "sonnet": "Sonnet 5.5",
+        "opus": "Opus 5.5",
+        "fable": "Fable 5.2"
+      },
+      "night": true,
+      "models": {
+        "haiku": {
+          "file": "ice-dragon-haiku55.json",
+          "blocks": 2288,
+          "rot": 0
+        },
+        "sonnet": {
+          "file": "ice-dragon-sonnet55.json",
+          "blocks": 3636,
+          "rot": 0
+        },
+        "opus": {
+          "file": "ice-dragon-opus.json",
+          "blocks": 3685,
+          "rot": 0
+        },
+        "fable": {
+          "file": "ice-dragon-fable.json",
+          "blocks": 3006,
+          "rot": 0
+        }
+      }
+    },
     {
       "key": "time-machine",
       "title": "H.G. Wells' time machine",

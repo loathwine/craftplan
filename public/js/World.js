@@ -96,6 +96,7 @@ export class World {
   constructor(scene, opts = {}) {
     this.scene = scene;
     this.chunkCount = opts.chunks ?? DEFAULT_CHUNKS;
+    this.winter = !!opts.winter;   // snow-covered ground + snow-capped trees
     this.worldSize = this.chunkCount * CHUNK_SIZE;
     // Flat array of chunk columns, index cz*C + cx. Each is 16×16×WORLD_HEIGHT
     // blocks, index lx + lz*16 + y*256. Edits write straight into these.
@@ -164,7 +165,8 @@ export class World {
         const wx = x0 + lx, wz = z0 + lz;
         const h = terrainHeight(wx, wz);
         const biome = biomeAt(wx, wz);
-        const surface = surfaceBlock(wx, wz, h);
+        let surface = surfaceBlock(wx, wz, h);
+        if (this.winter && (surface === Block.GRASS || surface === Block.SAND)) surface = Block.SNOW;
         for (let y = 0; y <= h && y < WORLD_HEIGHT; y++) {
           let b;
           if (y === 0) b = Block.BEDROCK;
@@ -210,6 +212,10 @@ export class World {
               this._writeBlock(wx + dx, topY + dy, wz + dz, Block.LEAVES);
             }
           }
+        }
+        if (this.winter) {   // snow cap on the crown
+          for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++)
+            if (dx === 0 || dz === 0 || hash2(wx + dx * 3, wz + dz * 5) > 0.4) this._writeBlock(wx + dx, topY + 3, wz + dz, Block.SNOW);
         }
       }
     }

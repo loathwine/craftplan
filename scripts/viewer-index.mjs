@@ -93,6 +93,12 @@ const VIDEO_IDS = {
   'steam-factory': 'Z5A6OWON7lE', 'clockwork-spider': 'xjcMyh1ngmc', 'orrery': 'LHlGeoAeyIM',
   'steam-walker': 'hm_vcs_YU5o', 'pocket-watch': 'hF0zF97pvRg', 'gyrocopter': 'gu_H9I1FVXs',
   'flying-city': '8SD0nXniK9s', 'time-machine': 'XplVS9BVp0Q',
+  // Winter "First Frost" run (11-22..12-06; 12-07..12-12 extension pending)
+  'ice-dragon': 'xrNXyMJ_LaY', 'howling-wolf': 'kE5AkIAa0f0', 'stave-church': 'pYZ_YunkJ6M',
+  'frost-giant': 'zY3TOK_Fotg', 'emperor-penguin': '1X7-EdnCFho', 'snowplow-train': 'llhDszpV7Lc',
+  'jack-frost': 'MDjEQDFa_0c', 'frozen-ship': 'cfpFRPZJQBw', 'reindeer': 'kvP7VzJTwk4',
+  'monastery': 'mzbIkHAxLWk', 'viking-winter': '7jv9T-E1_cc', 'ski-jumper': 'LbmwLH850NY',
+  'moose': 'w7aA2CDrTrA', 'st-basils': 'hfR0q2aN_GI', 'frost-phoenix': 'hXdW8QotDj0',
 };
 
 const titleFor = (key) => {
@@ -126,7 +132,12 @@ const fresh = latest.map(key => {
     const d = decisions[`${key}/${m}`];
     models[m] = { file, blocks: solids(file), rot: d && d.status === 'rotate' ? (d.rotationDeg || 0) : 0 };
   }
-  return { key, title: titleFor(key), ...ytFor(key), labels: LATEST.labels, night: true, models };
+  // Fable version follows the plan's source tag (5.1 → 5.2 from the 2026-11-22 Winter batch).
+  let fsrc = '';
+  try { fsrc = JSON.parse(readFileSync(resolve(PLANS, `${key}-fable.json`), 'utf8')).source || ''; } catch {}
+  const fv = fsrc.match(/claude-fable-(\d+)-(\d+)/);
+  const labels = fv ? { ...LATEST.labels, fable: `Fable ${fv[1]}.${fv[2]}` } : LATEST.labels;
+  return { key, title: titleFor(key), ...ytFor(key), labels, night: true, models };
 });
 
 // Frozen 4x grids from the existing index.

@@ -556,7 +556,7 @@ export async function startRecorder() {
     : {});
   const weather = setupWeather(scene, MANUSCRIPT.weather);
 
-  const world = new World(scene, { chunks: MANUSCRIPT.chunks, fluids: params.get('fluids') === '1' });
+  const world = new World(scene, { chunks: MANUSCRIPT.chunks, fluids: params.get('fluids') === '1', winter: params.get('winter') === '1' });
   // Rain soaks the world: ?wet=0..1 overrides; otherwise from the weather preset.
   {
     const wk = MANUSCRIPT.weather?.kind ?? MANUSCRIPT.weather;
